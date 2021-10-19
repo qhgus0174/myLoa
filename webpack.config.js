@@ -7,8 +7,14 @@ module.exports = {
     // 개발환경 mode : "development|production" 개발 환경과 배포 환경을 정할 수 있음
     mode: 'development',
 
+    resolve: {
+        extensions: ['.ts', '.tsx', '.js'],
+    },
+
     // entry: 모듈의 의존성이 시작되는 부분. 빌드 작업을 시작할 부분을 명시한다.
-    entry: './src/index.js',
+    entry: {
+        app: path.join(__dirname, 'src', 'index.tsx'),
+    },
 
     //entry에서부터 시작하여 번들링된 파일을 어디에 저장할지(path), 어떤 파일이름으로 저장할지(filename) 명시
     output: {
@@ -23,6 +29,11 @@ module.exports = {
     module: {
         rules: [
             {
+                test: /\.(ts|tsx)$/,
+                use: 'ts-loader',
+                exclude: /node_modules/,
+            },
+            {
                 test: /\.(js|jsx)$/,
                 exclude: '/node_modules/',
                 loader: 'babel-loader',
@@ -32,10 +43,10 @@ module.exports = {
                 use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
             },
             {
-                test: /\.jfif$/,
+                test: /\.(png|jpg|gif|svg)$/,
                 loader: 'file-loader',
                 options: {
-                    name: '[name].[ext]',
+                    name: '[name].[ext]?[hash]',
                 },
             },
             // html관련 plugin
@@ -69,6 +80,7 @@ module.exports = {
             template: './public/index.html',
         }),
     ],
+
     // webpack-dev-server의 개발 서버 설정
     devServer: {
         host: 'localhost',
