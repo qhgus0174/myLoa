@@ -1,16 +1,16 @@
-import React from "react";
-import ReactDOM from "react-dom";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
-import App from "./App.js";
-import "./index.css";
+import App from './App.js';
+import './index.css';
 
 const appRouting = (
-  <Router>
-    <Switch>
-      <Route exact path="/" component={App} />
-    </Switch>
-  </Router>
+    <Router>
+        <Switch>
+            <Route exact path="/" component={App} />
+        </Switch>
+    </Router>
 );
 
-ReactDOM.render(appRouting, document.getElementById("root"));
+ReactDOM.render(appRouting, document.getElementById('root'));
