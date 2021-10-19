@@ -1,5 +1,6 @@
 {
     "include": ["src/**/*"],
+    "extends": "./tsconfig.paths",
     "compilerOptions": {
         "removeComments": true,
         "target": "es6",

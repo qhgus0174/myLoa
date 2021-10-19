@@ -9,6 +9,10 @@ module.exports = {
 
     resolve: {
         extensions: ['.ts', '.tsx', '.js'],
+        modules: [path.resolve(__dirname), 'node_modules'],
+        alias: {
+            '@routes': path.resolve(__dirname, 'src/routes'),
+        },
     },
 
     // entry: 모듈의 의존성이 시작되는 부분. 빌드 작업을 시작할 부분을 명시한다.

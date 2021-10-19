@@ -1,0 +1,9 @@
+{
+    "compilerOptions": {
+        "baseUrl": ".",
+        "jsxImportSource": "@emotion/react",
+        "paths": {
+            "@routes/*": ["routes/*"]
+        },
+    }
+}
