@@ -2,6 +2,10 @@ const path = require('path');
 const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ReactRefreshTypeScript = require('react-refresh-typescript');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
+const isDevelopment = process.env.NODE_ENV !== 'production';
 
 module.exports = {
     // 개발환경 mode : "development|production" 개발 환경과 배포 환경을 정할 수 있음
@@ -37,7 +41,17 @@ module.exports = {
         rules: [
             {
                 test: /\.(ts|tsx)$/,
-                use: 'ts-loader',
+                use: [
+                    {
+                        loader: 'ts-loader',
+                        options: {
+                            getCustomTransformers: () => ({
+                                before: [isDevelopment && ReactRefreshTypeScript()].filter(Boolean),
+                            }),
+                            transpileOnly: isDevelopment,
+                        },
+                    },
+                ],
                 exclude: /node_modules/,
             },
             {
@@ -77,6 +91,7 @@ module.exports = {
     // CleanWebpackPlugin : 빌드 이전 결과물을 제거(output 경로에 있는거)
     // BannerPlugin : 결과물에 빌드 정보나 커밋 버전, 만든이 등과 같은 정보를 추가할 수 있다
     // HtmlWebpackPlugin : 번들이 완료된 파일을 <script/>를 이용해 로드한 html파일을 자동으로 생성해주는 플러그인
+    // ForkTsCheckerWebpackPlugin : Speeds up TypeScript type checking and ESLint linting
     plugins: [
         new webpack.DefinePlugin({}),
         new webpack.BannerPlugin({
@@ -86,6 +101,9 @@ module.exports = {
         new HtmlWebpackPlugin({
             template: './public/index.html',
         }),
+        new ForkTsCheckerWebpackPlugin(),
+        isDevelopment && new webpack.HotModuleReplacementPlugin(),
+        isDevelopment && new ReactRefreshWebpackPlugin(),
     ],
 
     // webpack-dev-server의 개발 서버 설정
