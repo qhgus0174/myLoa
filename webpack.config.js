@@ -2,7 +2,6 @@ const path = require('path');
 const webpack = require('webpack');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ReactRefreshTypeScript = require('react-refresh-typescript');
 const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const isDevelopment = process.env.NODE_ENV !== 'production';
@@ -12,7 +11,7 @@ module.exports = {
     mode: 'development',
 
     resolve: {
-        extensions: ['.ts', '.tsx', '.js'],
+        extensions: ['.ts', '.tsx', '.js', '.json'],
         modules: [path.resolve(__dirname), 'node_modules'],
         alias: {
             '@routes': path.resolve(__dirname, 'src/routes'),
@@ -40,24 +39,32 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.(ts|tsx)$/,
-                use: [
-                    {
-                        loader: 'ts-loader',
-                        options: {
-                            getCustomTransformers: () => ({
-                                before: [isDevelopment && ReactRefreshTypeScript()].filter(Boolean),
-                            }),
-                            transpileOnly: isDevelopment,
+                test: /\.tsx?$/,
+                loader: 'babel-loader',
+                options: {
+                    presets: [
+                        [
+                            '@babel/preset-env',
+                            {
+                                targets: { browsers: ['IE 10'] },
+                                debug: isDevelopment,
+                            },
+                        ],
+                        '@babel/preset-react',
+                        '@babel/preset-typescript',
+                    ],
+                    env: {
+                        development: {
+                            plugins: [
+                                ['@emotion/babel-plugin', { sourceMap: true }],
+                                [isDevelopment && require.resolve('react-refresh/babel')].filter(Boolean),
+                            ],
+                        },
+                        production: {
+                            plugins: ['@emotion/babel-plugin'],
                         },
                     },
-                ],
-                exclude: /node_modules/,
-            },
-            {
-                test: /\.(js|jsx)$/,
-                exclude: '/node_modules/',
-                loader: 'babel-loader',
+                },
             },
             {
                 test: /\.css$/,
