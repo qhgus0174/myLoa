@@ -12,6 +12,9 @@ module.exports = {
         modules: [path.resolve(__dirname), 'node_modules'],
         alias: {
             '@routes': path.resolve(__dirname, 'src/routes'),
+            '@components': path.resolve(__dirname, 'src/components'),
+            '@hooks': path.resolve(__dirname, 'src/hooks'),
+            '@context': path.resolve(__dirname, 'src/context'),
         },
     },
 

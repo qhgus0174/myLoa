@@ -3,7 +3,10 @@
         "baseUrl": ".",
         "jsxImportSource": "@emotion/react",
         "paths": {
-            "@routes/*": ["routes/*"]
+            "@routes/*": ["routes/*"],
+            "@components/*": ["components/*"],
+            "@hooks/*": ["hooks/*"],
+            "@context/*": ["context/*"]
         },
     }
 }
