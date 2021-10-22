@@ -42,28 +42,7 @@ module.exports = {
                 test: /\.tsx?$/,
                 loader: 'babel-loader',
                 options: {
-                    presets: [
-                        [
-                            '@babel/preset-env',
-                            {
-                                targets: { browsers: ['IE 10'] },
-                                debug: isDevelopment,
-                            },
-                        ],
-                        '@babel/preset-react',
-                        '@babel/preset-typescript',
-                    ],
-                    env: {
-                        development: {
-                            plugins: [
-                                ['@emotion/babel-plugin', { sourceMap: true }],
-                                [isDevelopment && require.resolve('react-refresh/babel')].filter(Boolean),
-                            ],
-                        },
-                        production: {
-                            plugins: ['@emotion/babel-plugin'],
-                        },
-                    },
+                    plugins: [isDevelopment && require.resolve('react-refresh/babel')].filter(Boolean),
                 },
             },
             {
@@ -109,7 +88,6 @@ module.exports = {
             template: './public/index.html',
         }),
         new ForkTsCheckerWebpackPlugin(),
-        isDevelopment && new webpack.HotModuleReplacementPlugin(),
         isDevelopment && new ReactRefreshWebpackPlugin(),
     ],
 

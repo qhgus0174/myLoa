@@ -54,6 +54,6 @@
     },
     "scripts": {
         "build": "webpack -w",
-        "dev": "webpack-dev-server --hot --open"
+        "dev": "webpack-dev-server --hot --open --mode development"
     }
 }
