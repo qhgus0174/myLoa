@@ -7,6 +7,8 @@ import useCharacter from '@hooks/storage/useCharacter';
 import useCharacterOrd from '@hooks/storage/useCharacterOrd';
 import { ModalActionContext } from '@context/ModalContext';
 import { toast } from 'react-toastify';
+import useTodo from '@hooks/storage/useTodo';
+import { ICharacterTodo, ITodo } from './Todo';
 
 export interface ICharacter {
     id: number;
@@ -19,6 +21,7 @@ export interface ICharacter {
 const Character = () => {
     const [character, setCharacter] = useCharacter();
     const [characterOrd, setCharacterOrd] = useCharacterOrd();
+    const [todo, setTodo] = useTodo();
 
     const { closeModal } = useContext(ModalActionContext);
 
@@ -49,11 +52,25 @@ const Character = () => {
             job: '아르카나',
             lastSearch: 0,
         };
+
         characterArr.push(characterInfo);
         characterOrdArr.push(characterId);
 
         setCharacter(JSON.stringify(characterArr));
         setCharacterOrd(JSON.stringify(characterOrdArr));
+
+        const todoArr: ITodo[] = JSON.parse(todo);
+
+        const todoCharacter: ICharacterTodo = {
+            id: characterId,
+            check: 0,
+            relaxGauge: 0,
+        };
+
+        const abc = todoArr.map(todo => {
+            return Object.assign(todo, { todoCharacter });
+        });
+        console.log(abc);
 
         closeModal();
     };
