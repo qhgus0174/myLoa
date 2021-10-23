@@ -8,10 +8,10 @@ export interface IButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEleme
     border?: string;
 }
 
-const Button = ({ children, icon, ...rest }: IButtonProps) => {
+const Button = ({ children, icon, type = 'button', ...rest }: IButtonProps) => {
     return (
         <>
-            <BasicButton {...rest} icon={icon}>
+            <BasicButton type={type} {...rest} icon={icon}>
                 {icon}
                 <span>{children}</span>
             </BasicButton>
