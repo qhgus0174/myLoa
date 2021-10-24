@@ -63,7 +63,7 @@ const Character = () => {
 
         const todoCharacter: ICharacterTodo = {
             id: characterId,
-            check: 0,
+            check: false,
             relaxGauge: 0,
         };
 

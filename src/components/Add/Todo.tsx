@@ -15,12 +15,12 @@ export interface ITodo {
     contents: string;
     checkType: string;
     color: string;
-    character?: ICharacterTodo[];
+    character: ICharacterTodo[];
 }
 
 export interface ICharacterTodo {
     id: number;
-    check: number;
+    check: boolean;
     relaxGauge: number;
     memo?: string;
 }
@@ -49,7 +49,7 @@ const Todo = () => {
         const characterArr: ICharacter[] = JSON.parse(character);
 
         const characters: ICharacterTodo[] = characterArr.map((character: ICharacter) => {
-            return { id: character.id, check: 0, relaxGauge: 0 };
+            return { id: character.id, check: false, relaxGauge: 0 };
         });
 
         const todoInfo: ITodo = {
