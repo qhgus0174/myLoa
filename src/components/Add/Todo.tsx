@@ -5,6 +5,8 @@ import { ModalActionContext } from '@context/ModalContext';
 import useTodo from '@hooks/storage/useTodo';
 import { useInput } from '@hooks/useInput';
 import useTodoOrd from '@hooks/storage/useTodoOrd';
+import useCharacter from '@hooks/storage/useCharacter';
+import { ICharacter } from './Character';
 
 export interface ITodo {
     id: number;
@@ -34,6 +36,7 @@ const Todo = () => {
 
     const [todo, setTodo] = useTodo();
     const [todoOrd, setTodoOrd] = useTodoOrd();
+    const [character, setCharacter] = useCharacter();
 
     const onClickAdd = () => {
         const todoArr: ITodo[] = JSON.parse(todo);
@@ -43,6 +46,12 @@ const Todo = () => {
 
         const todoId = todoArr.length == 0 ? 0 : maxValueId + 1;
 
+        const characterArr: ICharacter[] = JSON.parse(character);
+
+        const characters: ICharacterTodo[] = characterArr.map((character: ICharacter) => {
+            return { id: character.id, check: 0, relaxGauge: 0 };
+        });
+
         const todoInfo: ITodo = {
             id: todoId,
             name: name,
@@ -50,12 +59,13 @@ const Todo = () => {
             contents: contents,
             checkType: checkType,
             color: 'black',
+            character: characters,
         };
 
         todoArr.push(todoInfo);
-        todoOrdArr.push(todoId);
-
         setTodo(JSON.stringify(todoArr));
+
+        todoOrdArr.push(todoId);
         setTodoOrd(JSON.stringify(todoOrdArr));
 
         closeModal();

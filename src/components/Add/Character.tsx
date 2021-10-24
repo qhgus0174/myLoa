@@ -67,10 +67,11 @@ const Character = () => {
             relaxGauge: 0,
         };
 
-        const abc = todoArr.map(todo => {
-            return Object.assign(todo, { todoCharacter });
+        const todoCharacterArr = todoArr.map((todo: ITodo) => {
+            return Object.assign(todo, todo.character?.push(todoCharacter));
         });
-        console.log(abc);
+
+        setTodo(JSON.stringify(todoCharacterArr));
 
         closeModal();
     };
