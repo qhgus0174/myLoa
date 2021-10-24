@@ -6,7 +6,7 @@ import useTodo from '@hooks/storage/useTodo';
 import { useInput } from '@hooks/useInput';
 import useTodoOrd from '@hooks/storage/useTodoOrd';
 import useCharacter from '@hooks/storage/useCharacter';
-import { ICharacter } from './Character';
+import { ICharacter } from '../Character/CharacterEdit';
 
 export interface ITodo {
     id: number;
@@ -25,48 +25,40 @@ export interface ICharacterTodo {
     memo?: string;
 }
 
-const Todo = () => {
-    const [type, setType] = useState<string>('1');
-    const [contents, setContents] = useState<string>('1');
-    const [checkType, setCheckType] = useState<string>('1');
+const TodoCheck = ({
+    id: oriId,
+    name: newName,
+    type: newType,
+    contents: newContents,
+    checkType: newCheckType,
+    color: newColor,
+}: Omit<ITodo, 'character'>) => {
+    const [type, setType] = useState<string>(newType);
+    const [contents, setContents] = useState<string>(newContents);
+    const [checkType, setCheckType] = useState<string>(newCheckType);
+
+    const [name, bindName] = useInput<string>(newName);
 
     const { closeModal } = useContext(ModalActionContext);
 
-    const [name, bindName] = useInput<string>('');
-
-    const [todo, setTodo] = useTodo();
-    const [todoOrd, setTodoOrd] = useTodoOrd();
-    const [character, setCharacter] = useCharacter();
+    const [storageTodo, setStorageTodo] = useTodo();
 
     const onClickAdd = () => {
-        const todoArr: ITodo[] = JSON.parse(todo);
-        const todoOrdArr: number[] = JSON.parse(todoOrd);
+        const todoArr: ITodo[] = JSON.parse(storageTodo);
 
-        const maxValueId = Math.max(...todoArr.map(o => o.id), 0);
+        const index = todoArr.findIndex((obj: ITodo) => obj.id === oriId);
 
-        const todoId = todoArr.length == 0 ? 0 : maxValueId + 1;
-
-        const characterArr: ICharacter[] = JSON.parse(character);
-
-        const characters: ICharacterTodo[] = characterArr.map((character: ICharacter) => {
-            return { id: character.id, check: false, relaxGauge: 0 };
-        });
-
-        const todoInfo: ITodo = {
-            id: todoId,
+        let newTodoArr = [...todoArr];
+        newTodoArr[index] = {
+            ...newTodoArr[index],
             name: name,
             type: type,
             contents: contents,
             checkType: checkType,
-            color: 'black',
-            character: characters,
+            color: '', //todo : 컬러 넣기
         };
 
-        todoArr.push(todoInfo);
-        setTodo(JSON.stringify(todoArr));
-
-        todoOrdArr.push(todoId);
-        setTodoOrd(JSON.stringify(todoOrdArr));
+        setStorageTodo(JSON.stringify(newTodoArr));
 
         closeModal();
     };
@@ -88,32 +80,37 @@ const Todo = () => {
                     기타
                 </label>
             </div>
+            {type === '1' && (
+                <div>
+                    컨텐츠 :
+                    <label>
+                        <input
+                            type="radio"
+                            name="contents"
+                            value="11"
+                            onChange={() => setContents('1')}
+                            checked={contents === '1'}
+                        />
+                        카던/가디언
+                    </label>
+                    <label>
+                        <input
+                            type="radio"
+                            name="contents"
+                            value="12"
+                            onChange={() => setContents('2')}
+                            checked={contents === '2'}
+                        />
+                        에포나
+                    </label>
+                </div>
+            )}
+
             <div>
-                컨텐츠 :
                 <label>
-                    <input
-                        type="radio"
-                        name="contents"
-                        value="11"
-                        onChange={() => setContents('1')}
-                        checked={contents === '1'}
-                    />
-                    카던/가디언
+                    이름
+                    <TextBox {...bindName} />
                 </label>
-                <label>
-                    <input
-                        type="radio"
-                        name="contents"
-                        value="12"
-                        onChange={() => setContents('2')}
-                        checked={contents === '2'}
-                    />
-                    에포나
-                </label>
-            </div>
-            <div>
-                이름
-                <TextBox {...bindName} />
             </div>
             <div>
                 체크 유형
@@ -139,10 +136,10 @@ const Todo = () => {
                 </label>
             </div>
 
-            <Button onClick={onClickAdd}>추가</Button>
-            <Button>닫기</Button>
+            <Button onClick={onClickAdd}>수정</Button>
+            <Button onClick={() => closeModal()}>닫기</Button>
         </>
     );
 };
 
-export default Todo;
+export default TodoCheck;

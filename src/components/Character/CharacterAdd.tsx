@@ -8,7 +8,8 @@ import useCharacterOrd from '@hooks/storage/useCharacterOrd';
 import { ModalActionContext } from '@context/ModalContext';
 import { toast } from 'react-toastify';
 import useTodo from '@hooks/storage/useTodo';
-import { ICharacterTodo, ITodo } from './Todo';
+import { ICharacterTodo, ITodo } from '../Todo/TodoAdd';
+import TextBox from '@components/Input/TextBox';
 
 export interface ICharacter {
     id: number;
@@ -19,16 +20,16 @@ export interface ICharacter {
 }
 
 const Character = () => {
-    const [character, setCharacter] = useCharacter();
-    const [characterOrd, setCharacterOrd] = useCharacterOrd();
-    const [todo, setTodo] = useTodo();
+    const [storageCharacter, setStorageCharacter] = useCharacter();
+    const [storageCharacterOrd, setStorageCharacterOrd] = useCharacterOrd();
+    const [storageTodo, setStorageTodo] = useTodo();
 
     const { closeModal } = useContext(ModalActionContext);
 
     const [name, bindName] = useInput<string>('');
 
     const validate = () => {
-        const characterArr: ICharacter[] = JSON.parse(character);
+        const characterArr: ICharacter[] = JSON.parse(storageCharacter);
         return characterArr.some(character => character.name === name);
     };
 
@@ -38,8 +39,8 @@ const Character = () => {
             return;
         }
 
-        const characterArr: ICharacter[] = JSON.parse(character);
-        const characterOrdArr: number[] = JSON.parse(characterOrd);
+        const characterArr: ICharacter[] = JSON.parse(storageCharacter);
+        const characterOrdArr: number[] = JSON.parse(storageCharacterOrd);
 
         const maxValueId = Math.max(...characterArr.map(o => o.id), 0);
 
@@ -56,14 +57,14 @@ const Character = () => {
         characterArr.push(characterInfo);
         characterOrdArr.push(characterId);
 
-        setCharacter(JSON.stringify(characterArr));
-        setCharacterOrd(JSON.stringify(characterOrdArr));
+        setStorageCharacter(JSON.stringify(characterArr));
+        setStorageCharacterOrd(JSON.stringify(characterOrdArr));
 
-        const todoArr: ITodo[] = JSON.parse(todo);
+        const todoArr: ITodo[] = JSON.parse(storageTodo);
 
         const todoCharacter: ICharacterTodo = {
             id: characterId,
-            check: false,
+            check: 0,
             relaxGauge: 0,
         };
 
@@ -71,7 +72,7 @@ const Character = () => {
             return Object.assign(todo, todo.character?.push(todoCharacter));
         });
 
-        setTodo(JSON.stringify(todoCharacterArr));
+        setStorageTodo(JSON.stringify(todoCharacterArr));
 
         closeModal();
     };
@@ -79,9 +80,13 @@ const Character = () => {
     return (
         <>
             <div>
-                <LabelText {...bindName} label="캐릭터 명" />
+                <label>
+                    캐릭터명
+                    <TextBox {...bindName} />
+                </label>
+
                 <Button onClick={onClickAdd}>추가</Button>
-                <Button>닫기</Button>
+                <Button onClick={() => closeModal()}>닫기</Button>
             </div>
         </>
     );

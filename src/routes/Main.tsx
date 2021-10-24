@@ -3,13 +3,16 @@ import axios, { AxiosResponse } from 'axios';
 import { load } from 'cheerio';
 import { css } from '@emotion/react';
 import { ModalActionContext } from '@context/ModalContext';
-import Character, { ICharacter } from '@components/Add/Character';
+import CharacterAdd, { ICharacter } from '@components/Character/CharacterAdd';
 import useCharacter from '@hooks/storage/useCharacter';
 import useCharacterOrd from '@hooks/storage/useCharacterOrd';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
-import Todo, { ICharacterTodo, ITodo } from '@components/Add/Todo';
+import TodoAdd, { ICharacterTodo, ITodo } from '@components/Todo/TodoAdd';
 import useTodo from '@hooks/storage/useTodo';
 import useTodoOrd from '@hooks/storage/useTodoOrd';
+import CharacterEdit from '@components/Character/CharacterEdit';
+import TodoEdit from '@components/Todo/TodoEdit';
+import TodoCheck from '@components/Todo/TodoCheck';
 
 const Main = () => {
     const [storageCharacter] = useCharacter();
@@ -31,16 +34,18 @@ const Main = () => {
         };
     }, []);
 
-    const onClick = (type: string) => {
+    type ModalType = 'character' | 'todo';
+
+    const onClickAdd = (type: ModalType) => {
         setModalProps({
             isOpen: true,
             type: 'basic',
-            content: type === 'character' ? <Character /> : <Todo />,
+            content: type === 'character' ? <CharacterAdd /> : <TodoAdd />,
             options: { width: '30', height: '50' },
         });
     };
 
-    const onDragEnd = (result: DropResult) => {
+    const onDragEndCharacter = (result: DropResult) => {
         // source : drag 시작 위치
         // destination : drag 목적지
         const { destination, source, draggableId } = result;
@@ -55,11 +60,25 @@ const Main = () => {
             return;
         }
 
-        const items = Array.from(JSON.parse(storageCharacterOrd));
-        const [reorderedItem] = items.splice(source.index, 1);
-        items.splice(destination.index, 0, reorderedItem);
+        destination.droppableId === 'CharacterDrop'
+            ? characterSortOrd(Array.from<number>(JSON.parse(storageCharacterOrd)), source.index, destination.index)
+            : todoSortOrd(Array.from<number>(JSON.parse(storageTodoOrd)), source.index, destination.index);
+    };
 
-        setStorageCharacterOrd(JSON.stringify(items));
+    const characterSortOrd = (array: number[], start: number, destination: number) => {
+        setStorageCharacterOrd(JSON.stringify(sortOrd(array, start, destination)));
+    };
+
+    const todoSortOrd = (array: number[], start: number, destination: number) => {
+        setStorageTodoOrd(JSON.stringify(sortOrd(array, start, destination)));
+    };
+
+    const sortOrd = (array: number[], start: number, destination: number) => {
+        const newArr = [...array];
+        const [reorderedItem] = newArr.splice(start, 1);
+        newArr.splice(destination, 0, reorderedItem);
+
+        return newArr;
     };
 
     const onClickCheckTodo = (todoOrdIndex: number, characterOrdIndex: number) => {
@@ -72,7 +91,23 @@ const Main = () => {
         const todoIndex = getOwnIdByIndex(todoArr, todoOrdArr, todoOrdIndex);
         const characterIndex = getOwnIdByIndex(characterArr, characterOrdArr, characterOrdIndex);
 
-        todoArr[todoIndex].character[characterIndex].check = !todoArr[todoIndex].character[characterIndex].check;
+        let checkCount = 0;
+
+        if (todoArr[todoIndex].type !== '1') {
+            checkCount = todoArr[todoIndex].character[characterIndex].check === 1 ? 0 : 1;
+        } else {
+            const dayContents = todoArr[todoIndex].contents;
+            const maxCheck = dayContents === '1' ? 1 : 2;
+
+            if (todoArr[todoIndex].character[characterIndex].check > maxCheck) checkCount = 0;
+            else checkCount = todoArr[todoIndex].character[characterIndex].check + 1;
+        }
+
+        todoArr[todoIndex].character[characterIndex] = {
+            ...todoArr[todoIndex].character[characterIndex],
+            check: checkCount,
+            relaxGauge: todoArr[todoIndex].character[characterIndex].relaxGauge,
+        };
 
         setStorageTodo(JSON.stringify(todoArr));
     };
@@ -84,6 +119,36 @@ const Main = () => {
         return resultIndex;
     };
 
+    const onContextMenuEditCharacter = (e: React.MouseEvent<HTMLDivElement>, id: number, name: string) => {
+        e.preventDefault();
+        setModalProps({
+            isOpen: true,
+            type: 'basic',
+            content: <CharacterEdit id={id} name={name} />,
+            options: { width: '30', height: '50' },
+        });
+    };
+
+    const onContextMenuEditTodo = (e: React.MouseEvent<HTMLDivElement>, todo: ITodo) => {
+        e.preventDefault();
+        setModalProps({
+            isOpen: true,
+            type: 'basic',
+            content: <TodoEdit {...todo} />,
+            options: { width: '30', height: '50' },
+        });
+    };
+
+    const onContextMenuTodoCheck = (e: React.MouseEvent<HTMLDivElement>, todo: ITodo) => {
+        e.preventDefault();
+        setModalProps({
+            isOpen: true,
+            type: 'basic',
+            content: <TodoCheck {...todo} />,
+            options: { width: '30', height: '50' },
+        });
+    };
+
     return (
         <>
             <div
@@ -92,12 +157,12 @@ const Main = () => {
                     margin-left: 5em;
                 `}
             >
-                <button type="button" onClick={() => onClick('character')}>
+                <button type="button" onClick={() => onClickAdd('character')}>
                     캐릭터 추가
                 </button>
             </div>
 
-            <DragDropContext onDragEnd={onDragEnd}>
+            <DragDropContext onDragEnd={onDragEndCharacter}>
                 <Droppable droppableId="CharacterDrop" direction="horizontal">
                     {provided => (
                         <div
@@ -115,12 +180,12 @@ const Main = () => {
                                         (JSON.parse(storageCharacterOrd) as number[]).indexOf(b.id)
                                     );
                                 })
-                                .map((char: ICharacter, index: number) => {
+                                .map((char: ICharacter, charIndex: number) => {
                                     return (
-                                        <Draggable key={char.id} draggableId={String(char.id)} index={index}>
+                                        <Draggable key={char.id} draggableId={String(char.id)} index={charIndex}>
                                             {provided => (
                                                 <div
-                                                    key={index}
+                                                    key={charIndex}
                                                     css={css`
                                                         margin-right: 2em;
                                                         border: 1px solid black;
@@ -128,6 +193,9 @@ const Main = () => {
                                                     {...provided.draggableProps}
                                                     {...provided.dragHandleProps}
                                                     ref={provided.innerRef}
+                                                    onContextMenu={e =>
+                                                        onContextMenuEditCharacter(e, char.id, char.name)
+                                                    }
                                                 >
                                                     {char.name}
                                                 </div>
@@ -140,43 +208,93 @@ const Main = () => {
                     )}
                 </Droppable>
             </DragDropContext>
-            {(JSON.parse(storageTodo) as ITodo[]).map((todo: ITodo, todoIndex: number) => {
-                return (
-                    <div
-                        key={todoIndex}
-                        css={css`
-                            display: flex;
-                        `}
-                    >
-                        <div>{todo.name}</div>
-                        <div>
-                            {todo.character
-                                ?.sort((a, b) => {
+
+            <DragDropContext onDragEnd={onDragEndCharacter}>
+                <Droppable droppableId="TodoDrop">
+                    {provided => (
+                        <div {...provided.droppableProps} ref={provided.innerRef}>
+                            {(JSON.parse(storageTodo) as ITodo[])
+                                .sort((a, b) => {
                                     return (
-                                        (JSON.parse(storageCharacterOrd) as number[]).indexOf(a.id) -
-                                        (JSON.parse(storageCharacterOrd) as number[]).indexOf(b.id)
+                                        (JSON.parse(storageTodoOrd) as number[]).indexOf(a.id) -
+                                        (JSON.parse(storageTodoOrd) as number[]).indexOf(b.id)
                                     );
                                 })
-                                .map((char: ICharacterTodo, characterIndex: number) => {
+                                .map((todo: ITodo, todoIndex: number) => {
                                     return (
-                                        <>
-                                            {todo.checkType == '1' ? (
-                                                <input
-                                                    type="checkbox"
-                                                    checked={char.check}
-                                                    onClick={() => onClickCheckTodo(todoIndex, characterIndex)}
-                                                />
-                                            ) : (
-                                                <span></span>
+                                        <Draggable key={todo.id} draggableId={String(todo.id)} index={todoIndex}>
+                                            {provided => (
+                                                <div
+                                                    key={todoIndex}
+                                                    css={css`
+                                                        display: flex;
+                                                    `}
+                                                    {...provided.draggableProps}
+                                                    {...provided.dragHandleProps}
+                                                    ref={provided.innerRef}
+                                                >
+                                                    <div onContextMenu={e => onContextMenuEditTodo(e, todo)}>
+                                                        {todo.name}
+                                                    </div>
+                                                    <div
+                                                        css={css`
+                                                            display: flex;
+                                                        `}
+                                                    >
+                                                        {todo.character
+                                                            ?.sort((a, b) => {
+                                                                return (
+                                                                    (
+                                                                        JSON.parse(storageCharacterOrd) as number[]
+                                                                    ).indexOf(a.id) -
+                                                                    (
+                                                                        JSON.parse(storageCharacterOrd) as number[]
+                                                                    ).indexOf(b.id)
+                                                                );
+                                                            })
+                                                            .map((char: ICharacterTodo, characterIndex: number) => {
+                                                                const isChecked = char.check > 0 ? true : false;
+                                                                return (
+                                                                    <div
+                                                                        onContextMenu={e =>
+                                                                            onContextMenuTodoCheck(e, todo)
+                                                                        }
+                                                                    >
+                                                                        {todo.checkType === '1' ? (
+                                                                            <>
+                                                                                <input
+                                                                                    type="checkbox"
+                                                                                    checked={isChecked}
+                                                                                    onClick={() =>
+                                                                                        onClickCheckTodo(
+                                                                                            todoIndex,
+                                                                                            characterIndex,
+                                                                                        )
+                                                                                    }
+                                                                                />
+                                                                                {todo.type === '1' &&
+                                                                                    char.check != 0 && (
+                                                                                        <b>{char.check}</b>
+                                                                                    )}
+                                                                            </>
+                                                                        ) : (
+                                                                            <span></span>
+                                                                        )}
+                                                                    </div>
+                                                                );
+                                                            })}
+                                                    </div>
+                                                </div>
                                             )}
-                                        </>
+                                        </Draggable>
                                     );
                                 })}
+                            {provided.placeholder}
                         </div>
-                    </div>
-                );
-            })}
-            <button type="button" onClick={() => onClick('todo')}>
+                    )}
+                </Droppable>
+            </DragDropContext>
+            <button type="button" onClick={() => onClickAdd('todo')}>
                 할 일 추가
             </button>
         </>
