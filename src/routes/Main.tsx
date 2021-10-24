@@ -14,7 +14,7 @@ import useTodoOrd from '@hooks/storage/useTodoOrd';
 const Main = () => {
     const [storageCharacter] = useCharacter();
     const [storageCharacterOrd, setStorageCharacterOrd] = useCharacterOrd();
-    const [storageTodo] = useTodo();
+    const [storageTodo, setStorageTodo] = useTodo();
     const [storageTodoOrd, setStorageTodoOrd] = useTodoOrd();
 
     const { setModalProps } = useContext(ModalActionContext);
@@ -60,6 +60,28 @@ const Main = () => {
         items.splice(destination.index, 0, reorderedItem);
 
         setStorageCharacterOrd(JSON.stringify(items));
+    };
+
+    const onClickCheckTodo = (todoOrdIndex: number, characterOrdIndex: number) => {
+        //index를 가지고 id를 얻고, 순서에 따른 진짜 id를 가져온다.
+        const todoArr: ITodo[] = JSON.parse(storageTodo);
+        const todoOrdArr: number[] = JSON.parse(storageTodoOrd);
+        const characterArr: ICharacter[] = JSON.parse(storageCharacter);
+        const characterOrdArr: number[] = JSON.parse(storageCharacterOrd);
+
+        const todoIndex = getOwnIdByIndex(todoArr, todoOrdArr, todoOrdIndex);
+        const characterIndex = getOwnIdByIndex(characterArr, characterOrdArr, characterOrdIndex);
+
+        todoArr[todoIndex].character[characterIndex].check = !todoArr[todoIndex].character[characterIndex].check;
+
+        setStorageTodo(JSON.stringify(todoArr));
+    };
+
+    const getOwnIdByIndex = (dataArray: any[], ordArray: any[], index: number): number => {
+        const id = ordArray[index];
+        const resultIndex = dataArray.findIndex((obj: any) => obj.id === id);
+
+        return resultIndex;
     };
 
     return (
@@ -118,10 +140,10 @@ const Main = () => {
                     )}
                 </Droppable>
             </DragDropContext>
-            {(JSON.parse(storageTodo) as ITodo[]).map((todo: ITodo, index: number) => {
+            {(JSON.parse(storageTodo) as ITodo[]).map((todo: ITodo, todoIndex: number) => {
                 return (
                     <div
-                        key={index}
+                        key={todoIndex}
                         css={css`
                             display: flex;
                         `}
@@ -135,13 +157,15 @@ const Main = () => {
                                         (JSON.parse(storageCharacterOrd) as number[]).indexOf(b.id)
                                     );
                                 })
-                                .map((char: ICharacterTodo, index: number) => {
-                                    const isChecked = char.check === 1 ? true : false;
-
+                                .map((char: ICharacterTodo, characterIndex: number) => {
                                     return (
                                         <>
                                             {todo.checkType == '1' ? (
-                                                <input type="checkbox" checked={isChecked} />
+                                                <input
+                                                    type="checkbox"
+                                                    checked={char.check}
+                                                    onClick={() => onClickCheckTodo(todoIndex, characterIndex)}
+                                                />
                                             ) : (
                                                 <span></span>
                                             )}
