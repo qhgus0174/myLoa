@@ -15,6 +15,7 @@ import TodoEdit from '@components/Todo/TodoEdit';
 import TodoCheck from '@components/Todo/TodoCheck';
 import { ICharacterTodo, ITodo } from '@components/Todo/TodoType';
 import { ICharacter } from '@components/Character/CharacterType';
+import TextBox from '@components/Input/TextBox';
 
 const Main = () => {
     const [storageCharacter] = useCharacter();
@@ -155,6 +156,28 @@ const Main = () => {
         });
     };
 
+    const onChangeTodoText = (
+        e: React.ChangeEvent<HTMLInputElement>,
+        todoOrdIndex: number,
+        characterOrdIndex: number,
+    ) => {
+        const {
+            target: { value: newText },
+        } = e;
+
+        const todoArr: ITodo[] = JSON.parse(storageTodo);
+        const todoOrdArr: number[] = JSON.parse(storageTodoOrd);
+        const characterArr: ICharacter[] = JSON.parse(storageCharacter);
+        const characterOrdArr: number[] = JSON.parse(storageCharacterOrd);
+
+        const todoIndex = getOwnIdByIndex(todoArr, todoOrdArr, todoOrdIndex);
+        const characterIndex = getOwnIdByIndex(characterArr, characterOrdArr, characterOrdIndex);
+
+        todoArr[todoIndex].character[characterIndex].text = newText;
+
+        setStorageTodo(JSON.stringify(todoArr));
+    };
+
     return (
         <>
             <div
@@ -239,7 +262,13 @@ const Main = () => {
                                                     {...provided.dragHandleProps}
                                                     ref={provided.innerRef}
                                                 >
-                                                    <div onContextMenu={e => onContextMenuEditTodo(e, todo)}>
+                                                    <div
+                                                        css={css`
+                                                            width: 50px;
+                                                            height: 20px;
+                                                        `}
+                                                        onContextMenu={e => onContextMenuEditTodo(e, todo)}
+                                                    >
                                                         {todo.name}
                                                     </div>
                                                     <div
@@ -289,7 +318,17 @@ const Main = () => {
                                                                                     )}
                                                                             </>
                                                                         ) : (
-                                                                            <span></span>
+                                                                            <TextBox
+                                                                                onChange={e => {
+                                                                                    onChangeTodoText(
+                                                                                        e,
+                                                                                        todo.id,
+                                                                                        char.id,
+                                                                                    );
+                                                                                }}
+                                                                                width="70"
+                                                                                value={char.text}
+                                                                            />
                                                                         )}
                                                                     </div>
                                                                 );

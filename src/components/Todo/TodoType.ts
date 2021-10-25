@@ -11,6 +11,7 @@ export interface ITodo {
 export interface ICharacterTodo {
     id: number;
     check: number;
+    text?: string;
     relaxGauge: number;
     memo?: string;
 }
