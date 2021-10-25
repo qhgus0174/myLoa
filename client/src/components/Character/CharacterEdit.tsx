@@ -4,14 +4,7 @@ import { useInput } from '@hooks/useInput';
 import useCharacter from '@hooks/storage/useCharacter';
 import { ModalActionContext } from '@context/ModalContext';
 import TextBox from '@components/Input/TextBox';
-
-export interface ICharacter {
-    id: number;
-    name: string;
-    level: number;
-    job: string;
-    lastSearch: number;
-}
+import { ICharacter } from './CharacterType';
 
 const CharacterEdit = ({ id: oriId, name: newName }: { id: number; name: string }) => {
     const [character, setCharacter] = useCharacter();

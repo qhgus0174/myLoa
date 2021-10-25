@@ -8,16 +8,9 @@ import useCharacterOrd from '@hooks/storage/useCharacterOrd';
 import { ModalActionContext } from '@context/ModalContext';
 import { toast } from 'react-toastify';
 import useTodo from '@hooks/storage/useTodo';
-import { ICharacterTodo, ITodo } from '../Todo/TodoAdd';
 import TextBox from '@components/Input/TextBox';
-
-export interface ICharacter {
-    id: number;
-    name: string;
-    level: number;
-    job: string;
-    lastSearch: number;
-}
+import { ICharacterTodo, ITodo } from '@components/Todo/TodoType';
+import { ICharacter } from './CharacterType';
 
 const Character = () => {
     const [storageCharacter, setStorageCharacter] = useCharacter();

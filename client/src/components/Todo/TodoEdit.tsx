@@ -6,67 +6,42 @@ import useTodo from '@hooks/storage/useTodo';
 import { useInput } from '@hooks/useInput';
 import useTodoOrd from '@hooks/storage/useTodoOrd';
 import useCharacter from '@hooks/storage/useCharacter';
-import { ICharacter } from '../Character/CharacterAdd';
+import { ITodo, ICharacterTodo } from './TodoType';
 
-export interface ITodo {
-    id: number;
-    name: string;
-    type: string;
-    contents: string;
-    checkType: string;
-    color: string;
-    character: ICharacterTodo[];
-}
+const TodoEdit = ({
+    id: oriId,
+    name: newName,
+    type: newType,
+    contents: newContents,
+    checkType: newCheckType,
+    color: newColor,
+}: Omit<ITodo, 'character'>) => {
+    const [type, setType] = useState<string>(newType);
+    const [contents, setContents] = useState<string>(newContents);
+    const [checkType, setCheckType] = useState<string>(newCheckType);
 
-export interface ICharacterTodo {
-    id: number;
-    check: number;
-    relaxGauge: number;
-    memo?: string;
-}
-
-const Todo = () => {
-    const [type, setType] = useState<string>('1');
-    const [contents, setContents] = useState<string>('1');
-    const [checkType, setCheckType] = useState<string>('1');
+    const [name, bindName] = useInput<string>(newName);
 
     const { closeModal } = useContext(ModalActionContext);
 
-    const [name, bindName] = useInput<string>('');
-
     const [storageTodo, setStorageTodo] = useTodo();
-    const [storageTodoOrd, setStorageTodoOrd] = useTodoOrd();
-    const [storageCharacter] = useCharacter();
 
     const onClickAdd = () => {
         const todoArr: ITodo[] = JSON.parse(storageTodo);
-        const todoOrdArr: number[] = JSON.parse(storageTodoOrd);
 
-        const maxValueId = Math.max(...todoArr.map(o => o.id), 0);
+        const index = todoArr.findIndex((obj: ITodo) => obj.id === oriId);
 
-        const todoId = todoArr.length == 0 ? 0 : maxValueId + 1;
-
-        const characterArr: ICharacter[] = JSON.parse(storageCharacter);
-
-        const characters: ICharacterTodo[] = characterArr.map((character: ICharacter) => {
-            return { id: character.id, check: 0, relaxGauge: 0 };
-        });
-
-        const todoInfo: ITodo = {
-            id: todoId,
+        let newTodoArr = [...todoArr];
+        newTodoArr[index] = {
+            ...newTodoArr[index],
             name: name,
             type: type,
             contents: contents,
             checkType: checkType,
-            color: 'black',
-            character: characters,
+            color: '', //todo : 컬러 넣기
         };
 
-        todoArr.push(todoInfo);
-        setStorageTodo(JSON.stringify(todoArr));
-
-        todoOrdArr.push(todoId);
-        setStorageTodoOrd(JSON.stringify(todoOrdArr));
+        setStorageTodo(JSON.stringify(newTodoArr));
 
         closeModal();
     };
@@ -143,10 +118,10 @@ const Todo = () => {
                 </label>
             </div>
 
-            <Button onClick={onClickAdd}>추가</Button>
+            <Button onClick={onClickAdd}>수정</Button>
             <Button onClick={() => closeModal()}>닫기</Button>
         </>
     );
 };
 
-export default Todo;
+export default TodoEdit;

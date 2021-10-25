@@ -15,9 +15,9 @@ const CustomInput = styled.input<ITextProps>`
     margin: 0.5em;
     box-sizing: border-box;
     border: none;
-    background: none;
     border-bottom: 1px solid white;
     border-bottom-width: medium;
+    background: #f8d2e4;
 
     &:focus {
         outline: none;

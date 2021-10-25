@@ -3,16 +3,18 @@ import axios, { AxiosResponse } from 'axios';
 import { load } from 'cheerio';
 import { css } from '@emotion/react';
 import { ModalActionContext } from '@context/ModalContext';
-import CharacterAdd, { ICharacter } from '@components/Character/CharacterAdd';
+import CharacterAdd from '@components/Character/CharacterAdd';
 import useCharacter from '@hooks/storage/useCharacter';
 import useCharacterOrd from '@hooks/storage/useCharacterOrd';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
-import TodoAdd, { ICharacterTodo, ITodo } from '@components/Todo/TodoAdd';
+import TodoAdd from '@components/Todo/TodoAdd';
 import useTodo from '@hooks/storage/useTodo';
 import useTodoOrd from '@hooks/storage/useTodoOrd';
 import CharacterEdit from '@components/Character/CharacterEdit';
 import TodoEdit from '@components/Todo/TodoEdit';
 import TodoCheck from '@components/Todo/TodoCheck';
+import { ICharacterTodo, ITodo } from '@components/Todo/TodoType';
+import { ICharacter } from '@components/Character/CharacterType';
 
 const Main = () => {
     const [storageCharacter] = useCharacter();
@@ -139,12 +141,16 @@ const Main = () => {
         });
     };
 
-    const onContextMenuTodoCheck = (e: React.MouseEvent<HTMLDivElement>, todo: ITodo) => {
+    const onContextMenuTodoCheck = (
+        e: React.MouseEvent<HTMLDivElement>,
+        characterTodo: ICharacterTodo,
+        todoId: number,
+    ) => {
         e.preventDefault();
         setModalProps({
             isOpen: true,
             type: 'basic',
-            content: <TodoCheck {...todo} />,
+            content: <TodoCheck {...characterTodo} todoId={todoId} />,
             options: { width: '30', height: '50' },
         });
     };
@@ -242,7 +248,7 @@ const Main = () => {
                                                         `}
                                                     >
                                                         {todo.character
-                                                            ?.sort((a, b) => {
+                                                            ?.sort((a: ICharacterTodo, b: ICharacterTodo) => {
                                                                 return (
                                                                     (
                                                                         JSON.parse(storageCharacterOrd) as number[]
@@ -257,7 +263,7 @@ const Main = () => {
                                                                 return (
                                                                     <div
                                                                         onContextMenu={e =>
-                                                                            onContextMenuTodoCheck(e, todo)
+                                                                            onContextMenuTodoCheck(e, char, todo.id)
                                                                         }
                                                                     >
                                                                         {todo.checkType === '1' ? (
@@ -275,6 +281,10 @@ const Main = () => {
                                                                                 {todo.type === '1' &&
                                                                                     char.check != 0 && (
                                                                                         <b>{char.check}</b>
+                                                                                    )}
+                                                                                {todo.type === '1' &&
+                                                                                    char.relaxGauge != 0 && (
+                                                                                        <span>{char.relaxGauge}</span>
                                                                                     )}
                                                                             </>
                                                                         ) : (
