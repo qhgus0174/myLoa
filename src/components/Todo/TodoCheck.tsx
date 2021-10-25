@@ -11,7 +11,14 @@ import { ITodo, ICharacterTodo, ITodoCheck } from './TodoType';
 import { ICharacter } from '@components/Character/CharacterType';
 import useCharacterOrd from '@hooks/storage/useCharacterOrd';
 
-const TodoCheck = ({ id: characterId, check: oriCheck, relaxGauge: oriRelax, memo: oriMemo, todoId }: ITodoCheck) => {
+const TodoCheck = ({
+    id: characterId,
+    check: oriCheck,
+    relaxGauge: oriRelax,
+    memo: oriMemo,
+    todoId,
+    checkType,
+}: ITodoCheck) => {
     const { closeModal } = useContext(ModalActionContext);
 
     const [storageTodo, setStorageTodo] = useTodo();
@@ -71,22 +78,25 @@ const TodoCheck = ({ id: characterId, check: oriCheck, relaxGauge: oriRelax, mem
 
     return (
         <>
-            <div>
-                수행 여부 :
-                <label>
-                    <input type="checkbox" onChange={onClickCheckTodo} checked={checkCount > 0} />
-                    {todoType === '1' && `수행 횟수 ${checkCount}`}
-                </label>
-            </div>
-            {todoType === '1' && (
-                <div>
-                    휴식 게이지 :
-                    <label>
-                        <input type="text" {...bindRelaxGauge} />
-                    </label>
-                </div>
+            {checkType !== '2' && (
+                <>
+                    <div>
+                        수행 여부 :
+                        <label>
+                            <input type="checkbox" onChange={onClickCheckTodo} checked={checkCount > 0} />
+                            {todoType === '1' && `수행 횟수 ${checkCount}`}
+                        </label>
+                    </div>
+                    {todoType === '1' && (
+                        <div>
+                            휴식 게이지 :
+                            <label>
+                                <input type="text" {...bindRelaxGauge} />
+                            </label>
+                        </div>
+                    )}
+                </>
             )}
-
             <div>
                 메모 :
                 <label>

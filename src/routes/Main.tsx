@@ -146,12 +146,13 @@ const Main = () => {
         e: React.MouseEvent<HTMLDivElement>,
         characterTodo: ICharacterTodo,
         todoId: number,
+        checkType: string,
     ) => {
         e.preventDefault();
         setModalProps({
             isOpen: true,
             type: 'basic',
-            content: <TodoCheck {...characterTodo} todoId={todoId} />,
+            content: <TodoCheck {...characterTodo} todoId={todoId} checkType={checkType} />,
             options: { width: '30', height: '50' },
         });
     };
@@ -293,7 +294,12 @@ const Main = () => {
                                                                     <div
                                                                         key={`drag_char_${characterIndex}`}
                                                                         onContextMenu={e =>
-                                                                            onContextMenuTodoCheck(e, char, todo.id)
+                                                                            onContextMenuTodoCheck(
+                                                                                e,
+                                                                                char,
+                                                                                todo.id,
+                                                                                todo.checkType,
+                                                                            )
                                                                         }
                                                                     >
                                                                         {todo.checkType === '1' ? (

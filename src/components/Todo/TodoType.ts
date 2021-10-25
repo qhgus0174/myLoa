@@ -16,10 +16,7 @@ export interface ICharacterTodo {
     memo?: string;
 }
 
-export interface ITodoCheck {
+export interface ITodoCheck extends ICharacterTodo {
     todoId: number;
-    id: number;
-    check: number;
-    relaxGauge: number;
-    memo?: string;
+    checkType: string;
 }
