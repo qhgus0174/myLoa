@@ -231,7 +231,7 @@ const Main = () => {
                                         <Draggable key={todo.id} draggableId={String(todo.id)} index={todoIndex}>
                                             {provided => (
                                                 <div
-                                                    key={todoIndex}
+                                                    key={`drag_${todoIndex}`}
                                                     css={css`
                                                         display: flex;
                                                     `}
@@ -262,6 +262,7 @@ const Main = () => {
                                                                 const isChecked = char.check > 0 ? true : false;
                                                                 return (
                                                                     <div
+                                                                        key={`drag_char_${characterIndex}`}
                                                                         onContextMenu={e =>
                                                                             onContextMenuTodoCheck(e, char, todo.id)
                                                                         }
