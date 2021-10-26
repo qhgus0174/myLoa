@@ -17,9 +17,9 @@ const TodoEdit = ({
     checkType: newCheckType,
     color: newColor,
 }: Omit<ITodo, 'character'>) => {
-    const [type, setType] = useState<ScheduleType>('daily');
-    const [contents, setContents] = useState<ScheduleContents>('chaos');
-    const [checkType, setCheckType] = useState<ScheduleCheckType>('check');
+    const [type, setType] = useState<ScheduleType>(newType);
+    const [contents, setContents] = useState<ScheduleContents>(newContents);
+    const [checkType, setCheckType] = useState<ScheduleCheckType>(newCheckType);
 
     const [name, bindName] = useInput<string>(newName);
 

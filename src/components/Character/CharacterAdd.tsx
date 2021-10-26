@@ -62,7 +62,7 @@ const Character = () => {
         };
 
         const todoCharacterArr = todoArr.map((todo: ITodo) => {
-            return Object.assign(todo, todo.character?.push(todoCharacter));
+            return todo.type === 'line' ? todo : Object.assign({}, todo, todo.character.push(todoCharacter));
         });
 
         setStorageTodo(JSON.stringify(todoCharacterArr));

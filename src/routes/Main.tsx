@@ -16,6 +16,9 @@ import TodoCheck from '@components/Todo/TodoCheck';
 import { ICharacterTodo, ITodo } from '@components/Todo/TodoType';
 import { ICharacter } from '@components/Character/CharacterType';
 import TextBox from '@components/Input/TextBox';
+import { AddType, ScheduleCheckType, ScheduleType } from 'common/types';
+import LineAdd from '@components/Line/LineAdd';
+import LineEdit from '@components/Line/LineEdit';
 
 const Main = () => {
     const [storageCharacter] = useCharacter();
@@ -37,14 +40,12 @@ const Main = () => {
         };
     }, []);
 
-    type ModalType = 'character' | 'todo';
-
-    const onClickAdd = (type: ModalType) => {
+    const onClickOpenModal = (modal: JSX.Element, width: string = '30', height: string = '50') => {
         setModalProps({
             isOpen: true,
             type: 'basic',
-            content: type === 'character' ? <CharacterAdd /> : <TodoAdd />,
-            options: { width: '30', height: '50' },
+            content: modal, //type === 'character' ? <CharacterAdd /> : <TodoAdd />,
+            options: { width: width, height: height },
         });
     };
 
@@ -96,11 +97,11 @@ const Main = () => {
 
         let checkCount = 0;
 
-        if (todoArr[todoIndex].type !== '1') {
+        if (todoArr[todoIndex].type !== 'daily') {
             checkCount = todoArr[todoIndex].character[characterIndex].check === 1 ? 0 : 1;
         } else {
             const dayContents = todoArr[todoIndex].contents;
-            const maxCheck = dayContents === '1' ? 1 : 2;
+            const maxCheck = dayContents === 'chaos' ? 1 : 2;
 
             if (todoArr[todoIndex].character[characterIndex].check > maxCheck) checkCount = 0;
             else checkCount = todoArr[todoIndex].character[characterIndex].check + 1;
@@ -142,17 +143,28 @@ const Main = () => {
         });
     };
 
+    const onContextMenuEditLine = (e: React.MouseEvent<HTMLDivElement>, todo: ITodo) => {
+        e.preventDefault();
+        setModalProps({
+            isOpen: true,
+            type: 'basic',
+            content: <LineEdit {...todo} />,
+            options: { width: '30', height: '50' },
+        });
+    };
+
     const onContextMenuTodoCheck = (
         e: React.MouseEvent<HTMLDivElement>,
         characterTodo: ICharacterTodo,
         todoId: number,
-        checkType: string,
+        checkType: ScheduleCheckType,
+        todoType: ScheduleType,
     ) => {
         e.preventDefault();
         setModalProps({
             isOpen: true,
             type: 'basic',
-            content: <TodoCheck {...characterTodo} todoId={todoId} checkType={checkType} />,
+            content: <TodoCheck {...characterTodo} todoId={todoId} checkType={checkType} todoType={todoType} />,
             options: { width: '30', height: '50' },
         });
     };
@@ -187,7 +199,7 @@ const Main = () => {
                     margin-left: 5em;
                 `}
             >
-                <button type="button" onClick={() => onClickAdd('character')}>
+                <button type="button" onClick={() => onClickOpenModal(<CharacterAdd />)}>
                     캐릭터 추가
                 </button>
             </div>
@@ -263,83 +275,107 @@ const Main = () => {
                                                     {...provided.dragHandleProps}
                                                     ref={provided.innerRef}
                                                 >
-                                                    <div
-                                                        css={css`
-                                                            width: 50px;
-                                                            height: 20px;
-                                                        `}
-                                                        onContextMenu={e => onContextMenuEditTodo(e, todo)}
-                                                    >
-                                                        {todo.name}
-                                                    </div>
-                                                    <div
-                                                        css={css`
-                                                            display: flex;
-                                                        `}
-                                                    >
-                                                        {todo.character
-                                                            ?.sort((a: ICharacterTodo, b: ICharacterTodo) => {
-                                                                return (
-                                                                    (
-                                                                        JSON.parse(storageCharacterOrd) as number[]
-                                                                    ).indexOf(a.id) -
-                                                                    (
-                                                                        JSON.parse(storageCharacterOrd) as number[]
-                                                                    ).indexOf(b.id)
-                                                                );
-                                                            })
-                                                            .map((char: ICharacterTodo, characterIndex: number) => {
-                                                                const isChecked = char.check > 0 ? true : false;
-                                                                return (
-                                                                    <div
-                                                                        key={`drag_char_${characterIndex}`}
-                                                                        onContextMenu={e =>
-                                                                            onContextMenuTodoCheck(
-                                                                                e,
-                                                                                char,
-                                                                                todo.id,
-                                                                                todo.checkType,
-                                                                            )
-                                                                        }
-                                                                    >
-                                                                        {todo.checkType === '1' ? (
-                                                                            <>
-                                                                                <input
-                                                                                    type="checkbox"
-                                                                                    checked={isChecked}
-                                                                                    onClick={() =>
-                                                                                        onClickCheckTodo(
-                                                                                            todoIndex,
-                                                                                            characterIndex,
+                                                    {todo.type === 'line' ? (
+                                                        <div onContextMenu={e => onContextMenuEditLine(e, todo)}>
+                                                            구분선
+                                                        </div>
+                                                    ) : (
+                                                        <>
+                                                            <div
+                                                                css={css`
+                                                                    width: 100px;
+                                                                    height: 20px;
+                                                                `}
+                                                                onContextMenu={e => onContextMenuEditTodo(e, todo)}
+                                                            >
+                                                                {todo.name}
+                                                            </div>
+                                                            <div
+                                                                css={css`
+                                                                    display: flex;
+                                                                `}
+                                                            >
+                                                                {todo.character
+                                                                    ?.sort((a: ICharacterTodo, b: ICharacterTodo) => {
+                                                                        return (
+                                                                            (
+                                                                                JSON.parse(
+                                                                                    storageCharacterOrd,
+                                                                                ) as number[]
+                                                                            ).indexOf(a.id) -
+                                                                            (
+                                                                                JSON.parse(
+                                                                                    storageCharacterOrd,
+                                                                                ) as number[]
+                                                                            ).indexOf(b.id)
+                                                                        );
+                                                                    })
+                                                                    .map(
+                                                                        (
+                                                                            char: ICharacterTodo,
+                                                                            characterIndex: number,
+                                                                        ) => {
+                                                                            const isChecked =
+                                                                                char.check > 0 ? true : false;
+                                                                            return (
+                                                                                <div
+                                                                                    key={`drag_char_${characterIndex}`}
+                                                                                    onContextMenu={e =>
+                                                                                        onContextMenuTodoCheck(
+                                                                                            e,
+                                                                                            char,
+                                                                                            todo.id,
+                                                                                            todo.checkType,
+                                                                                            todo.type,
                                                                                         )
                                                                                     }
-                                                                                />
-                                                                                {todo.type === '1' &&
-                                                                                    char.check != 0 && (
-                                                                                        <b>{char.check}</b>
+                                                                                >
+                                                                                    {todo.checkType === 'check' ? (
+                                                                                        <>
+                                                                                            <input
+                                                                                                type="checkbox"
+                                                                                                checked={isChecked}
+                                                                                                onChange={() =>
+                                                                                                    onClickCheckTodo(
+                                                                                                        todoIndex,
+                                                                                                        characterIndex,
+                                                                                                    )
+                                                                                                }
+                                                                                            />
+                                                                                            {todo.type === 'daily' &&
+                                                                                                char.check != 0 && (
+                                                                                                    <b>{char.check}</b>
+                                                                                                )}
+                                                                                            {todo.type === 'daily' &&
+                                                                                                char.relaxGauge !=
+                                                                                                    0 && (
+                                                                                                    <span>
+                                                                                                        {
+                                                                                                            char.relaxGauge
+                                                                                                        }
+                                                                                                    </span>
+                                                                                                )}
+                                                                                        </>
+                                                                                    ) : (
+                                                                                        <TextBox
+                                                                                            onChange={e => {
+                                                                                                onChangeTodoText(
+                                                                                                    e,
+                                                                                                    todo.id,
+                                                                                                    char.id,
+                                                                                                );
+                                                                                            }}
+                                                                                            width="70"
+                                                                                            value={char.text || ''}
+                                                                                        />
                                                                                     )}
-                                                                                {todo.type === '1' &&
-                                                                                    char.relaxGauge != 0 && (
-                                                                                        <span>{char.relaxGauge}</span>
-                                                                                    )}
-                                                                            </>
-                                                                        ) : (
-                                                                            <TextBox
-                                                                                onChange={e => {
-                                                                                    onChangeTodoText(
-                                                                                        e,
-                                                                                        todo.id,
-                                                                                        char.id,
-                                                                                    );
-                                                                                }}
-                                                                                width="70"
-                                                                                value={char.text}
-                                                                            />
-                                                                        )}
-                                                                    </div>
-                                                                );
-                                                            })}
-                                                    </div>
+                                                                                </div>
+                                                                            );
+                                                                        },
+                                                                    )}
+                                                            </div>
+                                                        </>
+                                                    )}
                                                 </div>
                                             )}
                                         </Draggable>
@@ -350,8 +386,11 @@ const Main = () => {
                     )}
                 </Droppable>
             </DragDropContext>
-            <button type="button" onClick={() => onClickAdd('todo')}>
+            <button type="button" onClick={() => onClickOpenModal(<TodoAdd />)}>
                 할 일 추가
+            </button>
+            <button type="button" onClick={() => onClickOpenModal(<LineAdd />)}>
+                구분선 추가
             </button>
         </>
     );
