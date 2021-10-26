@@ -1,15 +1,12 @@
 import React, { useContext, useEffect, useState } from 'react';
 import Button from '@components/Button/Button';
-import TextBox from '@components/Input/TextBox';
 import { ModalActionContext } from '@context/ModalContext';
 import useTodo from '@hooks/storage/useTodo';
 import { useInput } from '@hooks/useInput';
-import useTodoOrd from '@hooks/storage/useTodoOrd';
-import useCharacter from '@hooks/storage/useCharacter';
 
-import { ITodo, ICharacterTodo, ITodoCheck } from './TodoType';
-import { ICharacter } from '@components/Character/CharacterType';
+import { ITodo, ITodoCheck } from './TodoType';
 import useCharacterOrd from '@hooks/storage/useCharacterOrd';
+import { ScheduleType } from 'common/types';
 
 const TodoCheck = ({
     id: characterId,
@@ -18,14 +15,14 @@ const TodoCheck = ({
     memo: oriMemo,
     todoId,
     checkType,
+    todoType: oriTodoType,
 }: ITodoCheck) => {
     const { closeModal } = useContext(ModalActionContext);
 
     const [storageTodo, setStorageTodo] = useTodo();
-    const [storageCharacter] = useCharacter();
     const [storageCharacterOrd] = useCharacterOrd();
 
-    const [todoType, setTodoType] = useState<string>('');
+    const [todoType, setTodoType] = useState<ScheduleType>(oriTodoType);
     const [checkCount, setCheckCount] = useState<number>(oriCheck);
     const [relaxGauge, bindRelaxGauge] = useInput<number>(oriRelax);
     const [memo, bindMemo] = useInput<string>(oriMemo || '');
@@ -63,11 +60,11 @@ const TodoCheck = ({
 
         let totalCheckCount = 0;
 
-        if (todoArr[todoIndex].type !== '1') {
+        if (todoArr[todoIndex].type !== 'daily') {
             totalCheckCount = checkCount === 1 ? 0 : 1;
         } else {
             const dayContents = todoArr[todoIndex].contents;
-            const maxCheck = dayContents === '1' ? 1 : 2;
+            const maxCheck = dayContents === 'chaos' ? 1 : 2;
 
             if (checkCount > maxCheck) totalCheckCount = 0;
             else totalCheckCount = checkCount + 1;
@@ -78,16 +75,16 @@ const TodoCheck = ({
 
     return (
         <>
-            {checkType !== '2' && (
+            {checkType !== 'text' && (
                 <>
                     <div>
                         수행 여부 :
                         <label>
                             <input type="checkbox" onChange={onClickCheckTodo} checked={checkCount > 0} />
-                            {todoType === '1' && `수행 횟수 ${checkCount}`}
+                            {todoType === 'daily' && `수행 횟수 ${checkCount}`}
                         </label>
                     </div>
-                    {todoType === '1' && (
+                    {todoType === 'daily' && (
                         <div>
                             휴식 게이지 :
                             <label>

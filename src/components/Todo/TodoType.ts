@@ -1,9 +1,11 @@
+import { ScheduleCheckType, ScheduleContents, ScheduleType } from 'common/types';
+
 export interface ITodo {
     id: number;
     name: string;
-    type: string;
-    contents: string;
-    checkType: string;
+    type: ScheduleType;
+    contents: ScheduleContents;
+    checkType: ScheduleCheckType;
     color: string;
     character: ICharacterTodo[];
 }
@@ -17,6 +19,7 @@ export interface ICharacterTodo {
 }
 
 export interface ITodoCheck extends ICharacterTodo {
+    todoType: ScheduleType;
     todoId: number;
-    checkType: string;
+    checkType: ScheduleCheckType;
 }

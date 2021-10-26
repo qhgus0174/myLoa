@@ -9,11 +9,12 @@ import useCharacter from '@hooks/storage/useCharacter';
 
 import { ITodo, ICharacterTodo } from './TodoType';
 import { ICharacter } from '@components/Character/CharacterType';
+import { ScheduleCheckType, ScheduleContents, ScheduleType } from 'common/types';
 
 const Todo = () => {
-    const [type, setType] = useState<string>('1');
-    const [contents, setContents] = useState<string>('1');
-    const [checkType, setCheckType] = useState<string>('1');
+    const [type, setType] = useState<ScheduleType>('daily');
+    const [contents, setContents] = useState<ScheduleContents>('chaos');
+    const [checkType, setCheckType] = useState<ScheduleCheckType>('check');
 
     const { closeModal } = useContext(ModalActionContext);
 
@@ -34,7 +35,7 @@ const Todo = () => {
         const characterArr: ICharacter[] = JSON.parse(storageCharacter);
 
         const characters: ICharacterTodo[] = characterArr.map((character: ICharacter) => {
-            return { id: character.id, check: 0, relaxGauge: 0, memo: '' };
+            return { id: character.id, check: 0, relaxGauge: 0 };
         });
 
         const todoInfo: ITodo = {
@@ -61,28 +62,58 @@ const Todo = () => {
             <div>
                 유형 :
                 <label>
-                    <input type="radio" name="type" value="1" onChange={() => setType('1')} checked={type === '1'} />
+                    <input
+                        type="radio"
+                        name="type"
+                        value="daily"
+                        onChange={() => {
+                            setType('daily');
+                            setContents('chaos');
+                            setCheckType('check');
+                        }}
+                        checked={type === 'daily'}
+                    />
                     일일
                 </label>
                 <label>
-                    <input type="radio" name="type" value="2" onChange={() => setType('2')} checked={type === '2'} />
+                    <input
+                        type="radio"
+                        name="type"
+                        value="weekly"
+                        onChange={() => {
+                            setType('weekly');
+                            setContents('none');
+                            setCheckType('check');
+                        }}
+                        checked={type === 'weekly'}
+                    />
                     주간
                 </label>
                 <label>
-                    <input type="radio" name="type" value="3" onChange={() => setType('3')} checked={type === '3'} />
-                    기타
+                    <input
+                        type="radio"
+                        name="type"
+                        value="other"
+                        onChange={() => {
+                            setType('other');
+                            setContents('none');
+                            setCheckType('text');
+                        }}
+                        checked={type === 'other'}
+                    />
+                    텍스트
                 </label>
             </div>
-            {type === '1' && (
+            {type === 'daily' && (
                 <div>
                     컨텐츠 :
                     <label>
                         <input
                             type="radio"
                             name="contents"
-                            value="11"
-                            onChange={() => setContents('1')}
-                            checked={contents === '1'}
+                            value="chaos"
+                            onChange={() => setContents('chaos')}
+                            checked={contents === 'chaos'}
                         />
                         카던/가디언
                     </label>
@@ -90,9 +121,9 @@ const Todo = () => {
                         <input
                             type="radio"
                             name="contents"
-                            value="12"
-                            onChange={() => setContents('2')}
-                            checked={contents === '2'}
+                            value="epona"
+                            onChange={() => setContents('epona')}
+                            checked={contents === 'epona'}
                         />
                         에포나
                     </label>
@@ -105,27 +136,17 @@ const Todo = () => {
                 </label>
             </div>
             <div>
-                체크 유형
-                <label>
-                    <input
-                        type="radio"
-                        name="checkType"
-                        value="1"
-                        onChange={() => setCheckType('1')}
-                        checked={checkType === '1'}
-                    />
-                    체크박스
-                </label>
-                <label>
-                    <input
-                        type="radio"
-                        name="checkType"
-                        value="2"
-                        onChange={() => setCheckType('2')}
-                        checked={checkType === '2'}
-                    />
-                    텍스트
-                </label>
+                숙제 표기 미리보기
+                {type === 'other' ? (
+                    <label>
+                        <TextBox value="지혜의섬 가기" readOnly />
+                    </label>
+                ) : (
+                    <label>
+                        <input type="checkbox" checked readOnly />
+                        20
+                    </label>
+                )}
             </div>
 
             <Button onClick={onClickAdd}>추가</Button>
