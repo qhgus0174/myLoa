@@ -107,12 +107,16 @@ const Main = () => {
             else checkCount = todoArr[todoIndex].character[characterIndex].check + 1;
         }
 
+        const oriRelaxGauge = todoArr[todoIndex].character[characterIndex].oriRelaxGauge;
+        const minusGauge = checkCount * 20;
+        const calcRelaxGauge = oriRelaxGauge - minusGauge < 0 ? 0 : oriRelaxGauge - minusGauge;
+
         todoArr[todoIndex].character[characterIndex] = {
             ...todoArr[todoIndex].character[characterIndex],
             check: checkCount,
-            relaxGauge: todoArr[todoIndex].character[characterIndex].relaxGauge,
+            oriRelaxGauge: oriRelaxGauge,
+            relaxGauge: calcRelaxGauge,
         };
-
         setStorageTodo(JSON.stringify(todoArr));
     };
 

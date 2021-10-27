@@ -59,6 +59,7 @@ const Character = () => {
             id: characterId,
             check: 0,
             relaxGauge: 0,
+            oriRelaxGauge: 0,
         };
 
         const todoCharacterArr = todoArr.map((todo: ITodo) => {

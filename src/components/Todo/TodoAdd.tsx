@@ -35,7 +35,7 @@ const Todo = () => {
         const characterArr: ICharacter[] = JSON.parse(storageCharacter);
 
         const characters: ICharacterTodo[] = characterArr.map((character: ICharacter) => {
-            return { id: character.id, check: 0, relaxGauge: 0 };
+            return { id: character.id, check: 0, relaxGauge: 0, oriRelaxGauge: 0 };
         });
 
         const todoInfo: ITodo = {

@@ -15,6 +15,7 @@ export interface ICharacterTodo {
     check: number;
     text?: string;
     relaxGauge: number;
+    oriRelaxGauge: number;
     memo?: string;
 }
 
