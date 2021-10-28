@@ -4,8 +4,7 @@ import { ModalActionContext } from '@context/ModalContext';
 import useTodo from '@hooks/storage/useTodo';
 import { useInput } from '@hooks/useInput';
 
-import { ITodo, ITodoCheck } from './TodoType';
-import useCharacterOrd from '@hooks/storage/useCharacterOrd';
+import { ICharacterTodo, ITodo, ITodoCheck } from './TodoType';
 import { ScheduleType } from 'common/types';
 
 const TodoCheck = ({
@@ -20,7 +19,6 @@ const TodoCheck = ({
     const { closeModal } = useContext(ModalActionContext);
 
     const [storageTodo, setStorageTodo] = useTodo();
-    const [storageCharacterOrd] = useCharacterOrd();
 
     const [todoType, setTodoType] = useState<ScheduleType>(oriTodoType);
     const [checkCount, setCheckCount] = useState<number>(oriCheck);
@@ -36,24 +34,29 @@ const TodoCheck = ({
 
     const onClickEdit = () => {
         const todoArr: ITodo[] = JSON.parse(storageTodo);
-        const todoIndex = todoArr.findIndex((obj: ITodo) => obj.id === todoId);
-        const characterOrdArr: number[] = JSON.parse(storageCharacterOrd);
-        const characterIndex = characterOrdArr.findIndex((obj: number) => obj === characterId);
 
-        todoArr[todoIndex].character[characterIndex] = {
-            ...todoArr[todoIndex].character[characterIndex],
-            check: checkCount,
-            relaxGauge: relaxGauge,
-            memo: memo,
-        };
+        const newTodo: ITodo[] = todoArr.map((todo: ITodo) => {
+            todo.character = todo.character.map((character: ICharacterTodo) => {
+                if (todo.id !== todoId || character.id !== characterId) return character;
 
-        setStorageTodo(JSON.stringify(todoArr));
+                const resetTodoData: ICharacterTodo = {
+                    ...character,
+                    check: checkCount,
+                    relaxGauge: relaxGauge,
+                    memo: memo,
+                };
+
+                return resetTodoData;
+            });
+            return todo;
+        });
+
+        setStorageTodo(JSON.stringify(newTodo));
 
         closeModal();
     };
 
     const onClickCheckTodo = () => {
-        //index를 가지고 id를 얻고, 순서에 따른 진짜 id를 가져온다.
         const todoArr: ITodo[] = JSON.parse(storageTodo);
 
         const todoIndex = todoArr.findIndex((obj: ITodo) => obj.id === todoId);
