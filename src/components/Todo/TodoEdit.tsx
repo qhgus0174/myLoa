@@ -8,6 +8,7 @@ import useTodoOrd from '@hooks/storage/useTodoOrd';
 import useCharacter from '@hooks/storage/useCharacter';
 import { ITodo, ICharacterTodo } from './TodoType';
 import { ScheduleCheckType, ScheduleContents, ScheduleType } from 'common/types';
+import _ from 'lodash';
 
 const TodoEdit = ({
     id: oriId,
@@ -26,6 +27,7 @@ const TodoEdit = ({
     const { closeModal } = useContext(ModalActionContext);
 
     const [storageTodo, setStorageTodo] = useTodo();
+    const [storageTodoOrd, setStorageTodoOrd] = useTodoOrd();
 
     const onClickAdd = () => {
         const todoArr: ITodo[] = JSON.parse(storageTodo);
@@ -43,6 +45,23 @@ const TodoEdit = ({
         };
 
         setStorageTodo(JSON.stringify(newTodoArr));
+
+        closeModal();
+    };
+
+    const onClickDelete = () => {
+        const todoArr: ITodo[] = JSON.parse(storageTodo);
+        const resultArray = _.reject(todoArr, (todo: ITodo) => {
+            return todo.id === oriId;
+        });
+        setStorageTodo(JSON.stringify(resultArray));
+
+        const todoArrOrd: number[] = JSON.parse(storageTodoOrd);
+        const ordIndex = todoArrOrd.findIndex((ord: number) => ord === oriId);
+        const resultOrd = _.reject(todoArrOrd, (ord: number) => {
+            return ord === ordIndex;
+        });
+        setStorageTodoOrd(JSON.stringify(resultOrd));
 
         closeModal();
     };
@@ -139,6 +158,7 @@ const TodoEdit = ({
             </div>
 
             <Button onClick={onClickAdd}>수정</Button>
+            <Button onClick={onClickDelete}>삭제</Button>
             <Button onClick={() => closeModal()}>닫기</Button>
         </>
     );
