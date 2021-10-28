@@ -57,9 +57,8 @@ const TodoEdit = ({
         setStorageTodo(JSON.stringify(resultArray));
 
         const todoArrOrd: number[] = JSON.parse(storageTodoOrd);
-        const ordIndex = todoArrOrd.findIndex((ord: number) => ord === oriId);
         const resultOrd = _.reject(todoArrOrd, (ord: number) => {
-            return ord === ordIndex;
+            return ord === oriId;
         });
         setStorageTodoOrd(JSON.stringify(resultOrd));
 

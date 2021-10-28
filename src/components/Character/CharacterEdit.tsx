@@ -47,9 +47,8 @@ const CharacterEdit = ({ id: oriId, name: newName }: { id: number; name: string 
         setCharacter(JSON.stringify(resultArray));
 
         const characterOrdArr: number[] = JSON.parse(characterOrd);
-        const ordIndex = characterOrdArr.findIndex((ord: number) => ord === oriId);
         const resultOrd = _.reject(characterOrdArr, (ord: number) => {
-            return ord === ordIndex;
+            return ord === oriId;
         });
         setCharacterOrd(JSON.stringify(resultOrd));
     };
