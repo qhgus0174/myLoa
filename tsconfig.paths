@@ -6,7 +6,10 @@
             "@routes/*": ["routes/*"],
             "@components/*": ["components/*"],
             "@hooks/*": ["hooks/*"],
-            "@context/*": ["context/*"]
+            "@context/*": ["context/*"],
+            "@common/*": ["common/*"],
+            "@style/*": ["style/*"],
+            "@fonts/*": ["fonts/*"]
         },
     }
 }

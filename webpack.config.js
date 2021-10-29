@@ -18,6 +18,9 @@ module.exports = {
             '@components': path.resolve(__dirname, 'src/components'),
             '@hooks': path.resolve(__dirname, 'src/hooks'),
             '@context': path.resolve(__dirname, 'src/context'),
+            '@style': path.resolve(__dirname, 'src/style'),
+            '@common': path.resolve(__dirname, 'src/common'),
+            '@fonts': path.resolve(__dirname, 'src/fonts'),
         },
     },
 
