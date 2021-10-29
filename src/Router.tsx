@@ -6,6 +6,8 @@ import SpinnerContext from '@context/SpinnerContext';
 import { Flip, ToastContainer } from 'react-toastify';
 
 import 'react-toastify/dist/ReactToastify.css';
+import Header from '@components/Layout/Header';
+import styled from '@emotion/styled';
 
 const AppRouter = () => {
     return (
@@ -24,15 +26,25 @@ const AppRouter = () => {
                 theme="dark"
                 limit={5}
             />
-            <ModalContext>
-                <BrowserRouter>
-                    <Switch>
-                        <Route exact path="/" component={Main} />
-                    </Switch>
-                </BrowserRouter>
-            </ModalContext>
+            <BrowserRouter>
+                <Container>
+                    <ModalContext>
+                        <Header />
+                        <Switch>
+                            <Route exact path="/" component={Main} />
+                        </Switch>
+                    </ModalContext>
+                </Container>
+            </BrowserRouter>
         </>
     );
 };
+
+const Container = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+`;
 
 export default AppRouter;
