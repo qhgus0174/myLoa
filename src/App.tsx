@@ -4,6 +4,10 @@ import schedule from 'node-schedule';
 import useTodo from '@hooks/storage/useTodo';
 import { ITodo, ICharacterTodo } from '@components/Todo/TodoType';
 
+import { ThemeProvider } from '@emotion/react';
+import { basic } from '@style/theme';
+import { GlobalStyle } from '@style/global-styles';
+
 const App = () => {
     const [storageTodo, setStorageTodo] = useTodo();
 
@@ -72,7 +76,10 @@ const App = () => {
 
     return (
         <>
-            <AppRouter />
+            <ThemeProvider theme={basic}>
+                <GlobalStyle />
+                <AppRouter />
+            </ThemeProvider>
         </>
     );
 };
