@@ -8,6 +8,8 @@ import TodoAdd from '@components/Todo/TodoAdd';
 import LineAdd from '@components/Line/LineAdd';
 import Character from '@components/Character';
 import Todo from '@components/Todo';
+import Button from '@components/Button/Button';
+import styled from '@emotion/styled';
 
 const Main = () => {
     const { setModalProps } = useContext(ModalActionContext);
@@ -40,29 +42,25 @@ const Main = () => {
     };
 
     return (
-        <>
-            <div
-                css={css`
-                    display: flex;
-                    margin-left: 5em;
-                `}
-            >
-                <button type="button" onClick={e => onContextMenuBasicModal(e, <CharacterAdd />)}>
-                    캐릭터 추가
-                </button>
-            </div>
-
+        <TodoDiv>
             <Character onContextMenuBasicModal={onContextMenuBasicModal} />
             <Todo onContextMenuBasicModal={onContextMenuBasicModal} />
 
-            <button type="button" onClick={e => onContextMenuBasicModal(e, <TodoAdd />)}>
+            <Button type="button" onClick={e => onContextMenuBasicModal(e, <TodoAdd />)}>
                 할 일 추가
-            </button>
-            <button type="button" onClick={e => onContextMenuBasicModal(e, <LineAdd />)}>
+            </Button>
+            <Button type="button" onClick={e => onContextMenuBasicModal(e, <LineAdd />)}>
                 구분선 추가
-            </button>
-        </>
+            </Button>
+        </TodoDiv>
     );
 };
+
+const TodoDiv = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+`;
 
 export default Main;

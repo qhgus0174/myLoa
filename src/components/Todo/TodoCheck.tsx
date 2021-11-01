@@ -6,6 +6,7 @@ import { useInput } from '@hooks/useInput';
 
 import { ICharacterTodo, ITodo, ITodoCheck } from './TodoType';
 import { ScheduleType } from 'common/types';
+import Checkbox from '@components/Input/Checkbox';
 
 const TodoCheck = ({
     id: characterId,
@@ -83,7 +84,7 @@ const TodoCheck = ({
                     <div>
                         수행 여부 :
                         <label>
-                            <input type="checkbox" onChange={onClickCheckTodo} checked={checkCount > 0} />
+                            <Checkbox type="checkbox" onChange={onClickCheckTodo} checked={checkCount > 0} />
                             {todoType === 'daily' && `수행 횟수 ${checkCount}`}
                         </label>
                     </div>

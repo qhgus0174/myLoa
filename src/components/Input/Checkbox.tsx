@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 
 export interface ICheckbox extends React.InputHTMLAttributes<HTMLInputElement> {
     checked: boolean;
-    color: 'white' | 'main';
+    color?: 'white' | 'main';
     label?: string;
 }
 
@@ -35,8 +35,7 @@ const Icon = styled.svg`
     stroke: white;
     stroke-width: 2px;
 `;
-// Hide checkbox visually but remain accessible to screen readers.
-// Source: https://polished.js.org/docs/#hidevisually
+
 const HiddenCheckbox = styled.input`
     border: 0;
     clip: rect(0 0 0 0);
@@ -55,6 +54,8 @@ const StyledCheckbox = styled.div<ICheckbox>`
     height: 16px;
     border-radius: 3px;
     transition: all 150ms;
+    border: 1px solid white;
+    cursor: pointer;
 
     ${HiddenCheckbox}:focus + & {
         box-shadow: 0 0 0 3px gray;

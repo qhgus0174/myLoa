@@ -1,15 +1,18 @@
+import Button from '@components/Button/Button';
 import { ModalActionContext } from '@context/ModalContext';
 import { css } from '@emotion/react';
+import styled from '@emotion/styled';
 import useCharacter from '@hooks/storage/useCharacter';
 import useCharacterOrd from '@hooks/storage/useCharacterOrd';
 import React, { useContext } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
+import CharacterAdd from './CharacterAdd';
 import CharacterEdit from './CharacterEdit';
 import { ICharacter } from './CharacterType';
 
 interface ICharacterParam {
     onContextMenuBasicModal: (
-        e: React.MouseEvent<HTMLDivElement>,
+        e: React.MouseEvent<HTMLElement>,
         modal: JSX.Element,
         width?: string,
         height?: string,
@@ -56,54 +59,63 @@ const Character = ({ onContextMenuBasicModal }: ICharacterParam) => {
             <DragDropContext onDragEnd={onDragEndCharacter}>
                 <Droppable droppableId="CharacterDrop" direction="horizontal">
                     {provided => (
-                        <div
-                            css={css`
-                                display: flex;
-                                margin-left: 5em;
-                            `}
-                            {...provided.droppableProps}
-                            ref={provided.innerRef}
-                        >
-                            {(JSON.parse(storageCharacter) as ICharacter[])
-                                .sort((a, b) => {
-                                    return (
-                                        (JSON.parse(storageCharacterOrd) as number[]).indexOf(a.id) -
-                                        (JSON.parse(storageCharacterOrd) as number[]).indexOf(b.id)
-                                    );
-                                })
-                                .map((char: ICharacter, charIndex: number) => {
-                                    return (
-                                        <Draggable key={char.id} draggableId={String(char.id)} index={charIndex}>
-                                            {provided => (
-                                                <div
-                                                    key={charIndex}
-                                                    css={css`
-                                                        margin-right: 2em;
-                                                        border: 1px solid black;
-                                                    `}
-                                                    {...provided.draggableProps}
-                                                    {...provided.dragHandleProps}
-                                                    ref={provided.innerRef}
-                                                    onContextMenu={e =>
-                                                        onContextMenuBasicModal(
-                                                            e,
-                                                            <CharacterEdit id={char.id} name={char.name} />,
-                                                        )
-                                                    }
-                                                >
-                                                    {char.name}
-                                                </div>
-                                            )}
-                                        </Draggable>
-                                    );
-                                })}
-                            {provided.placeholder}
-                        </div>
+                        <CharacterDropDiv>
+                            <CharacterContainer {...provided.droppableProps} ref={provided.innerRef}>
+                                {(JSON.parse(storageCharacter) as ICharacter[])
+                                    .sort((a, b) => {
+                                        return (
+                                            (JSON.parse(storageCharacterOrd) as number[]).indexOf(a.id) -
+                                            (JSON.parse(storageCharacterOrd) as number[]).indexOf(b.id)
+                                        );
+                                    })
+                                    .map((char: ICharacter, charIndex: number) => {
+                                        return (
+                                            <Draggable key={char.id} draggableId={String(char.id)} index={charIndex}>
+                                                {provided => (
+                                                    <CharacterDiv
+                                                        key={charIndex}
+                                                        {...provided.draggableProps}
+                                                        {...provided.dragHandleProps}
+                                                        ref={provided.innerRef}
+                                                        onContextMenu={e =>
+                                                            onContextMenuBasicModal(
+                                                                e,
+                                                                <CharacterEdit id={char.id} name={char.name} />,
+                                                            )
+                                                        }
+                                                    >
+                                                        {char.name}
+                                                    </CharacterDiv>
+                                                )}
+                                            </Draggable>
+                                        );
+                                    })}
+                                {provided.placeholder}
+                                <Button type="button" onClick={e => onContextMenuBasicModal(e, <CharacterAdd />)}>
+                                    캐릭터 추가
+                                </Button>
+                            </CharacterContainer>
+                        </CharacterDropDiv>
                     )}
                 </Droppable>
             </DragDropContext>
         </>
     );
 };
+
+const CharacterContainer = styled.div`
+    display: flex;
+`;
+
+const CharacterDiv = styled.div`
+    display: flex;
+`;
+
+const CharacterDropDiv = styled.div`
+    width: 100%;
+    border-bottom: 1px solid white;
+    padding-bottom: 1em;
+    margin-bottom: 1em;
+`;
 
 export default Character;

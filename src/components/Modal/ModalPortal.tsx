@@ -74,6 +74,8 @@ const ModalInner = styled.div<Pick<IModalOption, 'width' | 'height'> & Pick<IMod
     outline: none;
     box-shadow: 5px 10px 10px 1px rgba(0, 0, 0, 0.3);
     width: 100%;
+    background-color: ${props => props.theme.colors.main};
+
     ${props => {
         switch (props.type) {
             case 'basic':

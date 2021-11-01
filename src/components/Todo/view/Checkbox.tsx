@@ -6,6 +6,7 @@ import { ScheduleCheckType, ScheduleType } from 'common/types';
 import { ICharacterTodo, ITodo } from '../TodoType';
 import TodoCheck from '../TodoCheck';
 import TodoEdit from '../TodoEdit';
+import { default as CheckboxInput } from '@components/Input/Checkbox';
 
 interface ICheckbox {
     todo: ITodo;
@@ -60,8 +61,7 @@ const Checkbox = ({ todo, todoIndex, onContextMenu, onClickCheckTodo, onChangeTo
                             >
                                 {todo.checkType === 'check' ? (
                                     <>
-                                        <input
-                                            type="checkbox"
+                                        <CheckboxInput
                                             checked={isChecked}
                                             onChange={() => onClickCheckTodo(todoIndex, characterIndex)}
                                         />

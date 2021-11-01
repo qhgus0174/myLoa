@@ -9,6 +9,7 @@ import useCharacter from '@hooks/storage/useCharacter';
 import { ITodo, ICharacterTodo } from './TodoType';
 import { ScheduleCheckType, ScheduleContents, ScheduleType } from 'common/types';
 import _ from 'lodash';
+import Checkbox from '@components/Input/Checkbox';
 
 const TodoEdit = ({
     id: oriId,
@@ -151,7 +152,7 @@ const TodoEdit = ({
                     </label>
                 ) : (
                     <label>
-                        <input type="checkbox" checked readOnly />
+                        <Checkbox checked readOnly />
                     </label>
                 )}
             </div>

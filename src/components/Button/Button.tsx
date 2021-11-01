@@ -1,14 +1,16 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { Theme } from '@emotion/react';
 
 export interface IButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
     width?: string;
     height?: string;
     icon?: JSX.Element;
     border?: string;
+    color?: keyof Theme['buttonColors'];
 }
 
-const Button = ({ children, icon, type = 'button', ...rest }: IButtonProps) => {
+const Button = ({ children, icon, color = 'none', type = 'button', ...rest }: IButtonProps) => {
     return (
         <>
             <BasicButton type={type} {...rest} icon={icon}>
@@ -37,6 +39,14 @@ const BasicButton = styled.button<IButtonProps>`
         pointer-events: none;
         margin-left: ${props => (props.icon ? 0.5 : 0)}em;
     }
+
+    color: ${props => props.theme.colors.white};
+
+    border: 1px solid ${props => props.theme.colors.white};
+    ${props => `
+        background-color: ${props.theme.buttonColors[props.color ? props.color : 'none']};
+
+    `}
 
     &:hover {
         opacity: 0.9;
