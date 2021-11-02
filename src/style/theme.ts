@@ -8,6 +8,7 @@ export const basic: Theme = {
         focusDark: '#0d1721',
         white: '#f7f6fd',
         black: '#000000',
+        translucent: '#6d6d6d',
     },
 
     buttonColors: {
