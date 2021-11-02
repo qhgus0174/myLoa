@@ -11,6 +11,8 @@ import { ITodo, ICharacterTodo } from './TodoType';
 import { ICharacter } from '@components/Character/CharacterType';
 import { ScheduleCheckType, ScheduleContents, ScheduleType } from 'common/types';
 
+import { CirclePicker, ColorResult } from 'react-color';
+
 const Todo = () => {
     const [type, setType] = useState<ScheduleType>('daily');
     const [contents, setContents] = useState<ScheduleContents>('chaos');
@@ -23,6 +25,8 @@ const Todo = () => {
     const [storageTodo, setStorageTodo] = useTodo();
     const [storageTodoOrd, setStorageTodoOrd] = useTodoOrd();
     const [storageCharacter] = useCharacter();
+
+    const [color, setColor] = useState<string>('#ffffff');
 
     const onClickAdd = () => {
         const todoArr: ITodo[] = JSON.parse(storageTodo);
@@ -44,7 +48,7 @@ const Todo = () => {
             type: type,
             contents: contents,
             checkType: checkType,
-            color: 'black',
+            color: color,
             character: characters,
         };
 
@@ -134,6 +138,10 @@ const Todo = () => {
                     이름
                     <TextBox {...bindName} />
                 </label>
+            </div>
+            <div>
+                색상
+                <CirclePicker color={color} onChange={(color: ColorResult) => setColor(color.hex)} />
             </div>
             <div>
                 숙제 표기 미리보기

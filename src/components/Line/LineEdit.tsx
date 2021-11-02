@@ -10,6 +10,7 @@ import useCharacter from '@hooks/storage/useCharacter';
 import { ICharacter } from '@components/Character/CharacterType';
 import { ScheduleCheckType, ScheduleContents, ScheduleType } from 'common/types';
 import { ITodo } from '@components/Todo/TodoType';
+import { CirclePicker, ColorResult } from 'react-color';
 
 const LineEdit = ({ id: oriId, color: newColor }: Pick<ITodo, 'id' | 'color'>) => {
     const [storageTodo, setStorageTodo] = useTodo();
@@ -23,7 +24,7 @@ const LineEdit = ({ id: oriId, color: newColor }: Pick<ITodo, 'id' | 'color'>) =
         let newTodoArr = [...todoArr];
         newTodoArr[index] = {
             ...newTodoArr[index],
-            color: color, //todo : 컬러 넣기
+            color: color,
         };
 
         setStorageTodo(JSON.stringify(newTodoArr));
@@ -34,8 +35,7 @@ const LineEdit = ({ id: oriId, color: newColor }: Pick<ITodo, 'id' | 'color'>) =
     const { closeModal } = useContext(ModalActionContext);
     return (
         <>
-            {/* todo : 컬러 setColor 넣기 */}
-            색상
+            색상 <CirclePicker color={color} onChange={(color: ColorResult) => setColor(color.hex)} />
             <Button onClick={onClickAdd}>수정</Button>
             <Button onClick={() => closeModal()}>닫기</Button>
         </>

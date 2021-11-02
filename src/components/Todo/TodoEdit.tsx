@@ -10,6 +10,7 @@ import { ITodo, ICharacterTodo } from './TodoType';
 import { ScheduleCheckType, ScheduleContents, ScheduleType } from 'common/types';
 import _ from 'lodash';
 import Checkbox from '@components/Input/Checkbox';
+import { CirclePicker, ColorResult } from 'react-color';
 
 const TodoEdit = ({
     id: oriId,
@@ -22,6 +23,7 @@ const TodoEdit = ({
     const [type, setType] = useState<ScheduleType>(newType);
     const [contents, setContents] = useState<ScheduleContents>(newContents);
     const [checkType, setCheckType] = useState<ScheduleCheckType>(newCheckType);
+    const [color, setColor] = useState<string>(newColor);
 
     const [name, bindName] = useInput<string>(newName);
 
@@ -42,7 +44,7 @@ const TodoEdit = ({
             type: type,
             contents: contents,
             checkType: checkType,
-            color: '', //todo : 컬러 넣기
+            color: color,
         };
 
         setStorageTodo(JSON.stringify(newTodoArr));
@@ -143,6 +145,10 @@ const TodoEdit = ({
                     이름
                     <TextBox {...bindName} />
                 </label>
+            </div>
+            <div>
+                색상
+                <CirclePicker color={color} onChange={(color: ColorResult) => setColor(color.hex)} />
             </div>
             <div>
                 표시 샘플

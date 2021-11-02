@@ -10,10 +10,12 @@ import useCharacter from '@hooks/storage/useCharacter';
 import { ICharacter } from '@components/Character/CharacterType';
 import { ScheduleCheckType, ScheduleContents, ScheduleType } from 'common/types';
 import { ITodo } from '@components/Todo/TodoType';
+import { CirclePicker, ColorResult } from 'react-color';
 
 const LineAdd = () => {
     const [storageTodo, setStorageTodo] = useTodo();
     const [storageTodoOrd, setStorageTodoOrd] = useTodoOrd();
+    const [color, setColor] = useState<string>('#ffffff');
 
     const onClickAdd = () => {
         const todoArr: ITodo[] = JSON.parse(storageTodo);
@@ -28,7 +30,7 @@ const LineAdd = () => {
             type: 'line',
             contents: 'none',
             checkType: 'none',
-            color: 'black',
+            color: color,
             character: [],
         };
 
@@ -45,6 +47,7 @@ const LineAdd = () => {
     return (
         <>
             색상
+            <CirclePicker color={color} onChange={(color: ColorResult) => setColor(color.hex)} />
             <Button onClick={onClickAdd}>추가</Button>
             <Button onClick={() => closeModal()}>닫기</Button>
         </>
