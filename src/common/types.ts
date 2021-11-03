@@ -3,10 +3,3 @@ export type ScheduleContents = 'chaos' | 'epona' | 'none';
 export type ScheduleCheckType = 'check' | 'text' | 'none';
 
 export type AddType = 'character' | 'todo' | 'line';
-
-export interface IContextMenuModal {
-    e: React.MouseEvent<HTMLDivElement>;
-    modal: JSX.Element;
-    width?: string;
-    height?: string;
-}
