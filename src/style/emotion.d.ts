@@ -9,6 +9,7 @@ declare module '@emotion/react' {
             focusDark: string;
             white: string;
             black: string;
+            hoverGray: string;
             translucent: string;
         };
 
