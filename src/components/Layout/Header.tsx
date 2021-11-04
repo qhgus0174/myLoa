@@ -4,7 +4,7 @@ import React from 'react';
 const Header = () => {
     return (
         <HeaderDiv>
-            <LogoImg src="/img/logo.png" />
+            <LogoImg src="/img/logo/logo.png" />
         </HeaderDiv>
     );
 };

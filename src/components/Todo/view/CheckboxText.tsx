@@ -2,7 +2,7 @@ import React from 'react';
 import { ITodo } from '../TodoType';
 import TodoEdit from '../modal/TodoEdit';
 import styled from '@emotion/styled';
-import { FlexHoverDiv } from '@style/common';
+import { FlexLeftDiv } from '@style/common';
 
 interface ICheckbox {
     todo: ITodo;
@@ -17,8 +17,11 @@ const CheckboxText = ({ todo, onContextMenu }: ICheckbox) => {
     );
 };
 
-const TextDiv = styled(FlexHoverDiv)`
+const TextDiv = styled(FlexLeftDiv)`
     color: ${props => props.color};
+    width: 100%;
+    height: 100%;
+    align-items: center;
 `;
 
 export default CheckboxText;

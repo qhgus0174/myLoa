@@ -1,5 +1,5 @@
 import { ICharacter } from '@components/Character/CharacterType';
-import { css } from '@emotion/react';
+import { css, useTheme } from '@emotion/react';
 import useCharacter from '@hooks/storage/useCharacter';
 import useCharacterOrd from '@hooks/storage/useCharacterOrd';
 import useTodo from '@hooks/storage/useTodo';
@@ -15,6 +15,8 @@ import styled from '@emotion/styled';
 import { FlexDiv } from '@style/common';
 
 interface ITodoParam {
+    currentPage: number;
+    perPage: number;
     onContextMenuBasicModal: (
         e: React.MouseEvent<HTMLDivElement>,
         modal: JSX.Element,
@@ -23,7 +25,7 @@ interface ITodoParam {
     ) => void;
 }
 
-const Todo = ({ onContextMenuBasicModal }: ITodoParam) => {
+const Todo = ({ currentPage, perPage, onContextMenuBasicModal }: ITodoParam) => {
     const [storageCharacter] = useCharacter();
     const [storageCharacterOrd, setStorageCharacterOrd] = useCharacterOrd();
     const [storageTodo, setStorageTodo] = useTodo();
@@ -150,6 +152,8 @@ const Todo = ({ onContextMenuBasicModal }: ITodoParam) => {
                                                                 onContextMenu={onContextMenuBasicModal}
                                                             />
                                                             <Checkbox
+                                                                currentPage={currentPage}
+                                                                perPage={perPage}
                                                                 todo={todo}
                                                                 todoIndex={todoIndex}
                                                                 onChangeTodoText={onChangeTodoText}

@@ -20,20 +20,22 @@ export const FlexDiv = styled.div<IBasis>`
 export const FlexLeftDiv = styled.div`
     display: flex;
     justify-content: center;
-    flex-basis: 20%;
+    flex-basis: 10%;
     width: 100%;
 `;
 
 export const FlexRightDiv = styled.div`
     display: flex;
-    flex-basis: 80%;
+    flex-basis: 85%;
     width: 100%;
     align-items: center;
+    justify-content: center;
 `;
 
 export const FlexHoverDiv = styled(FlexLeftDiv)`
     height: 100%;
     align-items: center;
+    flex-basis: 19%;
     &:hover {
         transition: 200ms ease;
         background: ${props => props.theme.colors.hoverGray};

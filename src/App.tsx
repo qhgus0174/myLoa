@@ -23,7 +23,7 @@ const App = () => {
                 const maxCheckCount = todo.contents === 'chaos' ? 2 : 3;
                 const relaxGauge = (maxCheckCount - character.check) * 10;
 
-                const calcRelaxGauge = character.relaxGauge >= 100 ? 100 : character.relaxGauge + relaxGauge;
+                const calcRelaxGauge = character.relaxGauge >= 100 ? 100 : Number(character.relaxGauge) + relaxGauge;
 
                 const resetTodoData: ICharacterTodo = {
                     ...character,
@@ -64,12 +64,12 @@ const App = () => {
 
     useEffect(() => {
         // 일일 휴식 게이지, 체크 초기화 (매일 오전 6시)
-        schedule.scheduleJob('* * 6 * * *', () => {
+        schedule.scheduleJob('0 0 6 * * *', () => {
             resetDailyTodo();
         });
 
         // 주간 초기화 (수요일 오전 6시)
-        schedule.scheduleJob('* * 6 * * 3', () => {
+        schedule.scheduleJob('0 0 6 * * 3', () => {
             resetWeeklyTodo();
         });
     }, []);

@@ -1,7 +1,7 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import axios, { AxiosResponse } from 'axios';
 import { load } from 'cheerio';
-import { css } from '@emotion/react';
+import { css, useTheme } from '@emotion/react';
 import { ModalActionContext } from '@context/ModalContext';
 import CharacterAdd from '@components/Character/modal/CharacterAdd';
 import TodoAdd from '@components/Todo/modal/TodoAdd';
@@ -13,6 +13,9 @@ import styled from '@emotion/styled';
 import { FlexDiv } from '@style/common';
 
 const Main = () => {
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [perPage, setPerPage] = useState<number>(5);
+
     const { setModalProps } = useContext(ModalActionContext);
 
     const onContextMenuBasicModal = (
@@ -30,8 +33,19 @@ const Main = () => {
         });
     };
 
+    const onClickPrev = () => {
+        const page = currentPage - 1;
+        setCurrentPage(page < 1 ? 1 : page);
+    };
+
+    const onClickNext = () => {
+        const page = currentPage + 1;
+        const maxPage = Math.ceil(JSON.parse(JSON.parse(localStorage.getItem('character') || '[]')).length / perPage);
+        setCurrentPage(page > maxPage ? maxPage : page);
+    };
+
     return (
-        <TodoDiv width="80" direction="column">
+        <FlexDiv width="80" direction="column">
             <ButtonDiv width="100">
                 <FlexDiv width="100">
                     <FlexDiv width="100" basis="50">
@@ -49,24 +63,35 @@ const Main = () => {
                         </Button>
                     </FlexDiv>
                     <FlexDiv width="100" basis="50" direction="row-reverse">
-                        <Button type="button" onClick={e => onContextMenuBasicModal(e, <CharacterAdd />)}>
+                        <Button
+                            type="button"
+                            onClick={e =>
+                                onContextMenuBasicModal(
+                                    e,
+                                    <CharacterAdd setCurrentPage={setCurrentPage} perPage={perPage} />,
+                                )
+                            }
+                        >
                             캐릭터 추가
                         </Button>
                     </FlexDiv>
                 </FlexDiv>
             </ButtonDiv>
-            <Character onContextMenuBasicModal={onContextMenuBasicModal} />
-            <Todo onContextMenuBasicModal={onContextMenuBasicModal} />
-        </TodoDiv>
+            <Character
+                onContextMenuBasicModal={onContextMenuBasicModal}
+                currentPage={currentPage}
+                perPage={perPage}
+                setCurrentPage={setCurrentPage}
+                onClickPrev={onClickPrev}
+                onClickNext={onClickNext}
+            />
+            <Todo onContextMenuBasicModal={onContextMenuBasicModal} currentPage={currentPage} perPage={perPage} />
+        </FlexDiv>
     );
 };
 
-const TodoDiv = styled(FlexDiv)`
-    align-items: center;
-`;
-
 const ButtonDiv = styled(FlexDiv)`
-    margin-bottom: 1.5em;
+    margin-bottom: 1.7em;
     box-sizing: border-box;
 `;
 
