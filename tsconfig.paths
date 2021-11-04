@@ -9,7 +9,8 @@
             "@context/*": ["context/*"],
             "@common/*": ["common/*"],
             "@style/*": ["style/*"],
-            "@fonts/*": ["fonts/*"]
+            "@fonts/*": ["fonts/*"],
+            "@assets/*": ["assets/*"]
         },
     }
 }
