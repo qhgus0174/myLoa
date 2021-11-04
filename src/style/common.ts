@@ -5,15 +5,16 @@ type Direction = 'column' | 'column-reverse' | 'row-reverse' | 'row';
 interface IBasis {
     direction?: Direction;
     basis?: string;
+    width?: string;
     height?: string;
 }
 
 export const FlexDiv = styled.div<IBasis>`
     display: flex;
-    flex-direction: ${props => props.direction};
-    flex-basis: ${props => props.basis}%;
-    width: 100%;
-    height: ${props => props.height}%;
+    flex-direction: ${props => (props.direction ? props.direction : `row`)};
+    ${props => props.basis && `flex-basis: ${props.basis}%`};
+    width: ${props => (props.width ? props.width : '100')}%;
+    ${props => props.height && `height: ${props.height}%`};
 `;
 
 export const FlexLeftDiv = styled.div`
