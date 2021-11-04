@@ -1,14 +1,14 @@
+import React from 'react';
 import Button from '@components/Button/Button';
-import { ModalActionContext } from '@context/ModalContext';
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import useCharacter from '@hooks/storage/useCharacter';
 import useCharacterOrd from '@hooks/storage/useCharacterOrd';
-import React, { useContext } from 'react';
+import { FlexDiv, FlexLeftDiv, FlexRightDiv, FlexHoverDiv } from '@style/common';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
-import CharacterAdd from './CharacterAdd';
-import CharacterEdit from './CharacterEdit';
+import CharacterEdit from './modal/CharacterEdit';
 import { ICharacter } from './CharacterType';
+import JobLogo from './JobLogo';
+import { css } from '@emotion/react';
 
 interface ICharacterParam {
     onContextMenuBasicModal: (
@@ -22,8 +22,6 @@ interface ICharacterParam {
 const Character = ({ onContextMenuBasicModal }: ICharacterParam) => {
     const [storageCharacter] = useCharacter();
     const [storageCharacterOrd, setStorageCharacterOrd] = useCharacterOrd();
-
-    const { setModalProps } = useContext(ModalActionContext);
 
     const onDragEndCharacter = (result: DropResult) => {
         // source : drag 시작 위치
@@ -59,43 +57,54 @@ const Character = ({ onContextMenuBasicModal }: ICharacterParam) => {
             <DragDropContext onDragEnd={onDragEndCharacter}>
                 <Droppable droppableId="CharacterDrop" direction="horizontal">
                     {provided => (
-                        <CharacterDropDiv>
-                            <CharacterContainer {...provided.droppableProps} ref={provided.innerRef}>
-                                {(JSON.parse(storageCharacter) as ICharacter[])
-                                    .sort((a, b) => {
-                                        return (
-                                            (JSON.parse(storageCharacterOrd) as number[]).indexOf(a.id) -
-                                            (JSON.parse(storageCharacterOrd) as number[]).indexOf(b.id)
-                                        );
-                                    })
-                                    .map((char: ICharacter, charIndex: number) => {
-                                        return (
-                                            <Draggable key={char.id} draggableId={String(char.id)} index={charIndex}>
-                                                {provided => (
-                                                    <CharacterDiv
-                                                        key={charIndex}
-                                                        {...provided.draggableProps}
-                                                        {...provided.dragHandleProps}
-                                                        ref={provided.innerRef}
-                                                        onContextMenu={e =>
-                                                            onContextMenuBasicModal(
-                                                                e,
-                                                                <CharacterEdit id={char.id} name={char.name} />,
-                                                            )
-                                                        }
-                                                    >
-                                                        {char.name}
-                                                    </CharacterDiv>
-                                                )}
-                                            </Draggable>
-                                        );
-                                    })}
-                                {provided.placeholder}
-                                <Button type="button" onClick={e => onContextMenuBasicModal(e, <CharacterAdd />)}>
-                                    캐릭터 추가
-                                </Button>
-                            </CharacterContainer>
-                        </CharacterDropDiv>
+                        <DropDiv>
+                            <FlexDiv {...provided.droppableProps} ref={provided.innerRef}>
+                                <FlexLeftDiv></FlexLeftDiv>
+                                <CharactersDiv>
+                                    {(JSON.parse(storageCharacter) as ICharacter[])
+                                        .sort((a, b) => {
+                                            return (
+                                                (JSON.parse(storageCharacterOrd) as number[]).indexOf(a.id) -
+                                                (JSON.parse(storageCharacterOrd) as number[]).indexOf(b.id)
+                                            );
+                                        })
+                                        .map((char: ICharacter, charIndex: number) => {
+                                            return (
+                                                <Draggable
+                                                    key={char.id}
+                                                    draggableId={String(char.id)}
+                                                    index={charIndex}
+                                                >
+                                                    {provided => (
+                                                        <CharacterDiv
+                                                            color={char.color}
+                                                            key={charIndex}
+                                                            {...provided.draggableProps}
+                                                            {...provided.dragHandleProps}
+                                                            ref={provided.innerRef}
+                                                            onContextMenu={e =>
+                                                                onContextMenuBasicModal(
+                                                                    e,
+                                                                    <CharacterEdit id={char.id} name={char.name} />,
+                                                                )
+                                                            }
+                                                        >
+                                                            <JobDiv basis="30">
+                                                                <JobLogo shape={char.job} />
+                                                            </JobDiv>
+                                                            <InfoDiv basis="70" direction="column">
+                                                                <InfoName>{char.name}</InfoName>
+                                                                <InfoLevel>{char.level}</InfoLevel>
+                                                            </InfoDiv>
+                                                        </CharacterDiv>
+                                                    )}
+                                                </Draggable>
+                                            );
+                                        })}
+                                    {provided.placeholder}
+                                </CharactersDiv>
+                            </FlexDiv>
+                        </DropDiv>
                     )}
                 </Droppable>
             </DragDropContext>
@@ -103,19 +112,27 @@ const Character = ({ onContextMenuBasicModal }: ICharacterParam) => {
     );
 };
 
-const CharacterContainer = styled.div`
-    display: flex;
+const CharactersDiv = styled(FlexRightDiv)`
+    height: 3.8em;
 `;
 
-const CharacterDiv = styled.div`
-    display: flex;
-`;
-
-const CharacterDropDiv = styled.div`
+const DropDiv = styled.div`
     width: 100%;
-    border-bottom: 1px solid white;
-    padding-bottom: 1em;
-    margin-bottom: 1em;
+    border-bottom: 1px solid ${props => props.theme.colors.white};
 `;
+
+const CharacterDiv = styled(FlexHoverDiv)`
+    color: ${props => props.color};
+`;
+
+const JobDiv = styled(FlexDiv)`
+    justify-content: flex-end;
+`;
+const InfoDiv = styled(FlexDiv)`
+    margin-left: 0.8em;
+    box-sizing: border-box;
+`;
+const InfoName = styled(FlexDiv)``;
+const InfoLevel = styled(FlexDiv)``;
 
 export default Character;

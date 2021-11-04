@@ -10,7 +10,9 @@ import useCharacter from '@hooks/storage/useCharacter';
 import { ICharacter } from '@components/Character/CharacterType';
 import { ScheduleCheckType, ScheduleContents, ScheduleType } from 'common/types';
 import { ITodo } from '@components/Todo/TodoType';
-import { CirclePicker, ColorResult } from 'react-color';
+import { CompactPicker, ColorResult } from 'react-color';
+import styled from '@emotion/styled';
+import { FlexDiv } from '@style/common';
 
 const LineAdd = () => {
     const [storageTodo, setStorageTodo] = useTodo();
@@ -45,13 +47,42 @@ const LineAdd = () => {
 
     const { closeModal } = useContext(ModalActionContext);
     return (
-        <>
-            색상
-            <CirclePicker color={color} onChange={(color: ColorResult) => setColor(color.hex)} />
-            <Button onClick={onClickAdd}>추가</Button>
-            <Button onClick={() => closeModal()}>닫기</Button>
-        </>
+        <FormContainer basis="100" height="100" direction="column">
+            <FlexDiv direction="column" basis="90">
+                <ContentsDivTitle>색상</ContentsDivTitle>
+                <ContentsDiv>
+                    <CompactPicker color={color} onChange={(color: ColorResult) => setColor(color.hex)} />
+                </ContentsDiv>
+            </FlexDiv>
+            <FormButtonContainer basis="10">
+                <Button onClick={onClickAdd}>추가</Button>
+                <Button onClick={() => closeModal()}>닫기</Button>
+            </FormButtonContainer>
+        </FormContainer>
     );
 };
 
+const FormContainer = styled(FlexDiv)`
+    justify-content: space-between;
+`;
+const ContentsDiv = styled(FlexDiv)`
+    align-items: center;
+`;
+
+const ContentsDivTitle = styled(FlexDiv)`
+    align-items: center;
+    font-weight: 600;
+    box-sizing: border-box;
+    margin-bottom: 0.5em;
+`;
+
+const FormButtonContainer = styled(FlexDiv)`
+    justify-content: flex-end;
+    width: 100%;
+    align-items: flex-end;
+
+    button:nth-child(2) {
+        margin-left: 1em;
+    }
+`;
 export default LineAdd;

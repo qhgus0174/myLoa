@@ -10,6 +10,9 @@ import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautif
 import { ITodo } from './TodoType';
 import Checkbox from './view/Checkbox';
 import Line from './view/Line';
+import CheckboxText from './view/CheckboxText';
+import styled from '@emotion/styled';
+import { FlexDiv } from '@style/common';
 
 interface ITodoParam {
     onContextMenuBasicModal: (
@@ -79,8 +82,8 @@ const Todo = ({ onContextMenuBasicModal }: ITodoParam) => {
         todoArr[todoIndex].character[characterIndex] = {
             ...todoArr[todoIndex].character[characterIndex],
             check: checkCount,
-            oriRelaxGauge: oriRelaxGauge,
             relaxGauge: calcRelaxGauge,
+            oriRelaxGauge: oriRelaxGauge,
         };
         setStorageTodo(JSON.stringify(todoArr));
     };
@@ -119,49 +122,73 @@ const Todo = ({ onContextMenuBasicModal }: ITodoParam) => {
         <DragDropContext onDragEnd={onDragEndCharacter}>
             <Droppable droppableId="TodoDrop">
                 {provided => (
-                    <div {...provided.droppableProps} ref={provided.innerRef}>
-                        {(JSON.parse(storageTodo) as ITodo[])
-                            .sort((a, b) => {
-                                return (
-                                    (JSON.parse(storageTodoOrd) as number[]).indexOf(a.id) -
-                                    (JSON.parse(storageTodoOrd) as number[]).indexOf(b.id)
-                                );
-                            })
-                            .map((todo: ITodo, todoIndex: number) => {
-                                return (
-                                    <Draggable key={todo.id} draggableId={String(todo.id)} index={todoIndex}>
-                                        {provided => (
-                                            <div
-                                                key={`drag_${todoIndex}`}
-                                                css={css`
-                                                    display: flex;
-                                                `}
-                                                {...provided.draggableProps}
-                                                {...provided.dragHandleProps}
-                                                ref={provided.innerRef}
-                                            >
-                                                {todo.type === 'line' ? (
-                                                    <Line todo={todo} onContextMenu={onContextMenuBasicModal} />
-                                                ) : (
-                                                    <Checkbox
-                                                        todo={todo}
-                                                        todoIndex={todoIndex}
-                                                        onChangeTodoText={onChangeTodoText}
-                                                        onClickCheckTodo={onClickCheckTodo}
-                                                        onContextMenu={onContextMenuBasicModal}
-                                                    />
-                                                )}
-                                            </div>
-                                        )}
-                                    </Draggable>
-                                );
-                            })}
-                        {provided.placeholder}
-                    </div>
+                    <DropDiv>
+                        <FlexDiv direction="column" {...provided.droppableProps} ref={provided.innerRef}>
+                            {(JSON.parse(storageTodo) as ITodo[])
+                                .sort((a, b) => {
+                                    return (
+                                        (JSON.parse(storageTodoOrd) as number[]).indexOf(a.id) -
+                                        (JSON.parse(storageTodoOrd) as number[]).indexOf(b.id)
+                                    );
+                                })
+                                .map((todo: ITodo, todoIndex: number, oriArray: ITodo[]) => {
+                                    return (
+                                        <Draggable key={todo.id} draggableId={String(todo.id)} index={todoIndex}>
+                                            {provided => (
+                                                <div
+                                                    key={`drag_${todoIndex}`}
+                                                    {...provided.draggableProps}
+                                                    {...provided.dragHandleProps}
+                                                    ref={provided.innerRef}
+                                                >
+                                                    {todo.type === 'line' ? (
+                                                        <Line todo={todo} onContextMenu={onContextMenuBasicModal} />
+                                                    ) : (
+                                                        <CheckList>
+                                                            <CheckboxText
+                                                                todo={todo}
+                                                                onContextMenu={onContextMenuBasicModal}
+                                                            />
+                                                            <Checkbox
+                                                                todo={todo}
+                                                                todoIndex={todoIndex}
+                                                                onChangeTodoText={onChangeTodoText}
+                                                                onClickCheckTodo={onClickCheckTodo}
+                                                                onContextMenu={onContextMenuBasicModal}
+                                                            />
+                                                        </CheckList>
+                                                    )}
+                                                    {oriArray[todoIndex + 1] &&
+                                                        oriArray[todoIndex + 1].type !== 'line' &&
+                                                        oriArray[todoIndex].type !== 'line' && <Hr />}
+                                                </div>
+                                            )}
+                                        </Draggable>
+                                    );
+                                })}
+                            {provided.placeholder}
+                        </FlexDiv>
+                    </DropDiv>
                 )}
             </Droppable>
         </DragDropContext>
     );
 };
+
+const CheckList = styled.div`
+    display: flex;
+    align-items: center;
+    height: 3.8em;
+`;
+
+const DropDiv = styled.div`
+    width: 100%;
+    border-bottom: 1px solid ${props => props.theme.colors.white};
+`;
+
+const Hr = styled.div`
+    border: 0.7px solid ${props => props.theme.colors.translucent};
+    opacity: 0.3;
+`;
 
 export default Todo;

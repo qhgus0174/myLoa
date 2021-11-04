@@ -1,7 +1,8 @@
 export interface ICharacter {
     id: number;
     name: string;
-    level: number;
+    level: string;
     job: string;
+    color: string;
     lastSearch: number;
 }

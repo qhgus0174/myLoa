@@ -1,28 +1,62 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 
 export interface ITextProps extends React.InputHTMLAttributes<HTMLInputElement> {
     width?: string;
+    align?: 'left' | 'right' | 'center';
+    underline?: boolean;
 }
 
-const TextBox = ({ width, type = 'text', ...rest }: ITextProps) => {
-    return <CustomInput type={type} width={width} {...rest} autoComplete="false" />;
+const TextBox = ({ width, type = 'text', align, underline = true, ...rest }: ITextProps) => {
+    return (
+        <InputDiv>
+            <CustomInput align={align} type={type} width={width} underline={underline} {...rest} autoComplete="false" />
+            <Span></Span>
+        </InputDiv>
+    );
 };
+
+const InputDiv = styled.div`
+    position: relative;
+    display: inline-block;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+`;
+
+const Span = styled.span`
+    position: absolute;
+    bottom: 0;
+    width: 0;
+    height: 2px;
+    background-color: ${props => props.theme.colors.white};
+`;
 
 const CustomInput = styled.input<ITextProps>`
     width: ${props => (props.width ? props.width : '100')}%;
-    padding: 0.5em;
-    margin: 0.5em;
-    box-sizing: border-box;
-    border: none;
-    border-bottom: 1px solid white;
-    border-bottom-width: medium;
-    background: #f8d2e4;
 
-    &:focus {
-        outline: none;
-        border-bottom: 1px solid black;
-        border-bottom-width: medium;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    box-sizing: border-box;
+    padding-bottom: 0.7em;
+    text-overflow: ellipsis;
+
+    text-align: ${props => props.align};
+
+    border-bottom: ${props => props.underline && `1px solid ${props.theme.colors.white}`};
+    &:focus + ${Span} {
+        width: ${props => (props.width ? props.width : '100')}%;
+    }
+
+    ::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    ::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
     }
 `;
 

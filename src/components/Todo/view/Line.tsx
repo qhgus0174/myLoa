@@ -13,7 +13,9 @@ const Line = ({
     return (
         <LineDiv
             color={todo.color}
-            onContextMenu={(e: React.MouseEvent<HTMLDivElement>) => onContextMenu(e, <LineEdit {...todo} />)}
+            onContextMenu={(e: React.MouseEvent<HTMLDivElement>) =>
+                onContextMenu(e, <LineEdit {...todo} />, '30', '40')
+            }
         ></LineDiv>
     );
 };

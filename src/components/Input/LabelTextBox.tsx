@@ -27,25 +27,27 @@ const TextFormDiv = styled.div`
 
 const Span = styled.span`
     margin-bottom: 5px;
+    color: ${props => props.theme.colors.white};
 `;
 const Label = styled.label`
     margin-top: 10px;
     display: flex;
     flex-direction: column;
     padding: 0.4em 0.5em 0.5em 0.5em;
-    border: 1px solid black;
+    border: 1px solid ${props => props.theme.colors.check};
     border-radius: 3px;
     outline-width: 3px;
     outline-offset: -2px;
+    background-color: ${props => props.theme.colors.main};
     box-shadow: inset 0 0 2px #999999;
 
     &:focus-within {
-        outline-color: black;
+        outline-color: ${props => props.theme.colors.main};
         outline-style: auto;
     }
 
     &:focus-within ${Span} {
-        color: red;
+        color: ${props => props.theme.colors.white};
     }
     font-size: 15px;
     width: 100%;
