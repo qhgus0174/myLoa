@@ -16,7 +16,7 @@ import styled from '@emotion/styled';
 import { ColorResult, CompactPicker } from 'react-color';
 import { css } from '@emotion/react';
 
-const Character = () => {
+const CharacterAdd = ({ perPage, setCurrentPage }: { perPage: number; setCurrentPage: (e: number) => void }) => {
     const [storageCharacter, setStorageCharacter] = useCharacter();
     const [storageCharacterOrd, setStorageCharacterOrd] = useCharacterOrd();
     const [storageTodo, setStorageTodo] = useTodo();
@@ -94,6 +94,11 @@ const Character = () => {
 
         setStorageTodo(JSON.stringify(todoCharacterArr));
 
+        const currentPage = Math.ceil(
+            JSON.parse(JSON.parse(localStorage.getItem('character') || '[]')).length / perPage,
+        );
+        setCurrentPage(currentPage);
+
         closeModal();
     };
 
@@ -152,4 +157,4 @@ const ContentsDivTitle = styled(FlexDiv)`
     margin-bottom: 0.5em;
 `;
 
-export default Character;
+export default CharacterAdd;

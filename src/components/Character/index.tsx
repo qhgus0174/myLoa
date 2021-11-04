@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from '@components/Button/Button';
 import styled from '@emotion/styled';
 import useCharacter from '@hooks/storage/useCharacter';
@@ -8,9 +8,16 @@ import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautif
 import CharacterEdit from './modal/CharacterEdit';
 import { ICharacter } from './CharacterType';
 import JobLogo from './JobLogo';
-import { css } from '@emotion/react';
+import { css, useTheme } from '@emotion/react';
+import { ReactComponent as LeftArrow } from '@assets/img/left-arrow.svg';
+import { ReactComponent as RightArrow } from '@assets/img/right-arrow.svg';
 
 interface ICharacterParam {
+    currentPage: number;
+    perPage: number;
+    setCurrentPage: (e: number) => void;
+    onClickPrev: () => void;
+    onClickNext: () => void;
     onContextMenuBasicModal: (
         e: React.MouseEvent<HTMLElement>,
         modal: JSX.Element,
@@ -19,9 +26,18 @@ interface ICharacterParam {
     ) => void;
 }
 
-const Character = ({ onContextMenuBasicModal }: ICharacterParam) => {
+const Character = ({
+    currentPage,
+    perPage,
+    setCurrentPage,
+    onClickPrev,
+    onClickNext,
+    onContextMenuBasicModal,
+}: ICharacterParam) => {
     const [storageCharacter] = useCharacter();
     const [storageCharacterOrd, setStorageCharacterOrd] = useCharacterOrd();
+
+    const theme = useTheme();
 
     const onDragEndCharacter = (result: DropResult) => {
         // source : drag 시작 위치
@@ -60,7 +76,20 @@ const Character = ({ onContextMenuBasicModal }: ICharacterParam) => {
                         <DropDiv>
                             <FlexDiv {...provided.droppableProps} ref={provided.innerRef}>
                                 <FlexLeftDiv></FlexLeftDiv>
-                                <CharactersDiv>
+                                <ArrowDiv
+                                    css={css`
+                                        visibility: ${JSON.parse(storageCharacterOrd).length < 6
+                                            ? `hidden`
+                                            : `visible`};
+                                    `}
+                                >
+                                    <Button width="100" border="none" onClick={onClickPrev}>
+                                        <LeftArrow width="30px" height="30px" fill={theme.colors.white} />
+                                    </Button>
+                                </ArrowDiv>
+                                <CharactersDiv
+                                    length={JSON.parse(storageCharacterOrd).length - (currentPage - 1) * perPage}
+                                >
                                     {(JSON.parse(storageCharacter) as ICharacter[])
                                         .sort((a, b) => {
                                             return (
@@ -68,6 +97,10 @@ const Character = ({ onContextMenuBasicModal }: ICharacterParam) => {
                                                 (JSON.parse(storageCharacterOrd) as number[]).indexOf(b.id)
                                             );
                                         })
+                                        .slice(
+                                            currentPage === 1 ? 0 : (currentPage - 1) * perPage,
+                                            currentPage === 1 ? perPage : (currentPage - 1) * perPage + perPage,
+                                        )
                                         .map((char: ICharacter, charIndex: number) => {
                                             return (
                                                 <Draggable
@@ -85,7 +118,12 @@ const Character = ({ onContextMenuBasicModal }: ICharacterParam) => {
                                                             onContextMenu={e =>
                                                                 onContextMenuBasicModal(
                                                                     e,
-                                                                    <CharacterEdit id={char.id} name={char.name} />,
+                                                                    <CharacterEdit
+                                                                        setCurrentPage={setCurrentPage}
+                                                                        perPage={perPage}
+                                                                        id={char.id}
+                                                                        name={char.name}
+                                                                    />,
                                                                 )
                                                             }
                                                         >
@@ -103,6 +141,17 @@ const Character = ({ onContextMenuBasicModal }: ICharacterParam) => {
                                         })}
                                     {provided.placeholder}
                                 </CharactersDiv>
+                                <ArrowDiv
+                                    css={css`
+                                        visibility: ${JSON.parse(storageCharacterOrd).length < 6
+                                            ? `hidden`
+                                            : `visible`};
+                                    `}
+                                >
+                                    <Button width="100" border="none" onClick={onClickNext}>
+                                        <RightArrow width="30px" height="30px" fill={theme.colors.white} />
+                                    </Button>
+                                </ArrowDiv>
                             </FlexDiv>
                         </DropDiv>
                     )}
@@ -112,8 +161,9 @@ const Character = ({ onContextMenuBasicModal }: ICharacterParam) => {
     );
 };
 
-const CharactersDiv = styled(FlexRightDiv)`
+const CharactersDiv = styled(FlexRightDiv)<{ length: number }>`
     height: 3.8em;
+    justify-content: ${props => (props.length < 5 ? `flex-start` : `space-around`)};
 `;
 
 const DropDiv = styled.div`
@@ -124,12 +174,20 @@ const DropDiv = styled.div`
 `;
 
 const CharacterDiv = styled(FlexHoverDiv)`
-    color: ${props => props.color};
+    div {
+        color: ${props => props.color};
+    }
 `;
 
 const InfoDiv = styled(FlexDiv)`
     margin-left: 0.8em;
     box-sizing: border-box;
+`;
+
+const ArrowDiv = styled.div`
+    display: flex;
+    width: 2.5%;
+    flex-basis: 2.5%;
 `;
 
 export default Character;

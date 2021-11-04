@@ -13,7 +13,13 @@ import { FlexDiv } from '@style/common';
 import styled from '@emotion/styled';
 import { ColorResult, CompactPicker } from 'react-color';
 
-const CharacterEdit = ({ id: oriId, name: newName }: { id: number; name: string }) => {
+interface ICharacterEdit {
+    id: number;
+    name: string;
+    perPage: number;
+    setCurrentPage: (e: number) => void;
+}
+const CharacterEdit = ({ id: oriId, name: newName, setCurrentPage, perPage }: ICharacterEdit) => {
     const [character, setCharacter] = useCharacter();
     const [characterOrd, setCharacterOrd] = useCharacterOrd();
     const [storageTodo, setStorageTodo] = useTodo();
@@ -41,8 +47,16 @@ const CharacterEdit = ({ id: oriId, name: newName }: { id: number; name: string 
     const onClickDelete = () => {
         deleteCharacter();
         deleteTodo();
+        setPage();
 
         closeModal();
+    };
+
+    const setPage = () => {
+        const currentPage = Math.ceil(
+            JSON.parse(JSON.parse(localStorage.getItem('character') || '[]')).length / perPage,
+        );
+        setCurrentPage(currentPage);
     };
 
     const deleteCharacter = () => {
@@ -91,10 +105,10 @@ const CharacterEdit = ({ id: oriId, name: newName }: { id: number; name: string 
                 </FlexDiv>
             </FormDivContainer>
             <FormButtonContainer basis="10">
-                <FlexDiv>
+                <FlexDiv width="100">
                     <Button onClick={onClickDelete}>삭제</Button>
                 </FlexDiv>
-                <RightButtonDiv>
+                <RightButtonDiv width="100">
                     <Button onClick={onClickEdit}>수정</Button>
                     <Button onClick={() => closeModal()}>닫기</Button>
                 </RightButtonDiv>
