@@ -21,6 +21,7 @@ module.exports = {
             '@style': path.resolve(__dirname, 'src/style'),
             '@common': path.resolve(__dirname, 'src/common'),
             '@fonts': path.resolve(__dirname, 'src/fonts'),
+            '@assets': path.resolve(__dirname, 'src/assets'),
         },
     },
 
@@ -53,7 +54,7 @@ module.exports = {
                 use: [{ loader: 'style-loader' }, { loader: 'css-loader' }],
             },
             {
-                test: /\.(png|jpg|gif|svg)$/,
+                test: /\.(png|jpg|gif)$/,
                 loader: 'file-loader',
                 options: {
                     name: '[name].[ext]?[hash]',
@@ -71,6 +72,10 @@ module.exports = {
                         },
                     },
                 ],
+            },
+            {
+                test: /\.svg$/,
+                use: ['@svgr/webpack', 'url-loader'],
             },
         ],
     },
