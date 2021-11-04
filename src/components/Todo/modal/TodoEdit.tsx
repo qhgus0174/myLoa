@@ -148,11 +148,11 @@ const TodoEdit = ({
                 </FlexDiv>
             </FormDivContainer>
 
-            <FormButtonContainer basis="10">
-                <FlexDiv>
+            <FormButtonContainer width="100" basis="10">
+                <FlexDiv width="100">
                     <Button onClick={onClickDelete}>삭제</Button>
                 </FlexDiv>
-                <RightButtonDiv>
+                <RightButtonDiv width="100">
                     <Button onClick={onClickAdd}>수정</Button>
                     <Button onClick={() => closeModal()}>닫기</Button>
                 </RightButtonDiv>

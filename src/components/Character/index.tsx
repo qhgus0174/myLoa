@@ -89,12 +89,12 @@ const Character = ({ onContextMenuBasicModal }: ICharacterParam) => {
                                                                 )
                                                             }
                                                         >
-                                                            <JobDiv basis="30">
+                                                            <FlexDiv>
                                                                 <JobLogo shape={char.job} />
-                                                            </JobDiv>
-                                                            <InfoDiv basis="70" direction="column">
-                                                                <InfoName>{char.name}</InfoName>
-                                                                <InfoLevel>{char.level}</InfoLevel>
+                                                            </FlexDiv>
+                                                            <InfoDiv direction="column">
+                                                                <FlexDiv>{char.name}</FlexDiv>
+                                                                <FlexDiv>{char.level}</FlexDiv>
                                                             </InfoDiv>
                                                         </CharacterDiv>
                                                     )}
@@ -119,20 +119,17 @@ const CharactersDiv = styled(FlexRightDiv)`
 const DropDiv = styled.div`
     width: 100%;
     border-bottom: 1px solid ${props => props.theme.colors.white};
+    padding-bottom: 0.2em;
+    box-sizing: border-box;
 `;
 
 const CharacterDiv = styled(FlexHoverDiv)`
     color: ${props => props.color};
 `;
 
-const JobDiv = styled(FlexDiv)`
-    justify-content: flex-end;
-`;
 const InfoDiv = styled(FlexDiv)`
     margin-left: 0.8em;
     box-sizing: border-box;
 `;
-const InfoName = styled(FlexDiv)``;
-const InfoLevel = styled(FlexDiv)``;
 
 export default Character;

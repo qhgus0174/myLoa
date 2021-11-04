@@ -31,39 +31,43 @@ const Main = () => {
     };
 
     return (
-        <TodoDiv>
-            <FlexDiv>
-                <FlexDiv basis="50">
-                    <Button
-                        css={css`
-                            margin-right: 1em;
-                        `}
-                        type="button"
-                        onClick={e => onContextMenuBasicModal(e, <TodoAdd />, '30', '80')}
-                    >
-                        할 일 추가
-                    </Button>
-                    <Button type="button" onClick={e => onContextMenuBasicModal(e, <LineAdd />, '30', '40')}>
-                        구분선 추가
-                    </Button>
+        <TodoDiv width="80" direction="column">
+            <ButtonDiv width="100">
+                <FlexDiv width="100">
+                    <FlexDiv width="100" basis="50">
+                        <Button
+                            css={css`
+                                margin-right: 1em;
+                            `}
+                            type="button"
+                            onClick={e => onContextMenuBasicModal(e, <TodoAdd />, '30', '80')}
+                        >
+                            할 일 추가
+                        </Button>
+                        <Button type="button" onClick={e => onContextMenuBasicModal(e, <LineAdd />, '30', '40')}>
+                            구분선 추가
+                        </Button>
+                    </FlexDiv>
+                    <FlexDiv width="100" basis="50" direction="row-reverse">
+                        <Button type="button" onClick={e => onContextMenuBasicModal(e, <CharacterAdd />)}>
+                            캐릭터 추가
+                        </Button>
+                    </FlexDiv>
                 </FlexDiv>
-                <FlexDiv basis="50" direction="row-reverse">
-                    <Button type="button" onClick={e => onContextMenuBasicModal(e, <CharacterAdd />)}>
-                        캐릭터 추가
-                    </Button>
-                </FlexDiv>
-            </FlexDiv>
+            </ButtonDiv>
             <Character onContextMenuBasicModal={onContextMenuBasicModal} />
             <Todo onContextMenuBasicModal={onContextMenuBasicModal} />
         </TodoDiv>
     );
 };
 
-const TodoDiv = styled.div`
-    display: flex;
-    flex-direction: column;
+const TodoDiv = styled(FlexDiv)`
     align-items: center;
-    width: 80%;
+`;
+
+const ButtonDiv = styled(FlexDiv)`
+    margin-bottom: 1.5em;
+    box-sizing: border-box;
 `;
 
 export default Main;

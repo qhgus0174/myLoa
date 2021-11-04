@@ -13,7 +13,7 @@ export const FlexDiv = styled.div<IBasis>`
     display: flex;
     flex-direction: ${props => (props.direction ? props.direction : `row`)};
     ${props => props.basis && `flex-basis: ${props.basis}%`};
-    width: ${props => (props.width ? props.width : '100')}%;
+    ${props => props.width && `width: ${props.width}%`};
     ${props => props.height && `height: ${props.height}%`};
 `;
 
