@@ -10,7 +10,6 @@ interface IModalAction {
 
 export const ModalStateContext = createContext<IModalProps>({
     isOpen: false,
-    type: 'basic',
     content: <></>,
 });
 
@@ -21,11 +20,11 @@ export const ModalActionContext = createContext<IModalAction>({
 });
 
 const ModalProvider = ({ children }: { children: React.ReactNode }) => {
-    const { isOpen, type, content, options, openModal, closeModal, setModalProps } = useModal();
+    const { isOpen, content, options, openModal, closeModal, setModalProps } = useModal();
 
     return (
         <ModalActionContext.Provider value={{ openModal, closeModal, setModalProps }}>
-            <ModalStateContext.Provider value={{ isOpen, type, content, options }}>
+            <ModalStateContext.Provider value={{ isOpen, content, options }}>
                 <ModalPortal />
                 {children}
             </ModalStateContext.Provider>

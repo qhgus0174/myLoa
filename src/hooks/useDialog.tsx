@@ -1,22 +1,22 @@
 import React, { ReactElement, useEffect, useState } from 'react';
 
-export interface IModalOption {
+export interface IDialogOption {
     width?: string;
     height?: string;
     headerTitle?: string;
     confirmFn?: () => void | Promise<void>;
 }
 
-export interface IModalProps {
+export interface IDialogProps {
     isOpen: boolean;
     content: ReactElement;
-    options?: IModalOption;
+    options?: IDialogOption;
 }
 
-export const useModal = () => {
-    const [isOpen, setIsOpen] = useState<IModalProps['isOpen']>(false);
+export const useDialog = () => {
+    const [isOpen, setIsOpen] = useState<IDialogProps['isOpen']>(false);
     const [content, setContent] = useState<React.ReactElement>(<></>);
-    const [options, setOptions] = useState<IModalOption | undefined>({});
+    const [options, setOptions] = useState<IDialogOption | undefined>({});
 
     useEffect(() => {
         if (isOpen) {
@@ -29,19 +29,19 @@ export const useModal = () => {
         }
     }, [isOpen]);
 
-    const openModal = () => {
+    const openDialog = () => {
         setIsOpen(true);
     };
 
-    const closeModal = () => {
+    const closeDialog = () => {
         setIsOpen(false);
     };
 
-    const setModalProps = (sets: IModalProps) => {
+    const setDialogProps = (sets: IDialogProps) => {
         setIsOpen(sets.isOpen);
         setContent(sets.content);
         setOptions(sets.options);
     };
 
-    return { isOpen, content, options, openModal, closeModal, setModalProps };
+    return { isOpen, content, options, openDialog, closeDialog, setDialogProps };
 };

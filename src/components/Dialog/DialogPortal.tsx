@@ -1,30 +1,28 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext } from 'react';
 import { createPortal } from 'react-dom';
 import styled from '@emotion/styled';
-import { css } from '@emotion/react';
-import { ModalActionContext, ModalStateContext } from '@context/ModalContext';
-import BasicModal from '@components/Modal';
+import { DialogActionContext, DialogStateContext } from '@context/DialogContext';
 import Dialog from '@components/Dialog';
-import { IModalOption, IModalProps } from '@hooks/useModal';
+import { IDialogOption } from '@hooks/useDialog';
 
-export interface IModal {
+export interface IDialog {
     children: React.ReactNode;
-    options?: IModalOption;
+    options?: IDialogOption;
 }
 
-const ModalPortal = () => {
-    const { isOpen, content, options } = useContext(ModalStateContext);
-    const { closeModal } = useContext(ModalActionContext);
+const DialogPortal = () => {
+    const { isOpen, content, options } = useContext(DialogStateContext);
+    const { closeDialog } = useContext(DialogActionContext);
 
     return createPortal(
         isOpen && (
-            <ModalDimmer
+            <DialogDimmer
                 tabIndex={-1}
                 onClick={() => {
-                    closeModal();
+                    closeDialog();
                 }}
             >
-                <ModalInner
+                <DialogInner
                     tabIndex={0}
                     width={options?.width}
                     height={options?.height}
@@ -32,15 +30,15 @@ const ModalPortal = () => {
                         e.stopPropagation();
                     }}
                 >
-                    <BasicModal options={options}>{content}</BasicModal>
-                </ModalInner>
-            </ModalDimmer>
+                    <Dialog options={options}>{content}</Dialog>
+                </DialogInner>
+            </DialogDimmer>
         ),
         document.getElementById('modal-root') as HTMLElement,
     );
 };
 
-const ModalDimmer = styled.div`
+const DialogDimmer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -54,7 +52,7 @@ const ModalDimmer = styled.div`
     left: 0;
 `;
 
-const ModalInner = styled.div<Pick<IModalOption, 'width' | 'height'>>`
+const DialogInner = styled.div<Pick<IDialogOption, 'width' | 'height'>>`
     background-color: #ffffff;
     box-sizing: border-box;
     border-radius: 4px;
@@ -63,8 +61,11 @@ const ModalInner = styled.div<Pick<IModalOption, 'width' | 'height'>>`
     box-shadow: 5px 10px 10px 1px rgba(0, 0, 0, 0.3);
     width: 100%;
     background-color: ${props => props.theme.colors.main};
-    max-width: ${props => (props.width ? props.width : '60')}vw;
-    height: ${props => (props.height ? props.height : '60')}vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    max-width: 25vw;
+    height: 25vh;
 `;
 
-export default ModalPortal;
+export default DialogPortal;

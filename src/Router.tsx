@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Main from '@routes/Main';
 import ModalContext from '@context/ModalContext';
+import DialogContext from '@context/DialogContext';
 import SpinnerContext from '@context/SpinnerContext';
 import { Flip, ToastContainer } from 'react-toastify';
 
@@ -23,17 +24,21 @@ const AppRouter = () => {
                 draggable={false}
                 pauseOnHover={false}
                 transition={Flip}
-                theme="dark"
                 limit={5}
+                className="tostify-container"
             />
             <BrowserRouter>
                 <Container>
-                    <ModalContext>
-                        <Header />
-                        <Switch>
-                            <Route exact path="/" component={Main} />
-                        </Switch>
-                    </ModalContext>
+                    <SpinnerContext>
+                        <DialogContext>
+                            <ModalContext>
+                                <Header />
+                                <Switch>
+                                    <Route exact path="/" component={Main} />
+                                </Switch>
+                            </ModalContext>
+                        </DialogContext>
+                    </SpinnerContext>
                 </Container>
             </BrowserRouter>
         </>
