@@ -10,6 +10,8 @@ import Checkbox from '@components/Input/Checkbox';
 import { FlexDiv } from '@style/common';
 import styled from '@emotion/styled';
 import TextBox from '@components/Input/TextBox';
+import { css, useTheme } from '@emotion/react';
+import { useCheckbox } from '@hooks/useCheckbox';
 
 const TodoCheck = ({
     id: characterId,
@@ -20,10 +22,14 @@ const TodoCheck = ({
     checkType,
     todoId,
     todoType: oriTodoType,
+    todoContents,
+    hide: oriHide,
 }: ITodoCheck) => {
-    const { closeModal } = useContext(ModalActionContext);
+    const theme = useTheme();
 
+    const { closeModal } = useContext(ModalActionContext);
     const [storageTodo, setStorageTodo] = useTodo();
+    const [hide, bindHide] = useCheckbox(oriHide);
 
     const [todoType, setTodoType] = useState<ScheduleType>(oriTodoType);
     const [relaxGauge, bindRelaxGauge] = useInput<number>(oriRelax, { maxLength: 3, numberOnly: true });
@@ -46,10 +52,11 @@ const TodoCheck = ({
 
                 const resetTodoData: ICharacterTodo = {
                     ...character,
-                    check: 0,
+                    check: relaxGauge !== character.oriRelaxGauge ? 0 : character.check,
                     relaxGauge: relaxGauge,
                     oriRelaxGauge: relaxGauge,
                     memo: memo,
+                    hide: hide,
                 };
 
                 return resetTodoData;
@@ -64,7 +71,9 @@ const TodoCheck = ({
 
     return (
         <FormContainer basis="100" height="100" direction="column">
-            <RemarkDiv>* 휴식게이지 수동 입력 시 수행횟수는 초기화 됩니다.</RemarkDiv>
+            {todoType === 'daily' && (todoContents === 'chaos' || todoContents === 'epona') && (
+                <RemarkDiv>* 휴식게이지 수동 입력 시 수행횟수는 초기화 됩니다.</RemarkDiv>
+            )}
             <FormDivContainer basis="90" direction="column">
                 {checkType === 'text' ? (
                     <FlexDiv direction="column">
@@ -74,9 +83,17 @@ const TodoCheck = ({
                         </ContentsDiv>
                     </FlexDiv>
                 ) : (
-                    todoType === 'daily' && (
+                    todoType === 'daily' &&
+                    (todoContents === 'chaos' || todoContents === 'epona') && (
                         <FlexDiv direction="column">
-                            <ContentsDivTitle basis="50">휴식 게이지</ContentsDivTitle>
+                            <ContentsDivTitle
+                                css={css`
+                                    color: ${theme.colors.relax};
+                                `}
+                                basis="50"
+                            >
+                                휴식 게이지
+                            </ContentsDivTitle>
                             <ContentsDiv basis="50">
                                 <TextBox {...bindRelaxGauge} />
                             </ContentsDiv>
@@ -88,6 +105,19 @@ const TodoCheck = ({
                     <ContentsDivTitle basis="50">메모</ContentsDivTitle>
                     <ContentsDiv basis="50">
                         <TextBox {...bindMemo} />
+                    </ContentsDiv>
+                </FlexDiv>
+                <FlexDiv>
+                    <ContentsDivTitle
+                        css={css`
+                            margin-bottom: 0;
+                        `}
+                        basis="10"
+                    >
+                        숨김
+                    </ContentsDivTitle>
+                    <ContentsDiv basis="90">
+                        <Checkbox transition={false} checkColor="black" shape="square" {...bindHide} />
                     </ContentsDiv>
                 </FlexDiv>
             </FormDivContainer>
@@ -110,7 +140,7 @@ const FormContainer = styled(FlexDiv)`
 const FormButtonContainer = styled(FlexDiv)`
     justify-content: flex-end;
     width: 100%;
-    align-items: flex-end;
+    align-items: center;
 
     button:nth-child(2) {
         margin-left: 1em;

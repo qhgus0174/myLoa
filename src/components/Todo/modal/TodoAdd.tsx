@@ -16,7 +16,6 @@ import TextBox from '@components/Input/TextBox';
 import RadioButton from '@components/Input/Radio';
 import styled from '@emotion/styled';
 import { FlexDiv } from '@style/common';
-import { css } from '@emotion/react';
 
 const Todo = () => {
     const [type, setType] = useState<ScheduleType>('daily');
@@ -44,7 +43,7 @@ const Todo = () => {
         const characterArr: ICharacter[] = JSON.parse(storageCharacter);
 
         const characters: ICharacterTodo[] = characterArr.map((character: ICharacter) => {
-            return { id: character.id, check: 0, relaxGauge: 0, oriRelaxGauge: 0 };
+            return { id: character.id, check: 0, relaxGauge: 0, oriRelaxGauge: 0, hide: false };
         });
 
         const todoInfo: ITodo = {
@@ -70,7 +69,7 @@ const Todo = () => {
         <FormContainer basis="100" height="100" direction="column">
             <FormDivContainer basis="90" direction="column">
                 <FlexDiv direction="column">
-                    <ContentsDivTitle basis="50">유형</ContentsDivTitle>
+                    <ContentsDivTitle basis="50">체크 유형</ContentsDivTitle>
                     <ContentsDiv basis="50">
                         <RadioButton
                             text="일일"
@@ -94,6 +93,7 @@ const Todo = () => {
                             }}
                             checked={type === 'weekly'}
                         />
+                        <div>|</div>
                         <RadioButton
                             text="텍스트"
                             name="type"
@@ -124,6 +124,20 @@ const Todo = () => {
                                 value="epona"
                                 onChange={() => setContents('epona')}
                                 checked={contents === 'epona'}
+                            />
+                            <RadioButton
+                                text="일반(초기화O)"
+                                name="contents"
+                                value="basicReset"
+                                onChange={() => setContents('basicReset')}
+                                checked={contents === 'basicReset'}
+                            />
+                            <RadioButton
+                                text="일반(초기화X)"
+                                name="contents"
+                                value="basic"
+                                onChange={() => setContents('basic')}
+                                checked={contents === 'basic'}
                             />
                         </ContentsDiv>
                     </FlexDiv>
@@ -157,7 +171,7 @@ const FormContainer = styled(FlexDiv)`
 const FormButtonContainer = styled(FlexDiv)`
     justify-content: flex-end;
     width: 100%;
-    align-items: flex-end;
+    align-items: center;
 
     button:nth-child(2) {
         margin-left: 1em;
