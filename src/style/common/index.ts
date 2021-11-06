@@ -20,13 +20,13 @@ export const FlexDiv = styled.div<IBasis>`
 export const FlexLeftDiv = styled.div`
     display: flex;
     justify-content: center;
-    flex-basis: 10%;
+    flex-basis: 12%;
     width: 100%;
 `;
 
 export const FlexRightDiv = styled.div`
     display: flex;
-    flex-basis: 85%;
+    flex-basis: 87%;
     width: 100%;
     align-items: center;
     justify-content: center;
