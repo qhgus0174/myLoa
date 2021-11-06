@@ -4,6 +4,7 @@ import styled from '@emotion/styled';
 import { DialogActionContext, DialogStateContext } from '@context/DialogContext';
 import Dialog from '@components/Dialog';
 import { IDialogOption } from '@hooks/useDialog';
+import { heightMedia, widthMedia } from '@style/device';
 
 export interface IDialog {
     children: React.ReactNode;
@@ -66,6 +67,25 @@ const DialogInner = styled.div<Pick<IDialogOption, 'width' | 'height'>>`
     justify-content: space-around;
     max-width: 25vw;
     height: 25vh;
+
+    ${widthMedia.desktop} {
+        max-width: 40vw;
+    }
+
+    ${widthMedia.tablet} {
+        max-width: 55vw;
+        height: 25vh;
+    }
+
+    ${widthMedia.phone} {
+        max-width: 90vw;
+        height: 30vh;
+    }
+
+    ${heightMedia.small} {
+        height: 45vh;
+        max-height: 55vh;
+    }
 `;
 
 export default DialogPortal;
