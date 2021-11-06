@@ -13,14 +13,16 @@ export interface ITodo {
 export interface ICharacterTodo {
     id: number;
     check: number;
-    text?: string;
     relaxGauge: number;
     oriRelaxGauge: number;
+    hide: boolean;
+    text?: string;
     memo?: string;
 }
 
 export interface ITodoCheck extends ICharacterTodo {
     todoType: ScheduleType;
     todoId: number;
+    todoContents: ScheduleContents;
     checkType: ScheduleCheckType;
 }
