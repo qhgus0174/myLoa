@@ -6,15 +6,18 @@ export const basic: Theme = {
         check: '#fcc101',
         relax: '#5de55d',
         focusDark: '#0d1721',
-        white: '#f7f6fd',
+        white: '#f6f8fd',
+        pureWhite: '#ffffff',
         black: '#000000',
         hoverGray: '#333f50',
         translucent: '#6d6d6d',
+        scroll: '#C9CCD5',
     },
 
     buttonColors: {
-        none: 'transparent',
-        main: '#916DD5',
+        white: '#f7f6fd',
+        ok: '#8BC34A',
         cancel: '#C4C1E0',
+        none: 'transparent',
     },
 };

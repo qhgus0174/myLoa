@@ -23,6 +23,22 @@ export const GlobalStyle = () => {
                 input[type='text'] {
                     border-radius: 1px;
                 }
+
+                .Toastify__toast-body div {
+                    color: ${theme.colors.black};
+                }
+
+                ::-webkit-scrollbar-track {
+                    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+                    background-color: ${theme.colors.main};
+                }
+                ::-webkit-scrollbar {
+                    width: 6px;
+                    background-color: ${theme.colors.scroll};
+                }
+                ::-webkit-scrollbar-thumb {
+                    background-color: ${theme.colors.scroll};
+                }
             `}
         />
     );

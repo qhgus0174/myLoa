@@ -8,15 +8,18 @@ declare module '@emotion/react' {
             relax: string;
             focusDark: string;
             white: string;
+            pureWhite: string;
             black: string;
             hoverGray: string;
             translucent: string;
+            scroll: string;
         };
 
         buttonColors: {
+            white: string;
             none: string;
             cancel: string;
-            main: string;
+            ok: string;
         };
     }
 }
