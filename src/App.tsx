@@ -11,28 +11,42 @@ import { GlobalStyle } from '@style/global-styles';
 const App = () => {
     const [storageTodo, setStorageTodo] = useTodo();
 
-    const resetDailyTodo = () => {
+    const resetDailyTodoRelax = () => {
         const todoArr: ITodo[] = JSON.parse(JSON.parse(localStorage.getItem('todo') || '[]'));
 
         const calcResult: ITodo[] = todoArr.map((todo: ITodo) => {
             todo.character = todo.character.map((character: ICharacterTodo) => {
                 //체크 최대수치 미만일때 휴게 계산
                 //체크 최대수치 : 일일 - 2, 에포나 -3
-                if (todo.type !== 'daily' || todo.contents == 'none') return character;
+                if (todo.type === 'daily') {
+                    if (todo.contents === 'chaos' || todo.contents === 'epona') {
+                        const maxCheckCount = todo.contents === 'chaos' ? 2 : 3;
+                        const relaxGauge = (maxCheckCount - character.check) * 10;
 
-                const maxCheckCount = todo.contents === 'chaos' ? 2 : 3;
-                const relaxGauge = (maxCheckCount - character.check) * 10;
+                        const calcRelaxGauge =
+                            character.relaxGauge >= 100 ? 100 : Number(character.relaxGauge) + relaxGauge;
 
-                const calcRelaxGauge = character.relaxGauge >= 100 ? 100 : Number(character.relaxGauge) + relaxGauge;
+                        const resetTodoData: ICharacterTodo = {
+                            ...character,
+                            relaxGauge: calcRelaxGauge,
+                            oriRelaxGauge: calcRelaxGauge,
+                            check: 0,
+                        };
 
-                const resetTodoData: ICharacterTodo = {
-                    ...character,
-                    relaxGauge: calcRelaxGauge,
-                    oriRelaxGauge: calcRelaxGauge,
-                    check: 0,
-                };
+                        return resetTodoData;
+                    } else if (todo.contents === 'basicReset') {
+                        const resetTodoData: ICharacterTodo = {
+                            ...character,
+                            check: 0,
+                        };
 
-                return resetTodoData;
+                        return resetTodoData;
+                    } else {
+                        return character;
+                    }
+                } else {
+                    return character;
+                }
             });
 
             return todo;
@@ -46,14 +60,38 @@ const App = () => {
 
         const calcResult: ITodo[] = todoArr.map((todo: ITodo) => {
             todo.character = todo.character.map((character: ICharacterTodo) => {
-                if (todo.type !== 'weekly') return character;
+                if (todo.type === 'weekly') {
+                    const resetTodoData: ICharacterTodo = {
+                        ...character,
+                        check: 0,
+                    };
 
-                const resetTodoData: ICharacterTodo = {
-                    ...character,
-                    check: 0,
-                };
+                    return resetTodoData;
+                } else {
+                    return character;
+                }
+            });
 
-                return resetTodoData;
+            return todo;
+        });
+
+        setStorageTodo(JSON.stringify(calcResult));
+    };
+
+    const resetDailyTodo = () => {
+        const todoArr: ITodo[] = JSON.parse(JSON.parse(localStorage.getItem('todo') || '[]'));
+
+        const calcResult: ITodo[] = todoArr.map((todo: ITodo) => {
+            todo.character = todo.character.map((character: ICharacterTodo) => {
+                if (todo.type === 'daily' && todo.contents === 'basicReset') {
+                    const resetTodoData: ICharacterTodo = {
+                        ...character,
+                        check: 0,
+                    };
+                    return resetTodoData;
+                } else {
+                    return character;
+                }
             });
 
             return todo;
@@ -65,7 +103,7 @@ const App = () => {
     useEffect(() => {
         // 일일 휴식 게이지, 체크 초기화 (매일 오전 6시)
         schedule.scheduleJob('0 0 6 * * *', () => {
-            resetDailyTodo();
+            resetDailyTodoRelax();
         });
 
         // 주간 초기화 (수요일 오전 6시)
