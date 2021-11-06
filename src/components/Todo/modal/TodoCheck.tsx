@@ -12,6 +12,13 @@ import styled from '@emotion/styled';
 import TextBox from '@components/Input/TextBox';
 import { css, useTheme } from '@emotion/react';
 import { useCheckbox } from '@hooks/useCheckbox';
+import {
+    ContentsDiv,
+    ContentsDivTitle,
+    FormButtonContainer,
+    FormContainer,
+    FormDivContainer,
+} from '@style/common/modal';
 
 const TodoCheck = ({
     id: characterId,
@@ -70,15 +77,15 @@ const TodoCheck = ({
     };
 
     return (
-        <FormContainer basis="100" height="100" direction="column">
+        <FormContainer>
             {todoType === 'daily' && (todoContents === 'chaos' || todoContents === 'epona') && (
                 <RemarkDiv>* 휴식게이지 수동 입력 시 수행횟수는 초기화 됩니다.</RemarkDiv>
             )}
-            <FormDivContainer basis="90" direction="column">
+            <FormDivContainer>
                 {checkType === 'text' ? (
                     <FlexDiv direction="column">
-                        <ContentsDivTitle basis="50">텍스트</ContentsDivTitle>
-                        <ContentsDiv basis="50">
+                        <ContentsDivTitle>텍스트</ContentsDivTitle>
+                        <ContentsDiv>
                             <TextBox {...bindText} />
                         </ContentsDiv>
                     </FlexDiv>
@@ -90,11 +97,10 @@ const TodoCheck = ({
                                 css={css`
                                     color: ${theme.colors.relax};
                                 `}
-                                basis="50"
                             >
                                 휴식 게이지
                             </ContentsDivTitle>
-                            <ContentsDiv basis="50">
+                            <ContentsDiv>
                                 <TextBox {...bindRelaxGauge} />
                             </ContentsDiv>
                         </FlexDiv>
@@ -102,8 +108,8 @@ const TodoCheck = ({
                 )}
 
                 <FlexDiv direction="column">
-                    <ContentsDivTitle basis="50">메모</ContentsDivTitle>
-                    <ContentsDiv basis="50">
+                    <ContentsDivTitle>메모</ContentsDivTitle>
+                    <ContentsDiv>
                         <TextBox {...bindMemo} />
                     </ContentsDiv>
                 </FlexDiv>
@@ -111,17 +117,21 @@ const TodoCheck = ({
                     <ContentsDivTitle
                         css={css`
                             margin-bottom: 0;
+                            flex-basis: 10%;
                         `}
-                        basis="10"
                     >
                         숨김
                     </ContentsDivTitle>
-                    <ContentsDiv basis="90">
+                    <ContentsDiv
+                        css={css`
+                            flex-basis: 90%;
+                        `}
+                    >
                         <Checkbox transition={false} checkColor="black" shape="square" {...bindHide} />
                     </ContentsDiv>
                 </FlexDiv>
             </FormDivContainer>
-            <FormButtonContainer basis="10">
+            <FormButtonContainer>
                 <Button onClick={onClickEdit}>수정</Button>
                 <Button onClick={() => closeModal()}>닫기</Button>
             </FormButtonContainer>
@@ -132,35 +142,6 @@ const TodoCheck = ({
 const RemarkDiv = styled(FlexDiv)`
     justify-content: flex-end;
     color: ${props => props.theme.colors.translucent};
-`;
-
-const FormContainer = styled(FlexDiv)`
-    justify-content: space-between;
-`;
-const FormButtonContainer = styled(FlexDiv)`
-    justify-content: flex-end;
-    width: 100%;
-    align-items: center;
-
-    button:nth-child(2) {
-        margin-left: 1em;
-    }
-`;
-
-const FormDivContainer = styled(FlexDiv)`
-    justify-content: space-evenly;
-    margin-top: -1em;
-`;
-
-const ContentsDiv = styled(FlexDiv)`
-    align-items: center;
-`;
-
-const ContentsDivTitle = styled(FlexDiv)`
-    align-items: center;
-    font-weight: 600;
-    box-sizing: border-box;
-    margin-bottom: 0.5em;
 `;
 
 export default TodoCheck;

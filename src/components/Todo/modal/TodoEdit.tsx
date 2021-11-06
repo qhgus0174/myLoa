@@ -15,6 +15,14 @@ import { FlexDiv } from '@style/common';
 import styled from '@emotion/styled';
 import RadioButton from '@components/Input/Radio';
 import { css } from '@emotion/react';
+import {
+    ContentsDiv,
+    ContentsDivTitle,
+    FormButtonContainer,
+    FormContainer,
+    FormDivContainer,
+    RightButtonDiv,
+} from '@style/common/modal';
 
 const TodoEdit = ({
     id: oriId,
@@ -73,11 +81,12 @@ const TodoEdit = ({
     };
 
     return (
-        <FormContainer basis="100" height="100" direction="column">
-            <FormDivContainer basis="90" direction="column">
+        <FormContainer>
+            <FormDivContainer>
                 <FlexDiv direction="column">
-                    <ContentsDivTitle basis="50">숙제 유형</ContentsDivTitle>
-                    <ContentsDiv basis="50">
+                    <ContentsDivTitle>숙제 유형</ContentsDivTitle>
+                    <ContentsDiv>
+                        <SmallTitleDiv>체크박스형</SmallTitleDiv>
                         <RadioButton
                             text="일일"
                             name="type"
@@ -100,7 +109,9 @@ const TodoEdit = ({
                             }}
                             checked={type === 'weekly'}
                         />
-                        <div>|</div>
+                    </ContentsDiv>
+                    <ContentsDiv>
+                        <SmallTitleDiv>텍스트형</SmallTitleDiv>
                         <RadioButton
                             text="텍스트"
                             name="type"
@@ -116,8 +127,8 @@ const TodoEdit = ({
                 </FlexDiv>
                 {type === 'daily' && (
                     <FlexDiv direction="column">
-                        <ContentsDivTitle basis="50">컨텐츠</ContentsDivTitle>
-                        <ContentsDiv basis="50">
+                        <ContentsDivTitle>컨텐츠</ContentsDivTitle>
+                        <ContentsDiv>
                             <RadioButton
                                 text="카던/가디언"
                                 name="contents"
@@ -150,24 +161,24 @@ const TodoEdit = ({
                     </FlexDiv>
                 )}
                 <FlexDiv direction="column">
-                    <ContentsDivTitle basis="50">할 일</ContentsDivTitle>
-                    <ContentsDiv basis="50">
+                    <ContentsDivTitle>숙제</ContentsDivTitle>
+                    <ContentsDiv>
                         <TextBox {...bindName} />
                     </ContentsDiv>
                 </FlexDiv>
                 <FlexDiv direction="column">
-                    <ContentsDivTitle basis="50">색상</ContentsDivTitle>
-                    <ContentsDiv basis="50">
+                    <ContentsDivTitle>색상</ContentsDivTitle>
+                    <ContentsDiv>
                         <CompactPicker color={color} onChange={(color: ColorResult) => setColor(color.hex)} />
                     </ContentsDiv>
                 </FlexDiv>
             </FormDivContainer>
 
-            <FormButtonContainer width="100" basis="10">
+            <FormButtonContainer>
                 <FlexDiv width="100">
                     <Button onClick={onClickDelete}>삭제</Button>
                 </FlexDiv>
-                <RightButtonDiv width="100">
+                <RightButtonDiv>
                     <Button onClick={onClickAdd}>수정</Button>
                     <Button onClick={() => closeModal()}>닫기</Button>
                 </RightButtonDiv>
@@ -176,37 +187,9 @@ const TodoEdit = ({
     );
 };
 
-const RightButtonDiv = styled(FlexDiv)`
-    justify-content: flex-end;
-
-    button:nth-child(2) {
-        margin-left: 1em;
-    }
+const SmallTitleDiv = styled.div`
+    margin-left: 0.7em;
+    margin-right: 0.5em;
 `;
 
-const FormContainer = styled(FlexDiv)`
-    justify-content: space-between;
-`;
-
-const FormButtonContainer = styled(FlexDiv)`
-    justify-content: flex-end;
-    width: 100%;
-    align-items: center;
-`;
-
-const FormDivContainer = styled(FlexDiv)`
-    justify-content: space-evenly;
-    margin-top: -1em;
-`;
-
-const ContentsDiv = styled(FlexDiv)`
-    align-items: center;
-`;
-
-const ContentsDivTitle = styled(FlexDiv)`
-    align-items: center;
-    font-weight: 600;
-    box-sizing: border-box;
-    margin-bottom: 0.5em;
-`;
 export default TodoEdit;

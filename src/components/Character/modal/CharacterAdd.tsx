@@ -14,12 +14,20 @@ import { load } from 'cheerio';
 import { FlexDiv } from '@style/common';
 import styled from '@emotion/styled';
 import { ColorResult, CompactPicker } from 'react-color';
-import { css } from '@emotion/react';
+import { SpinnerContext } from '@context/SpinnerContext';
+import {
+    ContentsDiv,
+    ContentsDivTitle,
+    FormButtonContainer,
+    FormContainer,
+    FormDivContainer,
+} from '@style/common/modal';
 
 const CharacterAdd = ({ perPage, setCurrentPage }: { perPage: number; setCurrentPage: (e: number) => void }) => {
     const [storageCharacter, setStorageCharacter] = useCharacter();
     const [storageCharacterOrd, setStorageCharacterOrd] = useCharacterOrd();
     const [storageTodo, setStorageTodo] = useTodo();
+    const { setSpinnerVisible } = useContext(SpinnerContext);
 
     const [color, setColor] = useState<string>('#ffffff');
     const { closeModal } = useContext(ModalActionContext);
@@ -32,7 +40,9 @@ const CharacterAdd = ({ perPage, setCurrentPage }: { perPage: number; setCurrent
     };
 
     const onClickAdd = async () => {
+        setSpinnerVisible(true);
         await setCharacterInfo();
+        setSpinnerVisible(false);
     };
 
     const setCharacterInfo = async () => {
@@ -41,7 +51,6 @@ const CharacterAdd = ({ perPage, setCurrentPage }: { perPage: number; setCurrent
                 `https://cors-anywhere.herokuapp.com/https://lostark.game.onstove.com/Profile/Character/${name}`,
             );
             const $ = load(data);
-            console.log(data);
             const crollJob: string | undefined = $('.profile-character-info__img').attr('alt');
             const crollLevel: string | undefined = $('.level-info2__expedition>span:nth-child(2)').text();
 
@@ -86,6 +95,7 @@ const CharacterAdd = ({ perPage, setCurrentPage }: { perPage: number; setCurrent
             check: 0,
             relaxGauge: 0,
             oriRelaxGauge: 0,
+            hide: false,
         };
 
         const todoCharacterArr = todoArr.map((todo: ITodo) => {
@@ -103,58 +113,28 @@ const CharacterAdd = ({ perPage, setCurrentPage }: { perPage: number; setCurrent
     };
 
     return (
-        <FormContainer basis="100" height="100" direction="column">
-            <FormDivContainer basis="90" direction="column">
+        <FormContainer>
+            <FormDivContainer>
                 <FlexDiv direction="column">
-                    <ContentsDivTitle basis="50">캐릭터명</ContentsDivTitle>
-                    <ContentsDiv basis="50">
+                    <ContentsDivTitle>캐릭터명</ContentsDivTitle>
+                    <ContentsDiv>
                         <TextBox {...bindName} />
                     </ContentsDiv>
                 </FlexDiv>
 
                 <FlexDiv direction="column">
-                    <ContentsDivTitle basis="50">색상</ContentsDivTitle>
-                    <ContentsDiv basis="50">
+                    <ContentsDivTitle>색상</ContentsDivTitle>
+                    <ContentsDiv>
                         <CompactPicker color={color} onChange={(color: ColorResult) => setColor(color.hex)} />
                     </ContentsDiv>
                 </FlexDiv>
             </FormDivContainer>
-            <FormButtonContainer basis="10">
+            <FormButtonContainer>
                 <Button onClick={onClickAdd}>추가</Button>
                 <Button onClick={() => closeModal()}>닫기</Button>
             </FormButtonContainer>
         </FormContainer>
     );
 };
-
-const FormContainer = styled(FlexDiv)`
-    justify-content: space-between;
-`;
-
-const FormButtonContainer = styled(FlexDiv)`
-    justify-content: flex-end;
-    width: 100%;
-    align-items: flex-end;
-
-    button:nth-child(2) {
-        margin-left: 1em;
-    }
-`;
-
-const FormDivContainer = styled(FlexDiv)`
-    justify-content: space-evenly;
-    margin-top: -1em;
-`;
-
-const ContentsDiv = styled(FlexDiv)`
-    align-items: center;
-`;
-
-const ContentsDivTitle = styled(FlexDiv)`
-    align-items: center;
-    font-weight: 600;
-    box-sizing: border-box;
-    margin-bottom: 0.5em;
-`;
 
 export default CharacterAdd;

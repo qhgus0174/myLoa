@@ -12,6 +12,16 @@ import useTodo from '@hooks/storage/useTodo';
 import { FlexDiv } from '@style/common';
 import styled from '@emotion/styled';
 import { ColorResult, CompactPicker } from 'react-color';
+import { SpinnerContext } from '@context/SpinnerContext';
+import { DialogActionContext } from '@context/DialogContext';
+import {
+    ContentsDiv,
+    ContentsDivTitle,
+    FormButtonContainer,
+    FormContainer,
+    FormDivContainer,
+    RightButtonDiv,
+} from '@style/common/modal';
 
 interface ICharacterEdit {
     id: number;
@@ -19,16 +29,21 @@ interface ICharacterEdit {
     perPage: number;
     setCurrentPage: (e: number) => void;
 }
+
 const CharacterEdit = ({ id: oriId, name: newName, setCurrentPage, perPage }: ICharacterEdit) => {
     const [character, setCharacter] = useCharacter();
     const [characterOrd, setCharacterOrd] = useCharacterOrd();
     const [storageTodo, setStorageTodo] = useTodo();
+    const { setDialogProps } = useContext(DialogActionContext);
 
     const { closeModal } = useContext(ModalActionContext);
+    const { closeDialog } = useContext(DialogActionContext);
 
     const [color, setColor] = useState<string>('#ffffff');
 
     const [characterName, bindCharacterName] = useInput<string>(newName);
+
+    const { setSpinnerVisible } = useContext(SpinnerContext);
 
     const onClickEdit = () => {
         const characterArr: ICharacter[] = JSON.parse(character);
@@ -45,11 +60,23 @@ const CharacterEdit = ({ id: oriId, name: newName, setCurrentPage, perPage }: IC
     };
 
     const onClickDelete = () => {
-        deleteCharacter();
-        deleteTodo();
-        setPage();
+        setDialogProps({
+            isOpen: true,
+            content: <>데이터를 삭제하시겠습니까?</>,
+            options: {
+                confirmFn: async () => {
+                    setSpinnerVisible(true);
 
-        closeModal();
+                    await deleteCharacter();
+                    await deleteTodo();
+                    await setPage();
+
+                    setSpinnerVisible(false);
+                    closeDialog();
+                    closeModal();
+                },
+            },
+        });
     };
 
     const setPage = () => {
@@ -88,27 +115,29 @@ const CharacterEdit = ({ id: oriId, name: newName, setCurrentPage, perPage }: IC
     };
 
     return (
-        <FormContainer basis="100" height="100" direction="column">
-            <FormDivContainer basis="90" direction="column">
+        <FormContainer>
+            <FormDivContainer>
                 <FlexDiv direction="column">
-                    <ContentsDivTitle basis="50">캐릭터명</ContentsDivTitle>
-                    <ContentsDiv basis="50">
+                    <ContentsDivTitle>캐릭터명</ContentsDivTitle>
+                    <ContentsDiv>
                         <TextBox {...bindCharacterName} />
                     </ContentsDiv>
                 </FlexDiv>
 
                 <FlexDiv direction="column">
-                    <ContentsDivTitle basis="50">색상</ContentsDivTitle>
-                    <ContentsDiv basis="50">
+                    <ContentsDivTitle>색상</ContentsDivTitle>
+                    <ContentsDiv>
                         <CompactPicker color={color} onChange={(color: ColorResult) => setColor(color.hex)} />
                     </ContentsDiv>
                 </FlexDiv>
             </FormDivContainer>
-            <FormButtonContainer basis="10">
+            <FormButtonContainer>
                 <FlexDiv width="100">
-                    <Button onClick={onClickDelete}>삭제</Button>
+                    <Button borderColor="cancel" onClick={onClickDelete}>
+                        삭제
+                    </Button>
                 </FlexDiv>
-                <RightButtonDiv width="100">
+                <RightButtonDiv>
                     <Button onClick={onClickEdit}>수정</Button>
                     <Button onClick={() => closeModal()}>닫기</Button>
                 </RightButtonDiv>
@@ -117,49 +146,4 @@ const CharacterEdit = ({ id: oriId, name: newName, setCurrentPage, perPage }: IC
     );
 };
 
-const RightButtonDiv = styled(FlexDiv)`
-    justify-content: flex-end;
-
-    button:nth-child(2) {
-        margin-left: 1em;
-    }
-`;
-
-const FormContainer = styled(FlexDiv)`
-    justify-content: space-between;
-`;
-
-const FormButtonContainer = styled(FlexDiv)`
-    justify-content: flex-end;
-    width: 100%;
-    align-items: flex-end;
-
-    button:nth-child(2) {
-        margin-left: 1em;
-    }
-`;
-
-const FormDivContainer = styled(FlexDiv)`
-    justify-content: space-evenly;
-    margin-top: -1em;
-`;
-
-const ContentsDiv = styled(FlexDiv)`
-    align-items: center;
-`;
-
-const ContentsDivTitle = styled(FlexDiv)`
-    align-items: center;
-    font-weight: 600;
-    box-sizing: border-box;
-    margin-bottom: 0.5em;
-`;
-
-const InfoDiv = styled(FlexDiv)`
-    box-sizing: border-box;
-    background: ${props => props.theme.colors.hoverGray};
-    padding: 1em;
-    border-radius: 1em;
-    justify-content: center;
-`;
 export default CharacterEdit;

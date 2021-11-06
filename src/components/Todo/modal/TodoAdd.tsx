@@ -16,6 +16,13 @@ import TextBox from '@components/Input/TextBox';
 import RadioButton from '@components/Input/Radio';
 import styled from '@emotion/styled';
 import { FlexDiv } from '@style/common';
+import {
+    ContentsDiv,
+    ContentsDivTitle,
+    FormButtonContainer,
+    FormContainer,
+    FormDivContainer,
+} from '@style/common/modal';
 
 const Todo = () => {
     const [type, setType] = useState<ScheduleType>('daily');
@@ -66,11 +73,12 @@ const Todo = () => {
     };
 
     return (
-        <FormContainer basis="100" height="100" direction="column">
-            <FormDivContainer basis="90" direction="column">
+        <FormContainer>
+            <FormDivContainer>
                 <FlexDiv direction="column">
-                    <ContentsDivTitle basis="50">체크 유형</ContentsDivTitle>
-                    <ContentsDiv basis="50">
+                    <ContentsDivTitle>숙제 유형</ContentsDivTitle>
+                    <ContentsDiv>
+                        <SmallTitleDiv>체크박스형</SmallTitleDiv>
                         <RadioButton
                             text="일일"
                             name="type"
@@ -93,7 +101,9 @@ const Todo = () => {
                             }}
                             checked={type === 'weekly'}
                         />
-                        <div>|</div>
+                    </ContentsDiv>
+                    <ContentsDiv>
+                        <SmallTitleDiv>텍스트형</SmallTitleDiv>
                         <RadioButton
                             text="텍스트"
                             name="type"
@@ -109,8 +119,8 @@ const Todo = () => {
                 </FlexDiv>
                 {type === 'daily' && (
                     <FlexDiv direction="column">
-                        <ContentsDivTitle basis="50">컨텐츠</ContentsDivTitle>
-                        <ContentsDiv basis="50">
+                        <ContentsDivTitle>컨텐츠</ContentsDivTitle>
+                        <ContentsDiv>
                             <RadioButton
                                 text="카던/가디언"
                                 name="contents"
@@ -143,20 +153,20 @@ const Todo = () => {
                     </FlexDiv>
                 )}
                 <FlexDiv direction="column">
-                    <ContentsDivTitle basis="50">할 일</ContentsDivTitle>
-                    <ContentsDiv basis="50">
-                        <TextBox width="100" placeholder="할 일 입력 (e.g. 비아키스)" {...bindName} />
+                    <ContentsDivTitle>숙제 명</ContentsDivTitle>
+                    <ContentsDiv>
+                        <TextBox width="100" placeholder="숙제 이름 입력 (e.g. 비아키스)" {...bindName} />
                     </ContentsDiv>
                 </FlexDiv>
                 <FlexDiv direction="column">
-                    <ContentsDivTitle basis="50">색상</ContentsDivTitle>
-                    <ContentsDiv basis="50">
+                    <ContentsDivTitle>색상</ContentsDivTitle>
+                    <ContentsDiv>
                         <CompactPicker color={color} onChange={(color: ColorResult) => setColor(color.hex)} />
                     </ContentsDiv>
                 </FlexDiv>
             </FormDivContainer>
 
-            <FormButtonContainer basis="10">
+            <FormButtonContainer>
                 <Button onClick={onClickAdd}>추가</Button>
                 <Button onClick={() => closeModal()}>닫기</Button>
             </FormButtonContainer>
@@ -164,34 +174,9 @@ const Todo = () => {
     );
 };
 
-const FormContainer = styled(FlexDiv)`
-    justify-content: space-between;
-`;
-
-const FormButtonContainer = styled(FlexDiv)`
-    justify-content: flex-end;
-    width: 100%;
-    align-items: center;
-
-    button:nth-child(2) {
-        margin-left: 1em;
-    }
-`;
-
-const FormDivContainer = styled(FlexDiv)`
-    justify-content: space-evenly;
-    margin-top: -1em;
-`;
-
-const ContentsDiv = styled(FlexDiv)`
-    align-items: center;
-`;
-
-const ContentsDivTitle = styled(FlexDiv)`
-    align-items: center;
-    font-weight: 600;
-    box-sizing: border-box;
-    margin-bottom: 0.5em;
+const SmallTitleDiv = styled.div`
+    margin-left: 0.7em;
+    margin-right: 0.5em;
 `;
 
 export default Todo;
