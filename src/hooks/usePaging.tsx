@@ -13,25 +13,21 @@ export interface IPagingOption {
 export const usePaging = () => {
     const [perPage, setPerPage] = useState<IPagingOption['perPage']>(6);
     const [currentPage, setCurrentPage] = useState<IPagingOption['currentPage']>(1);
-    const { width } = useWindowDimensions();
+    const { width: windowWidth } = useWindowDimensions();
 
     useEffect(() => {
         calcPerPage();
-    }, [String(width)]);
+    }, [String(windowWidth)]);
+
+    const widths = [
+        responsiveWidth.phone,
+        responsiveWidth.tablet,
+        responsiveWidth.smallDesktop,
+        responsiveWidth.desktop,
+    ];
 
     const calcPerPage = () => {
-        if (width < Number(responsiveWidth.phone)) {
-            setPerPage(1);
-        } else if (width < Number(responsiveWidth.tablet)) {
-            setPerPage(2);
-        } else if (width < Number(responsiveWidth.smallDesktop)) {
-            setPerPage(3);
-        } else if (width < Number(responsiveWidth.desktop)) {
-            setPerPage(4);
-        } else {
-            setPerPage(6);
-        }
-        setCurrentPage(1);
+        setPerPage(widths.findIndex(w => windowWidth < w) + 1 || 6);
     };
 
     const onClickPrev = () => {
