@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
+import SyncLoader from 'react-spinners/SyncLoader';
+import { SpinnerContext } from '@context/SpinnerContext';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import PuffLoader from 'react-spinners/BeatLoader';
-import { SpinnerContext } from '@context/SpinnerContext';
 
 interface ISpinner {
     spinnerVisible: boolean;
@@ -14,7 +14,7 @@ const Spinner = () => {
 
     return (
         <LoadingContainer spinnerVisible={spinnerVisible}>
-            <PuffLoader />
+            <SyncLoader color={theme.colors.white} />
         </LoadingContainer>
     );
 };
