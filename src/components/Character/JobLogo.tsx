@@ -30,7 +30,7 @@ interface IIcon {
     height?: number;
 }
 
-const JobLogo = ({ shape, width = 36, height = 38 }: IIcon) => {
+const JobLogo = ({ shape, width = 36, height = 35 }: IIcon) => {
     const calcRatio = (): { width: number; height: number } => {
         var ratio = Math.min(35 / width, 50 / height);
 
