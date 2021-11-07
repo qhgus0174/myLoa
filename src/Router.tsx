@@ -1,12 +1,12 @@
 import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import Main from '@routes/Main';
-import ModalContext from '@context/ModalContext';
-import DialogContext from '@context/DialogContext';
-import SpinnerContext from '@context/SpinnerContext';
 import { Flip, ToastContainer } from 'react-toastify';
-
 import 'react-toastify/dist/ReactToastify.css';
+import Main from '@routes/Main';
+import SpinnerContext from '@context/SpinnerContext';
+import PagingContext from '@context/PagingContext';
+import DialogContext from '@context/DialogContext';
+import ModalContext from '@context/ModalContext';
 import Header from '@components/Layout/Header';
 import styled from '@emotion/styled';
 
@@ -29,16 +29,18 @@ const AppRouter = () => {
             />
             <BrowserRouter>
                 <Container>
-                    <SpinnerContext>
-                        <DialogContext>
-                            <ModalContext>
-                                <Header />
-                                <Switch>
-                                    <Route exact path="/" component={Main} />
-                                </Switch>
-                            </ModalContext>
-                        </DialogContext>
-                    </SpinnerContext>
+                    <PagingContext>
+                        <SpinnerContext>
+                            <DialogContext>
+                                <ModalContext>
+                                    <Header />
+                                    <Switch>
+                                        <Route exact path="/" component={Main} />
+                                    </Switch>
+                                </ModalContext>
+                            </DialogContext>
+                        </SpinnerContext>
+                    </PagingContext>
                 </Container>
             </BrowserRouter>
         </>
