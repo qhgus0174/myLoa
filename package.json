@@ -72,6 +72,9 @@
         "webpack-dev-server": "^4.1.1",
         "webpack-merge": "^5.8.0"
     },
+    "engines": {
+        "node": "14.17.5"
+    },
     "scripts": {
         "build": "webpack --config webpack.prod.js",
         "dev": "webpack-dev-server --hot --open --config webpack.dev.js"
