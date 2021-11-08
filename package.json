@@ -79,7 +79,7 @@
     "scripts": {
         "build": "webpack --config webpack.prod.js",
         "dev": "webpack-dev-server --hot --open --config webpack.dev.js",
-        "heroku-prebuild": "yarn add -D",
+        "heroku-prebuild": "yarn install -D",
         "start": "yarn build"
     }
 }
