@@ -77,8 +77,8 @@
         "npm": "6.14.14"
     },
     "scripts": {
-        "start": "webpack --config webpack.prod.js",
         "build": "webpack --config webpack.prod.js",
-        "dev": "webpack-dev-server --hot --open --config webpack.dev.js"
+        "dev": "webpack-dev-server --hot --open --config webpack.dev.js",
+        "heroku-postbuild": "yarn build"
     }
 }
