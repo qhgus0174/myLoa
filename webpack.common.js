@@ -64,8 +64,7 @@ module.exports = {
             showErrors: true,
         }),
         new ForkTsCheckerWebpackPlugin(),
-        isDevelopment && new ReactRefreshWebpackPlugin(),
-    ],
+    ].concat(isDevelopment ? [new ReactRefreshWebpackPlugin()] : []),
 
     resolve: {
         extensions: ['.ts', '.tsx', '.js', '.json'],
