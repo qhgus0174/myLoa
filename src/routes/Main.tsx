@@ -1,98 +1,123 @@
-import React, { useContext, useEffect, useState } from 'react';
-import axios, { AxiosResponse } from 'axios';
-import { load } from 'cheerio';
-import { css, useTheme } from '@emotion/react';
+import React, { useContext } from 'react';
 import { ModalActionContext } from '@context/ModalContext';
 import CharacterAdd from '@components/Character/modal/CharacterAdd';
+import Todo from '@components/Todo';
+import Button from '@components/Button/Button';
 import TodoAdd from '@components/Todo/modal/TodoAdd';
 import LineAdd from '@components/Line/LineAdd';
 import Character from '@components/Character';
-import Todo from '@components/Todo';
-import Button from '@components/Button/Button';
+import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { FlexDiv } from '@style/common';
+import { widthMedia } from '@style/device';
+import { ReactComponent as Plus } from '@assets/img/plus.svg';
+import { IContextModal } from '@common/types';
 
 const Main = () => {
-    const [currentPage, setCurrentPage] = useState<number>(1);
-    const [perPage, setPerPage] = useState<number>(5);
-
     const { setModalProps } = useContext(ModalActionContext);
 
-    const onContextMenuBasicModal = (
-        e: React.MouseEvent<HTMLElement>,
-        modal: JSX.Element,
-        width: string = '30',
-        height: string = '50',
-    ) => {
+    const theme = useTheme();
+
+    const onContextMenuBasicModal = ({ e, modal, title, width, height }: IContextModal) => {
         e.preventDefault();
         setModalProps({
             isOpen: true,
-            type: 'basic',
             content: modal,
-            options: { width: width, height: height },
+            options: { width: width, height: height, headerTitle: title },
         });
     };
 
-    const onClickPrev = () => {
-        const page = currentPage - 1;
-        setCurrentPage(page < 1 ? 1 : page);
-    };
-
-    const onClickNext = () => {
-        const page = currentPage + 1;
-        const maxPage = Math.ceil(JSON.parse(JSON.parse(localStorage.getItem('character') || '[]')).length / perPage);
-        setCurrentPage(page > maxPage ? maxPage : page);
-    };
-
     return (
-        <FlexDiv width="80" direction="column">
+        <MainDiv width="85" direction="column">
             <ButtonDiv width="100">
-                <FlexDiv width="100">
-                    <FlexDiv width="100" basis="50">
-                        <Button
-                            css={css`
-                                margin-right: 1em;
-                            `}
-                            type="button"
-                            onClick={e => onContextMenuBasicModal(e, <TodoAdd />, '30', '80')}
-                        >
-                            할 일 추가
-                        </Button>
-                        <Button type="button" onClick={e => onContextMenuBasicModal(e, <LineAdd />, '30', '40')}>
-                            구분선 추가
-                        </Button>
-                    </FlexDiv>
-                    <FlexDiv width="100" basis="50" direction="row-reverse">
-                        <Button
-                            type="button"
-                            onClick={e =>
-                                onContextMenuBasicModal(
-                                    e,
-                                    <CharacterAdd setCurrentPage={setCurrentPage} perPage={perPage} />,
-                                )
-                            }
-                        >
-                            캐릭터 추가
-                        </Button>
-                    </FlexDiv>
+                <ButtonLeftDiv>
+                    <AddButton
+                        type="button"
+                        icon={<Plus width="15px" height="15px" fill={theme.colors.white} />}
+                        onClick={e =>
+                            onContextMenuBasicModal({
+                                e: e,
+                                modal: <TodoAdd />,
+                                title: '숙제 추가',
+                                width: '35',
+                                height: '85',
+                            })
+                        }
+                    >
+                        숙제
+                    </AddButton>
+                    <AddButton
+                        isRight={true}
+                        type="button"
+                        icon={<Plus width="15px" height="15px" fill={theme.colors.white} />}
+                        onClick={e =>
+                            onContextMenuBasicModal({
+                                e: e,
+                                modal: <LineAdd />,
+                                title: '구분선 추가',
+                                width: '30',
+                                height: '45',
+                            })
+                        }
+                    >
+                        구분선
+                    </AddButton>
+                </ButtonLeftDiv>
+                <FlexDiv>
+                    <AddButton
+                        isRight={true}
+                        type="button"
+                        icon={<Plus width="15px" height="15px" fill={theme.colors.white} />}
+                        onClick={e =>
+                            onContextMenuBasicModal({
+                                e: e,
+                                modal: <CharacterAdd />,
+                                title: '캐릭터 추가',
+                                width: '35',
+                                height: '57',
+                            })
+                        }
+                    >
+                        캐릭터
+                    </AddButton>
                 </FlexDiv>
             </ButtonDiv>
-            <Character
-                onContextMenuBasicModal={onContextMenuBasicModal}
-                currentPage={currentPage}
-                perPage={perPage}
-                setCurrentPage={setCurrentPage}
-                onClickPrev={onClickPrev}
-                onClickNext={onClickNext}
-            />
-            <Todo onContextMenuBasicModal={onContextMenuBasicModal} currentPage={currentPage} perPage={perPage} />
-        </FlexDiv>
+            <Character onContextMenuBasicModal={onContextMenuBasicModal} />
+            <Todo onContextMenuBasicModal={onContextMenuBasicModal} />
+        </MainDiv>
     );
 };
+
+const MainDiv = styled(FlexDiv)`
+    margin-top: 1em;
+    margin-bottom: 3em;
+`;
 
 const ButtonDiv = styled(FlexDiv)`
     margin-bottom: 1.7em;
     box-sizing: border-box;
+    justify-content: space-between;
+
+    ${widthMedia.smallPhone} {
+        flex-direction: column;
+    }
+`;
+
+const AddButton = styled(Button)<{ isRight?: boolean }>`
+    ${props => props.isRight && `margin-left: 1em`};
+
+    ${widthMedia.smallPhone} {
+        width: 100%;
+        margin: 0;
+        justify-content: center;
+        margin-bottom: 0.5em;
+    }
+`;
+
+const ButtonLeftDiv = styled(FlexDiv)`
+    ${widthMedia.smallPhone} {
+        flex-direction: column;
+    }
 `;
 
 export default Main;

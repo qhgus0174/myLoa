@@ -1,4 +1,6 @@
+import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import { widthMedia } from '@style/device';
 
 type Direction = 'column' | 'column-reverse' | 'row-reverse' | 'row';
 
@@ -21,13 +23,17 @@ export const FlexLeftDiv = styled.div`
     display: flex;
     justify-content: center;
     flex-basis: 12%;
-    width: 100%;
+    ${widthMedia.tablet} {
+        flex-basis: 30%;
+    }
 `;
 
 export const FlexRightDiv = styled.div`
     display: flex;
-    flex-basis: 87%;
-    width: 100%;
+    flex-basis: 88%;
+    ${widthMedia.tablet} {
+        flex-basis: 70%;
+    }
     align-items: center;
     justify-content: center;
 `;
@@ -35,9 +41,52 @@ export const FlexRightDiv = styled.div`
 export const FlexHoverDiv = styled(FlexLeftDiv)`
     height: 100%;
     align-items: center;
-    flex-basis: 19%;
+
+    flex-basis: 15.8%;
+
+    ${widthMedia.desktop} {
+        flex-basis: 23.75%;
+    }
+
+    ${widthMedia.tablet} {
+        flex-basis: 47.5%;
+    }
+
+    ${widthMedia.phone} {
+        flex-basis: 90%;
+    }
+
     &:hover {
         transition: 200ms ease;
         background: ${props => props.theme.colors.hoverGray};
+    }
+`;
+
+export const CharactersDiv = styled(FlexRightDiv)<{ length: number }>`
+    height: 3.8em;
+    ${props => {
+        if (props.length > 4) {
+            return css`
+                justify-content: space-around;
+            `;
+        } else if (props.length > 2) {
+            return css`
+                justify-content: space-evenly;
+            `;
+        } else if (props.length > 0) {
+            return css`
+                justify-content: flex-start;
+                & > div {
+                    margin-right: 6em;
+                    ${widthMedia.tablet} {
+                        margin-right: 0em;
+                    }
+                }
+            `;
+        }
+    }}
+
+    ${widthMedia.tablet} {
+        justify-content: center;
     }
 `;

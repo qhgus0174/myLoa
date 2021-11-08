@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import useWindowDimensions from '@hooks/useWindowDimensions';
 import { responsiveWidth } from '@style/device';
+import { getStorage } from '@storage/index';
 
 export interface IPagingOption {
     perPage: number;
@@ -37,7 +38,7 @@ export const usePaging = () => {
 
     const onClickNext = () => {
         const page = currentPage + 1;
-        const maxPage = Math.ceil(JSON.parse(JSON.parse(localStorage.getItem('character') || '[]')).length / perPage);
+        const maxPage = Math.ceil(getStorage('character').length / perPage);
         setCurrentPage(page > maxPage ? maxPage : page);
     };
 

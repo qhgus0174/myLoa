@@ -1,14 +1,15 @@
 import React, { createContext } from 'react';
+import { useDialog } from '@hooks/useDialog';
 import DialogPortal from '@components/Dialog/DialogPortal';
-import { IDialogProps, useDialog } from '@hooks/useDialog';
+import { IPortalProps } from '@common/types';
 
 interface IDialogAction {
     openDialog: () => void;
     closeDialog: () => void;
-    setDialogProps: (e: IDialogProps) => void;
+    setDialogProps: (e: IPortalProps) => void;
 }
 
-export const DialogStateContext = createContext<IDialogProps>({
+export const DialogStateContext = createContext<IPortalProps>({
     isOpen: false,
     content: <></>,
 });
@@ -16,7 +17,7 @@ export const DialogStateContext = createContext<IDialogProps>({
 export const DialogActionContext = createContext<IDialogAction>({
     openDialog: () => {},
     closeDialog: () => {},
-    setDialogProps: (e: IDialogProps) => {},
+    setDialogProps: (e: IPortalProps) => {},
 });
 
 const DialogProvider = ({ children }: { children: React.ReactNode }) => {

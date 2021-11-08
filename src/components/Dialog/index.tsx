@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
-import styled from '@emotion/styled';
-import Button from '@components/Button/Button';
-import { IDialog } from '@components/Dialog/DialogPortal';
 import { DialogActionContext } from '@context/DialogContext';
 import { SpinnerContext } from '@context/SpinnerContext';
+import Button from '@components/Button/Button';
+import { IPortalProperty } from '@common/types';
+import styled from '@emotion/styled';
 
-const Dialog = ({ children, options }: IDialog) => {
+const Dialog = ({ children, options }: IPortalProperty) => {
     const { closeDialog } = useContext(DialogActionContext);
     const { setSpinnerVisible } = useContext(SpinnerContext);
 
@@ -31,15 +31,16 @@ const Dialog = ({ children, options }: IDialog) => {
 
 const DialogBody = styled.div`
     display: flex;
-    flex-basis: 50%;
     justify-content: center;
     align-items: center;
+    flex-basis: 50%;
 `;
 
 const DialogBottom = styled.div`
     display: flex;
     justify-content: flex-end;
     flex-basis: 20%;
+
     button {
         margin-right: 3.5%;
     }

@@ -1,62 +1,102 @@
 import React, { useContext, useState } from 'react';
-import Button from '@components/Button/Button';
+import _ from 'lodash';
+import { toast } from 'react-toastify';
+import { PagingActionContext, PagingStateContext } from '@context/PagingContext';
+import { ModalActionContext } from '@context/ModalContext';
+import { DialogActionContext } from '@context/DialogContext';
+import { SpinnerContext } from '@context/SpinnerContext';
+import useCharacterOrd from '@hooks/storage/useCharacterOrd';
 import { useInput } from '@hooks/useInput';
 import useCharacter from '@hooks/storage/useCharacter';
-import { ModalActionContext } from '@context/ModalContext';
-import TextBox from '@components/Input/TextBox';
-import { ICharacter } from '../CharacterType';
-import _ from 'lodash';
-import useCharacterOrd from '@hooks/storage/useCharacterOrd';
-import { ICharacterTodo, ITodo } from '@components/Todo/TodoType';
 import useTodo from '@hooks/storage/useTodo';
-import { FlexDiv } from '@style/common';
-import styled from '@emotion/styled';
-import { ColorResult, CompactPicker } from 'react-color';
-import { SpinnerContext } from '@context/SpinnerContext';
-import { DialogActionContext } from '@context/DialogContext';
-import {
-    ContentsDiv,
-    ContentsDivTitle,
-    FormButtonContainer,
-    FormContainer,
-    FormDivContainer,
-    RightButtonDiv,
-} from '@style/common/modal';
+import { getCrollCharacterInfo, isDuplicate } from '@components/Character/common/functions';
+import { ICharacterTodo, ITodo } from '@components/Todo/TodoType';
+import EditButtonContainer from '@components/Container/Button/DelEdit';
+import { ICharacter } from '@components/Character/CharacterType';
+import CharacterForm from '@components/Character/common/Form';
+import { getStorage } from '@storage/index';
+import { FormContainer } from '@style/common/modal';
 
 interface ICharacterEdit {
     id: number;
     name: string;
-    perPage: number;
-    setCurrentPage: (e: number) => void;
+    color: string;
 }
 
-const CharacterEdit = ({ id: oriId, name: newName, setCurrentPage, perPage }: ICharacterEdit) => {
+const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacterEdit) => {
     const [character, setCharacter] = useCharacter();
     const [characterOrd, setCharacterOrd] = useCharacterOrd();
-    const [storageTodo, setStorageTodo] = useTodo();
-    const { setDialogProps } = useContext(DialogActionContext);
+    const [todo, setTodo] = useTodo();
 
+    const { setDialogProps, closeDialog } = useContext(DialogActionContext);
+    const { setCurrentPage } = useContext(PagingActionContext);
     const { closeModal } = useContext(ModalActionContext);
-    const { closeDialog } = useContext(DialogActionContext);
+    const { perPage } = useContext(PagingStateContext);
 
-    const [color, setColor] = useState<string>('#ffffff');
+    const [color, setColor] = useState<string>(oriColor);
 
-    const [characterName, bindCharacterName] = useInput<string>(newName);
+    const [name, bindName] = useInput<string>(newName);
 
     const { setSpinnerVisible } = useContext(SpinnerContext);
 
-    const onClickEdit = () => {
+    const onClickEdit = async () => {
+        if (checkNameIsEmpty() || checkNameIsDuplicate()) return;
+
+        try {
+            setSpinnerVisible(true);
+            await crollCharacterInfo();
+        } finally {
+            setSpinnerVisible(false);
+        }
+    };
+
+    const crollCharacterInfo = async () => {
+        const { status, validMsg, crollJob, crollLevel } = await getCrollCharacterInfo(name);
+
+        const setCharacterInfo = {
+            success: () => editCharacter(crollJob || '', crollLevel || ''),
+            error: () => toast.error(validMsg || ''),
+        };
+
+        setCharacterInfo[status] && setCharacterInfo[status]();
+    };
+
+    const editCharacter = (crollJob: string, crollLevel: string) => {
         const characterArr: ICharacter[] = JSON.parse(character);
 
-        const index = characterArr.findIndex((obj: ICharacter) => obj.id === oriId);
+        const index = characterArr.findIndex((char: ICharacter) => char.id === oriId);
 
         let newCharacterArr = [...characterArr];
 
-        newCharacterArr[index] = { ...newCharacterArr[index], name: characterName, color: color };
+        newCharacterArr[index] = {
+            ...newCharacterArr[index],
+            name: name,
+            color: color,
+            level: crollLevel,
+            job: crollJob,
+        };
 
         setCharacter(JSON.stringify(newCharacterArr));
 
         closeModal();
+    };
+
+    const checkNameIsDuplicate = (): boolean => {
+        if (newName !== name && isDuplicate(name)) {
+            toast.error('중복된 캐릭터명 입니다.');
+            return true;
+        }
+
+        return false;
+    };
+
+    const checkNameIsEmpty = (): boolean => {
+        if (!name) {
+            toast.error('캐릭터 명을 입력 해 주세요.');
+            return true;
+        }
+
+        return false;
     };
 
     const onClickDelete = () => {
@@ -64,14 +104,11 @@ const CharacterEdit = ({ id: oriId, name: newName, setCurrentPage, perPage }: IC
             isOpen: true,
             content: <>데이터를 삭제하시겠습니까?</>,
             options: {
-                confirmFn: async () => {
-                    setSpinnerVisible(true);
+                confirmFn: () => {
+                    deleteCharacterInfo();
+                    deleteTodo();
+                    setCurrentCharacterPage();
 
-                    await deleteCharacter();
-                    await deleteTodo();
-                    await setPage();
-
-                    setSpinnerVisible(false);
                     closeDialog();
                     closeModal();
                 },
@@ -79,11 +116,14 @@ const CharacterEdit = ({ id: oriId, name: newName, setCurrentPage, perPage }: IC
         });
     };
 
-    const setPage = () => {
-        const currentPage = Math.ceil(
-            JSON.parse(JSON.parse(localStorage.getItem('character') || '[]')).length / perPage,
-        );
+    const setCurrentCharacterPage = () => {
+        const currentPage = Math.ceil(getStorage('character').length / perPage);
         setCurrentPage(currentPage);
+    };
+
+    const deleteCharacterInfo = () => {
+        deleteCharacter();
+        deleteCharacterOrd();
     };
 
     const deleteCharacter = () => {
@@ -92,7 +132,9 @@ const CharacterEdit = ({ id: oriId, name: newName, setCurrentPage, perPage }: IC
             return id === oriId;
         });
         setCharacter(JSON.stringify(resultArray));
+    };
 
+    const deleteCharacterOrd = () => {
         const characterOrdArr: number[] = JSON.parse(characterOrd);
         const resultOrd = _.reject(characterOrdArr, (ord: number) => {
             return ord === oriId;
@@ -101,47 +143,23 @@ const CharacterEdit = ({ id: oriId, name: newName, setCurrentPage, perPage }: IC
     };
 
     const deleteTodo = () => {
-        const todoArr: ITodo[] = JSON.parse(storageTodo);
+        const todoArr: ITodo[] = JSON.parse(todo);
 
-        const deleteResult = todoArr.map((todo: ITodo) => {
-            todo.character = _.reject(todo.character, (character: ICharacterTodo) => {
+        const deleteResult = todoArr.map((todoObj: ITodo) => {
+            todoObj.character = _.reject(todoObj.character, (character: ICharacterTodo) => {
                 return character.id === oriId;
             });
 
-            return todo;
+            return todoObj;
         });
 
-        setStorageTodo(JSON.stringify(deleteResult));
+        setTodo(JSON.stringify(deleteResult));
     };
 
     return (
         <FormContainer>
-            <FormDivContainer>
-                <FlexDiv direction="column">
-                    <ContentsDivTitle>캐릭터명</ContentsDivTitle>
-                    <ContentsDiv>
-                        <TextBox {...bindCharacterName} />
-                    </ContentsDiv>
-                </FlexDiv>
-
-                <FlexDiv direction="column">
-                    <ContentsDivTitle>색상</ContentsDivTitle>
-                    <ContentsDiv>
-                        <CompactPicker color={color} onChange={(color: ColorResult) => setColor(color.hex)} />
-                    </ContentsDiv>
-                </FlexDiv>
-            </FormDivContainer>
-            <FormButtonContainer>
-                <FlexDiv width="100">
-                    <Button borderColor="cancel" onClick={onClickDelete}>
-                        삭제
-                    </Button>
-                </FlexDiv>
-                <RightButtonDiv>
-                    <Button onClick={onClickEdit}>수정</Button>
-                    <Button onClick={() => closeModal()}>닫기</Button>
-                </RightButtonDiv>
-            </FormButtonContainer>
+            <CharacterForm color={color} setColor={setColor} bindName={bindName} />
+            <EditButtonContainer onClickDelete={onClickDelete} onClickEdit={onClickEdit} />
         </FormContainer>
     );
 };

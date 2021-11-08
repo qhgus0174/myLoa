@@ -14,7 +14,7 @@ export interface ICheckbox extends React.InputHTMLAttributes<HTMLInputElement> {
 const Checkbox = ({
     checked,
     label,
-    checkColor,
+    checkColor = 'check',
     transition = true,
     color = 'white',
     shape = 'circle',
@@ -63,7 +63,7 @@ const Label = styled.label<ICheckbox>`
         `
             span {
                 background-color: ${props.theme.colors.white};
-                transform: scale(1.2); // enlarge the box
+                transform: scale(1.2); 
 
                 &:after {
                     width: 10px;
@@ -79,7 +79,6 @@ const Label = styled.label<ICheckbox>`
             }
 
             &:hover {
-                // copy the states for onMouseOver to avoid flickering
                 span {
                     background-color: ${props.theme.colors.white};
                     transform: scale(1.3); // enlarge the box
@@ -110,7 +109,7 @@ const Span = styled.span<Pick<ICheckbox, 'shape' | 'transition'>>`
     border: 2px solid ${props => props.theme.colors.white};
     border-radius: ${props => (props.shape === 'circle' ? '50%' : '0%')};
     vertical-align: -6px;
-    margin-right: 10px;
+
     ${props =>
         props.transition &&
         `transition: background-color 150ms 200ms, transform 350ms cubic-bezier(0.78, -1.22, 0.17, 1.89);`} // custom ease effect for bouncy animation
@@ -119,12 +118,12 @@ const Span = styled.span<Pick<ICheckbox, 'shape' | 'transition'>>`
         content: '';
         width: 0px;
         height: 2px;
-        border-radius: 2px; // so that the tick has nice rounded look
+        border-radius: 2px;
         background: ${props => props.theme.colors.white};
         position: absolute;
         transform: rotate(45deg);
-        top: 13px; // you'll need to experiment with placement depending on the dimensions you've chosen
-        left: 9px; // you'll need to experiment with placement depending on the dimensions you've chosen
+        top: 13px;
+        left: 9px;
         ${props => props.transition && `transition: width 50ms ease 50ms;`}
         transform-origin: 0% 0%;
     }
@@ -133,12 +132,12 @@ const Span = styled.span<Pick<ICheckbox, 'shape' | 'transition'>>`
         content: '';
         width: 0;
         height: 2px;
-        border-radius: 2px; // so that the tick has nice rounded look
+        border-radius: 2px;
         background: ${props => props.theme.colors.white};
         position: absolute;
         transform: rotate(305deg);
-        top: 16px; // you'll need to experiment with placement depending on the dimensions you've chosen
-        left: 10px; // you'll need to experiment with placement depending on the dimensions you've chosen
+        top: 16px;
+        left: 10px;
         ${props => props.transition && `transition: width 50ms ease;`}
         transform-origin: 0% 0%;
     }
@@ -146,8 +145,6 @@ const Span = styled.span<Pick<ICheckbox, 'shape' | 'transition'>>`
 
 const CustomCheckbox = styled.input`
     display: none; // hide the system checkbox
-
-    // Let's add some effects after the checkbox is checked
 `;
 
 const CheckboxTitle = styled.span<ICheckbox>`

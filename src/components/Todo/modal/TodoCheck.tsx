@@ -1,28 +1,20 @@
-import React, { InputHTMLAttributes, useContext, useEffect, useState } from 'react';
-import Button from '@components/Button/Button';
+import React, { useContext, useState } from 'react';
 import { ModalActionContext } from '@context/ModalContext';
-import useTodo from '@hooks/storage/useTodo';
-import { useInput } from '@hooks/useInput';
-
-import { ICharacterTodo, ITodo, ITodoCheck } from '../TodoType';
-import { ScheduleType } from 'common/types';
-import Checkbox from '@components/Input/Checkbox';
-import { FlexDiv } from '@style/common';
-import styled from '@emotion/styled';
-import TextBox from '@components/Input/TextBox';
-import { css, useTheme } from '@emotion/react';
 import { useCheckbox } from '@hooks/useCheckbox';
-import {
-    ContentsDiv,
-    ContentsDivTitle,
-    FormButtonContainer,
-    FormContainer,
-    FormDivContainer,
-} from '@style/common/modal';
+import { useInput } from '@hooks/useInput';
+import useTodo from '@hooks/storage/useTodo';
+import { ICharacterTodo, ITodo, ITodoCheck } from '@components/Todo/TodoType';
+import EditButtonContainer from '@components/Container/Button/Edit';
+import Checkbox from '@components/Input/Checkbox';
+import TextBox from '@components/Input/TextBox';
+import { ScheduleType } from '@common/types';
+import { css, useTheme } from '@emotion/react';
+import styled from '@emotion/styled';
+import { ContentsDiv, ContentsDivTitle, FormContainer, FormDivContainer } from '@style/common/modal';
+import { FlexDiv } from '@style/common';
 
 const TodoCheck = ({
     id: characterId,
-    check: oriCheck,
     relaxGauge: oriRelax,
     memo: oriMemo,
     text: oriText,
@@ -34,23 +26,24 @@ const TodoCheck = ({
 }: ITodoCheck) => {
     const theme = useTheme();
 
-    const { closeModal } = useContext(ModalActionContext);
     const [storageTodo, setStorageTodo] = useTodo();
+
+    const { closeModal } = useContext(ModalActionContext);
+
     const [hide, bindHide] = useCheckbox(oriHide);
 
-    const [todoType, setTodoType] = useState<ScheduleType>(oriTodoType);
+    const [todoType] = useState<ScheduleType>(oriTodoType);
+
     const [relaxGauge, bindRelaxGauge] = useInput<number>(oriRelax, { maxLength: 3, numberOnly: true });
     const [text, bindText] = useInput<string>(oriText || '');
     const [memo, bindMemo] = useInput<string>(oriMemo || '');
 
-    useEffect(() => {
-        const todoArr: ITodo[] = JSON.parse(storageTodo);
-        const index = todoArr.findIndex((obj: ITodo) => obj.id === todoId);
-
-        setTodoType(todoArr[index].type);
-    }, []);
-
     const onClickEdit = () => {
+        editTodoCheck();
+        closeModal();
+    };
+
+    const editTodoCheck = () => {
         const todoArr: ITodo[] = JSON.parse(storageTodo);
 
         const newTodo: ITodo[] = todoArr.map((todo: ITodo) => {
@@ -72,13 +65,11 @@ const TodoCheck = ({
         });
 
         setStorageTodo(JSON.stringify(newTodo));
-
-        closeModal();
     };
 
     return (
         <FormContainer>
-            {todoType === 'daily' && (todoContents === 'chaos' || todoContents === 'epona') && (
+            {todoType === 'daily' && ['chaos', 'epona'].includes(todoContents) && (
                 <RemarkDiv>* 휴식게이지 수동 입력 시 수행횟수는 초기화 됩니다.</RemarkDiv>
             )}
             <FormDivContainer>
@@ -91,7 +82,7 @@ const TodoCheck = ({
                     </FlexDiv>
                 ) : (
                     todoType === 'daily' &&
-                    (todoContents === 'chaos' || todoContents === 'epona') && (
+                    ['chaos', 'epona'].includes(todoContents) && (
                         <FlexDiv direction="column">
                             <ContentsDivTitle
                                 css={css`
@@ -114,27 +105,13 @@ const TodoCheck = ({
                     </ContentsDiv>
                 </FlexDiv>
                 <FlexDiv>
-                    <ContentsDivTitle
-                        css={css`
-                            margin-bottom: 0;
-                            flex-basis: 10%;
-                        `}
-                    >
-                        숨김
-                    </ContentsDivTitle>
-                    <ContentsDiv
-                        css={css`
-                            flex-basis: 90%;
-                        `}
-                    >
+                    <HideDivTitle>숨김</HideDivTitle>
+                    <HideDivContents>
                         <Checkbox transition={false} checkColor="black" shape="square" {...bindHide} />
-                    </ContentsDiv>
+                    </HideDivContents>
                 </FlexDiv>
             </FormDivContainer>
-            <FormButtonContainer>
-                <Button onClick={onClickEdit}>수정</Button>
-                <Button onClick={() => closeModal()}>닫기</Button>
-            </FormButtonContainer>
+            <EditButtonContainer onClickEdit={onClickEdit} />
         </FormContainer>
     );
 };
@@ -142,6 +119,15 @@ const TodoCheck = ({
 const RemarkDiv = styled(FlexDiv)`
     justify-content: flex-end;
     color: ${props => props.theme.colors.translucent};
+`;
+
+const HideDivTitle = styled(ContentsDivTitle)`
+    margin-bottom: 0;
+    flex-basis: 10%;
+`;
+
+const HideDivContents = styled(ContentsDivTitle)`
+    flex-basis: 90%;
 `;
 
 export default TodoCheck;

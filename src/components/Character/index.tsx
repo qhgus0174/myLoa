@@ -1,53 +1,33 @@
-import React, { useState } from 'react';
-import Button from '@components/Button/Button';
-import styled from '@emotion/styled';
-import useCharacter from '@hooks/storage/useCharacter';
-import useCharacterOrd from '@hooks/storage/useCharacterOrd';
-import { FlexDiv, FlexLeftDiv, FlexRightDiv, FlexHoverDiv } from '@style/common';
+import React, { useContext } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
-import CharacterEdit from './modal/CharacterEdit';
-import { ICharacter } from './CharacterType';
-import JobLogo from './JobLogo';
+import { PagingActionContext, PagingStateContext } from '@context/PagingContext';
+import useCharacterOrd from '@hooks/storage/useCharacterOrd';
+import { getStorage } from '@storage/index';
+import CharacterEdit from '@components/Character/modal/CharacterEdit';
+import { ICharacter } from '@components/Character/CharacterType';
+import JobLogo from '@components/Character/JobLogo';
+import Button from '@components/Button/Button';
+import { IContextModalParam } from '@common/types';
 import { css, useTheme } from '@emotion/react';
+import styled from '@emotion/styled';
+import { FlexDiv, FlexLeftDiv, FlexHoverDiv, CharactersDiv } from '@style/common';
 import { ReactComponent as LeftArrow } from '@assets/img/left-arrow.svg';
 import { ReactComponent as RightArrow } from '@assets/img/right-arrow.svg';
 
-interface ICharacterParam {
-    currentPage: number;
-    perPage: number;
-    setCurrentPage: (e: number) => void;
-    onClickPrev: () => void;
-    onClickNext: () => void;
-    onContextMenuBasicModal: (
-        e: React.MouseEvent<HTMLElement>,
-        modal: JSX.Element,
-        width?: string,
-        height?: string,
-    ) => void;
-}
-
-const Character = ({
-    currentPage,
-    perPage,
-    setCurrentPage,
-    onClickPrev,
-    onClickNext,
-    onContextMenuBasicModal,
-}: ICharacterParam) => {
-    const [storageCharacter] = useCharacter();
+const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
     const [storageCharacterOrd, setStorageCharacterOrd] = useCharacterOrd();
+    const { perPage, currentPage } = useContext(PagingStateContext);
+    const { onClickNext, onClickPrev } = useContext(PagingActionContext);
 
     const theme = useTheme();
 
     const onDragEndCharacter = (result: DropResult) => {
         // source : drag 시작 위치
         // destination : drag 목적지
-        const { destination, source, draggableId } = result;
+        const { destination, source } = result;
 
         // dnd를 도중에 멈췄으므로(올바른 droppable 위에 두지 않았으므로) 그냥 리턴
-        if (!destination) {
-            return;
-        }
+        if (!destination) return;
 
         // 같은 자리에 가져다 두었다면 그냥 리턴
         if (destination.droppableId === source.droppableId && destination.index === source.index) {
@@ -68,6 +48,7 @@ const Character = ({
 
         return newArr;
     };
+
     return (
         <>
             <DragDropContext onDragEnd={onDragEndCharacter}>
@@ -76,25 +57,21 @@ const Character = ({
                         <DropDiv>
                             <FlexDiv {...provided.droppableProps} ref={provided.innerRef}>
                                 <FlexLeftDiv></FlexLeftDiv>
-                                <ArrowDiv
-                                    css={css`
-                                        visibility: ${JSON.parse(storageCharacterOrd).length < 6
-                                            ? `hidden`
-                                            : `visible`};
-                                    `}
-                                >
-                                    <Button width="100" border="none" onClick={onClickPrev}>
-                                        <LeftArrow width="30px" height="30px" fill={theme.colors.white} />
-                                    </Button>
+                                <ArrowDiv perPage={perPage}>
+                                    <Button
+                                        width="100"
+                                        border="none"
+                                        onClick={onClickPrev}
+                                        icon={<LeftArrow width="20px" height="20px" fill={theme.colors.white} />}
+                                        iconOnly={true}
+                                    />
                                 </ArrowDiv>
-                                <CharactersDiv
-                                    length={JSON.parse(storageCharacterOrd).length - (currentPage - 1) * perPage}
-                                >
-                                    {(JSON.parse(storageCharacter) as ICharacter[])
+                                <CharactersDiv length={getStorage('characterOrd').length - (currentPage - 1) * perPage}>
+                                    {(getStorage('character') as ICharacter[])
                                         .sort((a, b) => {
                                             return (
-                                                (JSON.parse(storageCharacterOrd) as number[]).indexOf(a.id) -
-                                                (JSON.parse(storageCharacterOrd) as number[]).indexOf(b.id)
+                                                (getStorage('characterOrd') as number[]).indexOf(a.id) -
+                                                (getStorage('characterOrd') as number[]).indexOf(b.id)
                                             );
                                         })
                                         .slice(
@@ -116,15 +93,19 @@ const Character = ({
                                                             {...provided.dragHandleProps}
                                                             ref={provided.innerRef}
                                                             onContextMenu={e =>
-                                                                onContextMenuBasicModal(
-                                                                    e,
-                                                                    <CharacterEdit
-                                                                        setCurrentPage={setCurrentPage}
-                                                                        perPage={perPage}
-                                                                        id={char.id}
-                                                                        name={char.name}
-                                                                    />,
-                                                                )
+                                                                onContextMenuBasicModal({
+                                                                    e: e,
+                                                                    modal: (
+                                                                        <CharacterEdit
+                                                                            id={char.id}
+                                                                            name={char.name}
+                                                                            color={char.color}
+                                                                        />
+                                                                    ),
+                                                                    title: '캐릭터 수정',
+                                                                    width: '35',
+                                                                    height: '57',
+                                                                })
                                                             }
                                                         >
                                                             <FlexDiv>
@@ -141,16 +122,14 @@ const Character = ({
                                         })}
                                     {provided.placeholder}
                                 </CharactersDiv>
-                                <ArrowDiv
-                                    css={css`
-                                        visibility: ${JSON.parse(storageCharacterOrd).length < 6
-                                            ? `hidden`
-                                            : `visible`};
-                                    `}
-                                >
-                                    <Button width="100" border="none" onClick={onClickNext}>
-                                        <RightArrow width="30px" height="30px" fill={theme.colors.white} />
-                                    </Button>
+                                <ArrowDiv perPage={perPage}>
+                                    <Button
+                                        width="100"
+                                        border="none"
+                                        onClick={onClickNext}
+                                        icon={<RightArrow width="23px" height="23px" fill={theme.colors.white} />}
+                                        iconOnly={true}
+                                    />
                                 </ArrowDiv>
                             </FlexDiv>
                         </DropDiv>
@@ -161,11 +140,6 @@ const Character = ({
     );
 };
 
-const CharactersDiv = styled(FlexRightDiv)<{ length: number }>`
-    height: 3.8em;
-    justify-content: ${props => (props.length < 5 ? `flex-start` : `space-around`)};
-`;
-
 const DropDiv = styled.div`
     width: 100%;
     border-bottom: 1px solid ${props => props.theme.colors.white};
@@ -174,6 +148,8 @@ const DropDiv = styled.div`
 `;
 
 const CharacterDiv = styled(FlexHoverDiv)`
+    font-weight: 600;
+    width: 100%;
     div {
         color: ${props => props.color};
     }
@@ -184,9 +160,9 @@ const InfoDiv = styled(FlexDiv)`
     box-sizing: border-box;
 `;
 
-const ArrowDiv = styled.div`
+const ArrowDiv = styled.div<{ perPage: number }>`
+    visibility: ${props => (getStorage('characterOrd').length < props.perPage + 1 ? `hidden` : `visible`)};
     display: flex;
-    width: 2.5%;
     flex-basis: 2.5%;
 `;
 

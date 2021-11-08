@@ -18,11 +18,7 @@ export function useInput<T>(
     const bind = {
         value,
         onKeyPress: (e: React.KeyboardEvent<HTMLInputElement>) => {
-            if (option?.numberOnly) {
-                if (!/[0-9]/.test(e.key)) {
-                    e.preventDefault();
-                }
-            }
+            if (option?.numberOnly && !/[0-9]/.test(e.key)) e.preventDefault();
         },
         onChange: (e: React.ChangeEvent<any>) => {
             setValue(e.target?.value);

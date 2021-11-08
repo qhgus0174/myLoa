@@ -1,28 +1,14 @@
 import React, { useContext, useState } from 'react';
-import Button from '@components/Button/Button';
-import TextBox from '@components/Input/TextBox';
-import { ModalActionContext } from '@context/ModalContext';
-import useTodo from '@hooks/storage/useTodo';
-import { useInput } from '@hooks/useInput';
-import useTodoOrd from '@hooks/storage/useTodoOrd';
-import useCharacter from '@hooks/storage/useCharacter';
-import { ITodo, ICharacterTodo } from '../TodoType';
-import { ScheduleCheckType, ScheduleContents, ScheduleType } from 'common/types';
 import _ from 'lodash';
-import Checkbox from '@components/Input/Checkbox';
-import { ColorResult, CompactPicker } from 'react-color';
-import { FlexDiv } from '@style/common';
-import styled from '@emotion/styled';
-import RadioButton from '@components/Input/Radio';
-import { css } from '@emotion/react';
-import {
-    ContentsDiv,
-    ContentsDivTitle,
-    FormButtonContainer,
-    FormContainer,
-    FormDivContainer,
-    RightButtonDiv,
-} from '@style/common/modal';
+import { ModalActionContext } from '@context/ModalContext';
+import useTodoOrd from '@hooks/storage/useTodoOrd';
+import { useInput } from '@hooks/useInput';
+import useTodo from '@hooks/storage/useTodo';
+import EditButtonContainer from '@components/Container/Button/DelEdit';
+import TodoForm from '@components/Todo/common/Form';
+import { ITodo } from '@components/Todo/TodoType';
+import { ScheduleCheckType, ScheduleContents, ScheduleType } from '@common/types';
+import { FormContainer } from '@style/common/modal';
 
 const TodoEdit = ({
     id: oriId,
@@ -32,6 +18,11 @@ const TodoEdit = ({
     checkType: newCheckType,
     color: newColor,
 }: Omit<ITodo, 'character'>) => {
+    const [storageTodo, setStorageTodo] = useTodo();
+    const [storageTodoOrd, setStorageTodoOrd] = useTodoOrd();
+
+    const { closeModal } = useContext(ModalActionContext);
+
     const [type, setType] = useState<ScheduleType>(newType);
     const [contents, setContents] = useState<ScheduleContents>(newContents);
     const [checkType, setCheckType] = useState<ScheduleCheckType>(newCheckType);
@@ -39,15 +30,21 @@ const TodoEdit = ({
 
     const [name, bindName] = useInput<string>(newName);
 
-    const { closeModal } = useContext(ModalActionContext);
+    const onClickEdit = () => {
+        editTodo();
+        closeModal();
+    };
 
-    const [storageTodo, setStorageTodo] = useTodo();
-    const [storageTodoOrd, setStorageTodoOrd] = useTodoOrd();
+    const onClickDelete = () => {
+        deleteTodo();
+        deleteTodoOrd();
+        closeModal();
+    };
 
-    const onClickAdd = () => {
+    const editTodo = () => {
         const todoArr: ITodo[] = JSON.parse(storageTodo);
 
-        const index = todoArr.findIndex((obj: ITodo) => obj.id === oriId);
+        const index = todoArr.findIndex((todoObj: ITodo) => todoObj.id === oriId);
 
         let newTodoArr = [...todoArr];
         newTodoArr[index] = {
@@ -60,136 +57,39 @@ const TodoEdit = ({
         };
 
         setStorageTodo(JSON.stringify(newTodoArr));
-
-        closeModal();
     };
 
-    const onClickDelete = () => {
+    const deleteTodo = () => {
         const todoArr: ITodo[] = JSON.parse(storageTodo);
         const resultArray = _.reject(todoArr, (todo: ITodo) => {
             return todo.id === oriId;
         });
         setStorageTodo(JSON.stringify(resultArray));
+    };
 
+    const deleteTodoOrd = () => {
         const todoArrOrd: number[] = JSON.parse(storageTodoOrd);
         const resultOrd = _.reject(todoArrOrd, (ord: number) => {
             return ord === oriId;
         });
         setStorageTodoOrd(JSON.stringify(resultOrd));
-
-        closeModal();
     };
 
     return (
         <FormContainer>
-            <FormDivContainer>
-                <FlexDiv direction="column">
-                    <ContentsDivTitle>숙제 유형</ContentsDivTitle>
-                    <ContentsDiv>
-                        <SmallTitleDiv>체크박스형</SmallTitleDiv>
-                        <RadioButton
-                            text="일일"
-                            name="type"
-                            value="daily"
-                            onChange={() => {
-                                setType('daily');
-                                setContents('chaos');
-                                setCheckType('check');
-                            }}
-                            checked={type === 'daily'}
-                        />
-                        <RadioButton
-                            text="주간"
-                            name="type"
-                            value="weekly"
-                            onChange={() => {
-                                setType('weekly');
-                                setContents('none');
-                                setCheckType('check');
-                            }}
-                            checked={type === 'weekly'}
-                        />
-                    </ContentsDiv>
-                    <ContentsDiv>
-                        <SmallTitleDiv>텍스트형</SmallTitleDiv>
-                        <RadioButton
-                            text="텍스트"
-                            name="type"
-                            value="other"
-                            onChange={() => {
-                                setType('other');
-                                setContents('none');
-                                setCheckType('text');
-                            }}
-                            checked={type === 'other'}
-                        />
-                    </ContentsDiv>
-                </FlexDiv>
-                {type === 'daily' && (
-                    <FlexDiv direction="column">
-                        <ContentsDivTitle>컨텐츠</ContentsDivTitle>
-                        <ContentsDiv>
-                            <RadioButton
-                                text="카던/가디언"
-                                name="contents"
-                                value="chaos"
-                                onChange={() => setContents('chaos')}
-                                checked={contents === 'chaos'}
-                            />
-                            <RadioButton
-                                text="에포나"
-                                name="contents"
-                                value="epona"
-                                onChange={() => setContents('epona')}
-                                checked={contents === 'epona'}
-                            />
-                            <RadioButton
-                                text="일반(초기화O)"
-                                name="contents"
-                                value="basicReset"
-                                onChange={() => setContents('basicReset')}
-                                checked={contents === 'basicReset'}
-                            />
-                            <RadioButton
-                                text="일반(초기화X)"
-                                name="contents"
-                                value="basic"
-                                onChange={() => setContents('basic')}
-                                checked={contents === 'basic'}
-                            />
-                        </ContentsDiv>
-                    </FlexDiv>
-                )}
-                <FlexDiv direction="column">
-                    <ContentsDivTitle>숙제</ContentsDivTitle>
-                    <ContentsDiv>
-                        <TextBox {...bindName} />
-                    </ContentsDiv>
-                </FlexDiv>
-                <FlexDiv direction="column">
-                    <ContentsDivTitle>색상</ContentsDivTitle>
-                    <ContentsDiv>
-                        <CompactPicker color={color} onChange={(color: ColorResult) => setColor(color.hex)} />
-                    </ContentsDiv>
-                </FlexDiv>
-            </FormDivContainer>
-
-            <FormButtonContainer>
-                <FlexDiv width="100">
-                    <Button onClick={onClickDelete}>삭제</Button>
-                </FlexDiv>
-                <RightButtonDiv>
-                    <Button onClick={onClickAdd}>수정</Button>
-                    <Button onClick={() => closeModal()}>닫기</Button>
-                </RightButtonDiv>
-            </FormButtonContainer>
+            <TodoForm
+                type={type}
+                contents={contents}
+                color={color}
+                setColor={setColor}
+                setType={setType}
+                setContents={setContents}
+                setCheckType={setCheckType}
+                bindName={bindName}
+            />
+            <EditButtonContainer onClickDelete={onClickDelete} onClickEdit={onClickEdit} />
         </FormContainer>
     );
 };
-
-const SmallTitleDiv = styled.div`
-    margin-left: 0.7em;
-    margin-right: 0.5em;
-`;
 
 export default TodoEdit;

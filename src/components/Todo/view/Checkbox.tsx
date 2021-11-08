@@ -1,53 +1,32 @@
-import React from 'react';
-import TextBox from '@components/Input/TextBox';
-import useCharacterOrd from '@hooks/storage/useCharacterOrd';
-import { ICharacterTodo, ITodo } from '../TodoType';
-import TodoCheck from '../modal/TodoCheck';
+import React, { useContext } from 'react';
+import { getStorage } from '@storage/index';
 import { default as CheckboxInput } from '@components/Input/Checkbox';
-import { FlexHoverDiv, FlexRightDiv } from '@style/common';
+import { ICharacterTodo, ITodo } from '@components/Todo/TodoType';
+import TodoCheck from '@components/Todo/modal/TodoCheck';
+import TextBox from '@components/Input/TextBox';
+import { IContextModal, ScheduleContents, ScheduleType } from '@common/types';
+import { CharactersDiv, FlexHoverDiv } from '@style/common';
 import styled from '@emotion/styled';
-import { css } from '@emotion/react';
-import { ScheduleType } from '@common/types';
+
+import { PagingStateContext } from '@context/PagingContext';
 
 interface ICheckbox {
-    currentPage: number;
-    perPage: number;
     todo: ITodo;
     todoIndex: number;
-    onContextMenu: (e: React.MouseEvent<HTMLDivElement>, modal: JSX.Element, width?: string, height?: string) => void;
+    onContextMenu: ({ e, title, modal, width, height }: IContextModal) => void;
     onClickCheckTodo: (todoOrdIndex: number, characterOrdIndex: number) => void;
     onChangeTodoText: (e: React.ChangeEvent<HTMLInputElement>, todoOrdIndex: number, characterOrdIndex: number) => void;
 }
 
-const Checkbox = ({
-    currentPage,
-    perPage,
-    todo,
-    todoIndex,
-    onContextMenu,
-    onClickCheckTodo,
-    onChangeTodoText,
-}: ICheckbox) => {
-    const [storageCharacterOrd] = useCharacterOrd();
-
+const Checkbox = ({ todo, todoIndex, onContextMenu, onClickCheckTodo, onChangeTodoText }: ICheckbox) => {
+    const { perPage, currentPage } = useContext(PagingStateContext);
     return (
         <>
-            <div
-                css={css`
-                    display: flex;
-                    width: 2.5%;
-                    flex-basis: 2.5%;
-                `}
-            >
-                &nbsp;
-            </div>
-            <CheckContainer length={JSON.parse(storageCharacterOrd).length - (currentPage - 1) * perPage}>
+            <WhiteSpaceDiv></WhiteSpaceDiv>
+            <CharactersDiv length={getStorage('character').length - (currentPage - 1) * perPage}>
                 {todo.character
                     ?.sort((a: ICharacterTodo, b: ICharacterTodo) => {
-                        return (
-                            (JSON.parse(storageCharacterOrd) as number[]).indexOf(a.id) -
-                            (JSON.parse(storageCharacterOrd) as number[]).indexOf(b.id)
-                        );
+                        return getStorage('characterOrd').indexOf(a.id) - getStorage('characterOrd').indexOf(b.id);
                     })
                     .slice(
                         currentPage === 1 ? 0 : (currentPage - 1) * perPage,
@@ -59,71 +38,66 @@ const Checkbox = ({
                             <FlexHoverDiv
                                 key={`drag_char_${characterIndex}`}
                                 onContextMenu={e =>
-                                    onContextMenu(
-                                        e,
-                                        <TodoCheck
-                                            {...charTodo}
-                                            todoId={todo.id}
-                                            checkType={todo.checkType}
-                                            todoType={todo.type}
-                                        />,
-                                    )
+                                    onContextMenu({
+                                        e: e,
+                                        modal: (
+                                            <TodoCheck
+                                                {...charTodo}
+                                                todoId={todo.id}
+                                                checkType={todo.checkType}
+                                                todoType={todo.type}
+                                                todoContents={todo.contents}
+                                            />
+                                        ),
+                                        title: '숙제 수정(개별)',
+                                        width: '35',
+                                        height: '60',
+                                    })
                                 }
                             >
-                                {todo.checkType === 'check' ? (
-                                    <>
-                                        <CheckBox todoType={todo.type}>
-                                            <CheckboxInput
-                                                checked={isChecked}
-                                                onChange={() => onClickCheckTodo(todoIndex, characterIndex)}
-                                            />
-                                        </CheckBox>
-                                        {todo.type === 'daily' && (
-                                            <CheckText>
-                                                <RelaxGaugeDiv>{charTodo.relaxGauge}</RelaxGaugeDiv>
-                                                <div>
-                                                    {`${charTodo.check} / ${todo.contents === 'chaos' ? '2' : '3'}`}
-                                                </div>
-                                            </CheckText>
-                                        )}
-                                    </>
-                                ) : (
-                                    <TextBox
-                                        onChange={e => {
-                                            onChangeTodoText(e, todoIndex, characterIndex);
-                                        }}
-                                        underline={false}
-                                        width="70"
-                                        align="center"
-                                        value={charTodo.text || ''}
-                                    />
-                                )}
+                                {!charTodo.hide &&
+                                    (todo.checkType === 'check' ? (
+                                        <>
+                                            <CheckBoxDiv contents={todo.contents} todoType={todo.type}>
+                                                <CheckboxInput
+                                                    checked={isChecked}
+                                                    onChange={() => onClickCheckTodo(todoIndex, characterIndex)}
+                                                />
+                                            </CheckBoxDiv>
+                                            {todo.type === 'daily' && ['chaos', 'epona'].includes(todo.contents) && (
+                                                <CheckText>
+                                                    <RelaxGaugeDiv>{charTodo.relaxGauge}</RelaxGaugeDiv>
+                                                    <div>
+                                                        {`${charTodo.check} / ${todo.contents === 'chaos' ? '2' : '3'}`}
+                                                    </div>
+                                                </CheckText>
+                                            )}
+                                        </>
+                                    ) : (
+                                        <TextBox
+                                            onChange={e => {
+                                                onChangeTodoText(e, todoIndex, characterIndex);
+                                            }}
+                                            underline={false}
+                                            width="70"
+                                            align="center"
+                                            value={charTodo.text || ''}
+                                        />
+                                    ))}
                             </FlexHoverDiv>
                         );
                     })}
-            </CheckContainer>
-            <div
-                css={css`
-                    display: flex;
-                    width: 2.5%;
-                    flex-basis: 2.5%;
-                `}
-            >
-                &nbsp;
-            </div>
+            </CharactersDiv>
+            <WhiteSpaceDiv></WhiteSpaceDiv>
         </>
     );
 };
 
-const CheckContainer = styled(FlexRightDiv)<{ length: number }>`
-    height: 100%;
-    justify-content: ${props => (props.length < 5 ? `flex-start` : `space-around`)};
-`;
-
-const CheckBox = styled.div<{ todoType: ScheduleType }>`
+const CheckBoxDiv = styled.div<{ todoType: ScheduleType; contents: ScheduleContents }>`
     display: flex;
     flex-basis: 50%;
-    justify-content: ${props => (props.todoType === 'daily' ? `flex-end` : `center`)};
+    justify-content: ${props =>
+        props.todoType === 'daily' && ['chaos', 'epona'].includes(props.contents) ? `flex-end` : `center`};
 `;
 
 const CheckText = styled.div`
@@ -131,12 +105,18 @@ const CheckText = styled.div`
     flex-direction: column;
     flex-basis: 50%;
     justify-content: center;
-    padding-left: 1em;
+    padding-left: 1.5em;
 `;
 
 const RelaxGaugeDiv = styled.div`
     justify-content: center;
     color: ${props => props.theme.colors.relax};
+`;
+
+const WhiteSpaceDiv = styled.div`
+    display: flex;
+    width: 2.5%;
+    flex-basis: 2.5%;
 `;
 
 export default Checkbox;

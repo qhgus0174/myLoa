@@ -1,14 +1,15 @@
 import React, { createContext } from 'react';
+import { useModal } from '@hooks/useModal';
 import ModalPortal from '@components/Modal/ModalPortal';
-import { IModalProps, useModal } from '@hooks/useModal';
+import { IPortalProps } from '@common/types';
 
 interface IModalAction {
     openModal: () => void;
     closeModal: () => void;
-    setModalProps: (e: IModalProps) => void;
+    setModalProps: (e: IPortalProps) => void;
 }
 
-export const ModalStateContext = createContext<IModalProps>({
+export const ModalStateContext = createContext<IPortalProps>({
     isOpen: false,
     content: <></>,
 });
@@ -16,7 +17,7 @@ export const ModalStateContext = createContext<IModalProps>({
 export const ModalActionContext = createContext<IModalAction>({
     openModal: () => {},
     closeModal: () => {},
-    setModalProps: (e: IModalProps) => {},
+    setModalProps: (e: IPortalProps) => {},
 });
 
 const ModalProvider = ({ children }: { children: React.ReactNode }) => {

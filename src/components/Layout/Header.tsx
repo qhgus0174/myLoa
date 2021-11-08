@@ -1,5 +1,6 @@
-import styled from '@emotion/styled';
 import React from 'react';
+import styled from '@emotion/styled';
+import { widthMedia } from '@style/device';
 
 const Header = () => {
     return (
@@ -12,12 +13,16 @@ const Header = () => {
 const HeaderDiv = styled.div`
     display: flex;
     justify-content: center;
-    margin-top: 1.6em;
-    margin-bottom: 4em;
+    margin-top: 3vh;
+    margin-bottom: 5vh;
 `;
 
 const LogoImg = styled.img`
-    width: 150px;
+    width: 160px;
+
+    ${widthMedia.phone} {
+        width: 130px;
+    }
 `;
 
 export default Header;

@@ -1,15 +1,11 @@
 import React, { useContext } from 'react';
 import { createPortal } from 'react-dom';
-import styled from '@emotion/styled';
 import { DialogActionContext, DialogStateContext } from '@context/DialogContext';
 import Dialog from '@components/Dialog';
-import { IDialogOption } from '@hooks/useDialog';
+import { IPortalOption } from '@common/types';
+import styled from '@emotion/styled';
 import { heightMedia, widthMedia } from '@style/device';
-
-export interface IDialog {
-    children: React.ReactNode;
-    options?: IDialogOption;
-}
+import { Dimmer } from '@style/common/modal';
 
 const DialogPortal = () => {
     const { isOpen, content, options } = useContext(DialogStateContext);
@@ -17,7 +13,7 @@ const DialogPortal = () => {
 
     return createPortal(
         isOpen && (
-            <DialogDimmer
+            <Dimmer
                 tabIndex={-1}
                 onClick={() => {
                     closeDialog();
@@ -33,27 +29,13 @@ const DialogPortal = () => {
                 >
                     <Dialog options={options}>{content}</Dialog>
                 </DialogInner>
-            </DialogDimmer>
+            </Dimmer>
         ),
         document.getElementById('modal-root') as HTMLElement,
     );
 };
 
-const DialogDimmer = styled.div`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    background-color: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(4px);
-    box-sizing: border-box;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-`;
-
-const DialogInner = styled.div<Pick<IDialogOption, 'width' | 'height'>>`
+const DialogInner = styled.div<Pick<IPortalOption, 'width' | 'height'>>`
     background-color: #ffffff;
     box-sizing: border-box;
     border-radius: 4px;
@@ -70,6 +52,7 @@ const DialogInner = styled.div<Pick<IDialogOption, 'width' | 'height'>>`
 
     ${widthMedia.desktop} {
         max-width: 40vw;
+        height: 20vh;
     }
 
     ${widthMedia.tablet} {
@@ -78,12 +61,13 @@ const DialogInner = styled.div<Pick<IDialogOption, 'width' | 'height'>>`
     }
 
     ${widthMedia.phone} {
-        max-width: 90vw;
-        height: 30vh;
+        max-width: 100vw;
+        width: 400px;
+        height: 190px;
     }
 
     ${heightMedia.small} {
-        height: 45vh;
+        height: 190px;
         max-height: 55vh;
     }
 `;

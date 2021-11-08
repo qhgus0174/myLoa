@@ -1,22 +1,10 @@
-import React, { ReactElement, useEffect, useState } from 'react';
-
-export interface IModalOption {
-    width?: string;
-    height?: string;
-    headerTitle?: string;
-    confirmFn?: () => void | Promise<void>;
-}
-
-export interface IModalProps {
-    isOpen: boolean;
-    content: ReactElement;
-    options?: IModalOption;
-}
+import { IPortalOption, IPortalProps } from '@common/types';
+import React, { useEffect, useState } from 'react';
 
 export const useModal = () => {
-    const [isOpen, setIsOpen] = useState<IModalProps['isOpen']>(false);
+    const [isOpen, setIsOpen] = useState<IPortalProps['isOpen']>(false);
     const [content, setContent] = useState<React.ReactElement>(<></>);
-    const [options, setOptions] = useState<IModalOption | undefined>({});
+    const [options, setOptions] = useState<IPortalOption | undefined>({});
 
     useEffect(() => {
         if (isOpen) {
@@ -37,7 +25,7 @@ export const useModal = () => {
         setIsOpen(false);
     };
 
-    const setModalProps = (sets: IModalProps) => {
+    const setModalProps = (sets: IPortalProps) => {
         setIsOpen(sets.isOpen);
         setContent(sets.content);
         setOptions(sets.options);

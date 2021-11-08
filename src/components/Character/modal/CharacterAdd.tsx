@@ -1,93 +1,96 @@
 import React, { useContext, useState } from 'react';
-import Button from '@components/Button/Button';
+import { toast } from 'react-toastify';
+import { PagingActionContext, PagingStateContext } from '@context/PagingContext';
+import { ModalActionContext } from '@context/ModalContext';
+import { SpinnerContext } from '@context/SpinnerContext';
 import { useInput } from '@hooks/useInput';
 import useCharacter from '@hooks/storage/useCharacter';
 import useCharacterOrd from '@hooks/storage/useCharacterOrd';
-import { ModalActionContext } from '@context/ModalContext';
-import { toast } from 'react-toastify';
 import useTodo from '@hooks/storage/useTodo';
-import TextBox from '@components/Input/TextBox';
 import { ICharacterTodo, ITodo } from '@components/Todo/TodoType';
-import { ICharacter } from '../CharacterType';
-import axios, { AxiosResponse } from 'axios';
-import { load } from 'cheerio';
-import { FlexDiv } from '@style/common';
-import styled from '@emotion/styled';
-import { ColorResult, CompactPicker } from 'react-color';
-import { SpinnerContext } from '@context/SpinnerContext';
-import {
-    ContentsDiv,
-    ContentsDivTitle,
-    FormButtonContainer,
-    FormContainer,
-    FormDivContainer,
-} from '@style/common/modal';
+import { getCrollCharacterInfo, isDuplicate } from '@components/Character/common/functions';
+import { ICharacter } from '@components/Character/CharacterType';
+import CharacterForm from '@components/Character/common/Form';
+import AddButtonContainer from '@components/Container/Button/Add';
+import { getStorage } from '@storage/index';
+import { useTheme } from '@emotion/react';
+import { FormContainer } from '@style/common/modal';
 
-const CharacterAdd = ({ perPage, setCurrentPage }: { perPage: number; setCurrentPage: (e: number) => void }) => {
+const CharacterAdd = () => {
     const [storageCharacter, setStorageCharacter] = useCharacter();
     const [storageCharacterOrd, setStorageCharacterOrd] = useCharacterOrd();
     const [storageTodo, setStorageTodo] = useTodo();
-    const { setSpinnerVisible } = useContext(SpinnerContext);
 
-    const [color, setColor] = useState<string>('#ffffff');
+    const { setSpinnerVisible } = useContext(SpinnerContext);
+    const { setCurrentPage } = useContext(PagingActionContext);
+    const { perPage } = useContext(PagingStateContext);
+
+    const theme = useTheme();
+
+    const [color, setColor] = useState<string>(theme.colors.white);
+
     const { closeModal } = useContext(ModalActionContext);
 
     const [name, bindName] = useInput<string>('');
 
-    const validate = () => {
-        const characterArr: ICharacter[] = JSON.parse(storageCharacter);
-        return characterArr.some(character => character.name === name);
-    };
-
     const onClickAdd = async () => {
-        setSpinnerVisible(true);
-        await setCharacterInfo();
-        setSpinnerVisible(false);
-    };
+        if (checkNameIsEmpty() || checkNameIsDuplicate()) return;
 
-    const setCharacterInfo = async () => {
         try {
-            const { data }: AxiosResponse<string> = await axios.get(
-                `https://cors-anywhere.herokuapp.com/https://lostark.game.onstove.com/Profile/Character/${name}`,
-            );
-            const $ = load(data);
-            const crollJob: string | undefined = $('.profile-character-info__img').attr('alt');
-            const crollLevel: string | undefined = $('.level-info2__expedition>span:nth-child(2)').text();
-
-            addCharacter(crollJob || '', crollLevel || '');
-        } catch (e: unknown) {
-            //todo : 에러처리 - 메시지
+            setSpinnerVisible(true);
+            await crollCharacterInfo();
+        } finally {
+            setSpinnerVisible(false);
         }
     };
 
-    const addCharacter = (p: string, pp: string) => {
-        if (validate()) {
-            toast.error('중복된 캐릭터명 입니다.');
-            return;
-        }
+    const crollCharacterInfo = async () => {
+        const { status, validMsg, crollJob, crollLevel } = await getCrollCharacterInfo(name);
 
+        const setCharacterInfo = {
+            success: () => addCharacter(crollJob || '', crollLevel || ''),
+            error: () => toast.error(validMsg || ''),
+        };
+
+        setCharacterInfo[status] && setCharacterInfo[status]();
+    };
+
+    const addCharacter = (crollJob: string, crollLevel: string) => {
         const characterArr: ICharacter[] = JSON.parse(storageCharacter);
-        const characterOrdArr: number[] = JSON.parse(storageCharacterOrd);
+        const maxCharacterId = Math.max(...characterArr.map(char => char.id), 0);
+        const characterId = characterArr.length == 0 ? 0 : maxCharacterId + 1;
 
-        const maxValueId = Math.max(...characterArr.map(o => o.id), 0);
+        addCharacterInfo(crollJob, crollLevel, characterId);
+        addCharacterOrd(characterId);
+        addTodoCharacterInfo(characterId);
+        setCurrentCharacterPage();
+        closeModal();
+    };
 
-        const characterId = characterArr.length == 0 ? 0 : maxValueId + 1;
+    const addCharacterInfo = (crollJob: string, crollLevel: string, characterId: number) => {
+        const characterArr: ICharacter[] = JSON.parse(storageCharacter);
 
         const characterInfo: ICharacter = {
             id: characterId,
             name: name,
-            level: pp,
-            job: p,
+            level: crollLevel,
+            job: crollJob,
             color: color,
             lastSearch: 0,
         };
 
         characterArr.push(characterInfo);
-        characterOrdArr.push(characterId);
-
         setStorageCharacter(JSON.stringify(characterArr));
-        setStorageCharacterOrd(JSON.stringify(characterOrdArr));
+    };
 
+    const addCharacterOrd = (characterId: number) => {
+        const characterOrdArr: number[] = JSON.parse(storageCharacterOrd);
+
+        characterOrdArr.push(characterId);
+        setStorageCharacterOrd(JSON.stringify(characterOrdArr));
+    };
+
+    const addTodoCharacterInfo = (characterId: number) => {
         const todoArr: ITodo[] = JSON.parse(storageTodo);
 
         const todoCharacter: ICharacterTodo = {
@@ -103,36 +106,35 @@ const CharacterAdd = ({ perPage, setCurrentPage }: { perPage: number; setCurrent
         });
 
         setStorageTodo(JSON.stringify(todoCharacterArr));
+    };
 
-        const currentPage = Math.ceil(
-            JSON.parse(JSON.parse(localStorage.getItem('character') || '[]')).length / perPage,
-        );
+    const setCurrentCharacterPage = () => {
+        const currentPage = Math.ceil(getStorage('character').length / perPage);
         setCurrentPage(currentPage);
+    };
 
-        closeModal();
+    const checkNameIsDuplicate = (): boolean => {
+        if (name && isDuplicate(name)) {
+            toast.error('중복된 캐릭터명 입니다.');
+            return true;
+        }
+
+        return false;
+    };
+
+    const checkNameIsEmpty = (): boolean => {
+        if (!name) {
+            toast.error('캐릭터 명을 입력 해 주세요.');
+            return true;
+        }
+
+        return false;
     };
 
     return (
         <FormContainer>
-            <FormDivContainer>
-                <FlexDiv direction="column">
-                    <ContentsDivTitle>캐릭터명</ContentsDivTitle>
-                    <ContentsDiv>
-                        <TextBox {...bindName} />
-                    </ContentsDiv>
-                </FlexDiv>
-
-                <FlexDiv direction="column">
-                    <ContentsDivTitle>색상</ContentsDivTitle>
-                    <ContentsDiv>
-                        <CompactPicker color={color} onChange={(color: ColorResult) => setColor(color.hex)} />
-                    </ContentsDiv>
-                </FlexDiv>
-            </FormDivContainer>
-            <FormButtonContainer>
-                <Button onClick={onClickAdd}>추가</Button>
-                <Button onClick={() => closeModal()}>닫기</Button>
-            </FormButtonContainer>
+            <CharacterForm color={color} setColor={setColor} bindName={bindName} />
+            <AddButtonContainer onClickAdd={onClickAdd} />
         </FormContainer>
     );
 };

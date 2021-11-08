@@ -1,6 +1,6 @@
 import React from 'react';
+import { ITextProps } from '@components/Input/TextBox';
 import styled from '@emotion/styled';
-import { ITextProps } from './TextBox';
 
 interface ILabelTextProps extends ITextProps {
     label: string;
@@ -29,6 +29,7 @@ const Span = styled.span`
     margin-bottom: 5px;
     color: ${props => props.theme.colors.white};
 `;
+
 const Label = styled.label`
     margin-top: 10px;
     display: flex;

@@ -1,22 +1,10 @@
-import React, { ReactElement, useEffect, useState } from 'react';
-
-export interface IDialogOption {
-    width?: string;
-    height?: string;
-    headerTitle?: string;
-    confirmFn?: () => void | Promise<void>;
-}
-
-export interface IDialogProps {
-    isOpen: boolean;
-    content: ReactElement;
-    options?: IDialogOption;
-}
+import { IPortalOption, IPortalProps } from '@common/types';
+import React, { useEffect, useState } from 'react';
 
 export const useDialog = () => {
-    const [isOpen, setIsOpen] = useState<IDialogProps['isOpen']>(false);
+    const [isOpen, setIsOpen] = useState<IPortalProps['isOpen']>(false);
     const [content, setContent] = useState<React.ReactElement>(<></>);
-    const [options, setOptions] = useState<IDialogOption | undefined>({});
+    const [options, setOptions] = useState<IPortalOption | undefined>({});
 
     useEffect(() => {
         if (isOpen) {
@@ -37,7 +25,7 @@ export const useDialog = () => {
         setIsOpen(false);
     };
 
-    const setDialogProps = (sets: IDialogProps) => {
+    const setDialogProps = (sets: IPortalProps) => {
         setIsOpen(sets.isOpen);
         setContent(sets.content);
         setOptions(sets.options);

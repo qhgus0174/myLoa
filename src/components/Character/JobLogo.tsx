@@ -30,13 +30,7 @@ interface IIcon {
     height?: number;
 }
 
-const JobLogo = ({ shape, width = 36, height = 35 }: IIcon) => {
-    const calcRatio = (): { width: number; height: number } => {
-        var ratio = Math.min(35 / width, 50 / height);
-
-        return { width: width * ratio, height: height * ratio };
-    };
-
+const JobLogo = ({ shape, width = 35, height = 35 }: IIcon) => {
     const icon = () => {
         let engName: IIconType | '' = '';
 
@@ -117,6 +111,12 @@ const JobLogo = ({ shape, width = 36, height = 35 }: IIcon) => {
                 src={`/img/job/${engName}.png`}
             />
         );
+    };
+
+    const calcRatio = (): { width: number; height: number } => {
+        var ratio = Math.min(35 / width, 50 / height);
+
+        return { width: width * ratio, height: height * ratio };
     };
 
     return icon();
