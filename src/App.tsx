@@ -17,35 +17,18 @@ const App = () => {
             todo.character = todo.character.map((character: ICharacterTodo) => {
                 //체크 최대수치 미만일때 휴게 계산
                 //체크 최대수치 : 일일 - 2, 에포나 -3
-                if (todo.type === 'daily') {
-                    if (['chaos', 'epona'].includes(todo.contents)) {
-                        const maxCheckCount = todo.contents === 'chaos' ? 2 : 3;
-                        const relaxGauge = (maxCheckCount - character.check) * 10;
 
-                        const calcRelaxGauge =
-                            character.relaxGauge >= 100 ? 100 : Number(character.relaxGauge) + relaxGauge;
+                if (todo.type !== 'daily') return character;
 
-                        const resetTodoData: ICharacterTodo = {
-                            ...character,
-                            relaxGauge: calcRelaxGauge,
-                            oriRelaxGauge: calcRelaxGauge,
-                            check: 0,
-                        };
+                const resets = {
+                    chaos: () => calcRelaxGauge(todo, character),
+                    epona: () => calcRelaxGauge(todo, character),
+                    basicReset: () => resetCheck(character),
+                    basic: () => character,
+                    none: () => character,
+                };
 
-                        return resetTodoData;
-                    } else if (todo.contents === 'basicReset') {
-                        const resetTodoData: ICharacterTodo = {
-                            ...character,
-                            check: 0,
-                        };
-
-                        return resetTodoData;
-                    } else {
-                        return character;
-                    }
-                } else {
-                    return character;
-                }
+                return resets[todo.contents] && resets[todo.contents]();
             });
 
             return todo;
@@ -54,21 +37,37 @@ const App = () => {
         setStorageTodo(JSON.stringify(calcResult));
     };
 
+    const resetCheck = (character: ICharacterTodo): ICharacterTodo => {
+        const resetTodoData: ICharacterTodo = {
+            ...character,
+            check: 0,
+        };
+
+        return resetTodoData;
+    };
+
+    const calcRelaxGauge = (todo: ITodo, character: ICharacterTodo): ICharacterTodo => {
+        const maxCheckCount = todo.contents === 'chaos' ? 2 : 3;
+        const addGauge = (maxCheckCount - character.check) * 10;
+
+        const relaxGauge = character.relaxGauge >= 100 ? 100 : Number(character.relaxGauge) + addGauge;
+
+        const resetTodoData: ICharacterTodo = {
+            ...character,
+            relaxGauge: relaxGauge,
+            oriRelaxGauge: relaxGauge,
+            check: 0,
+        };
+
+        return resetTodoData;
+    };
+
     const resetWeeklyTodo = () => {
         const todoArr: ITodo[] = JSON.parse(JSON.parse(localStorage.getItem('todo') || '[]'));
 
         const calcResult: ITodo[] = todoArr.map((todo: ITodo) => {
             todo.character = todo.character.map((character: ICharacterTodo) => {
-                if (todo.type === 'weekly') {
-                    const resetTodoData: ICharacterTodo = {
-                        ...character,
-                        check: 0,
-                    };
-
-                    return resetTodoData;
-                } else {
-                    return character;
-                }
+                return todo.type === 'weekly' ? resetCheck(character) : character;
             });
 
             return todo;
