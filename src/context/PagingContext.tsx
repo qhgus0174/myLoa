@@ -1,9 +1,8 @@
 import React, { createContext } from 'react';
 import { IPagingOption, usePaging } from '@hooks/usePaging';
 
-export const PagingStateContext = createContext<Pick<IPagingOption, 'perPage' | 'currentPage'>>({
+export const PagingStateContext = createContext<Pick<IPagingOption, 'perPage'>>({
     perPage: 6,
-    currentPage: 1,
 });
 
 export const PagingActionContext = createContext<Pick<IPagingOption, 'setCurrentPage' | 'onClickPrev' | 'onClickNext'>>(
@@ -15,10 +14,10 @@ export const PagingActionContext = createContext<Pick<IPagingOption, 'setCurrent
 );
 
 const PagingProvider = ({ children }: { children: React.ReactNode }) => {
-    const { perPage, currentPage, setCurrentPage, onClickPrev, onClickNext } = usePaging();
+    const { perPage, setCurrentPage, onClickPrev, onClickNext } = usePaging();
     return (
         <PagingActionContext.Provider value={{ setCurrentPage, onClickPrev, onClickNext }}>
-            <PagingStateContext.Provider value={{ perPage, currentPage }}>{children}</PagingStateContext.Provider>
+            <PagingStateContext.Provider value={{ perPage }}>{children}</PagingStateContext.Provider>
         </PagingActionContext.Provider>
     );
 };

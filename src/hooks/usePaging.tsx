@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import useWindowDimensions from '@hooks/useWindowDimensions';
 import { responsiveWidth } from '@style/device';
 import { getStorage } from '@storage/index';
+import usePage from '@hooks/storage/usePage';
 
 export interface IPagingOption {
     perPage: number;
-    currentPage: number;
     setCurrentPage: (e: number) => void;
     onClickPrev: () => void;
     onClickNext: () => void;
@@ -13,12 +13,17 @@ export interface IPagingOption {
 
 export const usePaging = () => {
     const [perPage, setPerPage] = useState<IPagingOption['perPage']>(6);
-    const [currentPage, setCurrentPage] = useState<IPagingOption['currentPage']>(1);
     const { width: windowWidth } = useWindowDimensions();
+    const [currentPage, setCurrentPage] = usePage();
 
     useEffect(() => {
         calcPerPage();
+        resetCurrentPage();
     }, [String(windowWidth)]);
+
+    const resetCurrentPage = () => {
+        Object.values(responsiveWidth).includes(windowWidth) && setCurrentPage(1);
+    };
 
     const widths = [
         responsiveWidth.phone,
