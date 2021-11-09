@@ -1,11 +1,12 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { widthMedia } from '@style/device';
+import Logo from '@assets/img/logo/logo.png';
 
 const Header = () => {
     return (
         <HeaderDiv>
-            <LogoImg src="/img/logo/logo.png" />
+            <LogoImg src={Logo} />
         </HeaderDiv>
     );
 };
