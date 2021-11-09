@@ -6,6 +6,7 @@ import { ScheduleCheckType, ScheduleContents, ScheduleType } from '@common/types
 import styled from '@emotion/styled';
 import { ContentsDiv, ContentsDivTitle, FormDivContainer } from '@style/common/modal';
 import { FlexDiv } from '@style/common';
+import { css, useTheme } from '@emotion/react';
 
 interface ITodo {
     type: ScheduleType;
@@ -19,87 +20,92 @@ interface ITodo {
 }
 
 const TodoForm = ({ type, contents, color, setColor, setType, setContents, setCheckType, bindName }: ITodo) => {
+    const theme = useTheme();
     return (
         <FormDivContainer>
             <FlexDiv direction="column">
                 <ContentsDivTitle>숙제 유형</ContentsDivTitle>
-                <ContentsDiv>
-                    <SmallTitleDiv>체크박스형</SmallTitleDiv>
-                    <RadioButton
-                        text="일일"
-                        name="type"
-                        value="daily"
-                        onChange={() => {
-                            setType('daily');
-                            setContents('chaos');
-                            setCheckType('check');
-                        }}
-                        checked={type === 'daily'}
-                    />
-                    <RadioButton
-                        text="주간"
-                        name="type"
-                        value="weekly"
-                        onChange={() => {
-                            setType('weekly');
-                            setContents('none');
-                            setCheckType('check');
-                        }}
-                        checked={type === 'weekly'}
-                    />
-                </ContentsDiv>
-                <ContentsDiv>
-                    <SmallTitleDiv>텍스트형</SmallTitleDiv>
-                    <RadioButton
-                        text="텍스트"
-                        name="type"
-                        value="other"
-                        onChange={() => {
-                            setType('other');
-                            setContents('none');
-                            setCheckType('text');
-                        }}
-                        checked={type === 'other'}
-                    />
-                </ContentsDiv>
+                <ContentsDivs>
+                    <ContentsDiv>
+                        <SmallTitleDiv>체크박스형</SmallTitleDiv>
+                        <RadioButton
+                            text="일일"
+                            name="type"
+                            value="daily"
+                            onChange={() => {
+                                setType('daily');
+                                setContents('chaos');
+                                setCheckType('check');
+                            }}
+                            checked={type === 'daily'}
+                        />
+                        <RadioButton
+                            text="주간"
+                            name="type"
+                            value="weekly"
+                            onChange={() => {
+                                setType('weekly');
+                                setContents('none');
+                                setCheckType('check');
+                            }}
+                            checked={type === 'weekly'}
+                        />
+                    </ContentsDiv>
+                    <ContentsDiv>
+                        <SmallTitleDiv>텍스트형</SmallTitleDiv>
+                        <RadioButton
+                            text="텍스트"
+                            name="type"
+                            value="other"
+                            onChange={() => {
+                                setType('other');
+                                setContents('none');
+                                setCheckType('text');
+                            }}
+                            checked={type === 'other'}
+                        />
+                    </ContentsDiv>
+                </ContentsDivs>
             </FlexDiv>
             {type === 'daily' && (
                 <FlexDiv direction="column">
                     <ContentsDivTitle>컨텐츠</ContentsDivTitle>
-                    <ContentsDiv>
-                        <SmallTitleDiv>특수</SmallTitleDiv>
-                        <RadioButton
-                            text="카던/가디언"
-                            name="contents"
-                            value="chaos"
-                            onChange={() => setContents('chaos')}
-                            checked={contents === 'chaos'}
-                        />
-                        <RadioButton
-                            text="에포나"
-                            name="contents"
-                            value="epona"
-                            onChange={() => setContents('epona')}
-                            checked={contents === 'epona'}
-                        />
-                    </ContentsDiv>
-                    <ContentsDiv>
-                        <SmallTitleDiv>일반</SmallTitleDiv>
-                        <RadioButton
-                            text="초기화 O"
-                            name="contents"
-                            value="basicReset"
-                            onChange={() => setContents('basicReset')}
-                            checked={contents === 'basicReset'}
-                        />
-                        <RadioButton
-                            text="초기화 X"
-                            name="contents"
-                            value="basic"
-                            onChange={() => setContents('basic')}
-                            checked={contents === 'basic'}
-                        />
-                    </ContentsDiv>
+                    <ContentsDivs>
+                        <ContentsDiv>
+                            <SmallTitleDiv>특수</SmallTitleDiv>
+                            <RadioButton
+                                text="카던/가디언"
+                                name="contents"
+                                value="chaos"
+                                onChange={() => setContents('chaos')}
+                                checked={contents === 'chaos'}
+                            />
+                            <RadioButton
+                                text="에포나"
+                                name="contents"
+                                value="epona"
+                                onChange={() => setContents('epona')}
+                                checked={contents === 'epona'}
+                            />
+                        </ContentsDiv>
+                        <ContentsDiv>
+                            <SmallTitleDiv>일반</SmallTitleDiv>
+                            <RadioButton
+                                text="초기화 O"
+                                name="contents"
+                                value="basicReset"
+                                onChange={() => setContents('basicReset')}
+                                checked={contents === 'basicReset'}
+                            />
+                            <RadioButton
+                                text="초기화 X"
+                                name="contents"
+                                value="basic"
+                                onChange={() => setContents('basic')}
+                                checked={contents === 'basic'}
+                            />
+                        </ContentsDiv>
+                    </ContentsDivs>
                 </FlexDiv>
             )}
             <FlexDiv direction="column">
@@ -119,8 +125,15 @@ const TodoForm = ({ type, contents, color, setColor, setType, setContents, setCh
 };
 
 const SmallTitleDiv = styled.div`
+    font-weight: 400;
     margin-left: 0.7em;
     margin-right: 0.5em;
+`;
+
+const ContentsDivs = styled.div`
+    background: ${props => props.theme.colors.mainDark};
+    padding: 0.5em;
+    border-radius: 1em;
 `;
 
 export default TodoForm;

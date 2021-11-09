@@ -69,7 +69,7 @@ const Main = () => {
                                 modal: <TodoAdd />,
                                 title: '숙제 추가',
                                 width: '35',
-                                height: '85',
+                                height: '90',
                             })
                         }
                     >
@@ -120,6 +120,10 @@ const Main = () => {
 };
 
 const MainDiv = styled(FlexDiv)`
+    width: 88%;
+    ${widthMedia.phone} {
+        width: 95%;
+    }
     margin-top: 1em;
     margin-bottom: 2em;
 `;

@@ -1,6 +1,7 @@
 import React from 'react';
 import { IPortalProperty } from '@common/types';
 import styled from '@emotion/styled';
+import { widthMedia } from '@style/device';
 
 const BasicModal = ({ children, options }: IPortalProperty) => {
     return (
@@ -23,8 +24,11 @@ const ModalHeader = styled.div<{ height: string }>`
 const ModalContent = styled.div<{ isHeader: string }>`
     box-sizing: border-box;
     height: ${props => (props.isHeader ? `calc(100% - 80px)` : `100%`)};
-    max-height: 75vh;
-    overflow-y: auto;
+
+    ${widthMedia.smallDesktop} {
+        max-height: 75vh;
+        overflow-y: auto;
+    }
 `;
 
 export default BasicModal;

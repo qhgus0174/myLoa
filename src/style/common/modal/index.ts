@@ -36,6 +36,7 @@ export const ContentsDivTitle = styled.div`
     box-sizing: border-box;
     margin-bottom: 0.5em;
     font-weight: 600;
+    font-size: 1.01em;
 `;
 
 export const ContentsDiv = styled.div`
