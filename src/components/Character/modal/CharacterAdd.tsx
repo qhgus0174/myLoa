@@ -13,7 +13,6 @@ import { ICharacter } from '@components/Character/CharacterType';
 import CharacterForm from '@components/Character/common/Form';
 import AddButtonContainer from '@components/Container/Button/Add';
 import { getStorage } from '@storage/index';
-import { useTheme } from '@emotion/react';
 import { FormContainer } from '@style/common/modal';
 
 const CharacterAdd = () => {
@@ -25,9 +24,7 @@ const CharacterAdd = () => {
     const { setCurrentPage } = useContext(PagingActionContext);
     const { perPage } = useContext(PagingStateContext);
 
-    const theme = useTheme();
-
-    const [color, setColor] = useState<string>(theme.colors.white);
+    const [color, setColor] = useState<string>('#ffffff');
 
     const { closeModal } = useContext(ModalActionContext);
 

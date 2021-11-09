@@ -27,7 +27,7 @@ const Todo = () => {
 
     const theme = useTheme();
 
-    const [color, setColor] = useState<string>(theme.colors.white);
+    const [color, setColor] = useState<string>('#ffffff');
 
     const onClickAdd = () => {
         const todoArr: ITodo[] = JSON.parse(storageTodo);

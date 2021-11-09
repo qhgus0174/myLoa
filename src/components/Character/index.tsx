@@ -115,7 +115,7 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
                                                             </FlexDiv>
                                                             <InfoDiv direction="column">
                                                                 <FlexDiv>{char.name}</FlexDiv>
-                                                                <FlexDiv>{char.level}</FlexDiv>
+                                                                <FlexDiv>{`Lv. ${char.level}`}</FlexDiv>
                                                             </InfoDiv>
                                                         </CharacterDiv>
                                                     )}
