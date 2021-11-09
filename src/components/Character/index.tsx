@@ -13,12 +13,13 @@ import styled from '@emotion/styled';
 import { FlexDiv, FlexLeftDiv, FlexHoverDiv, CharactersDiv } from '@style/common';
 import { ReactComponent as LeftArrow } from '@assets/img/left-arrow.svg';
 import { ReactComponent as RightArrow } from '@assets/img/right-arrow.svg';
+import usePage from '@hooks/storage/usePage';
 
 const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
     const [storageCharacterOrd, setStorageCharacterOrd] = useCharacterOrd();
-    const { perPage, currentPage } = useContext(PagingStateContext);
+    const [currentPage] = usePage();
+    const { perPage } = useContext(PagingStateContext);
     const { onClickNext, onClickPrev } = useContext(PagingActionContext);
-
     const theme = useTheme();
 
     const onDragEndCharacter = (result: DropResult) => {
@@ -92,7 +93,8 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
                                                             {...provided.draggableProps}
                                                             {...provided.dragHandleProps}
                                                             ref={provided.innerRef}
-                                                            onContextMenu={e =>
+                                                            onContextMenu={e => {
+                                                                e.preventDefault();
                                                                 onContextMenuBasicModal({
                                                                     e: e,
                                                                     modal: (
@@ -105,8 +107,8 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
                                                                     title: '캐릭터 수정',
                                                                     width: '35',
                                                                     height: '57',
-                                                                })
-                                                            }
+                                                                });
+                                                            }}
                                                         >
                                                             <FlexDiv>
                                                                 <JobLogo shape={char.job} />
@@ -142,8 +144,10 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
 
 const DropDiv = styled.div`
     width: 100%;
-    border-bottom: 1px solid ${props => props.theme.colors.white};
-    padding-bottom: 0.2em;
+    ${props =>
+        (getStorage('character').length > 0 || getStorage('todo').length > 0) &&
+        `border-bottom: 1px solid ${props.theme.colors.white}`};
+    padding-bottom: 0.3em;
     box-sizing: border-box;
 `;
 

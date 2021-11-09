@@ -9,6 +9,7 @@ import { CharactersDiv, FlexHoverDiv } from '@style/common';
 import styled from '@emotion/styled';
 
 import { PagingStateContext } from '@context/PagingContext';
+import usePage from '@hooks/storage/usePage';
 
 interface ICheckbox {
     todo: ITodo;
@@ -19,7 +20,9 @@ interface ICheckbox {
 }
 
 const Checkbox = ({ todo, todoIndex, onContextMenu, onClickCheckTodo, onChangeTodoText }: ICheckbox) => {
-    const { perPage, currentPage } = useContext(PagingStateContext);
+    const { perPage } = useContext(PagingStateContext);
+    const [currentPage] = usePage();
+
     return (
         <>
             <WhiteSpaceDiv></WhiteSpaceDiv>
