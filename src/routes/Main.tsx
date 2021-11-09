@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ModalActionContext } from '@context/ModalContext';
 import CharacterAdd from '@components/Character/modal/CharacterAdd';
 import Todo from '@components/Todo';
@@ -6,17 +6,30 @@ import Button from '@components/Button/Button';
 import TodoAdd from '@components/Todo/modal/TodoAdd';
 import LineAdd from '@components/Line/LineAdd';
 import Character from '@components/Character';
-import { useTheme } from '@emotion/react';
+import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { FlexDiv } from '@style/common';
-import { widthMedia } from '@style/device';
+import { responsiveWidth, widthMedia } from '@style/device';
 import { ReactComponent as Plus } from '@assets/img/plus.svg';
+import { ReactComponent as ArrowDown } from '@assets/img/arrow-down.svg';
+import { ReactComponent as ArrowUp } from '@assets/img/arrow-up.svg';
 import { IContextModal } from '@common/types';
+import useWindowDimensions from '@hooks/useWindowDimensions';
 
 const Main = () => {
     const { setModalProps } = useContext(ModalActionContext);
+    const [isFold, setIsFold] = useState<boolean>(false);
+    const { width: windowWidth } = useWindowDimensions();
 
     const theme = useTheme();
+
+    useEffect(() => {
+        resetFold();
+    }, [windowWidth]);
+
+    const resetFold = () => {
+        responsiveWidth.smallPhone < windowWidth && setIsFold(false);
+    };
 
     const onContextMenuBasicModal = ({ e, modal, title, width, height }: IContextModal) => {
         e.preventDefault();
@@ -28,8 +41,24 @@ const Main = () => {
     };
 
     return (
-        <MainDiv width="85" direction="column">
-            <ButtonDiv width="100">
+        <MainDiv width="88" direction="column">
+            <HideButtonContainer isFold={isFold}>
+                <HideButtonDiv onClick={() => setIsFold(!isFold)}>
+                    버튼
+                    {isFold ? (
+                        <>
+                            <span>&nbsp;보이기</span>
+                            <ArrowDown fill={theme.colors.white} width="25px" height="25px" />
+                        </>
+                    ) : (
+                        <>
+                            <span>&nbsp;숨기기</span>
+                            <ArrowUp fill={theme.colors.white} width="25px" height="25px" />
+                        </>
+                    )}
+                </HideButtonDiv>
+            </HideButtonContainer>
+            <TodoButtonDiv height="100" isFold={isFold} width="100">
                 <ButtonLeftDiv>
                     <AddButton
                         type="button"
@@ -81,19 +110,43 @@ const Main = () => {
                         캐릭터
                     </AddButton>
                 </FlexDiv>
-            </ButtonDiv>
-            <Character onContextMenuBasicModal={onContextMenuBasicModal} />
-            <Todo onContextMenuBasicModal={onContextMenuBasicModal} />
+            </TodoButtonDiv>
+            <TodoContentsDiv>
+                <Character onContextMenuBasicModal={onContextMenuBasicModal} />
+                <Todo onContextMenuBasicModal={onContextMenuBasicModal} />
+            </TodoContentsDiv>
         </MainDiv>
     );
 };
 
 const MainDiv = styled(FlexDiv)`
     margin-top: 1em;
-    margin-bottom: 3em;
+    margin-bottom: 2em;
 `;
 
-const ButtonDiv = styled(FlexDiv)`
+const TodoContentsDiv = styled.div`
+    background: ${props => props.theme.colors.mainDark};
+    padding: 1.5em;
+    border-radius: 1em;
+    box-sizing: border-box;
+`;
+
+const HideButtonContainer = styled.div<{ isFold: boolean }>`
+    display: none;
+    ${widthMedia.smallPhone} {
+        width: 100%;
+        display: flex;
+        justify-content: end;
+        align-items: center;
+        margin-bottom: 1em;
+    }
+`;
+const HideButtonDiv = styled.div`
+    display: flex;
+    align-items: center;
+`;
+
+const TodoButtonDiv = styled(FlexDiv)<{ isFold: boolean }>`
     margin-bottom: 1.7em;
     box-sizing: border-box;
     justify-content: space-between;
@@ -101,6 +154,8 @@ const ButtonDiv = styled(FlexDiv)`
     ${widthMedia.smallPhone} {
         flex-direction: column;
     }
+
+    ${props => props.isFold && 'display:none'};
 `;
 
 const AddButton = styled(Button)<{ isRight?: boolean }>`
