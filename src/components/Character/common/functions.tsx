@@ -13,7 +13,7 @@ export interface ICrollInfo {
 export const getCrollCharacterInfo = async (name: string): Promise<ICrollInfo> => {
     try {
         const { data }: AxiosResponse<string> = await axios.get(
-            `https://cors-anywhere.herokuapp.com/https://lostark.game.onstove.com/Profile/Character/${name}`,
+            `https://corsanywheremyloa.herokuapp.com/https://lostark.game.onstove.com/Profile/Character/${name}`,
         );
         const $ = load(data);
         const crollJob: string | undefined = $('.profile-character-info__img').attr('alt');
