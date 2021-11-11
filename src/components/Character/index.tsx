@@ -8,17 +8,15 @@ import { ICharacter } from '@components/Character/CharacterType';
 import JobLogo from '@components/Character/JobLogo';
 import Button from '@components/Button/Button';
 import { IContextModalParam } from '@common/types';
-import { css, useTheme } from '@emotion/react';
+import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { FlexDiv, FlexLeftDiv, FlexHoverDiv, CharactersDiv } from '@style/common';
 import { ReactComponent as LeftArrow } from '@assets/img/left-arrow.svg';
 import { ReactComponent as RightArrow } from '@assets/img/right-arrow.svg';
-import usePage from '@hooks/storage/usePage';
 
 const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
     const [storageCharacterOrd, setStorageCharacterOrd] = useCharacterOrd();
-    const [currentPage] = usePage();
-    const { perPage } = useContext(PagingStateContext);
+    const { perPage, currentPage } = useContext(PagingStateContext);
     const { onClickNext, onClickPrev } = useContext(PagingActionContext);
     const theme = useTheme();
 
