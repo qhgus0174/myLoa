@@ -20,6 +20,7 @@ export const FormContainer = styled.div`
     flex-basis: 100%;
     height: 100%;
     flex-direction: column;
+    overflow-y: auto;
 `;
 
 export const FormDivContainer = styled.div`
@@ -31,7 +32,6 @@ export const FormDivContainer = styled.div`
 
 export const ContentsDivTitle = styled.div`
     display: flex;
-    flex-basis: 50%;
     align-items: center;
     box-sizing: border-box;
     margin-bottom: 0.5em;
@@ -42,7 +42,6 @@ export const ContentsDivTitle = styled.div`
 export const ContentsDiv = styled.div`
     display: flex;
     align-items: center;
-    flex-basis: 50%;
 `;
 
 export const FormButtonContainer = styled.div`
@@ -55,7 +54,7 @@ export const FormButtonContainer = styled.div`
     padding-top: 1.4em;
     padding-bottom: 1em;
 
-    button:nth-child(2) {
+    button:nth-of-type(2) {
         margin-left: 1em;
     }
 `;
@@ -65,7 +64,7 @@ export const RightButtonDiv = styled.div`
     justify-content: flex-end;
     width: 100%;
 
-    button:nth-child(2) {
+    button:nth-of-type(2) {
         margin-left: 1em;
     }
 `;

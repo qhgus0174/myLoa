@@ -103,8 +103,8 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
                                                                         />
                                                                     ),
                                                                     title: '캐릭터 수정',
-                                                                    width: '35',
-                                                                    height: '57',
+                                                                    width: '470',
+                                                                    height: '420',
                                                                 });
                                                             }}
                                                         >

@@ -7,6 +7,9 @@ export const customMediaQueryHeight = (maxWidth: number): string => {
 };
 
 interface IDevice {
+    bigDesktop: number;
+    wideDesktop: number;
+    mediumDesktop: number;
     desktop: number;
     smallDesktop: number;
     tablet: number;
@@ -15,7 +18,10 @@ interface IDevice {
 }
 
 export const responsiveWidth: IDevice = {
-    desktop: 1280,
+    bigDesktop: 1920,
+    wideDesktop: 1600,
+    mediumDesktop: 1400,
+    desktop: 1200,
     smallDesktop: 960,
     tablet: 768,
     phone: 576,
@@ -24,6 +30,7 @@ export const responsiveWidth: IDevice = {
 
 export const widthMedia = {
     custom: customMediaQueryWidth,
+    bigDesktop: customMediaQueryWidth(responsiveWidth.bigDesktop),
     desktop: customMediaQueryWidth(responsiveWidth.desktop),
     smallDesktop: customMediaQueryWidth(responsiveWidth.smallDesktop),
     tablet: customMediaQueryWidth(responsiveWidth.tablet),

@@ -11,7 +11,7 @@ interface ICharacter {
 const LineForm = ({ color, setColor }: ICharacter) => {
     return (
         <FormDivContainer>
-            <FlexDiv direction="column" basis="90">
+            <FlexDiv direction="column">
                 <ContentsDivTitle>색상</ContentsDivTitle>
                 <ContentsDiv>
                     <CompactPicker color={color} onChange={(color: ColorResult) => setColor(color.hex)} />

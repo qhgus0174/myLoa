@@ -68,8 +68,8 @@ const Main = () => {
                                 e: e,
                                 modal: <TodoAdd />,
                                 title: '숙제 추가',
-                                width: '35',
-                                height: '90',
+                                width: '600',
+                                height: '850',
                             })
                         }
                     >
@@ -84,8 +84,8 @@ const Main = () => {
                                 e: e,
                                 modal: <LineAdd />,
                                 title: '구분선 추가',
-                                width: '30',
-                                height: '45',
+                                width: '360',
+                                height: '290',
                             })
                         }
                     >
@@ -102,8 +102,8 @@ const Main = () => {
                                 e: e,
                                 modal: <CharacterAdd />,
                                 title: '캐릭터 추가',
-                                width: '35',
-                                height: '57',
+                                width: '470',
+                                height: '420',
                             })
                         }
                     >

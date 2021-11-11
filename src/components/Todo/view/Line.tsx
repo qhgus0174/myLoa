@@ -15,7 +15,13 @@ const Line = ({
         <LineDiv
             color={todo.color}
             onContextMenu={(e: React.MouseEvent<HTMLDivElement>) =>
-                onContextMenu({ e: e, modal: <LineEdit {...todo} />, title: '구분선 수정', width: '30', height: '45' })
+                onContextMenu({
+                    e: e,
+                    modal: <LineEdit {...todo} />,
+                    title: '구분선 수정',
+                    width: '360',
+                    height: '290',
+                })
             }
         ></LineDiv>
     );

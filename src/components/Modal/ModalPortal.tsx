@@ -6,6 +6,7 @@ import { IPortalOption } from '@common/types';
 import styled from '@emotion/styled';
 import { widthMedia, heightMedia } from '@style/device';
 import { Dimmer } from '@style/common/modal';
+import OutsideAlerter from '@hooks/useOutsideAlerter';
 
 const ModalPortal = () => {
     const { isOpen, content, options } = useContext(ModalStateContext);
@@ -19,16 +20,18 @@ const ModalPortal = () => {
                     closeModal();
                 }}
             >
-                <ModalInner
-                    tabIndex={0}
-                    width={options?.width}
-                    height={options?.height}
-                    onClick={e => {
-                        e.stopPropagation();
-                    }}
-                >
-                    <BasicModal options={options}>{content}</BasicModal>
-                </ModalInner>
+                <OutsideAlerter excuteFn={closeModal}>
+                    <ModalInner
+                        tabIndex={0}
+                        width={options?.width}
+                        height={options?.height}
+                        onClick={e => {
+                            e.stopPropagation();
+                        }}
+                    >
+                        <BasicModal options={options}>{content}</BasicModal>
+                    </ModalInner>
+                </OutsideAlerter>
             </Dimmer>
         ),
         document.getElementById('modal-root') as HTMLElement,
@@ -47,28 +50,11 @@ const ModalInner = styled.div<Pick<IPortalOption, 'width' | 'height'>>`
 
     overflow: hidden; //각을 없앴을 때 내부 영역이 튀어나오는걸 방지
 
-    width: 100%;
-    max-width: ${props => (props.width ? props.width : '65')}vw;
-    height: ${props => (props.height ? props.height : '60')}vh;
-
-    ${widthMedia.desktop} {
-        max-width: ${props => Number(props.width ? props.width : '70') * 1.5}vw;
-    }
-
-    ${widthMedia.tablet} {
-        max-width: ${props => Number(props.width ? props.width : '70') * 2.2}vw;
-        max-height: 90vh;
-    }
-
-    ${widthMedia.phone} {
-        max-width: 100vw;
-        max-height: 90vh;
-    }
-
-    ${heightMedia.small} {
-        height: ${props => Number(props.height ? props.height : '70') * 1.5}vh;
-        max-height: 90vh;
-    }
+    width: ${props => (props.width ? props.width : '65')}px;
+    height: ${props => (props.height ? props.height : '60')}px;
+    max-height: 90vh;
+    overflow-y: auto;
+    max-width: 95vw;
 `;
 
 export default ModalPortal;

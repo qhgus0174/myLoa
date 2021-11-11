@@ -26,15 +26,24 @@ export const usePaging = () => {
         Object.values(responsiveWidth).includes(windowWidth) && setCurrentPage(1);
     };
 
-    const widths = [
-        responsiveWidth.phone,
-        responsiveWidth.tablet,
-        responsiveWidth.smallDesktop,
-        responsiveWidth.desktop,
+    interface IWidthPerPage {
+        key: number;
+        page: number;
+    }
+    const getPerPage: IWidthPerPage[] = [
+        { key: responsiveWidth.phone, page: 1 },
+        { key: responsiveWidth.tablet, page: 2 },
+        { key: responsiveWidth.smallDesktop, page: 3 },
+        { key: responsiveWidth.desktop, page: 4 },
+        { key: responsiveWidth.mediumDesktop, page: 5 },
+        { key: responsiveWidth.wideDesktop, page: 6 },
+        { key: responsiveWidth.bigDesktop, page: 7 },
     ];
 
     const calcPerPage = () => {
-        setPerPage(widths.findIndex(w => windowWidth < w) + 1 || 6);
+        console.log(windowWidth);
+        const index = getPerPage.findIndex(w => w.key >= windowWidth);
+        setPerPage(getPerPage[index] ? getPerPage[index].page : 7);
     };
 
     const onClickPrev = () => {
