@@ -1,17 +1,17 @@
 import React, { useContext, useState } from 'react';
 import { ModalActionContext } from '@context/ModalContext';
-import { useCheckbox } from '@hooks/useCheckbox';
 import { useInput } from '@hooks/useInput';
 import useTodo from '@hooks/storage/useTodo';
-import { ICharacterTodo, ITodo, ITodoCheck } from '@components/Todo/TodoType';
+import { ITodo, ITodoCheck } from '@components/Todo/TodoType';
 import EditButtonContainer from '@components/Container/Button/Edit';
-import Checkbox from '@components/Input/Checkbox';
 import TextBox from '@components/Input/TextBox';
 import { ScheduleType } from '@common/types';
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { ContentsDiv, ContentsDivTitle, FormContainer, FormDivContainer } from '@style/common/modal';
 import { FlexDiv } from '@style/common';
+import BasicCheckbox from '@components/Input/BasicCheckbox';
+import { getShowCheckTodo } from '../common/functions';
 
 const TodoCheck = ({
     id: characterId,
@@ -22,7 +22,7 @@ const TodoCheck = ({
     todoId,
     todoType: oriTodoType,
     todoContents,
-    hide: oriHide,
+    showCharacter: oriShowCharacter,
 }: ITodoCheck) => {
     const theme = useTheme();
 
@@ -30,13 +30,12 @@ const TodoCheck = ({
 
     const { closeModal } = useContext(ModalActionContext);
 
-    const [hide, bindHide] = useCheckbox(oriHide);
-
     const [todoType] = useState<ScheduleType>(oriTodoType);
 
     const [relaxGauge, bindRelaxGauge] = useInput<number>(oriRelax, { maxLength: 3, numberOnly: true });
     const [text, bindText] = useInput<string>(oriText || '');
     const [memo, bindMemo] = useInput<string>(oriMemo || '');
+    const [showCharacter, setShowCharacter] = useState<number[]>(oriShowCharacter);
 
     const onClickEdit = () => {
         editTodoCheck();
@@ -46,25 +45,26 @@ const TodoCheck = ({
     const editTodoCheck = () => {
         const todoArr: ITodo[] = JSON.parse(storageTodo);
 
-        const newTodo: ITodo[] = todoArr.map((todo: ITodo) => {
-            todo.character = todo.character.map((character: ICharacterTodo) => {
-                if (todo.id !== todoId || character.id !== characterId) return character;
+        const todoIndex = todoArr.findIndex(todo => todo.id === todoId);
+        const characterIndex = todoArr.findIndex(todo => todo.id === todoId);
 
-                const resetTodoData: ICharacterTodo = {
-                    ...character,
-                    check: relaxGauge !== character.oriRelaxGauge ? character.check.fill(0) : character.check,
-                    relaxGauge: relaxGauge,
-                    oriRelaxGauge: relaxGauge,
-                    memo: memo,
-                    hide: hide,
-                };
+        todoArr[todoIndex] = {
+            ...todoArr[todoIndex],
+            showCharacter: showCharacter,
+        };
 
-                return resetTodoData;
-            });
-            return todo;
-        });
+        todoArr[todoIndex].character[characterIndex] = {
+            ...todoArr[todoIndex].character[characterIndex],
+            check:
+                relaxGauge !== todoArr[todoIndex].character[characterIndex].oriRelaxGauge
+                    ? todoArr[todoIndex].character[characterIndex].check.fill(0)
+                    : todoArr[todoIndex].character[characterIndex].check,
+            relaxGauge: relaxGauge,
+            oriRelaxGauge: relaxGauge,
+            memo: memo,
+        };
 
-        setStorageTodo(JSON.stringify(newTodo));
+        setStorageTodo(JSON.stringify(todoArr));
     };
 
     return (
@@ -107,7 +107,11 @@ const TodoCheck = ({
                 <FlexDiv>
                     <HideDivTitle>숨김</HideDivTitle>
                     <HideDivContents>
-                        <Checkbox transition={false} checkColor="black" shape="square" {...bindHide} />
+                        <BasicCheckbox
+                            value={characterId}
+                            checked={!showCharacter.includes(characterId)}
+                            onChange={e => setShowCharacter(getShowCheckTodo(e, showCharacter, characterId))}
+                        />
                     </HideDivContents>
                 </FlexDiv>
             </FormDivContainer>

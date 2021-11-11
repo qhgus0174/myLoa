@@ -6,20 +6,29 @@ import { ScheduleCheckType, ScheduleContents, ScheduleType } from '@common/types
 import styled from '@emotion/styled';
 import { ContentsDiv, ContentsDivTitle, FormDivContainer } from '@style/common/modal';
 import { FlexDiv } from '@style/common';
-import { css, useTheme } from '@emotion/react';
+import useCharacter from '@hooks/storage/useCharacter';
+import { ICharacter } from '@components/Character/CharacterType';
+import Checkbox from '@components/Input/TodoCheckbox';
+import { css } from '@emotion/react';
+import _ from 'lodash';
+import BasicCheckbox from '@components/Input/BasicCheckbox';
+import { getShowCheckTodo } from './functions';
 
 interface ITodo {
     type: ScheduleType;
     contents: ScheduleContents;
     color: string;
     detailName: string[];
+    showCharacterArr: number[];
     setColor: (e: string) => void;
     setType: (e: ScheduleType) => void;
     setContents: (e: ScheduleContents) => void;
     setCheckType: (e: ScheduleCheckType) => void;
     bindName: any;
     settingName: (e: any) => void;
+    setDetailName: (e: string[]) => void;
     onChangeDetailName: (o: string[], e: React.ChangeEvent<HTMLInputElement>, i: number) => void;
+    setShowCharacterArr: (e: number[]) => void;
 }
 
 const TodoForm = ({
@@ -27,15 +36,19 @@ const TodoForm = ({
     contents,
     color,
     detailName,
+    showCharacterArr,
     setColor,
     setType,
     setContents,
     setCheckType,
     bindName,
     settingName,
+    setDetailName,
     onChangeDetailName,
+    setShowCharacterArr,
 }: ITodo) => {
-    const theme = useTheme();
+    const [storageCharacter] = useCharacter();
+
     return (
         <FormDivContainer>
             <FlexDiv direction="column">
@@ -78,7 +91,6 @@ const TodoForm = ({
                                 setType('other');
                                 setContents('none');
                                 setCheckType('text');
-
                                 settingName('');
                             }}
                             checked={type === 'other'}
@@ -120,6 +132,7 @@ const TodoForm = ({
                                 onChange={() => {
                                     setContents('epona');
                                     settingName('에포나');
+                                    setDetailName(new Array(3).fill(''));
                                 }}
                                 checked={contents === 'epona'}
                             />
@@ -150,10 +163,38 @@ const TodoForm = ({
                     </ContentsDivs>
                 </FlexDiv>
             )}
+            {(JSON.parse(storageCharacter) as ICharacter[]).length > 0 && (
+                <FlexDiv direction="column">
+                    <ContentsDivTitle>숙제 표시 할 캐릭터</ContentsDivTitle>
+                    <ContentsDivs>
+                        <ContentsCharacterDiv>
+                            {(JSON.parse(storageCharacter) as ICharacter[]).map(
+                                (character: ICharacter, characterIndex: number) => {
+                                    return (
+                                        <ShowCharacterDiv key={`todo_show_${characterIndex}`}>
+                                            <BasicCheckbox
+                                                value={character.id}
+                                                checked={showCharacterArr.includes(character.id)}
+                                                onChange={e =>
+                                                    setShowCharacterArr(
+                                                        getShowCheckTodo(e, showCharacterArr, character.id),
+                                                    )
+                                                }
+                                                label={character.name}
+                                            />
+                                        </ShowCharacterDiv>
+                                    );
+                                },
+                            )}
+                        </ContentsCharacterDiv>
+                    </ContentsDivs>
+                </FlexDiv>
+            )}
+
             <FlexDiv direction="column">
                 <ContentsDivTitle>숙제 명</ContentsDivTitle>
                 {contents === 'epona' ? (
-                    <EponaContentsDiv>
+                    <FlexDiv>
                         {detailName.map((names: string, nameIdx: number, oriArr: string[]) => {
                             return (
                                 <TextBox
@@ -165,7 +206,7 @@ const TodoForm = ({
                                 />
                             );
                         })}
-                    </EponaContentsDiv>
+                    </FlexDiv>
                 ) : (
                     <ContentsDiv>
                         <TextBox width="100" placeholder="숙제 이름 입력 (e.g. 비아키스)" {...bindName} />
@@ -194,6 +235,24 @@ const ContentsDivs = styled.div`
     border-radius: 1em;
 `;
 
-const EponaContentsDiv = styled(FlexDiv)``;
+const ShowCharacterDiv = styled(FlexDiv)`
+    align-items: center;
+    box-sizing: border-box;
+    & > span {
+        margin-left: 0.3em;
+    }
+`;
+
+const ContentsCharacterDiv = styled(ContentsDiv)`
+    overflow-y: auto;
+    max-height: 79px;
+    flex-flow: wrap;
+    & > div {
+        margin-left: 2em;
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+    }
+    box-sizing: border-box;
+`;
 
 export default TodoForm;

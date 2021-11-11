@@ -9,8 +9,8 @@ import AddButtonContainer from '@components/Container/Button/Add';
 import { ICharacter } from '@components/Character/CharacterType';
 import TodoForm from '@components/Todo/common/Form';
 import { ScheduleCheckType, ScheduleContents, ScheduleType } from '@common/types';
-import { useTheme } from '@emotion/react';
 import { FormContainer } from '@style/common/modal';
+import { getResetCheckArr } from '../common/functions';
 
 const Todo = () => {
     const [type, setType] = useState<ScheduleType>('daily');
@@ -25,6 +25,10 @@ const Todo = () => {
     const [storageTodo, setStorageTodo] = useTodo();
     const [storageTodoOrd, setStorageTodoOrd] = useTodoOrd();
     const [storageCharacter] = useCharacter();
+
+    const [showCharacterArr, setShowCharacterArr] = useState<number[]>(
+        (JSON.parse(storageCharacter) as ICharacter[]).map((character: ICharacter) => character.id),
+    );
 
     const [color, setColor] = useState<string>('#ffffff');
 
@@ -45,21 +49,22 @@ const Todo = () => {
 
         const characterArr: ICharacter[] = JSON.parse(storageCharacter);
 
-        const checkArr = isMultipleArr(contents) ? new Array(getArrayLength(contents)).fill(0) : new Array(1).fill(0);
+        const checkArr = getResetCheckArr(contents);
 
         const characters: ICharacterTodo[] = characterArr.map((character: ICharacter) => {
-            return { id: character.id, check: checkArr, relaxGauge: 0, oriRelaxGauge: 0, hide: false };
+            return { id: character.id, check: checkArr, relaxGauge: 0, oriRelaxGauge: 0 };
         });
 
         const todoInfo: ITodo = {
             id: todoId,
             name: name,
-            detailName: detailName,
+            detailName: contents === 'epona' ? detailName : [],
             type: type,
             contents: contents,
             checkType: checkType,
             color: color,
             character: characters,
+            showCharacter: showCharacterArr,
         };
 
         todoArr.push(todoInfo);
@@ -71,14 +76,6 @@ const Todo = () => {
 
         todoOrdArr.push(todoId);
         setStorageTodoOrd(JSON.stringify(todoOrdArr));
-    };
-
-    const isMultipleArr = (contents: ScheduleContents): boolean => {
-        return ['chaos', 'epona'].includes(contents);
-    };
-
-    const getArrayLength = (contents: ScheduleContents): number => {
-        return contents === 'chaos' ? 2 : 3;
     };
 
     const onChangeDetailName = (oriArr: string[], e: React.ChangeEvent<HTMLInputElement>, idx: number) => {
@@ -96,6 +93,7 @@ const Todo = () => {
                 type={type}
                 contents={contents}
                 color={color}
+                showCharacterArr={showCharacterArr}
                 setColor={setColor}
                 setType={setType}
                 setContents={setContents}
@@ -103,7 +101,9 @@ const Todo = () => {
                 bindName={bindName}
                 settingName={settingName}
                 detailName={detailName}
+                setDetailName={setDetailName}
                 onChangeDetailName={onChangeDetailName}
+                setShowCharacterArr={setShowCharacterArr}
             />
 
             <AddButtonContainer onClickAdd={onClickAdd} />

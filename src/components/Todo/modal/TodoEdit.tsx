@@ -6,9 +6,11 @@ import { useInput } from '@hooks/useInput';
 import useTodo from '@hooks/storage/useTodo';
 import EditButtonContainer from '@components/Container/Button/DelEdit';
 import TodoForm from '@components/Todo/common/Form';
-import { ITodo } from '@components/Todo/TodoType';
+import { ICharacterTodo, ITodo } from '@components/Todo/TodoType';
 import { ScheduleCheckType, ScheduleContents, ScheduleType } from '@common/types';
 import { FormContainer } from '@style/common/modal';
+import { ICharacter } from '@components/Character/CharacterType';
+import { getResetCheckArr } from '../common/functions';
 
 const TodoEdit = ({
     id: oriId,
@@ -18,6 +20,7 @@ const TodoEdit = ({
     contents: newContents,
     checkType: newCheckType,
     color: newColor,
+    showCharacter: newShowChracter,
 }: Omit<ITodo, 'character'>) => {
     const [storageTodo, setStorageTodo] = useTodo();
     const [storageTodoOrd, setStorageTodoOrd] = useTodoOrd();
@@ -31,6 +34,8 @@ const TodoEdit = ({
 
     const [name, bindName, settingName] = useInput<string>(newName);
     const [detailName, setDetailName] = useState<string[]>(newDetailName || []);
+
+    const [showCharacterArr, setShowCharacterArr] = useState<number[]>(newShowChracter);
 
     const onClickEdit = () => {
         editTodo();
@@ -49,14 +54,21 @@ const TodoEdit = ({
         const index = todoArr.findIndex((todoObj: ITodo) => todoObj.id === oriId);
 
         let newTodoArr = [...todoArr];
+
+        const resetTodoCharacterArr: ICharacterTodo[] = newTodoArr[index].character.map((character: ICharacterTodo) => {
+            return { ...character, check: getResetCheckArr(contents) };
+        });
+
         newTodoArr[index] = {
             ...newTodoArr[index],
             name: name,
-            detailName: detailName,
+            detailName: contents === 'epona' ? detailName : [],
             type: type,
             contents: contents,
             checkType: checkType,
             color: color,
+            character: resetTodoCharacterArr,
+            showCharacter: showCharacterArr,
         };
 
         setStorageTodo(JSON.stringify(newTodoArr));
@@ -93,6 +105,7 @@ const TodoEdit = ({
                 type={type}
                 contents={contents}
                 color={color}
+                showCharacterArr={showCharacterArr}
                 setColor={setColor}
                 setType={setType}
                 setContents={setContents}
@@ -100,7 +113,9 @@ const TodoEdit = ({
                 bindName={bindName}
                 settingName={settingName}
                 detailName={detailName}
+                setDetailName={setDetailName}
                 onChangeDetailName={onChangeDetailName}
+                setShowCharacterArr={setShowCharacterArr}
             />
             <EditButtonContainer onClickDelete={onClickDelete} onClickEdit={onClickEdit} />
         </FormContainer>

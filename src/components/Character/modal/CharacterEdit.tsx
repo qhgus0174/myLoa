@@ -3,7 +3,6 @@ import _ from 'lodash';
 import { toast } from 'react-toastify';
 import { PagingActionContext, PagingStateContext } from '@context/PagingContext';
 import { ModalActionContext } from '@context/ModalContext';
-import { DialogActionContext } from '@context/DialogContext';
 import { SpinnerContext } from '@context/SpinnerContext';
 import useCharacterOrd from '@hooks/storage/useCharacterOrd';
 import { useInput } from '@hooks/useInput';
@@ -14,7 +13,6 @@ import { ICharacterTodo, ITodo } from '@components/Todo/TodoType';
 import EditButtonContainer from '@components/Container/Button/DelEdit';
 import { ICharacter } from '@components/Character/CharacterType';
 import CharacterForm from '@components/Character/common/Form';
-import { getStorage } from '@storage/index';
 import { FormContainer } from '@style/common/modal';
 
 interface ICharacterEdit {
@@ -28,7 +26,6 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
     const [characterOrd, setCharacterOrd] = useCharacterOrd();
     const [todo, setTodo] = useTodo();
 
-    const { setDialogProps, closeDialog } = useContext(DialogActionContext);
     const { setCurrentPage } = useContext(PagingActionContext);
     const { closeModal } = useContext(ModalActionContext);
     const { perPage } = useContext(PagingStateContext);
@@ -100,20 +97,11 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
     };
 
     const onClickDelete = () => {
-        setDialogProps({
-            isOpen: true,
-            content: <>데이터를 삭제하시겠습니까?</>,
-            options: {
-                confirmFn: () => {
-                    const deletedCharacterArr = deleteCharacterInfo();
-                    deleteTodo();
-                    setCurrentCharacterPage(deletedCharacterArr);
+        const deletedCharacterArr = deleteCharacterInfo();
+        deleteTodo();
+        setCurrentCharacterPage(deletedCharacterArr);
 
-                    closeDialog();
-                    closeModal();
-                },
-            },
-        });
+        closeModal();
     };
 
     const setCurrentCharacterPage = (arr: ICharacter[]) => {

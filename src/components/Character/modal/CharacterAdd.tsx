@@ -12,9 +12,8 @@ import { getCrollCharacterInfo, isDuplicate } from '@components/Character/common
 import { ICharacter } from '@components/Character/CharacterType';
 import CharacterForm from '@components/Character/common/Form';
 import AddButtonContainer from '@components/Container/Button/Add';
-import { getStorage } from '@storage/index';
 import { FormContainer } from '@style/common/modal';
-import { ScheduleContents } from '@common/types';
+import { getResetCheckArr } from '@components/Todo/common/functions';
 
 const CharacterAdd = () => {
     const [storageCharacter, setStorageCharacter] = useCharacter();
@@ -98,25 +97,13 @@ const CharacterAdd = () => {
                 check: getResetCheckArr(todo.contents),
                 relaxGauge: 0,
                 oriRelaxGauge: 0,
-                hide: false,
             };
+            todo.showCharacter.push(characterId);
 
             return todo.type === 'line' ? todo : Object.assign({}, todo, todo.character.push(todoCharacter));
         });
 
         setStorageTodo(JSON.stringify(todoCharacterArr));
-    };
-
-    const getResetCheckArr = (contents: ScheduleContents): number[] => {
-        return isMultipleArr(contents) ? new Array(getArrayLength(contents)).fill(0) : new Array(1).fill(0);
-    };
-
-    const isMultipleArr = (contents: ScheduleContents): boolean => {
-        return ['chaos', 'epona'].includes(contents);
-    };
-
-    const getArrayLength = (contents: ScheduleContents): number => {
-        return contents === 'chaos' ? 2 : 3;
     };
 
     const setCurrentCharacterPage = (arr: ICharacter[]) => {

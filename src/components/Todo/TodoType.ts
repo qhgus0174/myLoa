@@ -7,6 +7,7 @@ export interface ITodo {
     contents: ScheduleContents;
     checkType: ScheduleCheckType;
     color: string;
+    showCharacter: number[];
     character: ICharacterTodo[];
     detailName?: string[];
 }
@@ -16,7 +17,6 @@ export interface ICharacterTodo {
     check: number[];
     relaxGauge: number;
     oriRelaxGauge: number;
-    hide: boolean;
     text?: string;
     memo?: string;
 }
@@ -25,5 +25,6 @@ export interface ITodoCheck extends ICharacterTodo {
     todoType: ScheduleType;
     todoId: number;
     todoContents: ScheduleContents;
+    showCharacter: number[];
     checkType: ScheduleCheckType;
 }
