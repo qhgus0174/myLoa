@@ -50,7 +50,7 @@ const BasicButton = styled.button<IButtonProps>`
     cursor: pointer;
     display: flex;
     align-items: center;
-    justify-content: ${props => (!props.icon ? `center` : `flex-end`)};
+    justify-content: center;
 
     svg,
     img {
