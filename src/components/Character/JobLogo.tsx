@@ -30,7 +30,7 @@ interface IIcon {
     height?: number;
 }
 
-const JobLogo = ({ shape, width = 35, height = 35 }: IIcon) => {
+const JobLogo = ({ shape, width = 36, height = 35 }: IIcon) => {
     const icon = () => {
         let engName: IIconType | '' = '';
 
@@ -108,7 +108,11 @@ const JobLogo = ({ shape, width = 35, height = 35 }: IIcon) => {
                     width: ${calcRatio().width}px;
                     height: ${calcRatio().height}px;
                 `}
-                src={require(`@assets/img/job/${engName}.png`).default}
+                src={
+                    engName
+                        ? require(`@assets/img/job/${engName}.png`).default
+                        : require(`@assets/img/job/warning.svg`).default
+                }
             />
         );
     };
