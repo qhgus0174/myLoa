@@ -10,10 +10,14 @@ export function useInput<T>(
         numberOnly?: boolean;
         maxLength?: number;
     },
-): [T, any, () => void] {
+): [T, any, (e: any) => void, () => void] {
     const [value, setValue] = useState<T>(initialValue);
 
     const reset = useCallback(() => setValue(initialValue), [initialValue]);
+
+    const settingValue = (e: any) => {
+        setValue(e);
+    };
 
     const bind = {
         value,
@@ -26,5 +30,5 @@ export function useInput<T>(
         maxLength: option?.maxLength,
     };
 
-    return [value, bind, reset];
+    return [value, bind, settingValue, reset];
 }
