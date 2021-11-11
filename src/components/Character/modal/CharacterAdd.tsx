@@ -14,6 +14,7 @@ import CharacterForm from '@components/Character/common/Form';
 import AddButtonContainer from '@components/Container/Button/Add';
 import { getStorage } from '@storage/index';
 import { FormContainer } from '@style/common/modal';
+import { ScheduleContents } from '@common/types';
 
 const CharacterAdd = () => {
     const [storageCharacter, setStorageCharacter] = useCharacter();
@@ -57,14 +58,14 @@ const CharacterAdd = () => {
         const maxCharacterId = Math.max(...characterArr.map(char => char.id), 0);
         const characterId = characterArr.length == 0 ? 0 : maxCharacterId + 1;
 
-        addCharacterInfo(crollJob, crollLevel, characterId);
+        const resultArr = addCharacterInfo(crollJob, crollLevel, characterId);
         addCharacterOrd(characterId);
         addTodoCharacterInfo(characterId);
-        setCurrentCharacterPage();
+        setCurrentCharacterPage(resultArr);
         closeModal();
     };
 
-    const addCharacterInfo = (crollJob: string, crollLevel: string, characterId: number) => {
+    const addCharacterInfo = (crollJob: string, crollLevel: string, characterId: number): ICharacter[] => {
         const characterArr: ICharacter[] = JSON.parse(storageCharacter);
 
         const characterInfo: ICharacter = {
@@ -78,6 +79,7 @@ const CharacterAdd = () => {
 
         characterArr.push(characterInfo);
         setStorageCharacter(JSON.stringify(characterArr));
+        return characterArr;
     };
 
     const addCharacterOrd = (characterId: number) => {
@@ -90,23 +92,35 @@ const CharacterAdd = () => {
     const addTodoCharacterInfo = (characterId: number) => {
         const todoArr: ITodo[] = JSON.parse(storageTodo);
 
-        const todoCharacter: ICharacterTodo = {
-            id: characterId,
-            check: 0,
-            relaxGauge: 0,
-            oriRelaxGauge: 0,
-            hide: false,
-        };
-
         const todoCharacterArr = todoArr.map((todo: ITodo) => {
+            const todoCharacter: ICharacterTodo = {
+                id: characterId,
+                check: getResetCheckArr(todo.contents),
+                relaxGauge: 0,
+                oriRelaxGauge: 0,
+                hide: false,
+            };
+
             return todo.type === 'line' ? todo : Object.assign({}, todo, todo.character.push(todoCharacter));
         });
 
         setStorageTodo(JSON.stringify(todoCharacterArr));
     };
 
-    const setCurrentCharacterPage = () => {
-        const currentPage = Math.ceil(getStorage('character').length / perPage);
+    const getResetCheckArr = (contents: ScheduleContents): number[] => {
+        return isMultipleArr(contents) ? new Array(getArrayLength(contents)).fill(0) : new Array(1).fill(0);
+    };
+
+    const isMultipleArr = (contents: ScheduleContents): boolean => {
+        return ['chaos', 'epona'].includes(contents);
+    };
+
+    const getArrayLength = (contents: ScheduleContents): number => {
+        return contents === 'chaos' ? 2 : 3;
+    };
+
+    const setCurrentCharacterPage = (arr: ICharacter[]) => {
+        const currentPage = Math.ceil(arr.length / perPage);
         setCurrentPage(currentPage);
     };
 

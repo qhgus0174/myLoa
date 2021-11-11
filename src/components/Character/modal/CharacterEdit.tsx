@@ -105,9 +105,9 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
             content: <>데이터를 삭제하시겠습니까?</>,
             options: {
                 confirmFn: () => {
-                    deleteCharacterInfo();
+                    const deletedCharacterArr = deleteCharacterInfo();
                     deleteTodo();
-                    setCurrentCharacterPage();
+                    setCurrentCharacterPage(deletedCharacterArr);
 
                     closeDialog();
                     closeModal();
@@ -116,22 +116,24 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
         });
     };
 
-    const setCurrentCharacterPage = () => {
-        const currentPage = Math.ceil(getStorage('character').length / perPage);
+    const setCurrentCharacterPage = (arr: ICharacter[]) => {
+        const currentPage = Math.ceil(arr.length / perPage);
         setCurrentPage(currentPage);
     };
 
-    const deleteCharacterInfo = () => {
-        deleteCharacter();
+    const deleteCharacterInfo = (): ICharacter[] => {
         deleteCharacterOrd();
+        return deleteCharacter();
     };
 
-    const deleteCharacter = () => {
+    const deleteCharacter = (): ICharacter[] => {
         const characterArr: ICharacter[] = JSON.parse(character);
         const resultArray = _.reject(characterArr, ({ id }: ICharacter) => {
             return id === oriId;
         });
         setCharacter(JSON.stringify(resultArray));
+
+        return resultArray;
     };
 
     const deleteCharacterOrd = () => {
