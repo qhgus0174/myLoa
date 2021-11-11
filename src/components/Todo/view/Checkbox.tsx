@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { getStorage } from '@storage/index';
-import { default as CheckboxInput } from '@components/Input/Checkbox';
+import { default as CheckboxInput } from '@components/Input/TodoCheckbox';
 import { ICharacterTodo, ITodo } from '@components/Todo/TodoType';
 import TodoCheck from '@components/Todo/modal/TodoCheck';
 import TextBox from '@components/Input/TextBox';
@@ -88,26 +88,31 @@ const Checkbox = ({ todo, todoIndex, onContextMenu, onChangeTodoText }: ICheckbo
                                         e: e,
                                         modal: (
                                             <TodoCheck
+                                                key={`todo_check_${characterIndex}`}
                                                 {...charTodo}
                                                 todoId={todo.id}
                                                 checkType={todo.checkType}
                                                 todoType={todo.type}
                                                 todoContents={todo.contents}
+                                                showCharacter={todo.showCharacter}
                                             />
                                         ),
                                         title: '숙제 수정(개별)',
-                                        width: '35',
-                                        height: '60',
+                                        width: '400',
+                                        height: '350',
                                     })
                                 }
                             >
-                                {!charTodo.hide &&
-                                    (todo.checkType === 'check' ? (
+                                {todo.checkType === 'check' ? (
+                                    todo.showCharacter.includes(charTodo.id) && (
                                         <>
                                             <CheckBoxDiv contents={todo.contents} todoType={todo.type}>
                                                 {charTodo.check.map((checks: number, checkesIndex: number) => {
                                                     return (
-                                                        <CheckboxContentDiv direction="column">
+                                                        <CheckboxContentDiv
+                                                            key={`todo_char_check_${checkesIndex}`}
+                                                            direction="column"
+                                                        >
                                                             <CheckboxInput
                                                                 key={checkesIndex}
                                                                 checked={checks === 1}
@@ -132,17 +137,18 @@ const Checkbox = ({ todo, todoIndex, onContextMenu, onChangeTodoText }: ICheckbo
                                                 </CheckText>
                                             )}
                                         </>
-                                    ) : (
-                                        <TextBox
-                                            onChange={e => {
-                                                onChangeTodoText(e, todoIndex, characterIndex);
-                                            }}
-                                            underline={false}
-                                            width="70"
-                                            align="center"
-                                            value={charTodo.text || ''}
-                                        />
-                                    ))}
+                                    )
+                                ) : (
+                                    <TextBox
+                                        onChange={e => {
+                                            onChangeTodoText(e, todoIndex, characterIndex);
+                                        }}
+                                        underline={false}
+                                        width="70"
+                                        align="center"
+                                        value={charTodo.text || ''}
+                                    />
+                                )}
                             </FlexHoverDiv>
                         );
                     })}
@@ -157,8 +163,8 @@ const CheckBoxDiv = styled.div<{ todoType: ScheduleType; contents: ScheduleConte
     flex-basis: 50%;
     justify-content: space-evenly;
 
-    & > label:nth-child(2),
-    & > label:nth-child(3) {
+    & > label:nth-of-type(2),
+    & > label:nth-of-type(3) {
         margin-left: 0.5em;
     }
     ${props => props.contents === 'epona' && `flex-basis: 82%;`}

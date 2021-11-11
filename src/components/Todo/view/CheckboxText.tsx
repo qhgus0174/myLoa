@@ -15,7 +15,7 @@ const CheckboxText = ({ todo, onContextMenu }: ICheckbox) => {
         <TextDiv
             color={todo.color}
             onContextMenu={e =>
-                onContextMenu({ e: e, modal: <TodoEdit {...todo} />, title: '숙제 수정', width: '35', height: '85' })
+                onContextMenu({ e: e, modal: <TodoEdit {...todo} />, title: '숙제 수정', width: '600', height: '850' })
             }
         >
             {todo.name}
