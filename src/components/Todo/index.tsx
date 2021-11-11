@@ -46,47 +46,6 @@ const Todo = ({ onContextMenuBasicModal }: IContextModalParam) => {
         setStorageTodo(JSON.stringify(todoArr));
     };
 
-    const onClickCheckTodo = (todoOrdIndex: number, characterOrdIndex: number) => {
-        const todoArr: ITodo[] = JSON.parse(storageTodo);
-        const todoOrdArr: number[] = JSON.parse(storageTodoOrd);
-        const characterArr: ICharacter[] = JSON.parse(storageCharacter);
-        const characterOrdArr: number[] = JSON.parse(storageCharacterOrd);
-
-        const todoIndex = getOwnIdByIndex(todoArr, todoOrdArr, todoOrdIndex);
-        const characterIndex = getOwnIdByIndex(characterArr, characterOrdArr, characterOrdIndex);
-
-        const checkCount = shouldTodoCheckMultiple(todoArr[todoIndex].type, todoArr[todoIndex].contents)
-            ? getCheckCount(todoArr[todoIndex].contents, todoArr[todoIndex].character[characterIndex].check)
-            : 1 - todoArr[todoIndex].character[characterIndex].check;
-
-        const relaxGauge = calcRelaxGauge(todoArr[todoIndex].character[characterIndex].oriRelaxGauge, checkCount);
-
-        todoArr[todoIndex].character[characterIndex] = {
-            ...todoArr[todoIndex].character[characterIndex],
-            check: checkCount,
-            relaxGauge: relaxGauge,
-        };
-
-        setStorageTodo(JSON.stringify(todoArr));
-    };
-
-    const calcRelaxGauge = (oriRelaxGauge: number, checkCount: number): number => {
-        const minusGauge = checkCount * 20;
-        const calcMinusGauge = oriRelaxGauge - minusGauge;
-        const calcRelaxGauge = calcMinusGauge < 0 ? 0 : calcMinusGauge;
-
-        return calcRelaxGauge;
-    };
-
-    const shouldTodoCheckMultiple = (type: ScheduleType, contents: ScheduleContents) => {
-        return type === 'daily' && ['chaos', 'epona'].includes(contents);
-    };
-
-    const getCheckCount = (contents: ScheduleContents, check: number): number => {
-        const maxCheckCount = contents === 'chaos' ? 1 : 2;
-        return check > maxCheckCount ? 0 : check + 1;
-    };
-
     const onDragEndCharacter = (result: DropResult) => {
         const { destination, source } = result;
 
@@ -148,7 +107,6 @@ const Todo = ({ onContextMenuBasicModal }: IContextModalParam) => {
                                                                 todo={todo}
                                                                 todoIndex={todoIndex}
                                                                 onChangeTodoText={onChangeTodoText}
-                                                                onClickCheckTodo={onClickCheckTodo}
                                                                 onContextMenu={onContextMenuBasicModal}
                                                             />
                                                         </CheckList>
@@ -178,7 +136,9 @@ const TodoContainer = styled.div`
 const CheckList = styled.div`
     display: flex;
     align-items: center;
-    height: 4em;
+    height: 4.2em;
+    padding-top: 0.3em;
+    box-sizing: border-box;
 `;
 
 const Hr = styled.div`

@@ -8,11 +8,12 @@ export interface ITodo {
     checkType: ScheduleCheckType;
     color: string;
     character: ICharacterTodo[];
+    detailName?: string[];
 }
 
 export interface ICharacterTodo {
     id: number;
-    check: number;
+    check: number[];
     relaxGauge: number;
     oriRelaxGauge: number;
     hide: boolean;

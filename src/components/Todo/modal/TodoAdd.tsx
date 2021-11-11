@@ -19,13 +19,12 @@ const Todo = () => {
 
     const { closeModal } = useContext(ModalActionContext);
 
-    const [name, bindName] = useInput<string>('');
+    const [name, bindName, settingName] = useInput<string>('카던');
+    const [detailName, setDetailName] = useState<string[]>(new Array(3).fill(''));
 
     const [storageTodo, setStorageTodo] = useTodo();
     const [storageTodoOrd, setStorageTodoOrd] = useTodoOrd();
     const [storageCharacter] = useCharacter();
-
-    const theme = useTheme();
 
     const [color, setColor] = useState<string>('#ffffff');
 
@@ -46,13 +45,16 @@ const Todo = () => {
 
         const characterArr: ICharacter[] = JSON.parse(storageCharacter);
 
+        const checkArr = isMultipleArr(contents) ? new Array(getArrayLength(contents)).fill(0) : new Array(1).fill(0);
+
         const characters: ICharacterTodo[] = characterArr.map((character: ICharacter) => {
-            return { id: character.id, check: 0, relaxGauge: 0, oriRelaxGauge: 0, hide: false };
+            return { id: character.id, check: checkArr, relaxGauge: 0, oriRelaxGauge: 0, hide: false };
         });
 
         const todoInfo: ITodo = {
             id: todoId,
             name: name,
+            detailName: detailName,
             type: type,
             contents: contents,
             checkType: checkType,
@@ -71,6 +73,23 @@ const Todo = () => {
         setStorageTodoOrd(JSON.stringify(todoOrdArr));
     };
 
+    const isMultipleArr = (contents: ScheduleContents): boolean => {
+        return ['chaos', 'epona'].includes(contents);
+    };
+
+    const getArrayLength = (contents: ScheduleContents): number => {
+        return contents === 'chaos' ? 2 : 3;
+    };
+
+    const onChangeDetailName = (oriArr: string[], e: React.ChangeEvent<HTMLInputElement>, idx: number) => {
+        const {
+            target: { value },
+        } = e;
+        const newArr = [...oriArr];
+        newArr[idx] = value;
+        setDetailName(newArr);
+    };
+
     return (
         <FormContainer>
             <TodoForm
@@ -82,6 +101,9 @@ const Todo = () => {
                 setContents={setContents}
                 setCheckType={setCheckType}
                 bindName={bindName}
+                settingName={settingName}
+                detailName={detailName}
+                onChangeDetailName={onChangeDetailName}
             />
 
             <AddButtonContainer onClickAdd={onClickAdd} />

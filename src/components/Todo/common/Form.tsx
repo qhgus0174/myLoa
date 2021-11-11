@@ -12,14 +12,29 @@ interface ITodo {
     type: ScheduleType;
     contents: ScheduleContents;
     color: string;
+    detailName: string[];
     setColor: (e: string) => void;
     setType: (e: ScheduleType) => void;
     setContents: (e: ScheduleContents) => void;
     setCheckType: (e: ScheduleCheckType) => void;
     bindName: any;
+    settingName: (e: any) => void;
+    onChangeDetailName: (o: string[], e: React.ChangeEvent<HTMLInputElement>, i: number) => void;
 }
 
-const TodoForm = ({ type, contents, color, setColor, setType, setContents, setCheckType, bindName }: ITodo) => {
+const TodoForm = ({
+    type,
+    contents,
+    color,
+    detailName,
+    setColor,
+    setType,
+    setContents,
+    setCheckType,
+    bindName,
+    settingName,
+    onChangeDetailName,
+}: ITodo) => {
     const theme = useTheme();
     return (
         <FormDivContainer>
@@ -36,6 +51,7 @@ const TodoForm = ({ type, contents, color, setColor, setType, setContents, setCh
                                 setType('daily');
                                 setContents('chaos');
                                 setCheckType('check');
+                                settingName('카던');
                             }}
                             checked={type === 'daily'}
                         />
@@ -47,6 +63,7 @@ const TodoForm = ({ type, contents, color, setColor, setType, setContents, setCh
                                 setType('weekly');
                                 setContents('none');
                                 setCheckType('check');
+                                settingName('');
                             }}
                             checked={type === 'weekly'}
                         />
@@ -61,6 +78,8 @@ const TodoForm = ({ type, contents, color, setColor, setType, setContents, setCh
                                 setType('other');
                                 setContents('none');
                                 setCheckType('text');
+
+                                settingName('');
                             }}
                             checked={type === 'other'}
                         />
@@ -74,17 +93,34 @@ const TodoForm = ({ type, contents, color, setColor, setType, setContents, setCh
                         <ContentsDiv>
                             <SmallTitleDiv>특수</SmallTitleDiv>
                             <RadioButton
-                                text="카던/가디언"
+                                text="카던"
                                 name="contents"
                                 value="chaos"
-                                onChange={() => setContents('chaos')}
+                                onChange={() => {
+                                    setContents('chaos');
+                                    settingName('카던');
+                                }}
                                 checked={contents === 'chaos'}
+                            />
+                            <RadioButton
+                                text="가디언"
+                                name="contents"
+                                value="guardian"
+                                onChange={() => {
+                                    setContents('guardian');
+                                    settingName('가디언');
+                                }}
+                                checked={contents === 'guardian'}
                             />
                             <RadioButton
                                 text="에포나"
                                 name="contents"
                                 value="epona"
-                                onChange={() => setContents('epona')}
+                                onClick={() => settingName('에포나')}
+                                onChange={() => {
+                                    setContents('epona');
+                                    settingName('에포나');
+                                }}
                                 checked={contents === 'epona'}
                             />
                         </ContentsDiv>
@@ -94,14 +130,20 @@ const TodoForm = ({ type, contents, color, setColor, setType, setContents, setCh
                                 text="초기화 O"
                                 name="contents"
                                 value="basicReset"
-                                onChange={() => setContents('basicReset')}
+                                onChange={() => {
+                                    setContents('basicReset');
+                                    settingName('');
+                                }}
                                 checked={contents === 'basicReset'}
                             />
                             <RadioButton
                                 text="초기화 X"
                                 name="contents"
                                 value="basic"
-                                onChange={() => setContents('basic')}
+                                onChange={() => {
+                                    setContents('basic');
+                                    settingName('');
+                                }}
                                 checked={contents === 'basic'}
                             />
                         </ContentsDiv>
@@ -110,9 +152,25 @@ const TodoForm = ({ type, contents, color, setColor, setType, setContents, setCh
             )}
             <FlexDiv direction="column">
                 <ContentsDivTitle>숙제 명</ContentsDivTitle>
-                <ContentsDiv>
-                    <TextBox width="100" placeholder="숙제 이름 입력 (e.g. 비아키스)" {...bindName} />
-                </ContentsDiv>
+                {contents === 'epona' ? (
+                    <EponaContentsDiv>
+                        {detailName.map((names: string, nameIdx: number, oriArr: string[]) => {
+                            return (
+                                <TextBox
+                                    key={`names_${nameIdx}`}
+                                    width="60"
+                                    placeholder={`에포나명${nameIdx + 1}`}
+                                    value={names}
+                                    onChange={e => onChangeDetailName(oriArr, e, nameIdx)}
+                                />
+                            );
+                        })}
+                    </EponaContentsDiv>
+                ) : (
+                    <ContentsDiv>
+                        <TextBox width="100" placeholder="숙제 이름 입력 (e.g. 비아키스)" {...bindName} />
+                    </ContentsDiv>
+                )}
             </FlexDiv>
             <FlexDiv direction="column">
                 <ContentsDivTitle>색상</ContentsDivTitle>
@@ -135,5 +193,7 @@ const ContentsDivs = styled.div`
     padding: 0.5em;
     border-radius: 1em;
 `;
+
+const EponaContentsDiv = styled(FlexDiv)``;
 
 export default TodoForm;

@@ -5,23 +5,67 @@ import { ICharacterTodo, ITodo } from '@components/Todo/TodoType';
 import TodoCheck from '@components/Todo/modal/TodoCheck';
 import TextBox from '@components/Input/TextBox';
 import { IContextModal, ScheduleContents, ScheduleType } from '@common/types';
-import { CharactersDiv, FlexHoverDiv } from '@style/common';
+import { CharactersDiv, FlexDiv, FlexHoverDiv } from '@style/common';
 import styled from '@emotion/styled';
 
 import { PagingStateContext } from '@context/PagingContext';
-import usePage from '@hooks/storage/usePage';
+import useCharacter from '@hooks/storage/useCharacter';
+import useCharacterOrd from '@hooks/storage/useCharacterOrd';
+import useTodo from '@hooks/storage/useTodo';
+import useTodoOrd from '@hooks/storage/useTodoOrd';
+import { ICharacter } from '@components/Character/CharacterType';
+import { getOwnIdByIndex } from '@common/utils';
 
 interface ICheckbox {
     todo: ITodo;
     todoIndex: number;
     onContextMenu: ({ e, title, modal, width, height }: IContextModal) => void;
-    onClickCheckTodo: (todoOrdIndex: number, characterOrdIndex: number) => void;
     onChangeTodoText: (e: React.ChangeEvent<HTMLInputElement>, todoOrdIndex: number, characterOrdIndex: number) => void;
 }
 
-const Checkbox = ({ todo, todoIndex, onContextMenu, onClickCheckTodo, onChangeTodoText }: ICheckbox) => {
-    const { perPage } = useContext(PagingStateContext);
-    const [currentPage] = usePage();
+const Checkbox = ({ todo, todoIndex, onContextMenu, onChangeTodoText }: ICheckbox) => {
+    const { perPage, currentPage } = useContext(PagingStateContext);
+
+    const [storageCharacter] = useCharacter();
+    const [storageCharacterOrd] = useCharacterOrd();
+    const [storageTodo, setStorageTodo] = useTodo();
+    const [storageTodoOrd, setStorageTodoOrd] = useTodoOrd();
+
+    const onClickCheckTodo = (todoOrdIndex: number, characterOrdIndex: number, checkesIndex: number) => {
+        const todoArr: ITodo[] = JSON.parse(storageTodo);
+        const todoOrdArr: number[] = JSON.parse(storageTodoOrd);
+        const characterArr: ICharacter[] = JSON.parse(storageCharacter);
+        const characterOrdArr: number[] = JSON.parse(storageCharacterOrd);
+
+        const todoIndex = getOwnIdByIndex(todoArr, todoOrdArr, todoOrdIndex);
+        const characterIndex = getOwnIdByIndex(characterArr, characterOrdArr, characterOrdIndex);
+
+        const checkCount: number[] = todoArr[todoIndex].character[characterIndex].check.map(
+            (value: number, index: number) => {
+                return index === checkesIndex ? 1 - value : value;
+            },
+        );
+
+        const relaxGauge = calcRelaxGauge(todoArr[todoIndex].character[characterIndex].oriRelaxGauge, checkCount);
+
+        todoArr[todoIndex].character[characterIndex] = {
+            ...todoArr[todoIndex].character[characterIndex],
+            check: checkCount,
+            relaxGauge: relaxGauge,
+        };
+
+        setStorageTodo(JSON.stringify(todoArr));
+    };
+
+    const calcRelaxGauge = (oriRelaxGauge: number, checkArr: number[]): number => {
+        const checkCounts = checkArr.reduce((count, num) => (num === 2 ? count + 1 : count), 0);
+
+        const minusGauge = checkCounts * 20;
+        const calcMinusGauge = oriRelaxGauge - minusGauge;
+        const calcRelaxGauge = calcMinusGauge < 0 ? 0 : calcMinusGauge;
+
+        return calcRelaxGauge;
+    };
 
     return (
         <>
@@ -36,7 +80,6 @@ const Checkbox = ({ todo, todoIndex, onContextMenu, onClickCheckTodo, onChangeTo
                         currentPage === 1 ? perPage : (currentPage - 1) * perPage + perPage,
                     )
                     .map((charTodo: ICharacterTodo, characterIndex: number) => {
-                        const isChecked = charTodo.check > 0 ? true : false;
                         return (
                             <FlexHoverDiv
                                 key={`drag_char_${characterIndex}`}
@@ -62,17 +105,30 @@ const Checkbox = ({ todo, todoIndex, onContextMenu, onClickCheckTodo, onChangeTo
                                     (todo.checkType === 'check' ? (
                                         <>
                                             <CheckBoxDiv contents={todo.contents} todoType={todo.type}>
-                                                <CheckboxInput
-                                                    checked={isChecked}
-                                                    onChange={() => onClickCheckTodo(todoIndex, characterIndex)}
-                                                />
+                                                {charTodo.check.map((checks: number, checkesIndex: number) => {
+                                                    return (
+                                                        <CheckboxContentDiv direction="column">
+                                                            <CheckboxInput
+                                                                key={checkesIndex}
+                                                                checked={checks === 1}
+                                                                onChange={() =>
+                                                                    onClickCheckTodo(
+                                                                        todoIndex,
+                                                                        characterIndex,
+                                                                        checkesIndex,
+                                                                    )
+                                                                }
+                                                            />
+                                                            <EponaTextDiv>
+                                                                {todo.detailName && todo.detailName[checkesIndex]}
+                                                            </EponaTextDiv>
+                                                        </CheckboxContentDiv>
+                                                    );
+                                                })}
                                             </CheckBoxDiv>
-                                            {todo.type === 'daily' && ['chaos', 'epona'].includes(todo.contents) && (
+                                            {todo.type === 'daily' && todo.contents === 'chaos' && (
                                                 <CheckText>
                                                     <RelaxGaugeDiv>{charTodo.relaxGauge}</RelaxGaugeDiv>
-                                                    <div>
-                                                        {`${charTodo.check} / ${todo.contents === 'chaos' ? '2' : '3'}`}
-                                                    </div>
                                                 </CheckText>
                                             )}
                                         </>
@@ -99,20 +155,25 @@ const Checkbox = ({ todo, todoIndex, onContextMenu, onClickCheckTodo, onChangeTo
 const CheckBoxDiv = styled.div<{ todoType: ScheduleType; contents: ScheduleContents }>`
     display: flex;
     flex-basis: 50%;
-    justify-content: ${props =>
-        props.todoType === 'daily' && ['chaos', 'epona'].includes(props.contents) ? `flex-end` : `center`};
+    justify-content: space-evenly;
+
+    & > label:nth-child(2),
+    & > label:nth-child(3) {
+        margin-left: 0.5em;
+    }
+    ${props => props.contents === 'epona' && `flex-basis: 82%;`}
 `;
 
 const CheckText = styled.div`
     display: flex;
     flex-direction: column;
-    flex-basis: 50%;
+    flex-basis: 15%;
     justify-content: center;
-    padding-left: 1.5em;
 `;
 
 const RelaxGaugeDiv = styled.div`
     justify-content: center;
+    text-align: center;
     color: ${props => props.theme.colors.relax};
 `;
 
@@ -120,6 +181,21 @@ const WhiteSpaceDiv = styled.div`
     display: flex;
     width: 2.5%;
     flex-basis: 2.5%;
+`;
+
+const CheckboxContentDiv = styled(FlexDiv)`
+    align-items: center;
+    flex-basis: 33%;
+    font-size: 0.9em;
+`;
+
+const EponaTextDiv = styled.div`
+    font-size: 0.9em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+    width: 46.75px;
 `;
 
 export default Checkbox;

@@ -13,6 +13,7 @@ import { FormContainer } from '@style/common/modal';
 const TodoEdit = ({
     id: oriId,
     name: newName,
+    detailName: newDetailName,
     type: newType,
     contents: newContents,
     checkType: newCheckType,
@@ -28,7 +29,8 @@ const TodoEdit = ({
     const [checkType, setCheckType] = useState<ScheduleCheckType>(newCheckType);
     const [color, setColor] = useState<string>(newColor);
 
-    const [name, bindName] = useInput<string>(newName);
+    const [name, bindName, settingName] = useInput<string>(newName);
+    const [detailName, setDetailName] = useState<string[]>(newDetailName || []);
 
     const onClickEdit = () => {
         editTodo();
@@ -50,6 +52,7 @@ const TodoEdit = ({
         newTodoArr[index] = {
             ...newTodoArr[index],
             name: name,
+            detailName: detailName,
             type: type,
             contents: contents,
             checkType: checkType,
@@ -75,6 +78,15 @@ const TodoEdit = ({
         setStorageTodoOrd(JSON.stringify(resultOrd));
     };
 
+    const onChangeDetailName = (oriArr: string[], e: React.ChangeEvent<HTMLInputElement>, idx: number) => {
+        const {
+            target: { value },
+        } = e;
+        const newArr = [...oriArr];
+        newArr[idx] = value;
+        setDetailName(newArr);
+    };
+
     return (
         <FormContainer>
             <TodoForm
@@ -86,6 +98,9 @@ const TodoEdit = ({
                 setContents={setContents}
                 setCheckType={setCheckType}
                 bindName={bindName}
+                settingName={settingName}
+                detailName={detailName}
+                onChangeDetailName={onChangeDetailName}
             />
             <EditButtonContainer onClickDelete={onClickDelete} onClickEdit={onClickEdit} />
         </FormContainer>

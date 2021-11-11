@@ -52,7 +52,7 @@ const TodoCheck = ({
 
                 const resetTodoData: ICharacterTodo = {
                     ...character,
-                    check: relaxGauge !== character.oriRelaxGauge ? 0 : character.check,
+                    check: relaxGauge !== character.oriRelaxGauge ? character.check.fill(0) : character.check,
                     relaxGauge: relaxGauge,
                     oriRelaxGauge: relaxGauge,
                     memo: memo,
@@ -69,7 +69,7 @@ const TodoCheck = ({
 
     return (
         <FormContainer>
-            {todoType === 'daily' && ['chaos', 'epona'].includes(todoContents) && (
+            {todoType === 'daily' && todoContents === 'chaos' && (
                 <RemarkDiv>* 휴식게이지 수동 입력 시 수행횟수는 초기화 됩니다.</RemarkDiv>
             )}
             <FormDivContainer>
@@ -82,7 +82,7 @@ const TodoCheck = ({
                     </FlexDiv>
                 ) : (
                     todoType === 'daily' &&
-                    ['chaos', 'epona'].includes(todoContents) && (
+                    ['chaos'].includes(todoContents) && (
                         <FlexDiv direction="column">
                             <ContentsDivTitle
                                 css={css`
