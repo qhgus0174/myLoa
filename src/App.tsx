@@ -6,6 +6,7 @@ import { ITodo, ICharacterTodo } from '@components/Todo/TodoType';
 import { ThemeProvider } from '@emotion/react';
 import { basic } from '@style/theme';
 import { GlobalStyle } from '@style/global-styles';
+import { ScheduleContents } from '@common/types';
 
 const App = () => {
     const [storageTodo, setStorageTodo] = useTodo();
@@ -22,8 +23,9 @@ const App = () => {
 
                 const resets = {
                     chaos: () => calcRelaxGauge(todo, character),
-                    epona: () => calcRelaxGauge(todo, character),
-                    basicReset: () => resetCheck(character),
+                    guardian: () => calcRelaxGauge(todo, character),
+                    basicReset: () => resetCheck(todo.contents, character),
+                    epona: () => character,
                     basic: () => character,
                     none: () => character,
                 };
@@ -37,18 +39,26 @@ const App = () => {
         setStorageTodo(JSON.stringify(calcResult));
     };
 
-    const resetCheck = (character: ICharacterTodo): ICharacterTodo => {
+    const resetCheck = (contents: ScheduleContents, character: ICharacterTodo): ICharacterTodo => {
         const resetTodoData: ICharacterTodo = {
             ...character,
-            check: 0,
+            check: getResetCheckArr(contents),
         };
 
         return resetTodoData;
     };
 
+    const isMultipleArr = (contents: ScheduleContents): boolean => {
+        return ['chaos', 'epona'].includes(contents);
+    };
+
+    const getArrayLength = (contents: ScheduleContents): number => {
+        return contents === 'chaos' ? 2 : 3;
+    };
+
     const calcRelaxGauge = (todo: ITodo, character: ICharacterTodo): ICharacterTodo => {
         const maxCheckCount = todo.contents === 'chaos' ? 2 : 3;
-        const addGauge = (maxCheckCount - character.check) * 10;
+        const addGauge = (maxCheckCount - getCheckCounts(character.check)) * 10;
 
         const relaxGauge = character.relaxGauge >= 100 ? 100 : Number(character.relaxGauge) + addGauge;
 
@@ -56,10 +66,18 @@ const App = () => {
             ...character,
             relaxGauge: relaxGauge,
             oriRelaxGauge: relaxGauge,
-            check: 0,
+            check: getResetCheckArr(todo.contents),
         };
 
         return resetTodoData;
+    };
+
+    const getResetCheckArr = (contents: ScheduleContents): number[] => {
+        return isMultipleArr(contents) ? new Array(getArrayLength(contents)).fill(0) : new Array(1).fill(0);
+    };
+
+    const getCheckCounts = (checkArr: number[]): number => {
+        return checkArr.reduce((count, num) => (num === 2 ? count + 1 : count), 0);
     };
 
     const resetWeeklyTodo = () => {
@@ -67,7 +85,7 @@ const App = () => {
 
         const calcResult: ITodo[] = todoArr.map((todo: ITodo) => {
             todo.character = todo.character.map((character: ICharacterTodo) => {
-                return todo.type === 'weekly' ? resetCheck(character) : character;
+                return todo.type === 'weekly' ? resetCheck(todo.contents, character) : character;
             });
 
             return todo;
