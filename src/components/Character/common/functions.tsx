@@ -26,7 +26,7 @@ export const getCrollCharacterInfo = async (name: string): Promise<ICrollInfo> =
                 ? $('.level-info2__expedition>span:nth-child(2)').text()
                 : $('dl[class="define item"] > .level').text();
 
-        return { status: 'success', crollJob: crollJob?.replace('Lv.', ''), crollLevel: crollLevel };
+        return { status: 'success', crollJob: crollJob, crollLevel: crollLevel.replace('Lv.', '') };
     } catch (e: unknown) {
         return { status: 'error', validMsg: '캐릭터 정보를 불러올 수 없습니다.', crollJob: '', crollLevel: '' };
     }
