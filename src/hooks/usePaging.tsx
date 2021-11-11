@@ -5,6 +5,7 @@ import { getStorage } from '@storage/index';
 import usePage from '@hooks/storage/usePage';
 
 export interface IPagingOption {
+    currentPage: number;
     perPage: number;
     setCurrentPage: (e: number) => void;
     onClickPrev: () => void;
