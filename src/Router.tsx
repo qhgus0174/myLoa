@@ -5,7 +5,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import Main from '@routes/Main';
 import SpinnerContext from '@context/SpinnerContext';
 import PagingContext from '@context/PagingContext';
-import DialogContext from '@context/DialogContext';
 import ModalContext from '@context/ModalContext';
 import Header from '@components/Layout/Header';
 import styled from '@emotion/styled';
@@ -31,14 +30,12 @@ const AppRouter = () => {
                 <Container>
                     <PagingContext>
                         <SpinnerContext>
-                            <DialogContext>
-                                <ModalContext>
-                                    <Header />
-                                    <Switch>
-                                        <Route exact path="/" component={Main} />
-                                    </Switch>
-                                </ModalContext>
-                            </DialogContext>
+                            <ModalContext>
+                                <Header />
+                                <Switch>
+                                    <Route exact path="/" component={Main} />
+                                </Switch>
+                            </ModalContext>
                         </SpinnerContext>
                     </PagingContext>
                 </Container>
