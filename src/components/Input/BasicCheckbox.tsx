@@ -5,26 +5,15 @@ import { Theme } from '@emotion/react';
 export interface ICheckbox extends React.InputHTMLAttributes<HTMLInputElement> {
     checked: boolean;
     color?: 'white' | 'white';
-    checkColor?: keyof Theme['colors'];
     label?: string;
-    shape?: 'circle' | 'square';
-    transition?: boolean;
 }
 
-const Checkbox = ({
-    checked,
-    label,
-    checkColor = 'check',
-    transition = true,
-    color = 'white',
-    shape = 'circle',
-    ...rest
-}: ICheckbox) => {
+const BasicCheckbox = ({ checked, label, color = 'white', ...rest }: ICheckbox) => {
     return (
         <CheckboxContainer>
-            <Label transition={transition} checkColor={checkColor} checked={checked}>
+            <Label checked={checked}>
                 <CustomCheckbox type="checkbox" checked={checked} {...rest} />
-                <Span transition={transition} shape={shape}></Span>
+                <Span></Span>
                 {label && (
                     <CheckboxTitle checked color={color}>
                         {label}
@@ -45,15 +34,13 @@ const Label = styled.label<ICheckbox>`
     position: relative;
 
     &:hover {
-        span {
+        span:nth-of-type(1) {
             &:before {
                 width: 5px;
-                ${props => props.transition && `transition: width 100ms ease;`}
             }
 
             &:after {
                 width: 10px;
-                ${props => props.transition && `transition: width 150ms ease 100ms;`}
             }
         }
     }
@@ -61,58 +48,48 @@ const Label = styled.label<ICheckbox>`
     ${props =>
         props.checked &&
         `
-            span {
+        span:nth-of-type(1) {
                 background-color: ${props.theme.colors.white};
-                transform: scale(1.2); 
 
                 &:after {
                     width: 10px;
-                    background: ${props.theme.colors[props.checkColor ? props.checkColor : `check`]};
-                    ${props.transition && `transition: width 150ms ease 100ms;`} // enlarge the tick
+                    background: ${props.theme.colors.black};
                 }
 
                 &:before {
                     width: 5px;
-                    background: ${props.theme.colors[props.checkColor ? props.checkColor : `check`]};
-                    ${props.transition && `transition: width 150ms ease 100ms;`} // enlarge the tick
+                    background:${props.theme.colors.black};
                 }
             }
 
             &:hover {
-                span {
+                span:nth-of-type(1) {
                     background-color: ${props.theme.colors.white};
-                    transform: scale(1.3); // enlarge the box
 
                     &:after {
                         width: 10px;
-                        background: ${props.theme.colors[props.checkColor ? props.checkColor : `check`]};
-                        ${props.transition && `transition: width 150ms ease 100ms;`} // enlarge the tick
+                        background: ${props.theme.colors.black};
                     }
 
                     &:before {
                         width: 5px;
-                        background: ${props.theme.colors[props.checkColor ? props.checkColor : `check`]};
-                        ${props.transition && `transition: width 150ms ease 100ms;`} // enlarge the tick
+                        background: ${props.theme.colors.black};
                     }
                 }
             }
     `};
 `;
 
-const Span = styled.span<Pick<ICheckbox, 'shape' | 'transition'>>`
+const Span = styled.span`
     display: inline-block;
-    position: relative;
     background-color: transparent;
     width: 25px;
     height: 25px;
     transform-origin: center;
     border: 2px solid ${props => props.theme.colors.white};
-    border-radius: ${props => (props.shape === 'circle' ? '50%' : '0%')};
+    box-sizing: border-box;
+    border-radius: 0%;
     vertical-align: -6px;
-
-    ${props =>
-        props.transition &&
-        `transition: background-color 150ms 200ms, transform 350ms cubic-bezier(0.78, -1.22, 0.17, 1.89);`} // custom ease effect for bouncy animation
 
     &:before {
         content: '';
@@ -124,7 +101,6 @@ const Span = styled.span<Pick<ICheckbox, 'shape' | 'transition'>>`
         transform: rotate(45deg);
         top: 13px;
         left: 9px;
-        ${props => props.transition && `transition: width 50ms ease 50ms;`}
         transform-origin: 0% 0%;
     }
 
@@ -138,7 +114,6 @@ const Span = styled.span<Pick<ICheckbox, 'shape' | 'transition'>>`
         transform: rotate(305deg);
         top: 16px;
         left: 10px;
-        ${props => props.transition && `transition: width 50ms ease;`}
         transform-origin: 0% 0%;
     }
 `;
@@ -151,4 +126,4 @@ const CheckboxTitle = styled.span<ICheckbox>`
     margin-left: 0.5em;
 `;
 
-export default Checkbox;
+export default BasicCheckbox;
