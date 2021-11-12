@@ -7,6 +7,7 @@ import { ThemeProvider } from '@emotion/react';
 import { basic } from '@style/theme';
 import { GlobalStyle } from '@style/global-styles';
 import { ScheduleContents } from '@common/types';
+import { getResetCheckArr } from '@components/Todo/common/functions';
 
 const App = () => {
     const [storageTodo, setStorageTodo] = useTodo();
@@ -48,16 +49,8 @@ const App = () => {
         return resetTodoData;
     };
 
-    const isMultipleArr = (contents: ScheduleContents): boolean => {
-        return ['chaos', 'epona'].includes(contents);
-    };
-
-    const getArrayLength = (contents: ScheduleContents): number => {
-        return contents === 'chaos' ? 2 : 3;
-    };
-
     const calcRelaxGauge = (todo: ITodo, character: ICharacterTodo): ICharacterTodo => {
-        const maxCheckCount = todo.contents === 'chaos' ? 2 : 3;
+        const maxCheckCount = 2;
         const addGauge = (maxCheckCount - getCheckCounts(character.check)) * 10;
 
         const relaxGauge = character.relaxGauge >= 100 ? 100 : Number(character.relaxGauge) + addGauge;
@@ -70,10 +63,6 @@ const App = () => {
         };
 
         return resetTodoData;
-    };
-
-    const getResetCheckArr = (contents: ScheduleContents): number[] => {
-        return isMultipleArr(contents) ? new Array(getArrayLength(contents)).fill(0) : new Array(1).fill(0);
     };
 
     const getCheckCounts = (checkArr: number[]): number => {

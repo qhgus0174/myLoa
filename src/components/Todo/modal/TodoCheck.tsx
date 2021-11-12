@@ -83,7 +83,7 @@ const TodoCheck = ({
 
     return (
         <FormContainer>
-            {todoType === 'daily' && todoContents === 'chaos' && (
+            {todoType === 'daily' && ['chaos', 'guardian'].includes(todoContents) && (
                 <RemarkDiv>* 휴식게이지 수동 입력 시 수행횟수는 초기화 됩니다.</RemarkDiv>
             )}
             <FormDivContainer>
@@ -96,7 +96,7 @@ const TodoCheck = ({
                     </FlexDiv>
                 ) : (
                     todoType === 'daily' &&
-                    ['chaos'].includes(todoContents) && (
+                    ['chaos', 'guardian'].includes(todoContents) && (
                         <FlexDiv direction="column">
                             <ContentsDivTitle
                                 css={css`
