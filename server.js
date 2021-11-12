@@ -10,6 +10,4 @@ app.get('*', (req, res) => {
     res.sendFile(path.join(distPath, 'index.html'));
 });
 
-app.listen(port, () => {
-    console.log('Server is up!');
-});
+app.listen(port, () => {});
