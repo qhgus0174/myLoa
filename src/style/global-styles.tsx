@@ -28,6 +28,12 @@ export const GlobalStyle = () => {
                     color: ${theme.colors.black};
                 }
 
+                select {
+                    background-color: ${theme.colors.main};
+                    padding: 0.2em;
+                    font-size: 0.9em;
+                }
+
                 ::-webkit-scrollbar-track {
                     -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
                     background-color: ${theme.colors.main};
