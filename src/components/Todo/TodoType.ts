@@ -9,7 +9,7 @@ export interface ITodo {
     color: string;
     showCharacter: number[];
     character: ICharacterTodo[];
-    detailName?: string[];
+    //isFixed: boolean;
 }
 
 export interface ICharacterTodo {
@@ -17,6 +17,7 @@ export interface ICharacterTodo {
     check: number[];
     relaxGauge: number;
     oriRelaxGauge: number;
+    eponaName: string[];
     text?: string;
     memo?: string;
 }

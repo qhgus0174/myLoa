@@ -20,7 +20,6 @@ const Todo = () => {
     const { closeModal } = useContext(ModalActionContext);
 
     const [name, bindName, settingName] = useInput<string>('카던');
-    const [detailName, setDetailName] = useState<string[]>(new Array(3).fill(''));
 
     const [storageTodo, setStorageTodo] = useTodo();
     const [storageTodoOrd, setStorageTodoOrd] = useTodoOrd();
@@ -52,13 +51,18 @@ const Todo = () => {
         const checkArr = getResetCheckArr(contents);
 
         const characters: ICharacterTodo[] = characterArr.map((character: ICharacter) => {
-            return { id: character.id, check: checkArr, relaxGauge: 0, oriRelaxGauge: 0 };
+            return {
+                id: character.id,
+                check: checkArr,
+                relaxGauge: 0,
+                oriRelaxGauge: 0,
+                eponaName: contents === 'epona' ? new Array(3).fill('') : [],
+            };
         });
 
         const todoInfo: ITodo = {
             id: todoId,
             name: name,
-            detailName: contents === 'epona' ? detailName : [],
             type: type,
             contents: contents,
             checkType: checkType,
@@ -78,15 +82,6 @@ const Todo = () => {
         setStorageTodoOrd(JSON.stringify(todoOrdArr));
     };
 
-    const onChangeDetailName = (oriArr: string[], e: React.ChangeEvent<HTMLInputElement>, idx: number) => {
-        const {
-            target: { value },
-        } = e;
-        const newArr = [...oriArr];
-        newArr[idx] = value;
-        setDetailName(newArr);
-    };
-
     return (
         <FormContainer>
             <TodoForm
@@ -100,9 +95,6 @@ const Todo = () => {
                 setCheckType={setCheckType}
                 bindName={bindName}
                 settingName={settingName}
-                detailName={detailName}
-                setDetailName={setDetailName}
-                onChangeDetailName={onChangeDetailName}
                 setShowCharacterArr={setShowCharacterArr}
             />
 

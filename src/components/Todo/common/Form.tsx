@@ -18,7 +18,6 @@ interface ITodo {
     type: ScheduleType;
     contents: ScheduleContents;
     color: string;
-    detailName: string[];
     showCharacterArr: number[];
     setColor: (e: string) => void;
     setType: (e: ScheduleType) => void;
@@ -26,8 +25,6 @@ interface ITodo {
     setCheckType: (e: ScheduleCheckType) => void;
     bindName: any;
     settingName: (e: any) => void;
-    setDetailName: (e: string[]) => void;
-    onChangeDetailName: (o: string[], e: React.ChangeEvent<HTMLInputElement>, i: number) => void;
     setShowCharacterArr: (e: number[]) => void;
 }
 
@@ -35,7 +32,6 @@ const TodoForm = ({
     type,
     contents,
     color,
-    detailName,
     showCharacterArr,
     setColor,
     setType,
@@ -43,8 +39,6 @@ const TodoForm = ({
     setCheckType,
     bindName,
     settingName,
-    setDetailName,
-    onChangeDetailName,
     setShowCharacterArr,
 }: ITodo) => {
     const [storageCharacter] = useCharacter();
@@ -132,7 +126,6 @@ const TodoForm = ({
                                 onChange={() => {
                                     setContents('epona');
                                     settingName('에포나');
-                                    setDetailName(new Array(3).fill(''));
                                 }}
                                 checked={contents === 'epona'}
                             />
@@ -193,25 +186,9 @@ const TodoForm = ({
 
             <FlexDiv direction="column">
                 <ContentsDivTitle>숙제 명</ContentsDivTitle>
-                {contents === 'epona' ? (
-                    <FlexDiv>
-                        {detailName.map((names: string, nameIdx: number, oriArr: string[]) => {
-                            return (
-                                <TextBox
-                                    key={`names_${nameIdx}`}
-                                    width="60"
-                                    placeholder={`에포나명${nameIdx + 1}`}
-                                    value={names}
-                                    onChange={e => onChangeDetailName(oriArr, e, nameIdx)}
-                                />
-                            );
-                        })}
-                    </FlexDiv>
-                ) : (
-                    <ContentsDiv>
-                        <TextBox width="100" placeholder="숙제 이름 입력 (e.g. 비아키스)" {...bindName} />
-                    </ContentsDiv>
-                )}
+                <ContentsDiv>
+                    <TextBox width="100" placeholder="숙제 이름 입력 (e.g. 비아키스)" {...bindName} />
+                </ContentsDiv>
             </FlexDiv>
             <FlexDiv direction="column">
                 <ContentsDivTitle>색상</ContentsDivTitle>

@@ -23,6 +23,7 @@ const TodoCheck = ({
     todoType: oriTodoType,
     todoContents,
     showCharacter: oriShowCharacter,
+    eponaName: oriEponaName,
 }: ITodoCheck) => {
     const theme = useTheme();
 
@@ -30,12 +31,13 @@ const TodoCheck = ({
 
     const { closeModal } = useContext(ModalActionContext);
 
-    const [todoType] = useState<ScheduleType>(oriTodoType);
-
     const [relaxGauge, bindRelaxGauge] = useInput<number>(oriRelax, { maxLength: 3, numberOnly: true });
     const [text, bindText] = useInput<string>(oriText || '');
     const [memo, bindMemo] = useInput<string>(oriMemo || '');
+
+    const [todoType] = useState<ScheduleType>(oriTodoType);
     const [showCharacter, setShowCharacter] = useState<number[]>(oriShowCharacter);
+    const [eponaName, setEponaName] = useState<string[]>(oriEponaName);
 
     const onClickEdit = () => {
         editTodoCheck();
@@ -46,7 +48,7 @@ const TodoCheck = ({
         const todoArr: ITodo[] = JSON.parse(storageTodo);
 
         const todoIndex = todoArr.findIndex(todo => todo.id === todoId);
-        const characterIndex = todoArr.findIndex(todo => todo.id === todoId);
+        const characterIndex = todoArr.findIndex(todo => todo.id === characterId);
 
         todoArr[todoIndex] = {
             ...todoArr[todoIndex],
@@ -62,9 +64,20 @@ const TodoCheck = ({
             relaxGauge: relaxGauge,
             oriRelaxGauge: relaxGauge,
             memo: memo,
+            eponaName: eponaName,
         };
 
         setStorageTodo(JSON.stringify(todoArr));
+    };
+
+    const onChangeDetailName = (e: React.ChangeEvent<HTMLInputElement>, oriArr: string[], idx: number) => {
+        const {
+            target: { value },
+        } = e;
+        const newArr = [...oriArr];
+        newArr[idx] = value;
+        console.log(newArr);
+        setEponaName(newArr);
     };
 
     return (
@@ -98,6 +111,24 @@ const TodoCheck = ({
                     )
                 )}
 
+                {todoContents === 'epona' && (
+                    <FlexDiv direction="column">
+                        <ContentsDivTitle>에포나 명</ContentsDivTitle>
+                        <ContentsDiv>
+                            {eponaName.map((eName: string, eNameIdx: number, oriArr: string[]) => {
+                                return (
+                                    <TextBox
+                                        key={`epona_name_${eNameIdx}`}
+                                        width="75"
+                                        placeholder={`에포나명${eNameIdx + 1}`}
+                                        value={eName}
+                                        onChange={e => onChangeDetailName(e, oriArr, eNameIdx)}
+                                    />
+                                );
+                            })}
+                        </ContentsDiv>
+                    </FlexDiv>
+                )}
                 <FlexDiv direction="column">
                     <ContentsDivTitle>메모</ContentsDivTitle>
                     <ContentsDiv>

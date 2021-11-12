@@ -97,6 +97,7 @@ const CharacterAdd = () => {
                 check: getResetCheckArr(todo.contents),
                 relaxGauge: 0,
                 oriRelaxGauge: 0,
+                eponaName: [],
             };
             todo.showCharacter.push(characterId);
 

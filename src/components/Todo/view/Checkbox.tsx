@@ -94,12 +94,13 @@ const Checkbox = ({ todo, todoIndex, onContextMenu, onChangeTodoText }: ICheckbo
                                                 checkType={todo.checkType}
                                                 todoType={todo.type}
                                                 todoContents={todo.contents}
+                                                eponaName={charTodo.eponaName}
                                                 showCharacter={todo.showCharacter}
                                             />
                                         ),
                                         title: '숙제 수정(개별)',
                                         width: '400',
-                                        height: '350',
+                                        height: ['chaos', 'epona'].includes(todo.contents) ? '450' : '350',
                                     })
                                 }
                             >
@@ -125,7 +126,7 @@ const Checkbox = ({ todo, todoIndex, onContextMenu, onChangeTodoText }: ICheckbo
                                                                 }
                                                             />
                                                             <EponaTextDiv>
-                                                                {todo.detailName && todo.detailName[checkesIndex]}
+                                                                {charTodo.eponaName && charTodo.eponaName[checkesIndex]}
                                                             </EponaTextDiv>
                                                         </CheckboxContentDiv>
                                                     );
