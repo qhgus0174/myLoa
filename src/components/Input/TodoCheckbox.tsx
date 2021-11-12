@@ -54,7 +54,7 @@ const Label = styled.label<ICheckbox>`
         `
             span {
                 background-color: ${props.theme.colors.white};
-                transform: scale(1.2); 
+                transform: scale(1.15); 
 
                 &:after {
                     width: 10px;
@@ -72,7 +72,7 @@ const Label = styled.label<ICheckbox>`
             &:hover {
                 span {
                     background-color: ${props.theme.colors.white};
-                    transform: scale(1.3); // enlarge the box
+                    transform: scale(1.25); // enlarge the box
 
                     &:after {
                         width: 10px;

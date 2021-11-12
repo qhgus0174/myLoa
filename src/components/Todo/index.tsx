@@ -6,7 +6,7 @@ import { ITodo } from '@components/Todo/TodoType';
 import Checkbox from '@components/Todo/view/Checkbox';
 import Line from '@components/Todo/view/Line';
 import { getStorage } from '@storage/index';
-import { IContextModalParam } from '@common/types';
+import { IContextModalParam, ScheduleContents } from '@common/types';
 import styled from '@emotion/styled';
 import { FlexDiv } from '@style/common';
 import { css } from '@emotion/react';
@@ -75,7 +75,7 @@ const Todo = ({ onContextMenuBasicModal }: IContextModalParam) => {
                                                             <Line todo={todo} onContextMenu={onContextMenuBasicModal} />
                                                         </>
                                                     ) : (
-                                                        <CheckList>
+                                                        <CheckList contents={todo.contents}>
                                                             {/* <PinCheckbox checked={true} /> */}
                                                             <CheckboxText
                                                                 todo={todo}
@@ -110,11 +110,12 @@ const TodoContainer = styled.div`
     overflow-y: auto;
 `;
 
-const CheckList = styled.div`
+const CheckList = styled.div<{ contents: ScheduleContents }>`
     display: flex;
     align-items: center;
-    height: 4.2em;
-    padding-top: 0.3em;
+    height: ${props => (props.contents === 'guardian' ? '7.3em' : '3.8em')};
+    margin-top: 0.3em;
+    margin-bottom: 0.2em;
     box-sizing: border-box;
 `;
 

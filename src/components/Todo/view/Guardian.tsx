@@ -5,6 +5,7 @@ import { GuardianInfo, IGurdian } from '@common/guardian';
 import { FlexDiv } from '@style/common';
 import { css } from '@emotion/react';
 import { getStorage } from '@storage/index';
+import styled from '@emotion/styled';
 
 interface IGuardianParam {
     todo: ITodo;
@@ -52,11 +53,8 @@ const Guardian = ({ todo, characterId, todoIndex, characterGuardianInfo, setGuar
     };
 
     return (
-        <FlexDiv direction="column" basis="50">
-            <select
-                css={css`
-                    width: 124px;
-                `}
+        <GurdianDiv direction="column">
+            <GurdianSelectBox
                 key={`guardian_step_${characterId}`}
                 onChange={e => updateGuardianStep(e, characterId)}
                 value={characterGuardianInfo.step}
@@ -68,11 +66,8 @@ const Guardian = ({ todo, characterId, todoIndex, characterGuardianInfo, setGuar
                         </option>
                     );
                 })}
-            </select>
-            <select
-                css={css`
-                    width: 124px;
-                `}
+            </GurdianSelectBox>
+            <GurdianSelectBox
                 onChange={e => updateGuardianInfo(e, characterId)}
                 key={`guardian_value_${characterId}`}
                 value={characterGuardianInfo.info}
@@ -86,9 +81,20 @@ const Guardian = ({ todo, characterId, todoIndex, characterGuardianInfo, setGuar
                         );
                     },
                 )}
-            </select>
-        </FlexDiv>
+            </GurdianSelectBox>
+        </GurdianDiv>
     );
 };
+
+const GurdianDiv = styled(FlexDiv)`
+    align-items: center;
+    margin-top: 0.3em;
+    box-sizing: border-box;
+`;
+
+const GurdianSelectBox = styled.select`
+    width: 124px;
+    margin-top: 0.2em;
+`;
 
 export default Guardian;

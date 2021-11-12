@@ -94,7 +94,10 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
     return (
         <>
             <WhiteSpaceDiv></WhiteSpaceDiv>
-            <CharactersDiv length={getStorage('character').length - (currentPage - 1) * perPage}>
+            <CharactersDiv
+                length={getStorage('character').length - (currentPage - 1) * perPage}
+                contents={pTodo.contents}
+            >
                 {pTodo.character
                     ?.sort((a: ICharacterTodo, b: ICharacterTodo) => {
                         return getStorage('characterOrd').indexOf(a.id) - getStorage('characterOrd').indexOf(b.id);
@@ -130,36 +133,39 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                             >
                                 {pTodo.checkType === 'check' ? (
                                     pTodo.showCharacter.includes(charTodo.id) && (
-                                        <>
-                                            <CheckBoxDiv contents={pTodo.contents} todoType={pTodo.type}>
-                                                {charTodo.check.map((checks: number, checkesIndex: number) => {
-                                                    return (
-                                                        <CheckboxContentDiv
-                                                            key={`todo_char_check_${checkesIndex}`}
-                                                            direction="column"
-                                                        >
-                                                            <CheckboxInput
-                                                                key={checkesIndex}
-                                                                checked={checks === 1}
-                                                                onChange={() =>
-                                                                    onClickCheckTodo(charTodo.id, checkesIndex)
-                                                                }
-                                                            />
+                                        <FlexDiv direction="column" width="100">
+                                            <CheckContainer>
+                                                <CheckBoxDiv contents={pTodo.contents} todoType={pTodo.type}>
+                                                    {charTodo.check.map((checks: number, checkesIndex: number) => {
+                                                        return (
+                                                            <CheckboxContentDiv
+                                                                key={`todo_char_check_${checkesIndex}`}
+                                                                direction="column"
+                                                            >
+                                                                <CheckboxInput
+                                                                    key={checkesIndex}
+                                                                    checked={checks === 1}
+                                                                    onChange={() =>
+                                                                        onClickCheckTodo(charTodo.id, checkesIndex)
+                                                                    }
+                                                                />
 
-                                                            {charTodo.eponaName && (
-                                                                <EponaTextDiv>
-                                                                    {charTodo.eponaName[checkesIndex]}
-                                                                </EponaTextDiv>
-                                                            )}
-                                                        </CheckboxContentDiv>
-                                                    );
-                                                })}
-                                            </CheckBoxDiv>
-                                            {pTodo.type === 'daily' && pTodo.contents === 'chaos' && (
-                                                <CheckText>
-                                                    <RelaxGaugeDiv>{charTodo.relaxGauge}</RelaxGaugeDiv>
-                                                </CheckText>
-                                            )}
+                                                                {charTodo.eponaName && (
+                                                                    <EponaTextDiv>
+                                                                        {charTodo.eponaName[checkesIndex]}
+                                                                    </EponaTextDiv>
+                                                                )}
+                                                            </CheckboxContentDiv>
+                                                        );
+                                                    })}
+                                                </CheckBoxDiv>
+                                                {pTodo.type === 'daily' &&
+                                                    ['chaos', 'guardian'].includes(pTodo.contents) && (
+                                                        <CheckText>
+                                                            <RelaxGaugeDiv>{charTodo.relaxGauge}</RelaxGaugeDiv>
+                                                        </CheckText>
+                                                    )}
+                                            </CheckContainer>
                                             {pTodo.type === 'daily' && pTodo.contents === 'guardian' && (
                                                 <Guardian
                                                     key={`guardian_${characterIndex}`}
@@ -170,7 +176,7 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                                                     setGuardianStep={setGuardianStep}
                                                 />
                                             )}
-                                        </>
+                                        </FlexDiv>
                                     )
                                 ) : (
                                     <TextBox
@@ -194,14 +200,12 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
 
 const CheckBoxDiv = styled.div<{ todoType: ScheduleType; contents: ScheduleContents }>`
     display: flex;
-    flex-basis: 50%;
     justify-content: space-evenly;
 
     & > label:nth-of-type(2),
     & > label:nth-of-type(3) {
         margin-left: 0.5em;
     }
-    ${props => props.contents === 'epona' && `flex-basis: 82%;`}
 `;
 
 const CheckText = styled.div`
@@ -236,6 +240,11 @@ const EponaTextDiv = styled.div`
     text-overflow: ellipsis;
     text-align: center;
     width: 46.75px;
+`;
+
+const CheckContainer = styled(FlexDiv)`
+    height: 100%;
+    justify-content: center;
 `;
 
 export default Checkbox;

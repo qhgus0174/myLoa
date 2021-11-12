@@ -1,3 +1,4 @@
+import { ScheduleContents } from '@common/types';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { widthMedia } from '@style/device';
@@ -62,8 +63,9 @@ export const FlexHoverDiv = styled(FlexLeftDiv)`
     }
 `;
 
-export const CharactersDiv = styled(FlexRightDiv)<{ length: number }>`
-    height: 3.8em;
+export const CharactersDiv = styled(FlexRightDiv)<{ length: number; contents?: ScheduleContents }>`
+    height: ${props => (props.contents === 'guardian' ? '7.8em' : '4.4em')};
+
     ${props => {
         if (props.length > 4) {
             return css`
