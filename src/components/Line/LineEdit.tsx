@@ -7,6 +7,7 @@ import EditButtonContainer from '@components/Container/Button/DelEdit';
 import { ITodo } from '@components/Todo/TodoType';
 import LineForm from '@components/Line/common/Form';
 import { FormContainer } from '@style/common/modal';
+import { getStorage } from '@storage/index';
 
 const LineEdit = ({ id: oriId, color: newColor }: Pick<ITodo, 'id' | 'color'>) => {
     const [storageTodo, setStorageTodo] = useTodo();
@@ -25,7 +26,7 @@ const LineEdit = ({ id: oriId, color: newColor }: Pick<ITodo, 'id' | 'color'>) =
     };
 
     const editTodoInfo = () => {
-        const todoArr: ITodo[] = JSON.parse(storageTodo);
+        const todoArr: ITodo[] = getStorage('todo');
 
         const index = todoArr.findIndex((todoObj: ITodo) => todoObj.id === oriId);
 
@@ -39,7 +40,7 @@ const LineEdit = ({ id: oriId, color: newColor }: Pick<ITodo, 'id' | 'color'>) =
     };
 
     const deleteTodoInfo = () => {
-        const todoArr: ITodo[] = JSON.parse(storageTodo);
+        const todoArr: ITodo[] = getStorage('todo');
         const resultArray = _.reject(todoArr, (todo: ITodo) => {
             return todo.id === oriId;
         });
@@ -47,7 +48,7 @@ const LineEdit = ({ id: oriId, color: newColor }: Pick<ITodo, 'id' | 'color'>) =
     };
 
     const deleteTodoOrd = () => {
-        const todoArrOrd: number[] = JSON.parse(storageTodoOrd);
+        const todoArrOrd: number[] = getStorage('todoOrd');
         const resultOrd = _.reject(todoArrOrd, (ord: number) => {
             return ord === oriId;
         });

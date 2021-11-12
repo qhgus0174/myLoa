@@ -14,12 +14,7 @@ const ModalPortal = () => {
 
     return createPortal(
         isOpen && (
-            <Dimmer
-                tabIndex={-1}
-                onClick={() => {
-                    closeModal();
-                }}
-            >
+            <Dimmer tabIndex={-1}>
                 <OutsideAlerter excuteFn={closeModal}>
                     <ModalInner
                         tabIndex={0}

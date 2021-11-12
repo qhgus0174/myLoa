@@ -13,6 +13,7 @@ import { css } from '@emotion/react';
 import _ from 'lodash';
 import BasicCheckbox from '@components/Input/BasicCheckbox';
 import { getShowCheckTodo } from './functions';
+import { getStorage } from '@storage/index';
 
 interface ITodo {
     type: ScheduleType;
@@ -156,12 +157,12 @@ const TodoForm = ({
                     </ContentsDivs>
                 </FlexDiv>
             )}
-            {(JSON.parse(storageCharacter) as ICharacter[]).length > 0 && (
+            {(getStorage('character') as ICharacter[]).length > 0 && (
                 <FlexDiv direction="column">
                     <ContentsDivTitle>숙제 표시 할 캐릭터</ContentsDivTitle>
                     <ContentsDivs>
                         <ContentsCharacterDiv>
-                            {(JSON.parse(storageCharacter) as ICharacter[]).map(
+                            {(getStorage('character') as ICharacter[]).map(
                                 (character: ICharacter, characterIndex: number) => {
                                     return (
                                         <ShowCharacterDiv key={`todo_show_${characterIndex}`}>

@@ -41,7 +41,6 @@ export const usePaging = () => {
     ];
 
     const calcPerPage = () => {
-        console.log(windowWidth);
         const index = getPerPage.findIndex(w => w.key >= windowWidth);
         setPerPage(getPerPage[index] ? getPerPage[index].page : 7);
     };

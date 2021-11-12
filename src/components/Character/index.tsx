@@ -33,7 +33,7 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
             return;
         }
 
-        characterSortOrd(Array.from<number>(JSON.parse(storageCharacterOrd)), source.index, destination.index);
+        characterSortOrd(Array.from<number>(getStorage('characterOrd')), source.index, destination.index);
     };
 
     const characterSortOrd = (array: number[], start: number, destination: number) => {

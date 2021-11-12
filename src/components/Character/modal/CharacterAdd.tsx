@@ -14,6 +14,7 @@ import CharacterForm from '@components/Character/common/Form';
 import AddButtonContainer from '@components/Container/Button/Add';
 import { FormContainer } from '@style/common/modal';
 import { getResetCheckArr } from '@components/Todo/common/functions';
+import { getStorage } from '@storage/index';
 
 const CharacterAdd = () => {
     const [storageCharacter, setStorageCharacter] = useCharacter();
@@ -53,7 +54,7 @@ const CharacterAdd = () => {
     };
 
     const addCharacter = (crollJob: string, crollLevel: string) => {
-        const characterArr: ICharacter[] = JSON.parse(storageCharacter);
+        const characterArr: ICharacter[] = getStorage('character');
         const maxCharacterId = Math.max(...characterArr.map(char => char.id), 0);
         const characterId = characterArr.length == 0 ? 0 : maxCharacterId + 1;
 
@@ -65,7 +66,7 @@ const CharacterAdd = () => {
     };
 
     const addCharacterInfo = (crollJob: string, crollLevel: string, characterId: number): ICharacter[] => {
-        const characterArr: ICharacter[] = JSON.parse(storageCharacter);
+        const characterArr: ICharacter[] = getStorage('character');
 
         const characterInfo: ICharacter = {
             id: characterId,
@@ -82,14 +83,14 @@ const CharacterAdd = () => {
     };
 
     const addCharacterOrd = (characterId: number) => {
-        const characterOrdArr: number[] = JSON.parse(storageCharacterOrd);
+        const characterOrdArr: number[] = getStorage('characterOrd');
 
         characterOrdArr.push(characterId);
         setStorageCharacterOrd(JSON.stringify(characterOrdArr));
     };
 
     const addTodoCharacterInfo = (characterId: number) => {
-        const todoArr: ITodo[] = JSON.parse(storageTodo);
+        const todoArr: ITodo[] = getStorage('todo');
 
         const todoCharacterArr = todoArr.map((todo: ITodo) => {
             const todoCharacter: ICharacterTodo = {
@@ -98,6 +99,7 @@ const CharacterAdd = () => {
                 relaxGauge: 0,
                 oriRelaxGauge: 0,
                 eponaName: [],
+                guardianInfo: { info: '1', step: '1' },
             };
             todo.showCharacter.push(characterId);
 

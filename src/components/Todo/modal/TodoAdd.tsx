@@ -11,6 +11,7 @@ import TodoForm from '@components/Todo/common/Form';
 import { ScheduleCheckType, ScheduleContents, ScheduleType } from '@common/types';
 import { FormContainer } from '@style/common/modal';
 import { getResetCheckArr } from '../common/functions';
+import { getStorage } from '@storage/index';
 
 const Todo = () => {
     const [type, setType] = useState<ScheduleType>('daily');
@@ -26,13 +27,13 @@ const Todo = () => {
     const [storageCharacter] = useCharacter();
 
     const [showCharacterArr, setShowCharacterArr] = useState<number[]>(
-        (JSON.parse(storageCharacter) as ICharacter[]).map((character: ICharacter) => character.id),
+        (getStorage('character') as ICharacter[]).map((character: ICharacter) => character.id),
     );
 
     const [color, setColor] = useState<string>('#ffffff');
 
     const onClickAdd = () => {
-        const todoArr: ITodo[] = JSON.parse(storageTodo);
+        const todoArr: ITodo[] = getStorage('todo');
 
         const maxTodoId = Math.max(...todoArr.map(todoObj => todoObj.id), 0);
         const todoId = todoArr.length == 0 ? 0 : maxTodoId + 1;
@@ -44,9 +45,9 @@ const Todo = () => {
     };
 
     const addTodo = (todoId: number) => {
-        const todoArr: ITodo[] = JSON.parse(storageTodo);
+        const todoArr: ITodo[] = getStorage('todo');
 
-        const characterArr: ICharacter[] = JSON.parse(storageCharacter);
+        const characterArr: ICharacter[] = getStorage('character');
 
         const checkArr = getResetCheckArr(contents);
 
@@ -57,6 +58,7 @@ const Todo = () => {
                 relaxGauge: 0,
                 oriRelaxGauge: 0,
                 eponaName: contents === 'epona' ? new Array(3).fill('') : [],
+                guardianInfo: { info: '1', step: '1' },
             };
         });
 
@@ -76,7 +78,7 @@ const Todo = () => {
     };
 
     const addTodoOrd = (todoId: number) => {
-        const todoOrdArr: number[] = JSON.parse(storageTodoOrd);
+        const todoOrdArr: number[] = getStorage('todoOrd');
 
         todoOrdArr.push(todoId);
         setStorageTodoOrd(JSON.stringify(todoOrdArr));

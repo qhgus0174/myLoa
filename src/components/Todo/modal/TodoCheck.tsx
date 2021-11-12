@@ -12,6 +12,7 @@ import { ContentsDiv, ContentsDivTitle, FormContainer, FormDivContainer } from '
 import { FlexDiv } from '@style/common';
 import BasicCheckbox from '@components/Input/BasicCheckbox';
 import { getShowCheckTodo } from '../common/functions';
+import { getStorage } from '@storage/index';
 
 const TodoCheck = ({
     id: characterId,
@@ -45,7 +46,7 @@ const TodoCheck = ({
     };
 
     const editTodoCheck = () => {
-        const todoArr: ITodo[] = JSON.parse(storageTodo);
+        const todoArr: ITodo[] = getStorage('todo');
 
         const todoIndex = todoArr.findIndex(todo => todo.id === todoId);
         const characterIndex = todoArr.findIndex(todo => todo.id === characterId);
@@ -76,7 +77,7 @@ const TodoCheck = ({
         } = e;
         const newArr = [...oriArr];
         newArr[idx] = value;
-        console.log(newArr);
+
         setEponaName(newArr);
     };
 

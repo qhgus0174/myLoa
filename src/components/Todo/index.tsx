@@ -1,50 +1,18 @@
 import React from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
-import useCharacterOrd from '@hooks/storage/useCharacterOrd';
-import useCharacter from '@hooks/storage/useCharacter';
 import useTodoOrd from '@hooks/storage/useTodoOrd';
-import useTodo from '@hooks/storage/useTodo';
-import { ICharacter } from '@components/Character/CharacterType';
 import CheckboxText from '@components/Todo/view/CheckboxText';
 import { ITodo } from '@components/Todo/TodoType';
 import Checkbox from '@components/Todo/view/Checkbox';
 import Line from '@components/Todo/view/Line';
 import { getStorage } from '@storage/index';
-import { IContextModalParam, ScheduleContents, ScheduleType } from '@common/types';
-import { getOwnIdByIndex } from '@common/utils';
+import { IContextModalParam } from '@common/types';
 import styled from '@emotion/styled';
 import { FlexDiv } from '@style/common';
+import { css } from '@emotion/react';
 
 const Todo = ({ onContextMenuBasicModal }: IContextModalParam) => {
-    const [storageCharacter] = useCharacter();
-    const [storageCharacterOrd] = useCharacterOrd();
-    const [storageTodo, setStorageTodo] = useTodo();
     const [storageTodoOrd, setStorageTodoOrd] = useTodoOrd();
-
-    const onChangeTodoText = (
-        e: React.ChangeEvent<HTMLInputElement>,
-        todoOrdIndex: number,
-        characterOrdIndex: number,
-    ) => {
-        const {
-            target: { value: newText },
-        } = e;
-
-        const todoArr: ITodo[] = JSON.parse(storageTodo);
-        const todoOrdArr: number[] = JSON.parse(storageTodoOrd);
-        const characterArr: ICharacter[] = JSON.parse(storageCharacter);
-        const characterOrdArr: number[] = JSON.parse(storageCharacterOrd);
-
-        const todoIndex = getOwnIdByIndex(todoArr, todoOrdArr, todoOrdIndex);
-        const characterIndex = getOwnIdByIndex(characterArr, characterOrdArr, characterOrdIndex);
-
-        todoArr[todoIndex].character[characterIndex] = {
-            ...todoArr[todoIndex].character[characterIndex],
-            text: newText,
-        };
-
-        setStorageTodo(JSON.stringify(todoArr));
-    };
 
     const onDragEndCharacter = (result: DropResult) => {
         const { destination, source } = result;
@@ -57,7 +25,7 @@ const Todo = ({ onContextMenuBasicModal }: IContextModalParam) => {
             return;
         }
 
-        todoSortOrd(Array.from<number>(JSON.parse(storageTodoOrd)), source.index, destination.index);
+        todoSortOrd(Array.from<number>(getStorage('todoOrd')), source.index, destination.index);
     };
 
     const todoSortOrd = (array: number[], start: number, destination: number) => {
@@ -96,9 +64,19 @@ const Todo = ({ onContextMenuBasicModal }: IContextModalParam) => {
                                                     ref={provided.innerRef}
                                                 >
                                                     {todo.type === 'line' ? (
-                                                        <Line todo={todo} onContextMenu={onContextMenuBasicModal} />
+                                                        <>
+                                                            <div
+                                                                css={css`
+                                                                    position: absolute;
+                                                                `}
+                                                            >
+                                                                {/* <PinCheckbox checked={false} /> */}
+                                                            </div>
+                                                            <Line todo={todo} onContextMenu={onContextMenuBasicModal} />
+                                                        </>
                                                     ) : (
                                                         <CheckList>
+                                                            {/* <PinCheckbox checked={true} /> */}
                                                             <CheckboxText
                                                                 todo={todo}
                                                                 onContextMenu={onContextMenuBasicModal}
@@ -106,7 +84,6 @@ const Todo = ({ onContextMenuBasicModal }: IContextModalParam) => {
                                                             <Checkbox
                                                                 todo={todo}
                                                                 todoIndex={todoIndex}
-                                                                onChangeTodoText={onChangeTodoText}
                                                                 onContextMenu={onContextMenuBasicModal}
                                                             />
                                                         </CheckList>

@@ -14,6 +14,7 @@ import EditButtonContainer from '@components/Container/Button/DelEdit';
 import { ICharacter } from '@components/Character/CharacterType';
 import CharacterForm from '@components/Character/common/Form';
 import { FormContainer } from '@style/common/modal';
+import { getStorage } from '@storage/index';
 
 interface ICharacterEdit {
     id: number;
@@ -59,7 +60,7 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
     };
 
     const editCharacter = (crollJob: string, crollLevel: string) => {
-        const characterArr: ICharacter[] = JSON.parse(character);
+        const characterArr: ICharacter[] = getStorage('character');
 
         const index = characterArr.findIndex((char: ICharacter) => char.id === oriId);
 
@@ -115,7 +116,7 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
     };
 
     const deleteCharacter = (): ICharacter[] => {
-        const characterArr: ICharacter[] = JSON.parse(character);
+        const characterArr: ICharacter[] = getStorage('character');
         const resultArray = _.reject(characterArr, ({ id }: ICharacter) => {
             return id === oriId;
         });
@@ -125,7 +126,7 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
     };
 
     const deleteCharacterOrd = () => {
-        const characterOrdArr: number[] = JSON.parse(characterOrd);
+        const characterOrdArr: number[] = getStorage('characterOrd');
         const resultOrd = _.reject(characterOrdArr, (ord: number) => {
             return ord === oriId;
         });
@@ -133,7 +134,7 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
     };
 
     const deleteTodo = () => {
-        const todoArr: ITodo[] = JSON.parse(todo);
+        const todoArr: ITodo[] = getStorage('todo');
 
         const deleteResult = todoArr.map((todoObj: ITodo) => {
             todoObj.character = _.reject(todoObj.character, (character: ICharacterTodo) => {
