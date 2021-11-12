@@ -58,7 +58,7 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
     };
 
     const calcRelaxGauge = (oriRelaxGauge: number, checkArr: number[]): number => {
-        const checkCounts = checkArr.reduce((count, num) => (num === 2 ? count + 1 : count), 0);
+        const checkCounts = checkArr.reduce((count, num) => (num === 1 ? count + 1 : count), 0);
 
         const minusGauge = checkCounts * 20;
         const calcMinusGauge = oriRelaxGauge - minusGauge;
