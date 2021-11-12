@@ -12,12 +12,18 @@ export interface ITodo {
     //isFixed: boolean;
 }
 
+export interface IGurdianInfo {
+    step: string;
+    info: string;
+}
+
 export interface ICharacterTodo {
     id: number;
     check: number[];
     relaxGauge: number;
     oriRelaxGauge: number;
     eponaName: string[];
+    guardianInfo: IGurdianInfo;
     text?: string;
     memo?: string;
 }
