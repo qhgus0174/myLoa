@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { getStorage } from '@storage/index';
 import { default as CheckboxInput } from '@components/Input/TodoCheckbox';
 import { ICharacterTodo, ITodo } from '@components/Todo/TodoType';
@@ -15,15 +15,15 @@ import useTodo from '@hooks/storage/useTodo';
 import useTodoOrd from '@hooks/storage/useTodoOrd';
 import { ICharacter } from '@components/Character/CharacterType';
 import { getOwnIdByIndex } from '@common/utils';
+import Guardian from '@components/Todo/view/Guardian';
 
 interface ICheckbox {
     todo: ITodo;
     todoIndex: number;
     onContextMenu: ({ e, title, modal, width, height }: IContextModal) => void;
-    onChangeTodoText: (e: React.ChangeEvent<HTMLInputElement>, todoOrdIndex: number, characterOrdIndex: number) => void;
 }
 
-const Checkbox = ({ todo, todoIndex, onContextMenu, onChangeTodoText }: ICheckbox) => {
+const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckbox) => {
     const { perPage, currentPage } = useContext(PagingStateContext);
 
     const [storageCharacter] = useCharacter();
@@ -31,14 +31,14 @@ const Checkbox = ({ todo, todoIndex, onContextMenu, onChangeTodoText }: ICheckbo
     const [storageTodo, setStorageTodo] = useTodo();
     const [storageTodoOrd, setStorageTodoOrd] = useTodoOrd();
 
-    const onClickCheckTodo = (todoOrdIndex: number, characterOrdIndex: number, checkesIndex: number) => {
-        const todoArr: ITodo[] = JSON.parse(storageTodo);
-        const todoOrdArr: number[] = JSON.parse(storageTodoOrd);
-        const characterArr: ICharacter[] = JSON.parse(storageCharacter);
-        const characterOrdArr: number[] = JSON.parse(storageCharacterOrd);
+    const [guardianStep, setGuardianStep] = useState<string>('1');
 
-        const todoIndex = getOwnIdByIndex(todoArr, todoOrdArr, todoOrdIndex);
-        const characterIndex = getOwnIdByIndex(characterArr, characterOrdArr, characterOrdIndex);
+    const onClickCheckTodo = (characterId: number, checkesIndex: number) => {
+        const todoArr: ITodo[] = getStorage('todo');
+        const todoOrdArr: number[] = getStorage('todoOrd');
+
+        const todoIndex = getOwnIdByIndex(todoArr, todoOrdArr, pTodoIndex);
+        const characterIndex = todoArr[todoIndex].character.findIndex(character => character.id === characterId);
 
         const checkCount: number[] = todoArr[todoIndex].character[characterIndex].check.map(
             (value: number, index: number) => {
@@ -67,11 +67,35 @@ const Checkbox = ({ todo, todoIndex, onContextMenu, onChangeTodoText }: ICheckbo
         return calcRelaxGauge;
     };
 
+    const onChangeTodoText = (e: React.ChangeEvent<HTMLInputElement>, characterId: number) => {
+        const {
+            target: { value: newText },
+        } = e;
+
+        const todoArr: ITodo[] = getStorage('todo');
+        const todoOrdArr: number[] = getStorage('todoOrd');
+
+        const todoIndex = getOwnIdByIndex(todoArr, todoOrdArr, pTodoIndex);
+        const characterIndex = getCharacterIndex(characterId);
+
+        todoArr[todoIndex].character[characterIndex] = {
+            ...todoArr[todoIndex].character[characterIndex],
+            text: newText,
+        };
+
+        setStorageTodo(JSON.stringify(todoArr));
+    };
+
+    const getCharacterIndex = (characterId: number) => {
+        const todoArr: ITodo[] = getStorage('todo');
+        return todoArr[pTodoIndex].character.findIndex(character => character.id === characterId);
+    };
+
     return (
         <>
             <WhiteSpaceDiv></WhiteSpaceDiv>
             <CharactersDiv length={getStorage('character').length - (currentPage - 1) * perPage}>
-                {todo.character
+                {pTodo.character
                     ?.sort((a: ICharacterTodo, b: ICharacterTodo) => {
                         return getStorage('characterOrd').indexOf(a.id) - getStorage('characterOrd').indexOf(b.id);
                     })
@@ -90,24 +114,24 @@ const Checkbox = ({ todo, todoIndex, onContextMenu, onChangeTodoText }: ICheckbo
                                             <TodoCheck
                                                 key={`todo_check_${characterIndex}`}
                                                 {...charTodo}
-                                                todoId={todo.id}
-                                                checkType={todo.checkType}
-                                                todoType={todo.type}
-                                                todoContents={todo.contents}
+                                                todoId={pTodo.id}
+                                                checkType={pTodo.checkType}
+                                                todoType={pTodo.type}
+                                                todoContents={pTodo.contents}
                                                 eponaName={charTodo.eponaName}
-                                                showCharacter={todo.showCharacter}
+                                                showCharacter={pTodo.showCharacter}
                                             />
                                         ),
                                         title: '숙제 수정(개별)',
                                         width: '400',
-                                        height: ['chaos', 'epona'].includes(todo.contents) ? '450' : '350',
+                                        height: ['chaos', 'epona'].includes(pTodo.contents) ? '450' : '350',
                                     })
                                 }
                             >
-                                {todo.checkType === 'check' ? (
-                                    todo.showCharacter.includes(charTodo.id) && (
+                                {pTodo.checkType === 'check' ? (
+                                    pTodo.showCharacter.includes(charTodo.id) && (
                                         <>
-                                            <CheckBoxDiv contents={todo.contents} todoType={todo.type}>
+                                            <CheckBoxDiv contents={pTodo.contents} todoType={pTodo.type}>
                                                 {charTodo.check.map((checks: number, checkesIndex: number) => {
                                                     return (
                                                         <CheckboxContentDiv
@@ -118,31 +142,40 @@ const Checkbox = ({ todo, todoIndex, onContextMenu, onChangeTodoText }: ICheckbo
                                                                 key={checkesIndex}
                                                                 checked={checks === 1}
                                                                 onChange={() =>
-                                                                    onClickCheckTodo(
-                                                                        todoIndex,
-                                                                        characterIndex,
-                                                                        checkesIndex,
-                                                                    )
+                                                                    onClickCheckTodo(charTodo.id, checkesIndex)
                                                                 }
                                                             />
-                                                            <EponaTextDiv>
-                                                                {charTodo.eponaName && charTodo.eponaName[checkesIndex]}
-                                                            </EponaTextDiv>
+
+                                                            {charTodo.eponaName && (
+                                                                <EponaTextDiv>
+                                                                    {charTodo.eponaName[checkesIndex]}
+                                                                </EponaTextDiv>
+                                                            )}
                                                         </CheckboxContentDiv>
                                                     );
                                                 })}
                                             </CheckBoxDiv>
-                                            {todo.type === 'daily' && todo.contents === 'chaos' && (
+                                            {pTodo.type === 'daily' && pTodo.contents === 'chaos' && (
                                                 <CheckText>
                                                     <RelaxGaugeDiv>{charTodo.relaxGauge}</RelaxGaugeDiv>
                                                 </CheckText>
+                                            )}
+                                            {pTodo.type === 'daily' && pTodo.contents === 'guardian' && (
+                                                <Guardian
+                                                    key={`guardian_${characterIndex}`}
+                                                    todo={pTodo}
+                                                    characterGuardianInfo={charTodo.guardianInfo}
+                                                    characterId={charTodo.id}
+                                                    todoIndex={pTodoIndex}
+                                                    setGuardianStep={setGuardianStep}
+                                                />
                                             )}
                                         </>
                                     )
                                 ) : (
                                     <TextBox
                                         onChange={e => {
-                                            onChangeTodoText(e, todoIndex, characterIndex);
+                                            onChangeTodoText(e, charTodo.id);
                                         }}
                                         underline={false}
                                         width="70"
