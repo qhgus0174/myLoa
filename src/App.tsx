@@ -8,12 +8,13 @@ import { basic } from '@style/theme';
 import { GlobalStyle } from '@style/global-styles';
 import { ScheduleContents } from '@common/types';
 import { getResetCheckArr } from '@components/Todo/common/functions';
+import { getStorage } from './storage';
 
 const App = () => {
     const [storageTodo, setStorageTodo] = useTodo();
 
     const resetDailyTodoRelax = () => {
-        const todoArr: ITodo[] = JSON.parse(JSON.parse(localStorage.getItem('todo') || '[]'));
+        const todoArr: ITodo[] = getStorage('todo');
 
         const calcResult: ITodo[] = todoArr.map((todo: ITodo) => {
             todo.character = todo.character.map((character: ICharacterTodo) => {
@@ -26,7 +27,7 @@ const App = () => {
                     chaos: () => calcRelaxGauge(todo, character),
                     guardian: () => calcRelaxGauge(todo, character),
                     basicReset: () => resetCheck(todo.contents, character),
-                    epona: () => character,
+                    epona: () => resetCheck(todo.contents, character),
                     basic: () => character,
                     none: () => character,
                 };
@@ -50,7 +51,7 @@ const App = () => {
     };
 
     const calcRelaxGauge = (todo: ITodo, character: ICharacterTodo): ICharacterTodo => {
-        const maxCheckCount = 2;
+        const maxCheckCount = todo.contents === 'chaos' ? 2 : 1;
         const addGauge = (maxCheckCount - getCheckCounts(character.check)) * 10;
 
         const relaxGauge = character.relaxGauge >= 100 ? 100 : Number(character.relaxGauge) + addGauge;
@@ -66,11 +67,11 @@ const App = () => {
     };
 
     const getCheckCounts = (checkArr: number[]): number => {
-        return checkArr.reduce((count, num) => (num === 2 ? count + 1 : count), 0);
+        return checkArr.reduce((count, num) => (num === 1 ? count + 1 : count), 0);
     };
 
     const resetWeeklyTodo = () => {
-        const todoArr: ITodo[] = JSON.parse(JSON.parse(localStorage.getItem('todo') || '[]'));
+        const todoArr: ITodo[] = getStorage('todo');
 
         const calcResult: ITodo[] = todoArr.map((todo: ITodo) => {
             todo.character = todo.character.map((character: ICharacterTodo) => {
@@ -85,7 +86,7 @@ const App = () => {
 
     useEffect(() => {
         // 일일 휴식 게이지, 체크 초기화 (매일 오전 6시)
-        schedule.scheduleJob('0 0 6 * * *', () => {
+        schedule.scheduleJob('1 * * * * *', () => {
             resetDailyTodoRelax();
         });
 
