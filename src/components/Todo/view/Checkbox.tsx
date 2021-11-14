@@ -127,7 +127,7 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                                         ),
                                         title: '숙제 수정(개별)',
                                         width: '400',
-                                        height: ['chaos', 'epona'].includes(pTodo.contents) ? '450' : '350',
+                                        height: ['chaos', 'epona', 'guardian'].includes(pTodo.contents) ? '450' : '350',
                                     })
                                 }
                             >
