@@ -7,19 +7,18 @@ import { useInput } from '@hooks/useInput';
 
 interface ICharacter {
     color: string;
-    setColor: (e: string) => void;
     name: string;
+    setColor: (e: string) => void;
+    setName: (e: string) => void;
 }
 
-const CharacterForm = ({ color, setColor, name: newName }: ICharacter) => {
-    const [name, bindName] = useInput<string>(newName);
-
+const CharacterForm = ({ color, setColor, name, setName }: ICharacter) => {
     return (
         <FormDivContainer>
             <FlexDiv direction="column">
                 <ContentsDivTitle>캐릭터명</ContentsDivTitle>
                 <ContentsDiv>
-                    <TextBox {...bindName} />
+                    <TextBox value={name} onChange={e => setName(e.target.value)} />
                 </ContentsDiv>
             </FlexDiv>
 

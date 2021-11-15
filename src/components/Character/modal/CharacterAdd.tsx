@@ -29,7 +29,7 @@ const CharacterAdd = () => {
 
     const { closeModal } = useContext(ModalActionContext);
 
-    const [name, bindName] = useInput<string>('');
+    const [name, setName] = useState<string>('');
 
     const onClickAdd = async () => {
         if (checkNameIsEmpty() || checkNameIsDuplicate()) return;
@@ -134,7 +134,7 @@ const CharacterAdd = () => {
 
     return (
         <FormContainer>
-            <CharacterForm color={color} name={name} setColor={setColor} />
+            <CharacterForm color={color} name={name} setName={setName} setColor={setColor} />
             <AddButtonContainer onClickAdd={onClickAdd} />
         </FormContainer>
     );

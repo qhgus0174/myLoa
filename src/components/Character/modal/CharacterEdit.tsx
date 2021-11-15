@@ -33,7 +33,7 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
 
     const [color, setColor] = useState<string>(oriColor);
 
-    const [name, bindName] = useInput<string>(newName);
+    const [name, setName] = useState<string>(newName);
 
     const { setSpinnerVisible } = useContext(SpinnerContext);
 
@@ -149,7 +149,7 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
 
     return (
         <FormContainer>
-            <CharacterForm color={color} setColor={setColor} name={name} />
+            <CharacterForm color={color} setColor={setColor} name={name} setName={setName} />
             <EditButtonContainer onClickDelete={onClickDelete} onClickEdit={onClickEdit} />
         </FormContainer>
     );

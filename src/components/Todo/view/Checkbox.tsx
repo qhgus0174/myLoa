@@ -7,14 +7,8 @@ import TextBox from '@components/Input/TextBox';
 import { IContextModal, ScheduleContents, ScheduleType } from '@common/types';
 import { CharactersDiv, FlexDiv, FlexHoverDiv } from '@style/common';
 import styled from '@emotion/styled';
-
 import { PagingStateContext } from '@context/PagingContext';
-import useCharacter from '@hooks/storage/useCharacter';
-import useCharacterOrd from '@hooks/storage/useCharacterOrd';
 import useTodo from '@hooks/storage/useTodo';
-import useTodoOrd from '@hooks/storage/useTodoOrd';
-import { ICharacter } from '@components/Character/CharacterType';
-import { getOwnIdByIndex } from '@common/utils';
 import Guardian from '@components/Todo/view/Guardian';
 import { LongPressEvent, useLongPress } from 'use-long-press';
 
@@ -60,9 +54,9 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
 
     const onClickCheckTodo = (characterId: number, checkesIndex: number) => {
         const todoArr: ITodo[] = getStorage('todo');
-        const todoOrdArr: number[] = getStorage('todoOrd');
 
-        const todoIndex = getOwnIdByIndex(todoArr, todoOrdArr, pTodoIndex);
+        const todoIndex = todoArr.findIndex(td => td.id === pTodo.id);
+
         const characterIndex = todoArr[todoIndex].character.findIndex(character => character.id === characterId);
 
         const checkCount: number[] = todoArr[todoIndex].character[characterIndex].check.map(
@@ -82,6 +76,52 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
         setStorageTodo(JSON.stringify(todoArr));
     };
 
+    const onClickCheckTodoHoverArea = (e: React.MouseEvent<HTMLDivElement>, characterId: number) => {
+        if (e.target !== e.currentTarget) return;
+
+        const todoArr: ITodo[] = getStorage('todo');
+
+        const todoIndex = todoArr.findIndex(td => td.id === pTodo.id);
+
+        const characterIndex = todoArr[todoIndex].character.findIndex(character => character.id === characterId);
+
+        const checkArr = ['chaos', 'epona'].includes(todoArr[todoIndex].contents)
+            ? setOutSideMultiCheck(characterIndex, todoIndex)
+            : setOutSideSingleCheck(characterIndex, todoIndex);
+
+        const relaxGauge = calcRelaxGauge(todoArr[todoIndex].character[characterIndex].oriRelaxGauge, checkArr);
+
+        todoArr[todoIndex].character[characterIndex] = {
+            ...todoArr[todoIndex].character[characterIndex],
+            relaxGauge: relaxGauge,
+            check: checkArr,
+        };
+
+        setStorageTodo(JSON.stringify(todoArr));
+    };
+
+    const setOutSideMultiCheck = (characterIndex: number, todoIndex: number): number[] => {
+        const todoArr: ITodo[] = getStorage('todo');
+
+        const noCheckFirstIndex = todoArr[todoIndex].character[characterIndex].check.findIndex((checks: number) => {
+            return checks === 0;
+        });
+
+        todoArr[todoIndex].character[characterIndex].check[noCheckFirstIndex] = 1;
+
+        return todoArr[todoIndex].character[characterIndex].check;
+    };
+
+    const setOutSideSingleCheck = (characterIndex: number, todoIndex: number): number[] => {
+        const todoArr: ITodo[] = getStorage('todo');
+
+        const resultArr = todoArr[todoIndex].character[characterIndex].check.map((value: number) => {
+            return 1 - value;
+        });
+
+        return resultArr;
+    };
+
     const calcRelaxGauge = (oriRelaxGauge: number, checkArr: number[]): number => {
         const checkCounts = checkArr.reduce((count, num) => (num === 1 ? count + 1 : count), 0);
 
@@ -98,9 +138,8 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
         } = e;
 
         const todoArr: ITodo[] = getStorage('todo');
-        const todoOrdArr: number[] = getStorage('todoOrd');
 
-        const todoIndex = getOwnIdByIndex(todoArr, todoOrdArr, pTodoIndex);
+        const todoIndex = todoArr.findIndex(td => td.id === pTodo.id);
         const characterIndex = getCharacterIndex(characterId);
 
         todoArr[todoIndex].character[characterIndex] = {
@@ -135,20 +174,17 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                         return (
                             <FlexHoverDiv
                                 key={`drag_char_${characterIndex}`}
-                                {...onLongPress(charTodo, characterIndex)}
                                 onContextMenu={e => openTodoCheckEditModal(e, charTodo, characterIndex)}
+                                onClick={e => onClickCheckTodoHoverArea(e, charTodo.id)}
                             >
                                 {pTodo.checkType === 'check' ? (
                                     pTodo.showCharacter.includes(charTodo.id) && (
                                         <FlexDiv direction="column" width="100">
-                                            <CheckContainer>
+                                            <CheckContainer onClick={e => onClickCheckTodoHoverArea(e, charTodo.id)}>
                                                 <CheckBoxDiv contents={pTodo.contents} todoType={pTodo.type}>
                                                     {charTodo.check.map((checks: number, checkesIndex: number) => {
                                                         return (
-                                                            <CheckboxContentDiv
-                                                                key={`todo_char_check_${checkesIndex}`}
-                                                                direction="column"
-                                                            >
+                                                            <CheckboxContentDiv key={`todo_char_check_${checkesIndex}`}>
                                                                 <CheckboxInput
                                                                     key={checkesIndex}
                                                                     checked={checks === 1}
@@ -156,7 +192,6 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                                                                         onClickCheckTodo(charTodo.id, checkesIndex)
                                                                     }
                                                                 />
-
                                                                 {charTodo.eponaName && (
                                                                     <EponaTextDiv>
                                                                         {charTodo.eponaName[checkesIndex]}
@@ -169,12 +204,17 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                                                 {pTodo.type === 'daily' &&
                                                     ['chaos', 'guardian'].includes(pTodo.contents) && (
                                                         <CheckText>
-                                                            <RelaxGaugeDiv>{charTodo.relaxGauge}</RelaxGaugeDiv>
+                                                            <RelaxGaugeDiv
+                                                                onClick={e => onClickCheckTodoHoverArea(e, charTodo.id)}
+                                                            >
+                                                                {charTodo.relaxGauge}
+                                                            </RelaxGaugeDiv>
                                                         </CheckText>
                                                     )}
                                             </CheckContainer>
                                             {pTodo.type === 'daily' && pTodo.contents === 'guardian' && (
                                                 <Guardian
+                                                    onClick={e => onClickCheckTodoHoverArea(e, charTodo.id)}
                                                     key={`guardian_${characterIndex}`}
                                                     todo={pTodo}
                                                     characterGuardianInfo={charTodo.guardianInfo}
@@ -234,7 +274,10 @@ const WhiteSpaceDiv = styled.div`
     flex-basis: 2.5%;
 `;
 
-const CheckboxContentDiv = styled(FlexDiv)`
+const CheckboxContentDiv = styled.label`
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
     align-items: center;
     flex-basis: 33%;
     font-size: 0.9em;

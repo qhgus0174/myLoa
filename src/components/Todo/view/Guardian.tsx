@@ -13,9 +13,17 @@ interface IGuardianParam {
     characterId: number;
     characterGuardianInfo: IGurdianInfo;
     setGuardianStep: (e: string) => void;
+    onClick: (e: React.MouseEvent<HTMLDivElement>, i: number) => void;
 }
 
-const Guardian = ({ todo, characterId, todoIndex, characterGuardianInfo, setGuardianStep }: IGuardianParam) => {
+const Guardian = ({
+    todo,
+    characterId,
+    todoIndex,
+    characterGuardianInfo,
+    setGuardianStep,
+    onClick,
+}: IGuardianParam) => {
     const [storageTodo, setStorageTodo] = useTodo();
 
     const updateGuardianStep = (e: React.ChangeEvent<HTMLSelectElement>, characterOrdIndex: number) => {
@@ -53,7 +61,7 @@ const Guardian = ({ todo, characterId, todoIndex, characterGuardianInfo, setGuar
     };
 
     return (
-        <GurdianDiv direction="column">
+        <GurdianDiv direction="column" onClick={e => onClick(e, characterId)}>
             <GurdianSelectBox
                 key={`guardian_step_${characterId}`}
                 onChange={e => updateGuardianStep(e, characterId)}

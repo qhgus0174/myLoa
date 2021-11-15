@@ -30,7 +30,6 @@ const Line = ({
     return (
         <LineDiv
             color={todo.color}
-            {...onLongPress(todo)}
             onContextMenu={(e: React.MouseEvent<HTMLDivElement>) => openLineEditModal(e, todo)}
         ></LineDiv>
     );

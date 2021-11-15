@@ -110,7 +110,6 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
                                                             {...provided.draggableProps}
                                                             {...provided.dragHandleProps}
                                                             ref={provided.innerRef}
-                                                            {...onLongPress(char)}
                                                             onContextMenu={e => {
                                                                 e.preventDefault();
                                                                 openCharacterEditModal(e, char);

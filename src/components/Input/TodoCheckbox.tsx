@@ -10,7 +10,14 @@ export interface ICheckbox extends React.InputHTMLAttributes<HTMLInputElement> {
     shape?: 'circle' | 'square';
 }
 
-const Checkbox = ({ checked, label, checkColor = 'check', color = 'white', shape = 'circle', ...rest }: ICheckbox) => {
+const TodoCheckbox = ({
+    checked,
+    label,
+    checkColor = 'check',
+    color = 'white',
+    shape = 'circle',
+    ...rest
+}: ICheckbox) => {
     return (
         <CheckboxContainer>
             <Label checkColor={checkColor} checked={checked}>
@@ -47,6 +54,16 @@ const Label = styled.label<ICheckbox>`
                 $transition: width 150ms ease 100ms;
             }
         }
+    }
+
+    &:before,
+    &:after {
+        position: absolute;
+        content: '';
+        top: -8px;
+        bottom: -8px;
+        right: -8px;
+        left: -8px;
     }
 
     ${props =>
@@ -139,4 +156,4 @@ const CheckboxTitle = styled.span<ICheckbox>`
     margin-left: 0.5em;
 `;
 
-export default Checkbox;
+export default TodoCheckbox;
