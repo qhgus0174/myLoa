@@ -8,8 +8,9 @@ import Line from '@components/Todo/view/Line';
 import { getStorage } from '@storage/index';
 import { IContextModalParam, ScheduleContents } from '@common/types';
 import styled from '@emotion/styled';
-import { FlexDiv } from '@style/common';
+import { FlexDiv, FlexLeftDiv } from '@style/common';
 import { css } from '@emotion/react';
+import PinCheckbox from '@components/Input/PinCheckBox';
 
 const Todo = ({ onContextMenuBasicModal }: IContextModalParam) => {
     const [storageTodoOrd, setStorageTodoOrd] = useTodoOrd();
@@ -55,7 +56,12 @@ const Todo = ({ onContextMenuBasicModal }: IContextModalParam) => {
                                 })
                                 .map((todo: ITodo, todoIndex: number, oriArray: ITodo[]) => {
                                     return (
-                                        <Draggable key={todo.id} draggableId={String(todo.id)} index={todoIndex}>
+                                        <Draggable
+                                            isDragDisabled={todo.isFixed}
+                                            key={todo.id}
+                                            draggableId={String(todo.id)}
+                                            index={todoIndex}
+                                        >
                                             {provided => (
                                                 <div
                                                     key={`drag_${todoIndex}`}
@@ -64,19 +70,9 @@ const Todo = ({ onContextMenuBasicModal }: IContextModalParam) => {
                                                     ref={provided.innerRef}
                                                 >
                                                     {todo.type === 'line' ? (
-                                                        <>
-                                                            <div
-                                                                css={css`
-                                                                    position: absolute;
-                                                                `}
-                                                            >
-                                                                {/* <PinCheckbox checked={false} /> */}
-                                                            </div>
-                                                            <Line todo={todo} onContextMenu={onContextMenuBasicModal} />
-                                                        </>
+                                                        <Line todo={todo} onContextMenu={onContextMenuBasicModal} />
                                                     ) : (
                                                         <CheckList contents={todo.contents}>
-                                                            {/* <PinCheckbox checked={true} /> */}
                                                             <CheckboxText
                                                                 todo={todo}
                                                                 onContextMenu={onContextMenuBasicModal}

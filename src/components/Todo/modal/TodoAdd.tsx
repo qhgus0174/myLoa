@@ -71,6 +71,7 @@ const Todo = () => {
             color: color,
             character: characters,
             showCharacter: showCharacterArr,
+            isFixed: false,
         };
 
         todoArr.push(todoInfo);

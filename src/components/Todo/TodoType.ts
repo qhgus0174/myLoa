@@ -9,7 +9,7 @@ export interface ITodo {
     color: string;
     showCharacter: number[];
     character: ICharacterTodo[];
-    //isFixed: boolean;
+    isFixed: boolean;
 }
 
 export interface IGurdianInfo {

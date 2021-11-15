@@ -43,6 +43,7 @@ const LineAdd = () => {
             color: color,
             character: [],
             showCharacter: [],
+            isFixed: false,
         };
 
         todoArr.push(todoInfo);
