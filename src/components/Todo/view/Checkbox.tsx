@@ -85,7 +85,7 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
 
         const characterIndex = todoArr[todoIndex].character.findIndex(character => character.id === characterId);
 
-        const checkArr = ['chaos', 'epona'].includes(todoArr[todoIndex].contents)
+        const checkArr = ['chaos', 'guardian', 'epona'].includes(todoArr[todoIndex].contents)
             ? setOutSideMultiCheck(characterIndex, todoIndex)
             : setOutSideSingleCheck(characterIndex, todoIndex);
 

@@ -2,11 +2,11 @@ import { ScheduleContents } from '@common/types';
 import _ from 'lodash';
 
 const isMultipleArr = (contents: ScheduleContents): boolean => {
-    return ['chaos', 'epona'].includes(contents);
+    return ['chaos', 'guardian', 'epona'].includes(contents);
 };
 
 const getArrayLength = (contents: ScheduleContents): number => {
-    return contents === 'chaos' ? 2 : 3;
+    return ['chaos', 'guardian'].includes(contents) ? 2 : 3;
 };
 
 export const getResetCheckArr = (contents: ScheduleContents): number[] => {
