@@ -149,7 +149,7 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
 
     return (
         <FormContainer>
-            <CharacterForm color={color} setColor={setColor} bindName={bindName} />
+            <CharacterForm color={color} setColor={setColor} name={name} />
             <EditButtonContainer onClickDelete={onClickDelete} onClickEdit={onClickEdit} />
         </FormContainer>
     );

@@ -3,14 +3,17 @@ import TextBox from '@components/Input/TextBox';
 import { FlexDiv } from '@style/common';
 import { FormDivContainer, ContentsDivTitle, ContentsDiv } from '@style/common/modal';
 import { CompactPicker, ColorResult } from 'react-color';
+import { useInput } from '@hooks/useInput';
 
 interface ICharacter {
     color: string;
     setColor: (e: string) => void;
-    bindName: any;
+    name: string;
 }
 
-const CharacterForm = ({ color, setColor, bindName }: ICharacter) => {
+const CharacterForm = ({ color, setColor, name: newName }: ICharacter) => {
+    const [name, bindName] = useInput<string>(newName);
+
     return (
         <FormDivContainer>
             <FlexDiv direction="column">

@@ -6916,6 +6916,11 @@ use-local-storage-state@^11.0.0:
   resolved "https://registry.yarnpkg.com/use-local-storage-state/-/use-local-storage-state-11.0.0.tgz#b0e6f0d13a7e6fca1a8b8856ab3373782bfd23db"
   integrity sha512-laYWubKi/OX0WMiyZIfjBBQ4YA+lXH8bXuHq+nR5rtrlSNipJOsbCjFz18GYphf5EYSr+8b7Mnx6v6mLdfUlUg==
 
+use-long-press@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/use-long-press/-/use-long-press-1.1.1.tgz#7a67b0bdf8d6f7a9183b6d662c5d57d164183574"
+  integrity sha512-tqf6zDZ06g/Rt8rw+/jaekrdBTmrFXxjHHd2QgMlOhvs1fwOb9VA9d+DmkTPeNtL/byaJ8YeHTOwmluwxhXRLA==
+
 use-memo-one@^1.1.1:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/use-memo-one/-/use-memo-one-1.1.2.tgz#0c8203a329f76e040047a35a1197defe342fab20"

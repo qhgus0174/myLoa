@@ -16,6 +16,7 @@ import useTodoOrd from '@hooks/storage/useTodoOrd';
 import { ICharacter } from '@components/Character/CharacterType';
 import { getOwnIdByIndex } from '@common/utils';
 import Guardian from '@components/Todo/view/Guardian';
+import { LongPressEvent, useLongPress } from 'use-long-press';
 
 interface ICheckbox {
     todo: ITodo;
@@ -26,12 +27,36 @@ interface ICheckbox {
 const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckbox) => {
     const { perPage, currentPage } = useContext(PagingStateContext);
 
-    const [storageCharacter] = useCharacter();
-    const [storageCharacterOrd] = useCharacterOrd();
     const [storageTodo, setStorageTodo] = useTodo();
-    const [storageTodoOrd, setStorageTodoOrd] = useTodoOrd();
-
     const [guardianStep, setGuardianStep] = useState<string>('1');
+
+    const onLongPress = (charTodo: ICharacterTodo, characterIndex: number) =>
+        useLongPress((e: LongPressEvent<Element> | undefined) => openTodoCheckEditModal(e, charTodo, characterIndex));
+
+    const openTodoCheckEditModal = (
+        e: React.MouseEvent<HTMLElement> | LongPressEvent<Element> | undefined,
+        charTodo: ICharacterTodo,
+        characterIndex: number,
+    ) => {
+        onContextMenu({
+            e: e,
+            modal: (
+                <TodoCheck
+                    key={`todo_check_${characterIndex}`}
+                    {...charTodo}
+                    todoId={pTodo.id}
+                    checkType={pTodo.checkType}
+                    todoType={pTodo.type}
+                    todoContents={pTodo.contents}
+                    eponaName={charTodo.eponaName}
+                    showCharacter={pTodo.showCharacter}
+                />
+            ),
+            title: '숙제 수정(개별)',
+            width: '400',
+            height: ['chaos', 'epona', 'guardian'].includes(pTodo.contents) ? '450' : '350',
+        });
+    };
 
     const onClickCheckTodo = (characterId: number, checkesIndex: number) => {
         const todoArr: ITodo[] = getStorage('todo');
@@ -110,26 +135,8 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                         return (
                             <FlexHoverDiv
                                 key={`drag_char_${characterIndex}`}
-                                onContextMenu={e =>
-                                    onContextMenu({
-                                        e: e,
-                                        modal: (
-                                            <TodoCheck
-                                                key={`todo_check_${characterIndex}`}
-                                                {...charTodo}
-                                                todoId={pTodo.id}
-                                                checkType={pTodo.checkType}
-                                                todoType={pTodo.type}
-                                                todoContents={pTodo.contents}
-                                                eponaName={charTodo.eponaName}
-                                                showCharacter={pTodo.showCharacter}
-                                            />
-                                        ),
-                                        title: '숙제 수정(개별)',
-                                        width: '400',
-                                        height: ['chaos', 'epona', 'guardian'].includes(pTodo.contents) ? '450' : '350',
-                                    })
-                                }
+                                {...onLongPress(charTodo, characterIndex)}
+                                onContextMenu={e => openTodoCheckEditModal(e, charTodo, characterIndex)}
                             >
                                 {pTodo.checkType === 'check' ? (
                                     pTodo.showCharacter.includes(charTodo.id) && (

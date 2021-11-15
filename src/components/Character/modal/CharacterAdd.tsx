@@ -134,7 +134,7 @@ const CharacterAdd = () => {
 
     return (
         <FormContainer>
-            <CharacterForm color={color} setColor={setColor} bindName={bindName} />
+            <CharacterForm color={color} name={name} setColor={setColor} />
             <AddButtonContainer onClickAdd={onClickAdd} />
         </FormContainer>
     );

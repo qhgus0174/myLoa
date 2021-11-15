@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { TouchEvent, useContext } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 import { PagingActionContext, PagingStateContext } from '@context/PagingContext';
 import useCharacterOrd from '@hooks/storage/useCharacterOrd';
@@ -13,12 +13,31 @@ import styled from '@emotion/styled';
 import { FlexDiv, FlexLeftDiv, FlexHoverDiv, CharactersDiv } from '@style/common';
 import { ReactComponent as LeftArrow } from '@assets/img/left-arrow.svg';
 import { ReactComponent as RightArrow } from '@assets/img/right-arrow.svg';
+import { LongPressEvent, useLongPress } from 'use-long-press';
 
 const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
     const [storageCharacterOrd, setStorageCharacterOrd] = useCharacterOrd();
     const { perPage, currentPage } = useContext(PagingStateContext);
     const { onClickNext, onClickPrev } = useContext(PagingActionContext);
     const theme = useTheme();
+
+    const onLongPress = (char: ICharacter) =>
+        useLongPress((e: LongPressEvent<Element> | undefined) => {
+            openCharacterEditModal(e, char);
+        });
+
+    const openCharacterEditModal = (
+        e: React.MouseEvent<HTMLElement> | LongPressEvent<Element> | undefined,
+        char: ICharacter,
+    ) => {
+        onContextMenuBasicModal({
+            e: e,
+            modal: <CharacterEdit id={char.id} name={char.name} color={char.color} />,
+            title: '캐릭터 수정',
+            width: '470',
+            height: '420',
+        });
+    };
 
     const onDragEndCharacter = (result: DropResult) => {
         // source : drag 시작 위치
@@ -91,21 +110,10 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
                                                             {...provided.draggableProps}
                                                             {...provided.dragHandleProps}
                                                             ref={provided.innerRef}
+                                                            {...onLongPress(char)}
                                                             onContextMenu={e => {
                                                                 e.preventDefault();
-                                                                onContextMenuBasicModal({
-                                                                    e: e,
-                                                                    modal: (
-                                                                        <CharacterEdit
-                                                                            id={char.id}
-                                                                            name={char.name}
-                                                                            color={char.color}
-                                                                        />
-                                                                    ),
-                                                                    title: '캐릭터 수정',
-                                                                    width: '470',
-                                                                    height: '420',
-                                                                });
+                                                                openCharacterEditModal(e, char);
                                                             }}
                                                         >
                                                             <FlexDiv>

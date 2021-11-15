@@ -4,6 +4,7 @@ import { ITodo } from '@components/Todo/TodoType';
 import { IContextModal } from '@common/types';
 import styled from '@emotion/styled';
 import { FlexLeftDiv } from '@style/common';
+import { LongPressEvent, useLongPress } from 'use-long-press';
 
 interface ICheckbox {
     todo: ITodo;
@@ -11,13 +12,15 @@ interface ICheckbox {
 }
 
 const CheckboxText = ({ todo, onContextMenu }: ICheckbox) => {
+    const onLongPress = (todo: ITodo) =>
+        useLongPress((e: LongPressEvent<Element> | undefined) => openTodoEditModal(e, todo));
+
+    const openTodoEditModal = (e: React.MouseEvent<HTMLElement> | LongPressEvent<Element> | undefined, todo: ITodo) => {
+        onContextMenu({ e: e, modal: <TodoEdit {...todo} />, title: '숙제 수정', width: '600', height: '850' });
+    };
+
     return (
-        <TextDiv
-            color={todo.color}
-            onContextMenu={e =>
-                onContextMenu({ e: e, modal: <TodoEdit {...todo} />, title: '숙제 수정', width: '600', height: '850' })
-            }
-        >
+        <TextDiv color={todo.color} {...onLongPress(todo)} onContextMenu={e => openTodoEditModal(e, todo)}>
             {todo.name}
         </TextDiv>
     );

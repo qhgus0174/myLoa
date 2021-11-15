@@ -32,7 +32,7 @@ const Main = () => {
     };
 
     const onContextMenuBasicModal = ({ e, modal, title, width, height }: IContextModal) => {
-        e.preventDefault();
+        e && e.preventDefault();
         setModalProps({
             isOpen: true,
             content: modal,
