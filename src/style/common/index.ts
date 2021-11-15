@@ -59,7 +59,7 @@ export const FlexHoverDiv = styled(FlexLeftDiv)`
 
     &:hover {
         transition: 200ms ease;
-        background: ${props => props.theme.colors.hoverGray};
+        background: ${props => props.theme.colors.hover};
     }
 
     cursor: pointer;

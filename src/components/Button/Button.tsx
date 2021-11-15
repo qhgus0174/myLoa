@@ -9,8 +9,8 @@ export interface IButtonProps extends React.ButtonHTMLAttributes<HTMLButtonEleme
     icon?: JSX.Element;
     iconOnly?: boolean;
     border?: 'none';
-    color?: keyof Theme['buttonColors'];
-    borderColor?: keyof Theme['buttonColors'];
+    color?: keyof Theme['button'];
+    borderColor?: keyof Theme['button'];
 }
 
 const Button = ({
@@ -61,18 +61,16 @@ const BasicButton = styled.button<IButtonProps>`
         box-sizing: border-box;
         pointer-events: none;
         margin-left: ${props => (props.icon ? 0.5 : 0)}em;
-        color: ${props => (props.borderColor ? props.theme.buttonColors[props.borderColor] : props.theme.colors.white)};
+        color: ${props => (props.borderColor ? props.theme.button[props.borderColor] : props.theme.button.color)};
     }
 
     border: ${props =>
         props.border === `none`
             ? `none`
-            : `1.3px solid ${
-                  props.borderColor ? props.theme.buttonColors[props.borderColor] : props.theme.colors.white
-              }`};
+            : `1.3px solid ${props.borderColor ? props.theme.button[props.borderColor] : props.theme.button.color}`};
 
     ${props => `
-        background-color: ${props.theme.buttonColors[props.color ? props.color : 'none']};
+        background-color: ${props.theme.button[props.color ? props.color : 'none']};
 
     `}
 
@@ -81,13 +79,13 @@ const BasicButton = styled.button<IButtonProps>`
             props.borderColor ||
             `
             span {
-                color:${props.theme.colors.black};
+                color:${props.theme.button.hover.color};
             }
 
-            background : ${props.theme.colors.pureWhite};
+            background : ${props.theme.button.hover.background};
 
             svg{
-                fill:${props.theme.colors.black};
+                fill:${props.theme.button.hover.color};
             }
         `}
 
@@ -95,7 +93,7 @@ const BasicButton = styled.button<IButtonProps>`
             background: transparent;
         }
 
-        box-shadow: 0px 3px 12px -1px rgb(0 0 0 / 80%);
+        box-shadow: 0px 3px 10px -1px rgb(0 0 0 / 80%);
     }
 `;
 

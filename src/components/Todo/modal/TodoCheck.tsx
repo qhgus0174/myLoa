@@ -154,7 +154,7 @@ const TodoCheck = ({
 
 const RemarkDiv = styled(FlexDiv)`
     justify-content: flex-end;
-    color: ${props => props.theme.colors.translucent};
+    color: ${props => props.theme.colors.gray};
 `;
 
 const HideDivTitle = styled(ContentsDivTitle)`

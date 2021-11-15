@@ -151,7 +151,7 @@ const DropDiv = styled.div`
     width: 100%;
     ${props =>
         (getStorage('character').length > 0 || getStorage('todo').length > 0) &&
-        `border-bottom: 1px solid ${props.theme.colors.white}`};
+        `border-bottom: 1px solid ${props.theme.colors.text}`};
     padding-bottom: 0.3em;
     box-sizing: border-box;
 `;

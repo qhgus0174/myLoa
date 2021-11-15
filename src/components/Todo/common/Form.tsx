@@ -202,13 +202,13 @@ const TodoForm = ({
 };
 
 const SmallTitleDiv = styled.div`
-    font-weight: 400;
+    font-weight: 500;
     margin-left: 0.7em;
     margin-right: 0.5em;
 `;
 
 const ContentsDivs = styled.div`
-    background: ${props => props.theme.colors.mainDark};
+    background: ${props => props.theme.colors.mainInner};
     padding: 0.5em;
     border-radius: 1em;
 `;

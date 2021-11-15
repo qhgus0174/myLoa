@@ -25,10 +25,10 @@ const Label = styled.label<Pick<IRadio, 'checked'>>`
 
     &:hover,
     &:focus-within {
-        background: ${props => props.theme.colors.hoverGray};
+        background: ${props => props.theme.colors.hover};
     }
 
-    ${props => props.checked && `background: ${props.theme.colors.hoverGray}`}
+    ${props => props.checked && `background: ${props.theme.colors.hover}`}
 `;
 
 const Radio = styled.input`
@@ -36,10 +36,10 @@ const Radio = styled.input`
 `;
 
 const Text = styled.div<Pick<IRadio, 'checked'>>`
-    color: ${props => props.theme.colors.translucent};
+    color: ${props => props.theme.colors.gray};
     transition: 0.1s;
 
-    ${props => props.checked && `color: ${props.theme.colors.white};`}
+    ${props => props.checked && `color: ${props.theme.colors.text}; font-weight:500;`}
 `;
 
 export default RadioButton;

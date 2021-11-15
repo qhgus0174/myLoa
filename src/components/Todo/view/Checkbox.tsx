@@ -266,6 +266,7 @@ const RelaxGaugeDiv = styled.div`
     justify-content: center;
     text-align: center;
     color: ${props => props.theme.colors.relax};
+    font-weight: 600;
 `;
 
 const WhiteSpaceDiv = styled.div`

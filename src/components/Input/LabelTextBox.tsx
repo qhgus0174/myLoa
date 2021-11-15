@@ -35,7 +35,7 @@ const Label = styled.label`
     display: flex;
     flex-direction: column;
     padding: 0.4em 0.5em 0.5em 0.5em;
-    border: 1px solid ${props => props.theme.colors.check};
+    border: 1px solid ${props => props.theme.check.mark};
     border-radius: 3px;
     outline-width: 3px;
     outline-offset: -2px;
@@ -43,7 +43,7 @@ const Label = styled.label`
     box-shadow: inset 0 0 2px #999999;
 
     &:focus-within {
-        outline-color: ${props => props.theme.colors.main};
+        outline-color: ${props => props.theme.colors.text};
         outline-style: auto;
     }
 

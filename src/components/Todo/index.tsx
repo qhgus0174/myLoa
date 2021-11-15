@@ -116,7 +116,7 @@ const CheckList = styled.div<{ contents: ScheduleContents }>`
 `;
 
 const Hr = styled.div`
-    border: 0.7px solid ${props => props.theme.colors.translucent};
+    border: 0.7px solid ${props => props.theme.colors.gray};
     opacity: 0.3;
 `;
 

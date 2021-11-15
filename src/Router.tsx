@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import { Flip, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -8,10 +8,16 @@ import PagingContext from '@context/PagingContext';
 import ModalContext from '@context/ModalContext';
 import Header from '@components/Layout/Header';
 import styled from '@emotion/styled';
+import { ThemeProvider } from '@emotion/react';
+import { GlobalThemeContext } from '@context/GlobalThemeContext';
+import { GlobalStyle } from '@style/global-styles';
 
 const AppRouter = () => {
+    const { theme } = useContext(GlobalThemeContext);
+
     return (
-        <>
+        <ThemeProvider theme={require('@style/theme')[theme]}>
+            <GlobalStyle />
             <ToastContainer
                 position="top-right"
                 autoClose={4000}
@@ -41,7 +47,7 @@ const AppRouter = () => {
                     </PagingContext>
                 </Container>
             </BrowserRouter>
-        </>
+        </ThemeProvider>
     );
 };
 

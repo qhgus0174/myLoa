@@ -70,7 +70,7 @@ const TextContainer = styled(FlexLeftDiv)<{ contents: ScheduleContents }>`
     font-weight: 600;
     &:hover {
         transition: 200ms ease;
-        background: ${props => props.theme.colors.hoverGray};
+        background: ${props => props.theme.colors.hover};
     }
 `;
 

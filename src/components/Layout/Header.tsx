@@ -4,6 +4,7 @@ import Logo from '@assets/img/logo/logo.png';
 import styled from '@emotion/styled';
 import { widthMedia } from '@style/device';
 import { FlexDiv } from '@style/common';
+import SelectTheme from '@routes/SelectTheme';
 
 const Header = () => {
     return (
@@ -14,7 +15,9 @@ const Header = () => {
             <LogoDiv basis="20">
                 <LogoImg src={Logo} />
             </LogoDiv>
-            <FlexDiv basis="40"></FlexDiv>
+            <RightHeader basis="40">
+                <SelectTheme />
+            </RightHeader>
         </HeaderDiv>
     );
 };
@@ -48,6 +51,12 @@ const LogoImg = styled.img`
     ${widthMedia.phone} {
         width: 130px;
     }
+`;
+
+const RightHeader = styled(FlexDiv)`
+    justify-content: flex-end;
+    padding-right: 30px;
+    box-sizing: border-box;
 `;
 
 export default Header;

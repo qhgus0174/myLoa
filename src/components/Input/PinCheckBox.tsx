@@ -3,12 +3,11 @@ import styled from '@emotion/styled';
 
 export interface ICheckbox extends React.InputHTMLAttributes<HTMLElement> {
     checked: boolean;
-    color?: 'white' | 'white';
     label?: string;
     isLine?: boolean;
 }
 
-const PinCheckbox = ({ checked, label, color = 'white', isLine = false, ...rest }: ICheckbox) => {
+const PinCheckbox = ({ checked, label, isLine = false, ...rest }: ICheckbox) => {
     return (
         <CheckboxDiv checked={checked} onClick={rest.onClick}>
             <Label checked={checked} isLine={isLine}></Label>
@@ -26,7 +25,7 @@ const CustomCheckbox = styled.input`
 `;
 
 const Label = styled.label<{ checked: boolean; isLine: boolean }>`
-    background-color: ${props => props.theme.colors.translucent};
+    background-color: ${props => props.theme.colors.gray};
     border-radius: 50%;
     cursor: pointer;
     height: 14px;

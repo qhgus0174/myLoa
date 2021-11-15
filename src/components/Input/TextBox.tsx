@@ -44,9 +44,11 @@ const CustomInput = styled.input<ITextProps>`
 
     text-align: ${props => props.align};
 
-    border-bottom: ${props => props.underline && `1px solid ${props.theme.colors.white}`};
+    border-bottom: ${props => props.underline && `1px solid ${props.theme.colors.text}`};
+
     &:focus + ${Span} {
         width: ${props => (props.width ? props.width : '100')}%;
+        background: ${props => props.theme.colors.text};
     }
 
     ::-webkit-inner-spin-button {

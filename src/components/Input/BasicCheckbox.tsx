@@ -4,21 +4,16 @@ import { Theme } from '@emotion/react';
 
 export interface ICheckbox extends React.InputHTMLAttributes<HTMLInputElement> {
     checked: boolean;
-    color?: 'white' | 'white';
     label?: string;
 }
 
-const BasicCheckbox = ({ checked, label, color = 'white', ...rest }: ICheckbox) => {
+const BasicCheckbox = ({ checked, label, ...rest }: ICheckbox) => {
     return (
         <CheckboxContainer>
             <Label checked={checked}>
                 <CustomCheckbox type="checkbox" checked={checked} {...rest} />
                 <Span></Span>
-                {label && (
-                    <CheckboxTitle checked color={color}>
-                        {label}
-                    </CheckboxTitle>
-                )}
+                {label && <CheckboxTitle checked>{label}</CheckboxTitle>}
             </Label>
         </CheckboxContainer>
     );
@@ -36,10 +31,12 @@ const Label = styled.label<ICheckbox>`
     &:hover {
         span:nth-of-type(1) {
             &:before {
+                background: ${props => props.theme.check.mark};
                 width: 5px;
             }
 
             &:after {
+                background: ${props => props.theme.check.mark};
                 width: 10px;
             }
         }
@@ -49,31 +46,31 @@ const Label = styled.label<ICheckbox>`
         props.checked &&
         `
         span:nth-of-type(1) {
-                background-color: ${props.theme.colors.white};
+                background-color: ${props.theme.colors.main};
 
                 &:after {
                     width: 10px;
-                    background: ${props.theme.colors.black};
+                    background: ${props.theme.check.mark};
                 }
 
                 &:before {
                     width: 5px;
-                    background:${props.theme.colors.black};
+                    background:${props.theme.check.mark};
                 }
             }
 
             &:hover {
                 span:nth-of-type(1) {
-                    background-color: ${props.theme.colors.white};
+                    background-color: ${props.theme.colors.main};
 
                     &:after {
                         width: 10px;
-                        background: ${props.theme.colors.black};
+                        background: ${props.theme.check.mark};
                     }
 
                     &:before {
                         width: 5px;
-                        background: ${props.theme.colors.black};
+                        background: ${props.theme.check.mark};
                     }
                 }
             }
@@ -86,7 +83,7 @@ const Span = styled.span`
     width: 25px;
     height: 25px;
     transform-origin: center;
-    border: 2px solid ${props => props.theme.colors.white};
+    border: 2px solid ${props => props.theme.colors.text};
     box-sizing: border-box;
     border-radius: 0%;
     vertical-align: -6px;
@@ -96,7 +93,7 @@ const Span = styled.span`
         width: 0px;
         height: 2px;
         border-radius: 2px;
-        background: ${props => props.theme.colors.white};
+        background: ${props => props.theme.colors.main};
         position: absolute;
         transform: rotate(45deg);
         top: 13px;
@@ -109,7 +106,7 @@ const Span = styled.span`
         width: 0;
         height: 2px;
         border-radius: 2px;
-        background: ${props => props.theme.colors.white};
+        background: ${props => props.theme.colors.main};
         position: absolute;
         transform: rotate(305deg);
         top: 16px;

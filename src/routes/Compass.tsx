@@ -15,16 +15,15 @@ const Compass = () => {
     const [chaosGate, setChaosGate] = useState<boolean>(false);
 
     const getCompass = () => {
-        const dayOfWeek = Number(DateTime.now().toFormat('c')) - 1;
+        const dayOfWeek = Number(DateTime.now().toFormat('c'));
         const hour = Number(DateTime.now().toFormat('H'));
+        const calcDayOfWeek = hour > 5 ? dayOfWeek - 1 : dayOfWeek - 2;
 
         const { ghost, chaosGate, fieldBoss } = CompassInfo;
 
-        if (hour > 5) {
-            fieldBoss[dayOfWeek] === 1 && setFieldBoss(true);
-            ghost[dayOfWeek] === 1 && setGhost(true);
-            chaosGate[dayOfWeek] === 1 && setChaosGate(true);
-        }
+        fieldBoss[calcDayOfWeek] === 1 && setFieldBoss(true);
+        ghost[calcDayOfWeek] === 1 && setGhost(true);
+        chaosGate[calcDayOfWeek] === 1 && setChaosGate(true);
     };
 
     return (
@@ -49,6 +48,7 @@ const CompassContainer = styled(FlexDiv)`
     align-items: center;
     width: 50%;
     justify-content: space-around;
+    font-weight: 500;
 
     ${widthMedia.desktop} {
         flex-direction: column;
@@ -61,7 +61,8 @@ const CompassContainer = styled(FlexDiv)`
 
 const CompassDiv = styled.span<{ active: boolean }>`
     span {
-        color: ${props => (props.active ? '#51C2D5' : props.theme.colors.translucent)};
+        color: ${props => (props.active ? props.theme.colors.compassActive : props.theme.colors.gray)};
+        ${props => props.active && `font-weight:600;`}
     }
 
     ${widthMedia.phone} {

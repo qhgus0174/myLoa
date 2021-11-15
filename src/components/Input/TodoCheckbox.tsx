@@ -4,30 +4,17 @@ import { Theme } from '@emotion/react';
 
 export interface ICheckbox extends React.InputHTMLAttributes<HTMLInputElement> {
     checked: boolean;
-    color?: 'white' | 'white';
-    checkColor?: keyof Theme['colors'];
     label?: string;
     shape?: 'circle' | 'square';
 }
 
-const TodoCheckbox = ({
-    checked,
-    label,
-    checkColor = 'check',
-    color = 'white',
-    shape = 'circle',
-    ...rest
-}: ICheckbox) => {
+const TodoCheckbox = ({ checked, label, shape = 'circle', ...rest }: ICheckbox) => {
     return (
         <CheckboxContainer>
-            <Label checkColor={checkColor} checked={checked}>
+            <Label checked={checked}>
                 <CustomCheckbox type="checkbox" checked={checked} {...rest} />
                 <Span shape={shape}></Span>
-                {label && (
-                    <CheckboxTitle checked color={color}>
-                        {label}
-                    </CheckboxTitle>
-                )}
+                {label && <CheckboxTitle checked>{label}</CheckboxTitle>}
             </Label>
         </CheckboxContainer>
     );
@@ -46,11 +33,13 @@ const Label = styled.label<ICheckbox>`
         span {
             &:before {
                 width: 5px;
+                background: ${props => props.theme.check.mark};
                 transition: width 100ms ease;
             }
 
             &:after {
                 width: 10px;
+                background: ${props => props.theme.check.mark};
                 $transition: width 150ms ease 100ms;
             }
         }
@@ -70,36 +59,36 @@ const Label = styled.label<ICheckbox>`
         props.checked &&
         `
             span {
-                background-color: ${props.theme.colors.white};
+                background-color: ${props.theme.check.background};
                 transform: scale(1.15); 
 
                 &:after {
                     width: 10px;
-                    background: ${props.theme.colors[props.checkColor ? props.checkColor : `check`]};
+                    background: ${props.theme.check.mark};
                     transition: width 150ms ease 100ms; // enlarge the tick
                 }
 
                 &:before {
                     width: 5px;
-                    background: ${props.theme.colors[props.checkColor ? props.checkColor : `check`]};
+                    background: ${props.theme.check.mark};
                     transition: width 150ms ease 100ms; // enlarge the tick
                 }
             }
 
             &:hover {
                 span {
-                    background-color: ${props.theme.colors.white};
+                    background-color: ${props.theme.check.background};
                     transform: scale(1.25); // enlarge the box
 
                     &:after {
                         width: 10px;
-                        background: ${props.theme.colors[props.checkColor ? props.checkColor : `check`]};
+                        background: ${props.theme.check.mark};
                         transition: width 150ms ease 100ms;// enlarge the tick
                     }
 
                     &:before {
                         width: 5px;
-                        background: ${props.theme.colors[props.checkColor ? props.checkColor : `check`]};
+                        background: ${props.theme.check.mark};
                         transition: width 150ms ease 100ms;// enlarge the tick
                     }
                 }
@@ -114,7 +103,7 @@ const Span = styled.span<Pick<ICheckbox, 'shape'>>`
     width: 25px;
     height: 25px;
     transform-origin: center;
-    border: 2px solid ${props => props.theme.colors.white};
+    border: 2px solid ${props => props.theme.check.border};
     border-radius: ${props => (props.shape === 'circle' ? '50%' : '0%')};
     vertical-align: -6px;
 
@@ -124,7 +113,7 @@ const Span = styled.span<Pick<ICheckbox, 'shape'>>`
         width: 0px;
         height: 2px;
         border-radius: 2px;
-        background: ${props => props.theme.colors.white};
+        background: ${props => props.theme.check.background};
         position: absolute;
         transform: rotate(45deg);
         top: 13px;
@@ -138,7 +127,7 @@ const Span = styled.span<Pick<ICheckbox, 'shape'>>`
         width: 0;
         height: 2px;
         border-radius: 2px;
-        background: ${props => props.theme.colors.white};
+        background: ${props => props.theme.check.background};
         position: absolute;
         transform: rotate(305deg);
         top: 16px;

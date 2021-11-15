@@ -62,7 +62,7 @@ const Main = () => {
                 <ButtonLeftDiv>
                     <AddButton
                         type="button"
-                        icon={<Plus width="15px" height="15px" fill={theme.colors.white} />}
+                        icon={<PlusIcon />}
                         onClick={e =>
                             onContextMenuBasicModal({
                                 e: e,
@@ -78,7 +78,7 @@ const Main = () => {
                     <AddButton
                         isRight={true}
                         type="button"
-                        icon={<Plus width="15px" height="15px" fill={theme.colors.white} />}
+                        icon={<PlusIcon />}
                         onClick={e =>
                             onContextMenuBasicModal({
                                 e: e,
@@ -96,7 +96,7 @@ const Main = () => {
                     <AddButton
                         isRight={true}
                         type="button"
-                        icon={<Plus width="15px" height="15px" fill={theme.colors.white} />}
+                        icon={<PlusIcon />}
                         onClick={e =>
                             onContextMenuBasicModal({
                                 e: e,
@@ -129,7 +129,7 @@ const MainDiv = styled(FlexDiv)`
 `;
 
 const TodoContentsDiv = styled.div`
-    background: ${props => props.theme.colors.mainDark};
+    background: ${props => props.theme.colors.mainInner};
     padding: 1.5em;
     border-radius: 1em;
     box-sizing: border-box;
@@ -177,6 +177,12 @@ const ButtonLeftDiv = styled(FlexDiv)`
     ${widthMedia.smallPhone} {
         flex-direction: column;
     }
+`;
+
+const PlusIcon = styled(Plus)`
+    fill: ${props => props.theme.button.color};
+    width: 15px;
+    height: 15px;
 `;
 
 export default Main;

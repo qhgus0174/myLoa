@@ -9,7 +9,7 @@ export const GlobalStyle = () => {
             styles={css`
                 * {
                     margin: 0;
-                    color: ${theme.colors.white};
+                    color: ${theme.colors.text};
                     font-family: 'Spoqa Han Sans Neo', 'sans-serif';
                     font-size: 14px;
                 }
@@ -29,7 +29,8 @@ export const GlobalStyle = () => {
                 }
 
                 select {
-                    background-color: ${theme.colors.main};
+                    border: 0.7px solid ${theme.colors.white};
+                    background-color: ${theme.colors.mainInner};
                     padding: 0.2em;
                     font-size: 0.9em;
                 }

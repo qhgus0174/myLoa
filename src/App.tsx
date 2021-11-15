@@ -1,14 +1,12 @@
 import React, { useEffect } from 'react';
 import AppRouter from './Router';
 import schedule from 'node-schedule';
+import GlobalThemeContext from '@context/GlobalThemeContext';
 import useTodo from '@hooks/storage/useTodo';
-import { ITodo, ICharacterTodo } from '@components/Todo/TodoType';
-import { ThemeProvider } from '@emotion/react';
-import { basic } from '@style/theme';
-import { GlobalStyle } from '@style/global-styles';
-import { ScheduleContents } from '@common/types';
+import { getStorage } from '@storage/index';
 import { getResetCheckArr } from '@components/Todo/common/functions';
-import { getStorage } from './storage';
+import { ITodo, ICharacterTodo } from '@components/Todo/TodoType';
+import { ScheduleContents } from '@common/types';
 
 const App = () => {
     const [storageTodo, setStorageTodo] = useTodo();
@@ -98,10 +96,9 @@ const App = () => {
 
     return (
         <>
-            <ThemeProvider theme={basic}>
-                <GlobalStyle />
+            <GlobalThemeContext>
                 <AppRouter />
-            </ThemeProvider>
+            </GlobalThemeContext>
         </>
     );
 };
