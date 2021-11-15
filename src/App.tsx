@@ -86,7 +86,7 @@ const App = () => {
 
     useEffect(() => {
         // 일일 휴식 게이지, 체크 초기화 (매일 오전 6시)
-        schedule.scheduleJob('1 * * * * *', () => {
+        schedule.scheduleJob('0 0 20 * * *', () => {
             resetDailyTodoRelax();
         });
 
