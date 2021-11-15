@@ -5,7 +5,7 @@ import TodoEdit from '@components/Todo/modal/TodoEdit';
 import { ITodo } from '@components/Todo/TodoType';
 import PinCheckbox from '@components/Input/PinCheckBox';
 import { getStorage } from '@storage/index';
-import { IContextModal } from '@common/types';
+import { IContextModal, ScheduleContents } from '@common/types';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { FlexDiv, FlexLeftDiv } from '@style/common';
@@ -42,7 +42,7 @@ const CheckboxText = ({ todo, onContextMenu }: ICheckbox) => {
     };
 
     return (
-        <TextContainer color={todo.color} onContextMenu={e => openTodoEditModal(e, todo)}>
+        <TextContainer contents={todo.contents} color={todo.color} onContextMenu={e => openTodoEditModal(e, todo)}>
             <TextDiv>
                 <FlexDiv basis="10"></FlexDiv>
                 <FlexDiv basis="10">
@@ -62,10 +62,10 @@ const CheckboxText = ({ todo, onContextMenu }: ICheckbox) => {
     );
 };
 
-const TextContainer = styled(FlexLeftDiv)`
+const TextContainer = styled(FlexLeftDiv)<{ contents: ScheduleContents }>`
     color: ${props => props.color};
     width: 100%;
-    height: 100%;
+    height: ${props => (props.contents === 'guardian' ? '7.75em' : '4.55em')};
     align-items: center;
     font-weight: 600;
     &:hover {

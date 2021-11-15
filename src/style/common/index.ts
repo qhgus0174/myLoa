@@ -61,10 +61,12 @@ export const FlexHoverDiv = styled(FlexLeftDiv)`
         transition: 200ms ease;
         background: ${props => props.theme.colors.hoverGray};
     }
+
+    cursor: pointer;
 `;
 
 export const CharactersDiv = styled(FlexRightDiv)<{ length: number; contents?: ScheduleContents }>`
-    height: ${props => (props.contents === 'guardian' ? '7.8em' : '4.4em')};
+    height: ${props => (props.contents === 'guardian' ? '7.75em' : '4.55em')};
 
     ${props => {
         if (props.length > 4) {
