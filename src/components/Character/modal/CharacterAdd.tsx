@@ -98,7 +98,7 @@ const CharacterAdd = () => {
                 check: getResetCheckArr(todo.contents),
                 relaxGauge: 0,
                 oriRelaxGauge: 0,
-                eponaName: [],
+                eponaName: todo.contents === 'epona' ? new Array(3).fill('') : [],
                 guardianInfo: { info: '1', step: '1' },
             };
             todo.showCharacter.push(characterId);
