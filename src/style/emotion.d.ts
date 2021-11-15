@@ -7,13 +7,14 @@ declare module '@emotion/react' {
             mainDark: string;
             check: string;
             relax: string;
-            focusDark: string;
+            shadow: string;
             white: string;
             pureWhite: string;
             black: string;
             hoverGray: string;
             translucent: string;
             scroll: string;
+            pin: string;
         };
 
         buttonColors: {

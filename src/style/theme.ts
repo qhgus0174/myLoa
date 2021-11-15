@@ -6,13 +6,14 @@ export const basic: Theme = {
         mainDark: '#1b2736',
         check: '#fcc101',
         relax: '#5de55d',
-        focusDark: '#0d1721',
+        shadow: '#0d1721',
         white: '#f6f8fd',
         pureWhite: '#ffffff',
         black: '#000000',
         hoverGray: '#333f50',
         translucent: '#6d6d6d',
         scroll: '#C9CCD5',
+        pin: '#ED3833',
     },
 
     buttonColors: {
