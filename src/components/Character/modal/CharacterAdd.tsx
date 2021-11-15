@@ -3,7 +3,6 @@ import { toast } from 'react-toastify';
 import { PagingActionContext, PagingStateContext } from '@context/PagingContext';
 import { ModalActionContext } from '@context/ModalContext';
 import { SpinnerContext } from '@context/SpinnerContext';
-import { useInput } from '@hooks/useInput';
 import useCharacter from '@hooks/storage/useCharacter';
 import useCharacterOrd from '@hooks/storage/useCharacterOrd';
 import useTodo from '@hooks/storage/useTodo';
@@ -15,6 +14,7 @@ import AddButtonContainer from '@components/Container/Button/Add';
 import { FormContainer } from '@style/common/modal';
 import { getResetCheckArr } from '@components/Todo/common/functions';
 import { getStorage } from '@storage/index';
+import { useTheme } from '@emotion/react';
 
 const CharacterAdd = () => {
     const [storageCharacter, setStorageCharacter] = useCharacter();
@@ -25,7 +25,9 @@ const CharacterAdd = () => {
     const { setCurrentPage } = useContext(PagingActionContext);
     const { perPage } = useContext(PagingStateContext);
 
-    const [color, setColor] = useState<string>('#ffffff');
+    const theme = useTheme();
+
+    const [color, setColor] = useState<string>(theme.colors.text);
 
     const { closeModal } = useContext(ModalActionContext);
 
@@ -99,7 +101,7 @@ const CharacterAdd = () => {
                 relaxGauge: 0,
                 oriRelaxGauge: 0,
                 eponaName: todo.contents === 'epona' ? new Array(3).fill('') : [],
-                guardianInfo: { info: '1', step: '1' },
+                guardianInfo: { info: '2', step: '5' },
             };
             todo.showCharacter.push(characterId);
 

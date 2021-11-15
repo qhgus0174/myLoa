@@ -12,6 +12,7 @@ import { ScheduleCheckType, ScheduleContents, ScheduleType } from '@common/types
 import { FormContainer } from '@style/common/modal';
 import { getResetCheckArr } from '../common/functions';
 import { getStorage } from '@storage/index';
+import { useTheme } from '@emotion/react';
 
 const Todo = () => {
     const [type, setType] = useState<ScheduleType>('daily');
@@ -26,11 +27,13 @@ const Todo = () => {
     const [storageTodoOrd, setStorageTodoOrd] = useTodoOrd();
     const [storageCharacter] = useCharacter();
 
+    const theme = useTheme();
+
     const [showCharacterArr, setShowCharacterArr] = useState<number[]>(
         (getStorage('character') as ICharacter[]).map((character: ICharacter) => character.id),
     );
 
-    const [color, setColor] = useState<string>('#ffffff');
+    const [color, setColor] = useState<string>(theme.colors.text);
 
     const onClickAdd = () => {
         const todoArr: ITodo[] = getStorage('todo');
@@ -58,7 +61,7 @@ const Todo = () => {
                 relaxGauge: 0,
                 oriRelaxGauge: 0,
                 eponaName: contents === 'epona' ? new Array(3).fill('') : [],
-                guardianInfo: { info: '1', step: '1' },
+                guardianInfo: { info: '2', step: '5' },
             };
         });
 
