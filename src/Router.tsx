@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import { Flip, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Main from '@routes/Main';
@@ -34,6 +34,7 @@ const AppRouter = () => {
                                 <Header />
                                 <Switch>
                                     <Route exact path="/" component={Main} />
+                                    <Route component={() => <Redirect to="/" />} />
                                 </Switch>
                             </ModalContext>
                         </SpinnerContext>
