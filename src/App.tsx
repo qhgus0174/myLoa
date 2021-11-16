@@ -41,8 +41,8 @@ const App = () => {
 
         setStorageTodo(JSON.stringify(calcResult));
 
-        const dayOfWeek = Number(DateTime.now().toFormat('c'));
-        dayOfWeek === 2 && resetWeeklyTodo();
+        const dayOfWeek = DateTime.now().toFormat('c');
+        (dayOfWeek === '2' || dayOfWeek === '3') && resetWeeklyTodo();
     };
 
     const resetCheck = (contents: ScheduleContents, character: ICharacterTodo): ICharacterTodo => {
@@ -89,7 +89,7 @@ const App = () => {
     };
 
     useEffect(() => {
-        const jobDaily = new CronJob('0 35 18 * * *', () => resetDailyTodoRelax(), null, false, 'Asia/Seoul');
+        const jobDaily = new CronJob('0 0 6 * * *', () => resetDailyTodoRelax(), null, false, 'Asia/Seoul');
         jobDaily.start();
     }, []);
 
