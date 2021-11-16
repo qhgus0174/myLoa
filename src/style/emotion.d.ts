@@ -32,6 +32,7 @@ declare module '@emotion/react' {
         check: {
             background: string;
             mark: string;
+            basicMark: string;
             border: string;
         };
 

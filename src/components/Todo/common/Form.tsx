@@ -4,7 +4,7 @@ import TextBox from '@components/Input/TextBox';
 import RadioButton from '@components/Input/Radio';
 import { ScheduleCheckType, ScheduleContents, ScheduleType } from '@common/types';
 import styled from '@emotion/styled';
-import { ContentsDiv, ContentsDivTitle, FormDivContainer } from '@style/common/modal';
+import { ContentsDiv, ContentsDivTitle, ContentsInnerDiv, FormDivContainer } from '@style/common/modal';
 import { FlexDiv } from '@style/common';
 import useCharacter from '@hooks/storage/useCharacter';
 import { ICharacter } from '@components/Character/CharacterType';
@@ -42,13 +42,11 @@ const TodoForm = ({
     settingName,
     setShowCharacterArr,
 }: ITodo) => {
-    const [storageCharacter] = useCharacter();
-
     return (
         <FormDivContainer>
-            <FlexDiv direction="column">
+            <FormFlexDiv direction="column">
                 <ContentsDivTitle>숙제 유형</ContentsDivTitle>
-                <ContentsDivs>
+                <ContentsInnerDiv>
                     <ContentsDiv>
                         <SmallTitleDiv>체크박스형</SmallTitleDiv>
                         <RadioButton
@@ -91,12 +89,12 @@ const TodoForm = ({
                             checked={type === 'other'}
                         />
                     </ContentsDiv>
-                </ContentsDivs>
-            </FlexDiv>
+                </ContentsInnerDiv>
+            </FormFlexDiv>
             {type === 'daily' && (
-                <FlexDiv direction="column">
+                <FormFlexDiv direction="column">
                     <ContentsDivTitle>컨텐츠</ContentsDivTitle>
-                    <ContentsDivs>
+                    <ContentsInnerDiv>
                         <ContentsDiv>
                             <SmallTitleDiv>특수</SmallTitleDiv>
                             <RadioButton
@@ -154,13 +152,13 @@ const TodoForm = ({
                                 checked={contents === 'basic'}
                             />
                         </ContentsDiv>
-                    </ContentsDivs>
-                </FlexDiv>
+                    </ContentsInnerDiv>
+                </FormFlexDiv>
             )}
             {(getStorage('character') as ICharacter[]).length > 0 && (
-                <FlexDiv direction="column">
+                <FormFlexDiv direction="column">
                     <ContentsDivTitle>숙제 표시 할 캐릭터</ContentsDivTitle>
-                    <ContentsDivs>
+                    <ContentsInnerDiv>
                         <ContentsCharacterDiv>
                             {(getStorage('character') as ICharacter[]).map(
                                 (character: ICharacter, characterIndex: number) => {
@@ -181,36 +179,34 @@ const TodoForm = ({
                                 },
                             )}
                         </ContentsCharacterDiv>
-                    </ContentsDivs>
-                </FlexDiv>
+                    </ContentsInnerDiv>
+                </FormFlexDiv>
             )}
 
-            <FlexDiv direction="column">
+            <FormFlexDiv direction="column">
                 <ContentsDivTitle>숙제 명</ContentsDivTitle>
                 <ContentsDiv>
                     <TextBox width="100" placeholder="숙제 이름 입력 (e.g. 비아키스)" {...bindName} />
                 </ContentsDiv>
-            </FlexDiv>
-            <FlexDiv direction="column">
+            </FormFlexDiv>
+            <FormFlexDiv direction="column">
                 <ContentsDivTitle>색상</ContentsDivTitle>
                 <ContentsDiv>
                     <CompactPicker color={color} onChange={(color: ColorResult) => setColor(color.hex)} />
                 </ContentsDiv>
-            </FlexDiv>
+            </FormFlexDiv>
         </FormDivContainer>
     );
 };
+
+const FormFlexDiv = styled(FlexDiv)`
+    margin-bottom: 1.5em;
+`;
 
 const SmallTitleDiv = styled.div`
     font-weight: 500;
     margin-left: 0.7em;
     margin-right: 0.5em;
-`;
-
-const ContentsDivs = styled.div`
-    background: ${props => props.theme.colors.mainInner};
-    padding: 0.5em;
-    border-radius: 1em;
 `;
 
 const ShowCharacterDiv = styled(FlexDiv)`

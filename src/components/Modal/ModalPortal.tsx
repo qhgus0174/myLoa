@@ -2,9 +2,7 @@ import React, { useContext } from 'react';
 import { createPortal } from 'react-dom';
 import { ModalActionContext, ModalStateContext } from '@context/ModalContext';
 import BasicModal from '@components/Modal';
-import { IPortalOption } from '@common/types';
 import styled from '@emotion/styled';
-import { widthMedia, heightMedia } from '@style/device';
 
 const ModalPortal = () => {
     const { isOpen, content, options } = useContext(ModalStateContext);

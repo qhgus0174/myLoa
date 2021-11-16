@@ -31,12 +31,12 @@ const Label = styled.label<ICheckbox>`
     &:hover {
         span:nth-of-type(1) {
             &:before {
-                background: ${props => props.theme.check.mark};
+                background: ${props => props.theme.check.border};
                 width: 5px;
             }
 
             &:after {
-                background: ${props => props.theme.check.mark};
+                background: ${props => props.theme.check.border};
                 width: 10px;
             }
         }
@@ -46,31 +46,31 @@ const Label = styled.label<ICheckbox>`
         props.checked &&
         `
         span:nth-of-type(1) {
-                background-color: ${props.theme.colors.main};
+                background-color: ${props.theme.check.background};
 
                 &:after {
                     width: 10px;
-                    background: ${props.theme.check.mark};
+                    background: ${props.theme.check.basicMark};
                 }
 
                 &:before {
                     width: 5px;
-                    background:${props.theme.check.mark};
+                    background:${props.theme.check.basicMark};
                 }
             }
 
             &:hover {
                 span:nth-of-type(1) {
-                    background-color: ${props.theme.colors.main};
+                    background-color: ${props.theme.check.background};
 
                     &:after {
                         width: 10px;
-                        background: ${props.theme.check.mark};
+                        background: ${props.theme.check.basicMark};
                     }
 
                     &:before {
                         width: 5px;
-                        background: ${props.theme.check.mark};
+                        background: ${props.theme.check.basicMark};
                     }
                 }
             }

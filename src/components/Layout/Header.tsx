@@ -26,9 +26,9 @@ const HeaderDiv = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 3vh;
+    margin-top: 3.5vh;
     margin-bottom: 2.5vh;
-    padding-bottom: 4vh;
+    padding-bottom: 3.5vh;
     width: 100%;
 
     -webkit-box-shadow: 0 5px 6px -6px ${props => props.theme.colors.shadow};

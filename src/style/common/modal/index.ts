@@ -35,8 +35,8 @@ export const ContentsDivTitle = styled.div`
     align-items: center;
     box-sizing: border-box;
     margin-bottom: 0.5em;
-    font-weight: 600;
-    font-size: 1.01em;
+    font-weight: 700;
+    font-size: 1.02em;
 `;
 
 export const ContentsDiv = styled.div`
@@ -67,4 +67,10 @@ export const RightButtonDiv = styled.div`
     button:nth-of-type(2) {
         margin-left: 1em;
     }
+`;
+
+export const ContentsInnerDiv = styled.div`
+    background: ${props => props.theme.colors.mainInner};
+    padding: 0.5em;
+    border-radius: 1em;
 `;

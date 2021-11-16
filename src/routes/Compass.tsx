@@ -62,7 +62,7 @@ const CompassContainer = styled(FlexDiv)`
 const CompassDiv = styled.span<{ active: boolean }>`
     span {
         color: ${props => (props.active ? props.theme.colors.compassActive : props.theme.colors.gray)};
-        ${props => props.active && `font-weight:600;`}
+        font-weight: ${props => (props.active ? `600` : `400`)};
     }
 
     ${widthMedia.phone} {

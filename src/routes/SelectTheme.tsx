@@ -27,8 +27,8 @@ const SelectTheme = () => {
                         <div
                             key={index}
                             css={css`
-                                width: 25px;
-                                height: 25px;
+                                display: flex;
+                                flex-basis: 25%;
                                 background-color: ${color.mainColor};
                             `}
                             onClick={() => setTheme(color.name)}
@@ -44,7 +44,8 @@ const SelectThemeContainer = styled.div`
     position: relative;
 `;
 const PaletteDiv = styled(FlexDiv)<{ visible: boolean }>`
-    display: ${props => (props.visible ? 'block' : 'none')};
+    display: ${props => (props.visible ? 'flex' : 'none')};
+    flex-wrap: wrap;
     background: white;
     width: 10em;
     height: 10em;

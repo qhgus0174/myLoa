@@ -33,13 +33,13 @@ const Label = styled.label<ICheckbox>`
         span {
             &:before {
                 width: 5px;
-                background: ${props => props.theme.check.mark};
+                background: ${props => props.theme.check.border};
                 transition: width 100ms ease;
             }
 
             &:after {
                 width: 10px;
-                background: ${props => props.theme.check.mark};
+                background: ${props => props.theme.check.border};
                 $transition: width 150ms ease 100ms;
             }
         }
