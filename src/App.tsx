@@ -1,6 +1,8 @@
 import React, { useEffect } from 'react';
 import AppRouter from './Router';
 import schedule from 'node-schedule';
+import { CronJob } from 'cron';
+
 import GlobalThemeContext from '@context/GlobalThemeContext';
 import useTodo from '@hooks/storage/useTodo';
 import { getStorage } from '@storage/index';
@@ -83,15 +85,11 @@ const App = () => {
     };
 
     useEffect(() => {
-        // 일일 휴식 게이지, 체크 초기화 (매일 오전 6시)
-        schedule.scheduleJob('0 20 17 * * *', () => {
-            resetDailyTodoRelax();
-        });
+        const jobDaily = new CronJob('0 30 17 * * *', () => resetDailyTodoRelax(), null, true, 'Asia/Seoul');
+        jobDaily.start();
 
-        // 주간 초기화 (수요일 오전 6시)
-        schedule.scheduleJob('0 0 6 * * 3', () => {
-            resetWeeklyTodo();
-        });
+        const jobWeek = new CronJob('0 0 6 * * 3', () => resetWeeklyTodo(), null, true, 'Asia/Seoul');
+        jobWeek.start();
     }, []);
 
     return (
