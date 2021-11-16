@@ -292,6 +292,8 @@ const EponaTextDiv = styled.div`
     text-overflow: ellipsis;
     text-align: center;
     width: 46.75px;
+    margin-top: 0.1em;
+    box-sizing: border-box;
 `;
 
 const CheckContainer = styled(FlexDiv)`

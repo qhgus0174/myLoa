@@ -85,10 +85,10 @@ const App = () => {
     };
 
     useEffect(() => {
-        const jobDaily = new CronJob('0 30 17 * * *', () => resetDailyTodoRelax(), null, true, 'Asia/Seoul');
+        const jobDaily = new CronJob('0 35 17 * * *', () => resetDailyTodoRelax(), null, false, 'Asia/Seoul');
         jobDaily.start();
 
-        const jobWeek = new CronJob('0 0 6 * * 3', () => resetWeeklyTodo(), null, true, 'Asia/Seoul');
+        const jobWeek = new CronJob('0 0 6 * * 3', () => resetWeeklyTodo(), null, false, 'Asia/Seoul');
         jobWeek.start();
     }, []);
 
