@@ -42,28 +42,27 @@ const CheckboxText = ({ todo, onContextMenu }: ICheckbox) => {
     };
 
     return (
-        <TextContainer contents={todo.contents} color={todo.color} onContextMenu={e => openTodoEditModal(e, todo)}>
+        <TextContainer contents={todo.contents} onContextMenu={e => openTodoEditModal(e, todo)}>
             <TextDiv>
                 <FlexDiv basis="10"></FlexDiv>
                 <FlexDiv basis="10">
                     <PinCheckbox onClick={setFixed} isLine={false} checked={isFixed} />
                 </FlexDiv>
-                <FlexDiv
-                    css={css`
-                        justify-content: center;
-                    `}
-                    basis="70"
-                >
+                <RealTextDiv basis="70" color={todo.color}>
                     {todo.name}
-                </FlexDiv>
+                </RealTextDiv>
                 <FlexDiv basis="10"></FlexDiv>
             </TextDiv>
         </TextContainer>
     );
 };
 
-const TextContainer = styled(FlexLeftDiv)<{ contents: ScheduleContents }>`
+const RealTextDiv = styled(FlexDiv)`
     color: ${props => props.color};
+    justify-content: center;
+`;
+
+const TextContainer = styled(FlexLeftDiv)<{ contents: ScheduleContents }>`
     width: 100%;
     height: ${props => (props.contents === 'guardian' ? '7.75em' : '4.55em')};
     align-items: center;
