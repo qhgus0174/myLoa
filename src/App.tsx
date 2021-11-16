@@ -1,15 +1,12 @@
 import React, { useEffect } from 'react';
 import AppRouter from './Router';
-import schedule from 'node-schedule';
 import { CronJob } from 'cron';
-
 import GlobalThemeContext from '@context/GlobalThemeContext';
 import useTodo from '@hooks/storage/useTodo';
 import { getStorage } from '@storage/index';
 import { getResetCheckArr } from '@components/Todo/common/functions';
 import { ITodo, ICharacterTodo } from '@components/Todo/TodoType';
 import { ScheduleContents } from '@common/types';
-import { DateTime } from 'luxon';
 
 const App = () => {
     const [storageTodo, setStorageTodo] = useTodo();
@@ -40,9 +37,6 @@ const App = () => {
         });
 
         setStorageTodo(JSON.stringify(calcResult));
-
-        const dayOfWeek = DateTime.now().toFormat('c');
-        (dayOfWeek === '1' || dayOfWeek === '2' || dayOfWeek === '3' || dayOfWeek === '4') && resetWeeklyTodo();
     };
 
     const resetCheck = (contents: ScheduleContents, character: ICharacterTodo): ICharacterTodo => {
@@ -89,8 +83,11 @@ const App = () => {
     };
 
     useEffect(() => {
-        const jobDaily = new CronJob('0 25 19 * * *', () => resetDailyTodoRelax(), null, false, 'Asia/Seoul');
+        const jobDaily = new CronJob('0 30 19 * * *', () => resetDailyTodoRelax(), null, false, 'Asia/Seoul');
         jobDaily.start();
+
+        const jobWeek = new CronJob('0 0 6 * * 3', () => resetWeeklyTodo(), null, false, 'Asia/Seoul');
+        jobWeek.start();
     }, []);
 
     return (
