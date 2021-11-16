@@ -89,7 +89,7 @@ const App = () => {
     };
 
     useEffect(() => {
-        const jobDaily = new CronJob('0 45 18 * * *', () => resetDailyTodoRelax(), null, false, 'Asia/Seoul');
+        const jobDaily = new CronJob('0 47 18 * * *', () => resetDailyTodoRelax(), null, false, 'Asia/Seoul');
         jobDaily.start();
     }, []);
 
