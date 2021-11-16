@@ -1,1 +1,1 @@
-export type IStorage = 'character' | 'characterOrd' | 'todo' | 'todoOrd' | 'currentPage' | 'theme';
+export type IStorage = 'character' | 'characterOrd' | 'todo' | 'todoOrd' | 'currentPage' | 'theme' | 'datetime';

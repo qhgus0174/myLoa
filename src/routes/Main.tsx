@@ -1,11 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { DateTime, DurationObjectUnits } from 'luxon';
 import { ModalActionContext } from '@context/ModalContext';
+import useWindowDimensions from '@hooks/useWindowDimensions';
+import useReset from '@hooks/storage/useReset';
+import useTodo from '@hooks/storage/useTodo';
 import CharacterAdd from '@components/Character/modal/CharacterAdd';
-import Todo from '@components/Todo';
-import Button from '@components/Button/Button';
+import { getResetCheckArr } from '@components/Todo/common/functions';
+import { ITodo, ICharacterTodo } from '@components/Todo/TodoType';
+import Character from '@components/Character';
 import TodoAdd from '@components/Todo/modal/TodoAdd';
 import LineAdd from '@components/Line/LineAdd';
-import Character from '@components/Character';
+import Button from '@components/Button/Button';
+import Todo from '@components/Todo';
+import { ScheduleContents } from '@common/types';
+import { IContextModal } from '@common/types';
+import { getStorage } from '@storage/index';
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { FlexDiv } from '@style/common';
@@ -13,19 +22,118 @@ import { responsiveWidth, widthMedia } from '@style/device';
 import { ReactComponent as Plus } from '@assets/img/plus.svg';
 import { ReactComponent as ArrowDown } from '@assets/img/arrow-down.svg';
 import { ReactComponent as ArrowUp } from '@assets/img/arrow-up.svg';
-import { IContextModal } from '@common/types';
-import useWindowDimensions from '@hooks/useWindowDimensions';
 
 const Main = () => {
     const { setModalProps } = useContext(ModalActionContext);
     const [isFold, setIsFold] = useState<boolean>(false);
     const { width: windowWidth } = useWindowDimensions();
 
+    const [storageLastVisit, setStorageLastVisit] = useReset();
+    const [storageTodo, setStorageTodo] = useTodo();
+
     const theme = useTheme();
 
     useEffect(() => {
         resetFold();
     }, [windowWidth]);
+
+    useEffect(() => {
+        calcReset();
+    }, []);
+
+    const resetDailyTodoRelax = (diffDays: number) => {
+        const todoArr: ITodo[] = getStorage('todo');
+        const calcResult: ITodo[] = todoArr.map((todo: ITodo) => {
+            todo.character = todo.character.map((character: ICharacterTodo) => {
+                if (todo.type !== 'daily') return character;
+
+                const resets = {
+                    chaos: () => calcRelaxGauge(todo, character, diffDays),
+                    guardian: () => calcRelaxGauge(todo, character, diffDays),
+                    basicReset: () => resetCheck(todo.contents, character),
+                    epona: () => resetCheck(todo.contents, character),
+                    basic: () => character,
+                    none: () => character,
+                };
+
+                return resets[todo.contents] && resets[todo.contents]();
+            });
+
+            return todo;
+        });
+
+        setStorageTodo(JSON.stringify(calcResult));
+    };
+
+    const resetWeeklyTodo = () => {
+        const todoArr: ITodo[] = getStorage('todo');
+
+        const calcResult: ITodo[] = todoArr.map((todo: ITodo) => {
+            todo.character = todo.character.map((character: ICharacterTodo) => {
+                return todo.type === 'weekly' ? resetCheck(todo.contents, character) : character;
+            });
+
+            return todo;
+        });
+
+        setStorageTodo(JSON.stringify(calcResult));
+    };
+
+    const resetCheck = (contents: ScheduleContents, character: ICharacterTodo): ICharacterTodo => {
+        const resetTodoData: ICharacterTodo = {
+            ...character,
+            check: getResetCheckArr(contents),
+        };
+
+        return resetTodoData;
+    };
+
+    const calcRelaxGauge = (todo: ITodo, character: ICharacterTodo, diffDays: number): ICharacterTodo => {
+        const maxCheckCount = ['chaos', 'guardian'].includes(todo.contents) ? 2 : 1;
+        const addGauge = (maxCheckCount - getCheckCounts(character.check)) * 10 * diffDays;
+
+        const relaxGauge = Number(character.relaxGauge) + addGauge;
+
+        const resetTodoData: ICharacterTodo = {
+            ...character,
+            relaxGauge: relaxGauge >= 100 ? 100 : relaxGauge,
+            oriRelaxGauge: relaxGauge >= 100 ? 100 : relaxGauge,
+            check: getResetCheckArr(todo.contents),
+        };
+
+        return resetTodoData;
+    };
+
+    const getCheckCounts = (checkArr: number[]): number => {
+        return checkArr.reduce((count, num) => (num === 1 ? count + 1 : count), 0);
+    };
+
+    const calcReset = () => {
+        const now = DateTime.now();
+        const lastVisitTimeStamp = getStorage('datetime');
+        const lastVisitDate = DateTime.fromISO(DateTime.fromSeconds(lastVisitTimeStamp).toISO());
+        const todayResetDateTime = DateTime.fromISO(now.toFormat('yyyy-LL-dd')).plus({
+            hours: 6,
+        });
+        const { days }: DurationObjectUnits = todayResetDateTime.diff(lastVisitDate, 'days').toObject();
+        const dayOfWeek = now.toFormat('c');
+
+        days && days > 0 && resetTodo({ days: days, dayOfWeek: dayOfWeek, todayResetDateTime: todayResetDateTime });
+    };
+
+    const resetTodo = ({
+        days,
+        dayOfWeek,
+        todayResetDateTime,
+    }: {
+        days: number;
+        dayOfWeek: string;
+        todayResetDateTime: DateTime;
+    }) => {
+        resetDailyTodoRelax(Math.ceil(days));
+        dayOfWeek === '3' && resetWeeklyTodo();
+        setStorageLastVisit(todayResetDateTime.toFormat('X'));
+    };
 
     const resetFold = () => {
         responsiveWidth.smallPhone < windowWidth && setIsFold(false);
