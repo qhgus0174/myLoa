@@ -5,12 +5,10 @@ import CheckboxText from '@components/Todo/view/CheckboxText';
 import { ITodo } from '@components/Todo/TodoType';
 import Checkbox from '@components/Todo/view/Checkbox';
 import Line from '@components/Todo/view/Line';
-import { getStorage } from '@storage/index';
 import { IContextModalParam, ScheduleContents } from '@common/types';
+import { getStorage } from '@storage/index';
 import styled from '@emotion/styled';
-import { FlexDiv, FlexLeftDiv } from '@style/common';
-import { css } from '@emotion/react';
-import PinCheckbox from '@components/Input/PinCheckBox';
+import { FlexDiv } from '@style/common';
 
 const Todo = ({ onContextMenuBasicModal }: IContextModalParam) => {
     const [storageTodoOrd, setStorageTodoOrd] = useTodoOrd();

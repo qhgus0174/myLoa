@@ -3,17 +3,17 @@ import { ModalActionContext } from '@context/ModalContext';
 import { useInput } from '@hooks/useInput';
 import useTodo from '@hooks/storage/useTodo';
 import { ITodo, ITodoCheck } from '@components/Todo/TodoType';
+import { getShowCheckTodo } from '@components/Todo/common/functions';
 import EditButtonContainer from '@components/Container/Button/Edit';
+import { ICharacter } from '@components/Character/CharacterType';
+import BasicCheckbox from '@components/Input/BasicCheckbox';
 import TextBox from '@components/Input/TextBox';
 import { ScheduleType } from '@common/types';
+import { getStorage } from '@storage/index';
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { ContentsDiv, ContentsDivTitle, ContentsInnerDiv, FormContainer, FormDivContainer } from '@style/common/modal';
 import { FlexDiv } from '@style/common';
-import BasicCheckbox from '@components/Input/BasicCheckbox';
-import { getShowCheckTodo } from '../common/functions';
-import { getStorage } from '@storage/index';
-import { ICharacter } from '@components/Character/CharacterType';
 import { toast } from 'react-toastify';
 
 const TodoCheck = ({

@@ -3,13 +3,13 @@ import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
 import { Flip, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Main from '@routes/Main';
+import { GlobalThemeContext } from '@context/GlobalThemeContext';
 import SpinnerContext from '@context/SpinnerContext';
 import PagingContext from '@context/PagingContext';
 import ModalContext from '@context/ModalContext';
 import Header from '@components/Layout/Header';
 import styled from '@emotion/styled';
 import { ThemeProvider } from '@emotion/react';
-import { GlobalThemeContext } from '@context/GlobalThemeContext';
 import { GlobalStyle } from '@style/global-styles';
 
 const AppRouter = () => {

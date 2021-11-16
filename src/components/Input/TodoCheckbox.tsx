@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { Theme } from '@emotion/react';
 
 export interface ICheckbox extends React.InputHTMLAttributes<HTMLInputElement> {
     checked: boolean;

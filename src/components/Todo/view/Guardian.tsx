@@ -1,11 +1,10 @@
 import React from 'react';
 import useTodo from '@hooks/storage/useTodo';
 import { IGurdianInfo, ITodo } from '@components/Todo/TodoType';
-import { GuardianInfo, IGurdian } from '@common/guardian';
-import { FlexDiv } from '@style/common';
-import { css } from '@emotion/react';
+import { GuardianInfo, IGurdian } from '@common/data/guardian';
 import { getStorage } from '@storage/index';
 import styled from '@emotion/styled';
+import { FlexDiv } from '@style/common';
 
 interface IGuardianParam {
     todo: ITodo;

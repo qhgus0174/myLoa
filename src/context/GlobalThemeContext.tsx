@@ -1,6 +1,6 @@
+import React, { createContext } from 'react';
 import useTheme from '@hooks/storage/useTheme';
 import { IThemeStyle } from '@style/theme';
-import React, { createContext, useEffect } from 'react';
 
 interface ITheme {
     theme: IThemeStyle;

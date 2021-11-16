@@ -1,19 +1,16 @@
 import React from 'react';
+import _ from 'lodash';
 import { ColorResult, CompactPicker } from 'react-color';
-import TextBox from '@components/Input/TextBox';
+import { getShowCheckTodo } from '@components/Todo/common/functions';
+import { ICharacter } from '@components/Character/CharacterType';
+import BasicCheckbox from '@components/Input/BasicCheckbox';
 import RadioButton from '@components/Input/Radio';
+import TextBox from '@components/Input/TextBox';
 import { ScheduleCheckType, ScheduleContents, ScheduleType } from '@common/types';
+import { getStorage } from '@storage/index';
 import styled from '@emotion/styled';
 import { ContentsDiv, ContentsDivTitle, ContentsInnerDiv, FormDivContainer } from '@style/common/modal';
 import { FlexDiv } from '@style/common';
-import useCharacter from '@hooks/storage/useCharacter';
-import { ICharacter } from '@components/Character/CharacterType';
-import Checkbox from '@components/Input/TodoCheckbox';
-import { css } from '@emotion/react';
-import _ from 'lodash';
-import BasicCheckbox from '@components/Input/BasicCheckbox';
-import { getShowCheckTodo } from './functions';
-import { getStorage } from '@storage/index';
 
 interface ITodo {
     type: ScheduleType;

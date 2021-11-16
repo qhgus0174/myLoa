@@ -1,16 +1,16 @@
 import React, { useContext, useState } from 'react';
+import { LongPressEvent, useLongPress } from 'use-long-press';
 import { getStorage } from '@storage/index';
+import useTodo from '@hooks/storage/useTodo';
+import { PagingStateContext } from '@context/PagingContext';
 import { default as CheckboxInput } from '@components/Input/TodoCheckbox';
 import { ICharacterTodo, ITodo } from '@components/Todo/TodoType';
 import TodoCheck from '@components/Todo/modal/TodoCheck';
 import TextBox from '@components/Input/TextBox';
+import Guardian from '@components/Todo/view/Guardian';
 import { IContextModal, ScheduleContents, ScheduleType } from '@common/types';
 import { CharactersDiv, FlexDiv, FlexHoverDiv } from '@style/common';
 import styled from '@emotion/styled';
-import { PagingStateContext } from '@context/PagingContext';
-import useTodo from '@hooks/storage/useTodo';
-import Guardian from '@components/Todo/view/Guardian';
-import { LongPressEvent, useLongPress } from 'use-long-press';
 
 interface ICheckbox {
     todo: ITodo;

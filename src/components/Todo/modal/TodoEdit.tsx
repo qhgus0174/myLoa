@@ -4,13 +4,12 @@ import { ModalActionContext } from '@context/ModalContext';
 import useTodoOrd from '@hooks/storage/useTodoOrd';
 import { useInput } from '@hooks/useInput';
 import useTodo from '@hooks/storage/useTodo';
-import EditButtonContainer from '@components/Container/Button/DelEdit';
 import TodoForm from '@components/Todo/common/Form';
+import EditButtonContainer from '@components/Container/Button/DelEdit';
+import { getResetCheckArr } from '@components/Todo/common/functions';
 import { ICharacterTodo, ITodo } from '@components/Todo/TodoType';
 import { ScheduleCheckType, ScheduleContents, ScheduleType } from '@common/types';
 import { FormContainer } from '@style/common/modal';
-import { ICharacter } from '@components/Character/CharacterType';
-import { getResetCheckArr } from '../common/functions';
 import { getStorage } from '@storage/index';
 import { toast } from 'react-toastify';
 

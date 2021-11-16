@@ -1,10 +1,10 @@
 import React from 'react';
-import Compass from '@routes/Compass';
+import SelectTheme from '@components/Palette/SelectTheme';
+import Compass from '@components/Layout/Compass';
 import Logo from '@assets/img/logo/logo.png';
 import styled from '@emotion/styled';
 import { widthMedia } from '@style/device';
 import { FlexDiv } from '@style/common';
-import SelectTheme from '@routes/SelectTheme';
 
 const Header = () => {
     return (

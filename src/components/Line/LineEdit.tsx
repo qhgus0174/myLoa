@@ -6,8 +6,8 @@ import useTodoOrd from '@hooks/storage/useTodoOrd';
 import EditButtonContainer from '@components/Container/Button/DelEdit';
 import { ITodo } from '@components/Todo/TodoType';
 import LineForm from '@components/Line/common/Form';
-import { FormContainer } from '@style/common/modal';
 import { getStorage } from '@storage/index';
+import { FormContainer } from '@style/common/modal';
 
 const LineEdit = ({ id: oriId, color: newColor }: Pick<ITodo, 'id' | 'color'>) => {
     const [storageTodo, setStorageTodo] = useTodo();

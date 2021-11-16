@@ -1,9 +1,9 @@
 import React from 'react';
+import { LongPressEvent, useLongPress } from 'use-long-press';
 import { ITodo } from '@components/Todo/TodoType';
 import LineEdit from '@components/Line/LineEdit';
-import styled from '@emotion/styled';
 import { IContextModal } from '@common/types';
-import { LongPressEvent, useLongPress } from 'use-long-press';
+import styled from '@emotion/styled';
 
 const Line = ({
     todo,

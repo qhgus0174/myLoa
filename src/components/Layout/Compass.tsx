@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { DateTime } from 'luxon';
+import { CompassInfo } from '@common/data/compass';
 import styled from '@emotion/styled';
 import { FlexDiv } from '@style/common';
-import { DateTime } from 'luxon';
-import { CompassInfo } from '@common/compass';
 import { widthMedia } from '@style/device';
 
 const Compass = () => {

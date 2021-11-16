@@ -5,9 +5,9 @@ import useTodoOrd from '@hooks/storage/useTodoOrd';
 import AddButtonContainer from '@components/Container/Button/Add';
 import LineForm from '@components/Line/common/Form';
 import { ITodo } from '@components/Todo/TodoType';
+import { getStorage } from '@storage/index';
 import { useTheme } from '@emotion/react';
 import { FormContainer } from '@style/common/modal';
-import { getStorage } from '@storage/index';
 
 const LineAdd = () => {
     const [storageTodo, setStorageTodo] = useTodo();

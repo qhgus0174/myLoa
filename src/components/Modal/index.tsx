@@ -2,7 +2,6 @@ import React from 'react';
 import { IPortalOption, IPortalProperty } from '@common/types';
 import styled from '@emotion/styled';
 import { widthMedia } from '@style/device';
-import { css } from '@emotion/react';
 import { FlexDiv } from '@style/common';
 
 const BasicModal = ({ children, options }: IPortalProperty) => {

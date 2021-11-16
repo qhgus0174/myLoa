@@ -1,6 +1,5 @@
+import React, { createContext } from 'react';
 import useReset from '@hooks/storage/useReset';
-import { IThemeStyle } from '@style/theme';
-import React, { createContext, useEffect } from 'react';
 
 interface ITheme {
     dateTime: string;
