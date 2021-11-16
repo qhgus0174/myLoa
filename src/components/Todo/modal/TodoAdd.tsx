@@ -13,6 +13,7 @@ import { FormContainer } from '@style/common/modal';
 import { getResetCheckArr } from '../common/functions';
 import { getStorage } from '@storage/index';
 import { useTheme } from '@emotion/react';
+import { toast } from 'react-toastify';
 
 const Todo = () => {
     const [type, setType] = useState<ScheduleType>('daily');
@@ -43,6 +44,8 @@ const Todo = () => {
 
         addTodo(todoId);
         addTodoOrd(todoId);
+
+        toast.success(`[${name}] 숙제가 추가되었습니다.`);
 
         closeModal();
     };

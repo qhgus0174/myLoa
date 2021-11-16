@@ -15,6 +15,8 @@ import { ICharacter } from '@components/Character/CharacterType';
 import CharacterForm from '@components/Character/common/Form';
 import { FormContainer } from '@style/common/modal';
 import { getStorage } from '@storage/index';
+import Button from '@components/Button/Button';
+import styled from '@emotion/styled';
 
 interface ICharacterEdit {
     id: number;
@@ -42,24 +44,24 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
 
         try {
             setSpinnerVisible(true);
-            await crollCharacterInfo();
+            name === newName ? editCharacterColor() : await crollCharacterInfo('edit');
         } finally {
             setSpinnerVisible(false);
         }
     };
 
-    const crollCharacterInfo = async () => {
+    const crollCharacterInfo = async (type: 'edit' | 'refresh') => {
         const { status, validMsg, crollJob, crollLevel } = await getCrollCharacterInfo(name);
 
         const setCharacterInfo = {
-            success: () => editCharacter(crollJob || '', crollLevel || ''),
+            success: () => editCharacter(crollJob || '', crollLevel || '', type),
             error: () => toast.error(validMsg || ''),
         };
 
         setCharacterInfo[status] && setCharacterInfo[status]();
     };
 
-    const editCharacter = (crollJob: string, crollLevel: string) => {
+    const editCharacter = (crollJob: string, crollLevel: string, type: 'edit' | 'refresh') => {
         const characterArr: ICharacter[] = getStorage('character');
 
         const index = characterArr.findIndex((char: ICharacter) => char.id === oriId);
@@ -75,6 +77,27 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
         };
 
         setCharacter(JSON.stringify(newCharacterArr));
+
+        toast.success(type === 'edit' ? `[${name}] 캐릭터가 수정되었습니다.` : `${name} 캐릭터가 갱신되었습니다.`);
+
+        closeModal();
+    };
+
+    const editCharacterColor = () => {
+        const characterArr: ICharacter[] = getStorage('character');
+
+        const index = characterArr.findIndex((char: ICharacter) => char.id === oriId);
+
+        let newCharacterArr = [...characterArr];
+
+        newCharacterArr[index] = {
+            ...newCharacterArr[index],
+            color: color,
+        };
+
+        setCharacter(JSON.stringify(newCharacterArr));
+
+        toast.success(`[${name}] 캐릭터가 수정되었습니다.`);
 
         closeModal();
     };
@@ -147,12 +170,31 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
         setTodo(JSON.stringify(deleteResult));
     };
 
+    const reCrollCharacterInfo = async () => {
+        try {
+            setSpinnerVisible(true);
+            await crollCharacterInfo('refresh');
+        } finally {
+            setSpinnerVisible(false);
+        }
+    };
+
     return (
         <FormContainer>
+            <RefreshButtonDiv>
+                <Button onClick={async () => await reCrollCharacterInfo()}>갱신</Button>
+            </RefreshButtonDiv>
             <CharacterForm color={color} setColor={setColor} name={name} setName={setName} />
             <EditButtonContainer onClickDelete={onClickDelete} onClickEdit={onClickEdit} />
         </FormContainer>
     );
 };
+
+const RefreshButtonDiv = styled.div`
+    position: absolute;
+    top: 2.5rem;
+    right: 3rem;
+    width: 60px;
+`;
 
 export default CharacterEdit;

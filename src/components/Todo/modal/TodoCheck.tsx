@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ModalActionContext } from '@context/ModalContext';
 import { useInput } from '@hooks/useInput';
 import useTodo from '@hooks/storage/useTodo';
@@ -8,11 +8,13 @@ import TextBox from '@components/Input/TextBox';
 import { ScheduleType } from '@common/types';
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { ContentsDiv, ContentsDivTitle, FormContainer, FormDivContainer } from '@style/common/modal';
+import { ContentsDiv, ContentsDivTitle, ContentsInnerDiv, FormContainer, FormDivContainer } from '@style/common/modal';
 import { FlexDiv } from '@style/common';
 import BasicCheckbox from '@components/Input/BasicCheckbox';
 import { getShowCheckTodo } from '../common/functions';
 import { getStorage } from '@storage/index';
+import { ICharacter } from '@components/Character/CharacterType';
+import { toast } from 'react-toastify';
 
 const TodoCheck = ({
     id: characterId,
@@ -21,6 +23,7 @@ const TodoCheck = ({
     text: oriText,
     checkType,
     todoId,
+    todoName,
     todoType: oriTodoType,
     todoContents,
     showCharacter: oriShowCharacter,
@@ -40,16 +43,30 @@ const TodoCheck = ({
     const [showCharacter, setShowCharacter] = useState<number[]>(oriShowCharacter);
     const [eponaName, setEponaName] = useState<string[]>(oriEponaName);
 
+    const [characterName, setCharacterName] = useState<string>('');
+
+    useEffect(() => {
+        setCharacterNameState();
+    });
+
+    const setCharacterNameState = () => {
+        const characterArr: ICharacter[] = getStorage('character');
+        const characterIndex = characterArr.findIndex(char => char.id === characterId);
+        setCharacterName(characterArr[characterIndex].name);
+    };
+
     const onClickEdit = () => {
         editTodoCheck();
+        toast.success(`[${characterName} -${todoName}] 개별 수정되었습니다.`);
         closeModal();
     };
 
     const editTodoCheck = () => {
         const todoArr: ITodo[] = getStorage('todo');
+        const characterArr: ICharacter[] = getStorage('character');
 
         const todoIndex = todoArr.findIndex(todo => todo.id === todoId);
-        const characterIndex = todoArr.findIndex(todo => todo.id === characterId);
+        const characterIndex = characterArr.findIndex(char => char.id === characterId);
 
         todoArr[todoIndex] = {
             ...todoArr[todoIndex],
@@ -83,6 +100,14 @@ const TodoCheck = ({
 
     return (
         <FormContainer>
+            <ContentsInnerFlexDiv>
+                <div>
+                    숙제 :<SmallTitleSpan>{todoName}</SmallTitleSpan>
+                </div>
+                <div>
+                    캐릭터명 :<SmallTitleSpan>{characterName}</SmallTitleSpan>
+                </div>
+            </ContentsInnerFlexDiv>
             {todoType === 'daily' && ['chaos', 'guardian'].includes(todoContents) && (
                 <RemarkDiv>* 휴식게이지 수동 입력 시 수행횟수는 초기화 됩니다.</RemarkDiv>
             )}
@@ -152,6 +177,12 @@ const TodoCheck = ({
     );
 };
 
+const ContentsInnerFlexDiv = styled(ContentsInnerDiv)`
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 1em;
+`;
+
 const RemarkDiv = styled(FlexDiv)`
     justify-content: flex-end;
     color: ${props => props.theme.colors.gray};
@@ -164,6 +195,12 @@ const HideDivTitle = styled(ContentsDivTitle)`
 
 const HideDivContents = styled(ContentsDivTitle)`
     flex-basis: 90%;
+`;
+
+const SmallTitleSpan = styled.span`
+    font-weight: 500;
+    margin-left: 0.7em;
+    margin-right: 0.5em;
 `;
 
 export default TodoCheck;

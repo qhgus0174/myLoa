@@ -64,6 +64,9 @@ const CharacterAdd = () => {
         addCharacterOrd(characterId);
         addTodoCharacterInfo(characterId);
         setCurrentCharacterPage(resultArr);
+
+        toast.success(`[${name}] 캐릭터가 추가되었습니다.`);
+
         closeModal();
     };
 

@@ -12,6 +12,7 @@ import { FormContainer } from '@style/common/modal';
 import { ICharacter } from '@components/Character/CharacterType';
 import { getResetCheckArr } from '../common/functions';
 import { getStorage } from '@storage/index';
+import { toast } from 'react-toastify';
 
 const TodoEdit = ({
     id: oriId,
@@ -38,12 +39,14 @@ const TodoEdit = ({
 
     const onClickEdit = () => {
         editTodo();
+        toast.success(`[${name}] 숙제가 수정되었습니다.`);
         closeModal();
     };
 
     const onClickDelete = () => {
         deleteTodo();
         deleteTodoOrd();
+        toast.success(`[${name}] 숙제가 삭제되었습니다.`);
         closeModal();
     };
 

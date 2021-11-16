@@ -31,6 +31,7 @@ export interface ICharacterTodo {
 export interface ITodoCheck extends ICharacterTodo {
     todoType: ScheduleType;
     todoId: number;
+    todoName: string;
     todoContents: ScheduleContents;
     showCharacter: number[];
     checkType: ScheduleCheckType;
