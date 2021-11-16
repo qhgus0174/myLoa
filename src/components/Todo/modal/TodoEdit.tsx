@@ -60,7 +60,7 @@ const TodoEdit = ({
         const resetTodoCharacterArr: ICharacterTodo[] = newTodoArr[index].character.map((character: ICharacterTodo) => {
             return {
                 ...character,
-                check: getResetCheckArr(contents),
+                check: contents === newContents ? character.check : getResetCheckArr(contents),
                 eponaName: contents === 'epona' ? new Array(3).fill('') : [],
             };
         });
