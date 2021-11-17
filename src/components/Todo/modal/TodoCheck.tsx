@@ -113,16 +113,16 @@ const TodoCheck = ({
             )}
             <FormDivContainer>
                 {checkType === 'text' ? (
-                    <FlexDiv direction="column">
+                    <TodoCheckDiv direction="column">
                         <ContentsDivTitle>텍스트</ContentsDivTitle>
                         <ContentsDiv>
                             <TextBox {...bindText} />
                         </ContentsDiv>
-                    </FlexDiv>
+                    </TodoCheckDiv>
                 ) : (
                     todoType === 'daily' &&
                     ['chaos', 'guardian'].includes(todoContents) && (
-                        <FlexDiv direction="column">
+                        <TodoCheckDiv direction="column">
                             <ContentsDivTitle
                                 css={css`
                                     color: ${theme.colors.relax};
@@ -133,12 +133,12 @@ const TodoCheck = ({
                             <ContentsDiv>
                                 <TextBox {...bindRelaxGauge} />
                             </ContentsDiv>
-                        </FlexDiv>
+                        </TodoCheckDiv>
                     )
                 )}
 
                 {todoContents === 'epona' && (
-                    <FlexDiv direction="column">
+                    <TodoCheckDiv direction="column">
                         <ContentsDivTitle>에포나 명</ContentsDivTitle>
                         <ContentsDiv>
                             {eponaName.map((eName: string, eNameIdx: number, oriArr: string[]) => {
@@ -153,15 +153,15 @@ const TodoCheck = ({
                                 );
                             })}
                         </ContentsDiv>
-                    </FlexDiv>
+                    </TodoCheckDiv>
                 )}
-                <FlexDiv direction="column">
+                <TodoCheckDiv direction="column">
                     <ContentsDivTitle>메모</ContentsDivTitle>
                     <ContentsDiv>
                         <TextBox {...bindMemo} />
                     </ContentsDiv>
-                </FlexDiv>
-                <FlexDiv>
+                </TodoCheckDiv>
+                <TodoCheckDiv>
                     <HideDivTitle>숨김</HideDivTitle>
                     <HideDivContents>
                         <BasicCheckbox
@@ -170,12 +170,16 @@ const TodoCheck = ({
                             onChange={e => setShowCharacter(getShowCheckTodo(e, showCharacter, characterId))}
                         />
                     </HideDivContents>
-                </FlexDiv>
+                </TodoCheckDiv>
             </FormDivContainer>
             <EditButtonContainer onClickEdit={onClickEdit} />
         </FormContainer>
     );
 };
+
+const TodoCheckDiv = styled(FlexDiv)`
+    margin-bottom: 2em;
+`;
 
 const ContentsInnerFlexDiv = styled(ContentsInnerDiv)`
     display: flex;
