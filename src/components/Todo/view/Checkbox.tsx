@@ -146,7 +146,8 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
         const todoArr: ITodo[] = getStorage('todo');
 
         const todoIndex = todoArr.findIndex(td => td.id === pTodo.id);
-        const characterIndex = getCharacterIndex(characterId);
+
+        const characterIndex = todoArr[todoIndex].character.findIndex(character => character.id === characterId);
 
         todoArr[todoIndex].character[characterIndex] = {
             ...todoArr[todoIndex].character[characterIndex],
