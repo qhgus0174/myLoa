@@ -11,6 +11,7 @@ import Header from '@components/Layout/Header';
 import styled from '@emotion/styled';
 import { ThemeProvider } from '@emotion/react';
 import { GlobalStyle } from '@style/global-styles';
+import Manage from '@routes/Manage';
 
 const AppRouter = () => {
     const { theme } = useContext(GlobalThemeContext);
@@ -40,6 +41,7 @@ const AppRouter = () => {
                                 <Header />
                                 <Switch>
                                     <Route exact path="/" component={Main} />
+                                    <Route exact path="/mng" component={Manage} />
                                     <Route component={() => <Redirect to="/" />} />
                                 </Switch>
                             </ModalContext>

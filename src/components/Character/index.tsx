@@ -14,9 +14,11 @@ import { FlexDiv, FlexLeftDiv, FlexHoverDiv, CharactersDiv } from '@style/common
 import { ReactComponent as LeftArrow } from '@assets/img/left-arrow.svg';
 import { ReactComponent as RightArrow } from '@assets/img/right-arrow.svg';
 import { LongPressEvent, useLongPress } from 'use-long-press';
+import useTodo from '@hooks/storage/useTodo';
 
 const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
     const [storageCharacterOrd, setStorageCharacterOrd] = useCharacterOrd();
+    const [storageTodo, setStorageTodo] = useTodo();
     const { perPage, currentPage } = useContext(PagingStateContext);
     const { onClickNext, onClickPrev } = useContext(PagingActionContext);
     const theme = useTheme();

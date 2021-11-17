@@ -12,6 +12,8 @@ import { IContextModal, ScheduleContents, ScheduleType } from '@common/types';
 import { CharactersDiv, FlexDiv, FlexHoverDiv } from '@style/common';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
+import useCharacterOrd from '@hooks/storage/useCharacterOrd';
+import useCharacter from '@hooks/storage/useCharacter';
 
 interface ICheckbox {
     todo: ITodo;
@@ -23,6 +25,8 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
     const { perPage, currentPage } = useContext(PagingStateContext);
 
     const [storageTodo, setStorageTodo] = useTodo();
+    const [storageCharacter, setStorageCharacter] = useCharacter();
+    const [storageCharacterOrd, setStorageCharacterOrd] = useCharacterOrd();
     const [guardianStep, setGuardianStep] = useState<string>('1');
 
     const onLongPress = (charTodo: ICharacterTodo, characterIndex: number) =>

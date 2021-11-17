@@ -9,9 +9,11 @@ import { IContextModalParam, ScheduleContents } from '@common/types';
 import { getStorage } from '@storage/index';
 import styled from '@emotion/styled';
 import { FlexDiv } from '@style/common';
+import useTodo from '@hooks/storage/useTodo';
 
 const Todo = ({ onContextMenuBasicModal }: IContextModalParam) => {
     const [storageTodoOrd, setStorageTodoOrd] = useTodoOrd();
+    const [storageTodo, setStorageTodo] = useTodo();
 
     const onDragEndCharacter = (result: DropResult) => {
         const { destination, source } = result;

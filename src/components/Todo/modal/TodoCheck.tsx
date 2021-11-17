@@ -15,6 +15,7 @@ import styled from '@emotion/styled';
 import { ContentsDiv, ContentsDivTitle, ContentsInnerDiv, FormContainer, FormDivContainer } from '@style/common/modal';
 import { FlexDiv } from '@style/common';
 import { toast } from 'react-toastify';
+import useCharacter from '@hooks/storage/useCharacter';
 
 const TodoCheck = ({
     id: characterId,
@@ -32,6 +33,7 @@ const TodoCheck = ({
     const theme = useTheme();
 
     const [storageTodo, setStorageTodo] = useTodo();
+    const [storageCharacter, setStorageCharacter] = useCharacter();
 
     const { closeModal } = useContext(ModalActionContext);
 

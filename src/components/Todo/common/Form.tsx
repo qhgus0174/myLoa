@@ -157,8 +157,14 @@ const TodoForm = ({
                     <ContentsDivTitle>숙제 표시 할 캐릭터</ContentsDivTitle>
                     <ContentsInnerDiv>
                         <ContentsCharacterDiv>
-                            {(getStorage('character') as ICharacter[]).map(
-                                (character: ICharacter, characterIndex: number) => {
+                            {(getStorage('character') as ICharacter[])
+                                ?.sort((a: ICharacter, b: ICharacter) => {
+                                    return (
+                                        getStorage('characterOrd').indexOf(a.id) -
+                                        getStorage('characterOrd').indexOf(b.id)
+                                    );
+                                })
+                                .map((character: ICharacter, characterIndex: number) => {
                                     return (
                                         <ShowCharacterDiv key={`todo_show_${characterIndex}`}>
                                             <BasicCheckbox
@@ -173,8 +179,7 @@ const TodoForm = ({
                                             />
                                         </ShowCharacterDiv>
                                     );
-                                },
-                            )}
+                                })}
                         </ContentsCharacterDiv>
                     </ContentsInnerDiv>
                 </FormFlexDiv>
