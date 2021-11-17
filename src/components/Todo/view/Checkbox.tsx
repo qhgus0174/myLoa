@@ -11,6 +11,7 @@ import Guardian from '@components/Todo/view/Guardian';
 import { IContextModal, ScheduleContents, ScheduleType } from '@common/types';
 import { CharactersDiv, FlexDiv, FlexHoverDiv } from '@style/common';
 import styled from '@emotion/styled';
+import { css } from '@emotion/react';
 
 interface ICheckbox {
     todo: ITodo;

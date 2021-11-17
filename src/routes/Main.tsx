@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState } from 'react';
 import { DateTime, DurationObjectUnits } from 'luxon';
 import { ModalActionContext } from '@context/ModalContext';
 import useWindowDimensions from '@hooks/useWindowDimensions';
-import useReset from '@hooks/storage/useReset';
 import useTodo from '@hooks/storage/useTodo';
 import CharacterAdd from '@components/Character/modal/CharacterAdd';
 import { getResetCheckArr } from '@components/Todo/common/functions';
@@ -15,7 +14,7 @@ import Todo from '@components/Todo';
 import { ScheduleContents } from '@common/types';
 import { IContextModal } from '@common/types';
 import { getStorage } from '@storage/index';
-import { css, useTheme } from '@emotion/react';
+import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { FlexDiv } from '@style/common';
 import { responsiveWidth, widthMedia } from '@style/device';
@@ -28,7 +27,6 @@ const Main = () => {
     const [isFold, setIsFold] = useState<boolean>(false);
     const { width: windowWidth } = useWindowDimensions();
 
-    const [storageLastVisit, setStorageLastVisit] = useReset();
     const [storageTodo, setStorageTodo] = useTodo();
 
     const theme = useTheme();
@@ -110,15 +108,20 @@ const Main = () => {
 
     const calcReset = () => {
         const now = DateTime.now();
-        const lastVisitTimeStamp = getStorage('datetime');
-        const lastVisitDate = DateTime.fromISO(DateTime.fromSeconds(lastVisitTimeStamp).toISO());
+        const lastVisitTimeStamp = localStorage.getItem('datetime')
+            ? localStorage.getItem('datetime')
+            : now.toFormat('X');
+        const lastVisitDate = DateTime.fromISO(DateTime.fromSeconds(Number(lastVisitTimeStamp)).toISO());
         const todayResetDateTime = DateTime.fromISO(now.toFormat('yyyy-LL-dd')).plus({
             hours: 6,
         });
         const { days }: DurationObjectUnits = todayResetDateTime.diff(lastVisitDate, 'days').toObject();
         const dayOfWeek = now.toFormat('c');
 
-        days && days > 0 && resetTodo({ days: days, dayOfWeek: dayOfWeek, todayResetDateTime: todayResetDateTime });
+        !localStorage.getItem('datetime') && localStorage.setItem('datetime', todayResetDateTime.toFormat('X'));
+        days &&
+            days > 0 &&
+            resetTodo({ days: days, dayOfWeek: dayOfWeek, todayResetDateTime: todayResetDateTime.toFormat('X') });
     };
 
     const resetTodo = ({
@@ -128,11 +131,11 @@ const Main = () => {
     }: {
         days: number;
         dayOfWeek: string;
-        todayResetDateTime: DateTime;
+        todayResetDateTime: string;
     }) => {
+        localStorage.setItem('datetime', todayResetDateTime);
         resetDailyTodoRelax(Math.ceil(days));
         dayOfWeek === '3' && resetWeeklyTodo();
-        setStorageLastVisit(todayResetDateTime.toFormat('X'));
     };
 
     const resetFold = () => {
