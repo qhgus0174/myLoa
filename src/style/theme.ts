@@ -9,7 +9,7 @@ export type IThemeStyle =
     | 'autumn'
     | 'violetBrown'
     | 'flower'
-    | 'yellow'
+    | 'pinkBeige'
     | 'darkBrown'
     | 'darkYellow'
     | 'darkPink'
@@ -25,21 +25,21 @@ export interface mainColor {
 
 export const mainColor: mainColor[] = [
     { name: 'basic', mainColor: '#1f2c3c' },
-    { name: 'pink', mainColor: '#ece7e3' },
+    { name: 'pink', mainColor: '#e4ddd7' },
     { name: 'violet', mainColor: '#ddd3e9' },
     { name: 'green', mainColor: '#dfdbd8' },
     { name: 'cold', mainColor: '#dbe5e5' },
     { name: 'autumn', mainColor: '#e8b2a0' },
     { name: 'violetBrown', mainColor: '#93808c' },
     { name: 'flower', mainColor: '#ffd5de' },
-    { name: 'yellow', mainColor: '#f7f5d2' },
+    { name: 'pinkBeige', mainColor: '#F7DAD9' },
     { name: 'darkBrown', mainColor: '#423F3E' },
     { name: 'darkYellow', mainColor: '#393E46' },
     { name: 'darkPink', mainColor: '#595B83' },
-    { name: 'veryCold', mainColor: '#cac6d6' },
-    { name: 'darkCyan', mainColor: '#393E46' },
-    { name: 'lego', mainColor: '#0D63A5' },
-    { name: 'blue', mainColor: '#cbdae6' },
+    { name: 'veryCold', mainColor: '#c7c3d4' },
+    { name: 'darkCyan', mainColor: '#363a43' },
+    { name: 'lego', mainColor: '#0f609d' },
+    { name: 'blue', mainColor: '#c7d7e4' },
 ];
 
 export const basic: Theme = {
@@ -82,10 +82,10 @@ export const basic: Theme = {
 export const pink: Theme = {
     colors: {
         main: mainColor[1].mainColor,
-        mainInner: '#e2c4c9',
+        mainInner: '#debfc4',
         relax: '#65cc7c',
         shadow: '#7D5A5A',
-        hover: '#e1c0c3',
+        hover: '#d7b1b7',
         scroll: '#7a6864',
         pin: '#CE0F3D',
         text: '#7a6864',
@@ -234,10 +234,10 @@ export const cold: Theme = {
 export const autumn: Theme = {
     colors: {
         main: mainColor[5].mainColor,
-        mainInner: '#cd805f',
+        mainInner: '#ce8e72',
         relax: '#5de55d',
         shadow: '#485a50',
-        hover: '#c1643d',
+        hover: '#c88264',
         scroll: '#485a50',
         pin: '#de0639',
         text: '#ffffff',
@@ -261,9 +261,9 @@ export const autumn: Theme = {
 
     check: {
         background: mainColor[5].mainColor,
-        mark: '#ffffff',
+        mark: '#333333',
         basicMark: '#000000',
-        border: '#ffffff',
+        border: '#333333',
     },
 
     logoColor: '#7a6864',
@@ -299,7 +299,7 @@ export const violetBrown: Theme = {
 
     check: {
         background: mainColor[6].mainColor,
-        mark: '#f4ece7',
+        mark: '#4f4647',
         basicMark: '#4f4647',
         border: '#f4ece7',
     },
@@ -345,16 +345,16 @@ export const flower: Theme = {
     logoColor: '#7a6864',
 };
 
-export const yellow: Theme = {
+export const pinkBeige: Theme = {
     colors: {
         main: mainColor[8].mainColor,
-        mainInner: '#e6d993',
+        mainInner: '#d5c5c2',
         relax: '#5de55d',
-        shadow: '#635e59',
-        hover: '#baae53',
+        shadow: '#5D534A',
+        hover: '#c8b4b0',
         scroll: '#635e59',
         pin: '#EC5858',
-        text: '#635e59',
+        text: '#5D534A',
         compassActive: '#c3b868',
         pureWhite: '#ffffff',
         black: '#000000',
@@ -375,9 +375,9 @@ export const yellow: Theme = {
 
     check: {
         background: mainColor[8].mainColor,
-        mark: '#635e59',
-        basicMark: '#4f4647',
-        border: '#635e59',
+        mark: '#5D534A',
+        basicMark: '#5D534A',
+        border: '#5D534A',
     },
 
     logoColor: '#7a6864',
@@ -386,10 +386,10 @@ export const yellow: Theme = {
 export const darkBrown: Theme = {
     colors: {
         main: mainColor[9].mainColor,
-        mainInner: '#303030',
+        mainInner: '#363535',
         relax: '#5de55d',
         shadow: '#171010',
-        hover: '#2b2b2b',
+        hover: '#2d2d2d',
         scroll: '#efebeb',
         pin: '#EC5858',
         text: '#efebeb',
@@ -412,7 +412,7 @@ export const darkBrown: Theme = {
     },
 
     check: {
-        background: '#efebeb',
+        background: '#d5cccc',
         mark: '#2b2b2b',
         basicMark: '#000000',
         border: '#efebeb',
@@ -424,10 +424,10 @@ export const darkBrown: Theme = {
 export const darkYellow: Theme = {
     colors: {
         main: mainColor[10].mainColor,
-        mainInner: '#222831',
+        mainInner: '#272e39',
         relax: '#5de55d',
         shadow: '#171010',
-        hover: '#1a1f27',
+        hover: '#212530',
         scroll: '#EEEEEE',
         pin: '#FF0000',
         text: '#EEEEEE',
@@ -450,10 +450,10 @@ export const darkYellow: Theme = {
     },
 
     check: {
-        background: '#EEEEEE',
+        background: '#d7d4d4',
         mark: '#1a1f27',
         basicMark: '#000000',
-        border: '#EEEEEE',
+        border: '#d7d4d4',
     },
 
     logoColor: '#7a6864',
@@ -538,10 +538,10 @@ export const veryCold: Theme = {
 export const darkCyan: Theme = {
     colors: {
         main: mainColor[13].mainColor,
-        mainInner: '#222831',
+        mainInner: '#252b36',
         relax: '#5de55d',
         shadow: '#222831',
-        hover: '#161a21',
+        hover: '#1e232d',
         scroll: '#00ADB5',
         pin: '#E23E57',
         text: '#00ADB5',
@@ -576,10 +576,10 @@ export const darkCyan: Theme = {
 export const lego: Theme = {
     colors: {
         main: mainColor[14].mainColor,
-        mainInner: '#083358',
+        mainInner: '#09355c',
         relax: '#5de55d',
         shadow: '#001F3F',
-        hover: '#062846',
+        hover: '#082d4e',
         scroll: '#FFD717',
         pin: '#FF004D',
         text: '#FFD717',
@@ -614,10 +614,10 @@ export const lego: Theme = {
 export const blue: Theme = {
     colors: {
         main: mainColor[15].mainColor,
-        mainInner: '#158fb1',
+        mainInner: '#148cad',
         relax: '#5de55d',
         shadow: '#276678',
-        hover: '#137894',
+        hover: '#137d9a',
         scroll: '#F6F5F5',
         pin: '#FF577F',
         text: '#194551',
