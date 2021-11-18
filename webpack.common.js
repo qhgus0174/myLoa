@@ -74,7 +74,7 @@ module.exports = {
             FIREBASE_APP_ID: JSON.stringify('1:1056910728071:web:bbcea5717ec61322269122'),
             FIREBASE_MEASUREMENT_ID: JSON.stringify('G-GZXH39JBXV'),
             GA_TRACKING_ID: JSON.stringify('GTM-PLC2ZF2'),
-            NODE_ENV: process.env.NODE_ENV,
+            NODE_ENV: JSON.stringify(process.env.NODE_ENV),
         }),
     ].concat(isDevelopment ? [new ReactRefreshWebpackPlugin()] : []),
 
