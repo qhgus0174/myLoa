@@ -108,33 +108,33 @@ const Main = () => {
 
     const calcReset = () => {
         const now = DateTime.now();
+
         const lastVisitTimeStamp = localStorage.getItem('datetime')
             ? localStorage.getItem('datetime')
             : now.toFormat('X');
         const lastVisitDate = DateTime.fromISO(DateTime.fromSeconds(Number(lastVisitTimeStamp)).toISO());
-        const todayResetDateTime = DateTime.fromISO(now.toFormat('yyyy-LL-dd')).plus({
-            hours: 6,
-        });
-        const { days }: DurationObjectUnits = todayResetDateTime.diff(lastVisitDate, 'days').toObject();
+        const lastVisitDateHour = lastVisitDate.toFormat('HH');
+
+        const resetDateTime =
+            Number(lastVisitDateHour) < 6
+                ? DateTime.fromISO(lastVisitDate.toFormat('yyyy-LL-dd')).plus({
+                      hours: 6,
+                  })
+                : DateTime.fromISO(lastVisitDate.toFormat('yyyy-LL-dd')).plus({
+                      days: 1,
+                      hours: 6,
+                  });
+
+        const { days: dayDiff } = now.diff(resetDateTime, 'days');
         const dayOfWeek = now.toFormat('c');
 
-        !localStorage.getItem('datetime') && localStorage.setItem('datetime', todayResetDateTime.toFormat('X'));
-        days &&
-            days > 0 &&
-            resetTodo({ days: days, dayOfWeek: dayOfWeek, todayResetDateTime: todayResetDateTime.toFormat('X') });
+        dayDiff && dayDiff > 0 && resetTodo({ dayDiff: dayDiff, dayOfWeek: dayOfWeek });
+
+        localStorage.setItem('datetime', now.toFormat('X'));
     };
 
-    const resetTodo = ({
-        days,
-        dayOfWeek,
-        todayResetDateTime,
-    }: {
-        days: number;
-        dayOfWeek: string;
-        todayResetDateTime: string;
-    }) => {
-        localStorage.setItem('datetime', todayResetDateTime);
-        resetDailyTodoRelax(Math.ceil(days));
+    const resetTodo = ({ dayDiff, dayOfWeek }: { dayDiff: number; dayOfWeek: string }) => {
+        resetDailyTodoRelax(Math.ceil(dayDiff));
         dayOfWeek === '3' && resetWeeklyTodo();
     };
 
