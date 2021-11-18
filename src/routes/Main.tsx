@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { DateTime, DurationObjectUnits } from 'luxon';
+import { DateTime } from 'luxon';
 import { ModalActionContext } from '@context/ModalContext';
 import useWindowDimensions from '@hooks/useWindowDimensions';
 import useTodo from '@hooks/storage/useTodo';
@@ -22,6 +22,7 @@ import { ReactComponent as Plus } from '@assets/img/plus.svg';
 import { ReactComponent as ArrowDown } from '@assets/img/arrow-down.svg';
 import { ReactComponent as ArrowUp } from '@assets/img/arrow-up.svg';
 import { GA } from '@service/ga';
+import Guide from '@components/Guide';
 
 const Main = () => {
     useEffect(() => GA.trackPageView({ path: window.location.pathname }), []);
@@ -154,9 +155,22 @@ const Main = () => {
         });
     };
 
+    const showGuide = () => {
+        setModalProps({
+            isOpen: true,
+            content: <Guide />,
+            options: { width: '700', height: '500', headerTitle: '가이드', isHeaderClose: true },
+        });
+    };
     return (
         <MainDiv width="88" direction="column">
+            <GuideDiv>
+                <QuestionSpan onClick={showGuide}>📢 가이드</QuestionSpan>
+            </GuideDiv>
             <HideButtonContainer isFold={isFold}>
+                <HideGuideDiv>
+                    <QuestionSpan onClick={showGuide}>📢 가이드</QuestionSpan>
+                </HideGuideDiv>
                 <HideButtonDiv onClick={() => setIsFold(!isFold)}>
                     버튼
                     {isFold ? (
@@ -206,6 +220,7 @@ const Main = () => {
                         구분선
                     </AddButton>
                 </ButtonLeftDiv>
+
                 <FlexDiv>
                     <AddButton
                         isRight={true}
@@ -238,8 +253,7 @@ const MainDiv = styled(FlexDiv)`
     ${widthMedia.phone} {
         width: 95%;
     }
-    margin-top: 1em;
-    margin-bottom: 2em;
+    margin-top: 0.1em;
 `;
 
 const TodoContentsDiv = styled.div`
@@ -257,11 +271,13 @@ const HideButtonContainer = styled.div<{ isFold: boolean }>`
         justify-content: end;
         align-items: center;
         margin-bottom: 1em;
+        justify-content: space-between;
     }
 `;
 const HideButtonDiv = styled.div`
     display: flex;
     align-items: center;
+    padding-right: 0.5em;
 `;
 
 const TodoButtonDiv = styled(FlexDiv)<{ isFold: boolean }>`
@@ -297,6 +313,26 @@ const PlusIcon = styled(Plus)`
     fill: ${props => props.theme.button.color};
     width: 15px;
     height: 15px;
+`;
+
+const GuideDiv = styled(FlexDiv)`
+    ${widthMedia.smallPhone} {
+        display: none;
+    }
+    justify-content: center;
+`;
+
+const HideGuideDiv = styled(FlexDiv)`
+    display: none;
+    ${widthMedia.smallPhone} {
+        display: flex;
+        padding-left: 1em;
+    }
+`;
+
+const QuestionSpan = styled.span`
+    cursor: pointer;
+    font-weight: 500;
 `;
 
 export default Main;

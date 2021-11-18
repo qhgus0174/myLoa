@@ -13,14 +13,14 @@ const SelectTheme = () => {
 
     return (
         <SelectThemeContainer>
-            <PaletteIcon
+            <span
                 css={css`
                     cursor: pointer;
                 `}
-                width="25px"
-                height="25px"
                 onClick={() => setVisible(!visible)}
-            />
+            >
+                테마
+            </span>
             <PaletteDiv visible={visible}>
                 {mainColor.map((color, index) => {
                     return (
@@ -42,7 +42,6 @@ const SelectTheme = () => {
 
 const SelectThemeContainer = styled.div`
     position: relative;
-    flex-basis: 20%;
     display: flex;
     justify-content: center;
 `;
@@ -52,7 +51,7 @@ const PaletteDiv = styled(FlexDiv)<{ visible: boolean }>`
     background: white;
     width: 10em;
     height: 10em;
-    left: -100px;
+    top: 30px;
     position: absolute;
 `;
 export default SelectTheme;

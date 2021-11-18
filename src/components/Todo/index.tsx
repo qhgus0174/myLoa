@@ -10,6 +10,7 @@ import { getStorage } from '@storage/index';
 import styled from '@emotion/styled';
 import { FlexDiv } from '@style/common';
 import useTodo from '@hooks/storage/useTodo';
+import { heightMedia } from '@style/device';
 
 const Todo = ({ onContextMenuBasicModal }: IContextModalParam) => {
     const [storageTodoOrd, setStorageTodoOrd] = useTodoOrd();
@@ -102,7 +103,13 @@ const Todo = ({ onContextMenuBasicModal }: IContextModalParam) => {
 };
 
 const TodoContainer = styled.div`
-    height: 55vh;
+    height: 60vh;
+    ${heightMedia.big} {
+        height: 55vh;
+    }
+    ${heightMedia.medium} {
+        height: 50vh;
+    }
     overflow-y: auto;
 `;
 

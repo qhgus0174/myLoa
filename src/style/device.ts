@@ -32,6 +32,7 @@ export const widthMedia = {
     custom: customMediaQueryWidth,
     bigDesktop: customMediaQueryWidth(responsiveWidth.bigDesktop),
     desktop: customMediaQueryWidth(responsiveWidth.desktop),
+    mediumDesktop: customMediaQueryWidth(responsiveWidth.mediumDesktop),
     smallDesktop: customMediaQueryWidth(responsiveWidth.smallDesktop),
     tablet: customMediaQueryWidth(responsiveWidth.tablet),
     phone: customMediaQueryWidth(responsiveWidth.phone),
@@ -40,5 +41,7 @@ export const widthMedia = {
 
 export const heightMedia = {
     custom: customMediaQueryHeight,
+    big: customMediaQueryHeight(900),
+    medium: customMediaQueryHeight(720),
     small: customMediaQueryHeight(620),
 };

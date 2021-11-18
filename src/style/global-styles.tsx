@@ -24,6 +24,18 @@ export const GlobalStyle = () => {
                     border-radius: 1px;
                 }
 
+                ul,
+                li {
+                    list-style: none;
+                    margin: 0;
+                    padding: 0;
+                }
+
+                ul {
+                    padding-left: 5px;
+                    line-height: 1.7;
+                }
+
                 .Toastify__toast-body div {
                     color: ${theme.colors.black};
                 }
