@@ -3,23 +3,24 @@ import styled from '@emotion/styled';
 
 export interface ITextProps extends React.InputHTMLAttributes<HTMLInputElement> {
     width?: string;
+    divWidth?: string;
     align?: 'left' | 'right' | 'center';
     underline?: boolean;
 }
 
-const TextBox = ({ width, type = 'text', align, underline = true, ...rest }: ITextProps) => {
+const TextBox = ({ width, divWidth = '100', type = 'text', align, underline = true, ...rest }: ITextProps) => {
     return (
-        <InputDiv>
+        <InputDiv divWidth={divWidth}>
             <CustomInput align={align} type={type} width={width} underline={underline} {...rest} autoComplete="false" />
             <Span></Span>
         </InputDiv>
     );
 };
 
-const InputDiv = styled.div`
+const InputDiv = styled.div<{ divWidth: string }>`
     position: relative;
     display: inline-block;
-    width: 100%;
+    width: ${props => props.divWidth}%;
     display: flex;
     justify-content: center;
 `;
