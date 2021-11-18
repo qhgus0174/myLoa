@@ -65,6 +65,15 @@ module.exports = {
             showErrors: true,
         }),
         new ForkTsCheckerWebpackPlugin(),
+        new webpack.DefinePlugin({
+            FIREBASE_API_KEY: JSON.stringify('AIzaSyAN038KAbJ4nMorQGoN2oQAw4hy2PHhXLM'),
+            FIREBASE_AUTH_DOMAIN: JSON.stringify('myloa-8edf5.firebaseapp.com'),
+            FIREBASE_PROJECT_ID: JSON.stringify('myloa-8edf5'),
+            FIREBASE_STORAGE_BUCKET: JSON.stringify('myloa-8edf5.appspot.com'),
+            FIREBASE_MESSAGING_SENDER_ID: JSON.stringify('1056910728071'),
+            FIREBASE_APP_ID: JSON.stringify('1:1056910728071:web:bbcea5717ec61322269122'),
+            FIREBASE_MEASUREMENT_ID: JSON.stringify('G-GZXH39JBXV'),
+        }),
     ].concat(isDevelopment ? [new ReactRefreshWebpackPlugin()] : []),
 
     resolve: {
@@ -80,6 +89,7 @@ module.exports = {
             '@fonts': path.resolve(__dirname, 'src/fonts'),
             '@assets': path.resolve(__dirname, 'src/assets'),
             '@storage': path.resolve(__dirname, 'src/storage'),
+            '@firebaseStore': path.resolve(__dirname, 'src/firebase'),
         },
     },
 };
