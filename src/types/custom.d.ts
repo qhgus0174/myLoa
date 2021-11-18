@@ -35,3 +35,5 @@ declare const FIREBASE_STORAGE_BUCKET: string;
 declare const FIREBASE_MESSAGING_SENDER_ID: string;
 declare const FIREBASE_APP_ID: string;
 declare const FIREBASE_MEASUREMENT_ID: string;
+declare const GA_TRACKING_ID: string;
+declare const NODE_ENV: string;

@@ -12,7 +12,9 @@
             "@fonts/*": ["fonts/*"],
             "@assets/*": ["assets/*"],
             "@storage/*": ["storage/*"],
-            "@firebaseStore/*": ["firebase/*"]
+            "@firebaseStore/*": ["firebase/*"],
+            "@service/*": ["service/*"]
+            
         },
     }
 }

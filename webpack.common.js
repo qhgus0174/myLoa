@@ -73,6 +73,8 @@ module.exports = {
             FIREBASE_MESSAGING_SENDER_ID: JSON.stringify('1056910728071'),
             FIREBASE_APP_ID: JSON.stringify('1:1056910728071:web:bbcea5717ec61322269122'),
             FIREBASE_MEASUREMENT_ID: JSON.stringify('G-GZXH39JBXV'),
+            GA_TRACKING_ID: JSON.stringify('GTM-PLC2ZF2'),
+            NODE_ENV: process.env.NODE_ENV,
         }),
     ].concat(isDevelopment ? [new ReactRefreshWebpackPlugin()] : []),
 
@@ -90,6 +92,7 @@ module.exports = {
             '@assets': path.resolve(__dirname, 'src/assets'),
             '@storage': path.resolve(__dirname, 'src/storage'),
             '@firebaseStore': path.resolve(__dirname, 'src/firebase'),
+            '@service': path.resolve(__dirname, 'src/service'),
         },
     },
 };

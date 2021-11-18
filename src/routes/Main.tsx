@@ -21,8 +21,11 @@ import { responsiveWidth, widthMedia } from '@style/device';
 import { ReactComponent as Plus } from '@assets/img/plus.svg';
 import { ReactComponent as ArrowDown } from '@assets/img/arrow-down.svg';
 import { ReactComponent as ArrowUp } from '@assets/img/arrow-up.svg';
+import { GA } from '@service/ga';
 
 const Main = () => {
+    useEffect(() => GA.trackPageView({ path: window.location.pathname }), []);
+
     const { setModalProps } = useContext(ModalActionContext);
     const [isFold, setIsFold] = useState<boolean>(false);
     const { width: windowWidth } = useWindowDimensions();
