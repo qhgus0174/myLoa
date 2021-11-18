@@ -11,7 +11,8 @@
             "@style/*": ["style/*"],
             "@fonts/*": ["fonts/*"],
             "@assets/*": ["assets/*"],
-            "@storage/*": ["storage/*"]
+            "@storage/*": ["storage/*"],
+            "@firebaseStore/*": ["firebase/*"]
         },
     }
 }
