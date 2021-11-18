@@ -10,6 +10,7 @@ import Backup from '@components/LocalStorage/BackupModal';
 import Button from '@components/Button/Button';
 import styled from '@emotion/styled';
 import { FlexDiv } from '@style/common';
+import { widthMedia } from '@style/device';
 
 const Manage = () => {
     const { setSpinnerVisible } = useContext(SpinnerContext);
@@ -77,17 +78,6 @@ const Manage = () => {
     );
 };
 
-const ManageCopyDiv = styled(FlexDiv)`
-    border-radius: 1em;
-    background: #333456;
-    padding-top: 1.2em;
-    padding-left: 1.2em;
-    padding-right: 1.2em;
-    padding-bottom: 0.2em;
-    width: 100%;
-    justify-content: center;
-`;
-
 const ManageContainer = styled(FlexDiv)`
     width: 70%;
     justify-content: center;
@@ -102,6 +92,14 @@ const ManageDiv = styled(FlexDiv)`
     align-items: center;
     margin-bottom: 2em;
     box-sizing: border-box;
+
+    ${widthMedia.phone} {
+        flex-direction: column;
+
+        & > span {
+            margin-bottom: 1em;
+        }
+    }
 `;
 
 const ManageInnerDiv = styled(FlexDiv)`
