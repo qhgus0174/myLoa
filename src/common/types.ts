@@ -30,6 +30,7 @@ export interface IPortalOption {
     height?: string;
     headerTitle?: string;
     confirmFn?: () => void | Promise<void>;
+    isHeaderClose?: boolean;
 }
 
 export interface IPortalProperty {
