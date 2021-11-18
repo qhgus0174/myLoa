@@ -1,4 +1,4 @@
-import { IStorage } from './types';
+import { IStorage } from '@storage/types';
 
 export const getStorage = (key: IStorage) => {
     const data = localStorage.getItem(key) ? JSON.parse(JSON.parse(localStorage.getItem(key) as string)) : [];
