@@ -2,10 +2,12 @@ import React from 'react';
 import SelectTheme from '@components/Palette/SelectTheme';
 import Compass from '@components/Layout/Compass';
 import Logo from '@assets/img/logo/logo.png';
+import { ReactComponent as Setting } from '@assets/img/setting.svg';
 import styled from '@emotion/styled';
 import { widthMedia } from '@style/device';
 import { FlexDiv } from '@style/common';
 import { Link, useLocation } from 'react-router-dom';
+import { css } from '@emotion/react';
 
 const Header = () => {
     const pathName = useLocation().pathname;
@@ -21,7 +23,15 @@ const Header = () => {
                 </Link>
             </LogoDiv>
             <RightHeader basis="40">
-                <StyledLink to="/mng">관리</StyledLink>
+                <StyledLink to="/mng">
+                    <Setting
+                        css={css`
+                            cursor: pointer;
+                        `}
+                        width="25px"
+                        height="25px"
+                    />
+                </StyledLink>
                 <SelectTheme />
             </RightHeader>
         </HeaderDiv>
@@ -66,7 +76,10 @@ const RightHeader = styled(FlexDiv)`
 `;
 
 const StyledLink = styled(Link)`
-    margin-right: 3em;
+    margin-right: 20px;
+    flex-basis: 80%;
+    justify-content: flex-end;
+    display: flex;
 `;
 
 export default Header;

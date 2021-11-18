@@ -42,6 +42,9 @@ const SelectTheme = () => {
 
 const SelectThemeContainer = styled.div`
     position: relative;
+    flex-basis: 20%;
+    display: flex;
+    justify-content: center;
 `;
 const PaletteDiv = styled(FlexDiv)<{ visible: boolean }>`
     display: ${props => (props.visible ? 'flex' : 'none')};
