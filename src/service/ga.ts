@@ -14,7 +14,9 @@ class GAService {
 
         this.env = NODE_ENV;
 
-        ReactGA.initialize(GA_TRACKING_ID);
+        if (this.isProduction) {
+            ReactGA.initialize(GA_TRACKING_ID);
+        }
     }
 
     private get isProduction() {
