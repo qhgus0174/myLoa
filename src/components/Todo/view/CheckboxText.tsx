@@ -44,11 +44,7 @@ const CheckboxText = ({ todo, onContextMenu }: ICheckbox) => {
     };
 
     return (
-        <TextContainer
-            contents={todo.contents}
-            {...onLongPress({ todo: todo })}
-            onContextMenu={e => openTodoEditModal({ e: e, todo: todo })}
-        >
+        <TextContainer contents={todo.contents} onContextMenu={e => openTodoEditModal({ e: e, todo: todo })}>
             <TextDiv>
                 <FlexDiv basis="10"></FlexDiv>
                 <FlexDiv basis="10">

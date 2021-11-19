@@ -186,7 +186,6 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                         return (
                             <FlexHoverDiv
                                 key={`drag_char_${characterIndex}`}
-                                {...onLongPress({ charTodo: charTodo, characterIndex: characterIndex })}
                                 onContextMenu={e =>
                                     openTodoCheckEditModal({ e: e, charTodo: charTodo, characterIndex: characterIndex })
                                 }

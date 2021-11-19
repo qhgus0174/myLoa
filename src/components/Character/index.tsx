@@ -108,7 +108,6 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
                                                             key={charIndex}
                                                             {...provided.draggableProps}
                                                             {...provided.dragHandleProps}
-                                                            {...onLongPress({ char: char })}
                                                             ref={provided.innerRef}
                                                             onContextMenu={e => {
                                                                 e.preventDefault();
