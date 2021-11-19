@@ -1,9 +1,9 @@
 import React from 'react';
-import { LongPressEvent, useLongPress } from 'use-long-press';
 import { ITodo } from '@components/Todo/TodoType';
 import LineEdit from '@components/Line/LineEdit';
 import { IContextModal } from '@common/types';
 import styled from '@emotion/styled';
+import { useLongPress } from 'use-long-press';
 
 const Line = ({
     todo,
@@ -12,12 +12,12 @@ const Line = ({
     todo: ITodo;
     onContextMenu: ({ e, title, modal, width, height }: IContextModal) => void;
 }) => {
-    const onLongPress = (char: ITodo) =>
-        useLongPress((e: LongPressEvent<Element> | undefined) => {
-            openLineEditModal(e, char);
+    const onLongPress = ({ todo }: { todo: ITodo }) =>
+        useLongPress(() => {
+            openLineEditModal({ todo: todo });
         });
 
-    const openLineEditModal = (e: React.MouseEvent<HTMLElement> | LongPressEvent<Element> | undefined, todo: ITodo) => {
+    const openLineEditModal = ({ e, todo }: { e?: React.MouseEvent<HTMLElement>; todo: ITodo }) => {
         onContextMenu({
             e: e,
             modal: <LineEdit {...todo} />,
@@ -30,7 +30,8 @@ const Line = ({
     return (
         <LineDiv
             color={todo.color}
-            onContextMenu={(e: React.MouseEvent<HTMLDivElement>) => openLineEditModal(e, todo)}
+            {...onLongPress({ todo: todo })}
+            onContextMenu={(e: React.MouseEvent<HTMLDivElement>) => openLineEditModal({ e: e, todo: todo })}
         ></LineDiv>
     );
 };

@@ -13,8 +13,8 @@ import styled from '@emotion/styled';
 import { FlexDiv, FlexLeftDiv, FlexHoverDiv, CharactersDiv } from '@style/common';
 import { ReactComponent as LeftArrow } from '@assets/img/left-arrow.svg';
 import { ReactComponent as RightArrow } from '@assets/img/right-arrow.svg';
-import { LongPressEvent, useLongPress } from 'use-long-press';
 import useTodo from '@hooks/storage/useTodo';
+import { useLongPress } from 'use-long-press';
 
 const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
     const [storageCharacterOrd, setStorageCharacterOrd] = useCharacterOrd();
@@ -23,15 +23,12 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
     const { onClickNext, onClickPrev } = useContext(PagingActionContext);
     const theme = useTheme();
 
-    const onLongPress = (char: ICharacter) =>
-        useLongPress((e: LongPressEvent<Element> | undefined) => {
-            openCharacterEditModal(e, char);
+    const onLongPress = ({ char }: { char: ICharacter }) =>
+        useLongPress(() => {
+            openCharacterEditModal({ char: char });
         });
 
-    const openCharacterEditModal = (
-        e: React.MouseEvent<HTMLElement> | LongPressEvent<Element> | undefined,
-        char: ICharacter,
-    ) => {
+    const openCharacterEditModal = ({ e, char }: { e?: React.MouseEvent<HTMLElement>; char: ICharacter }) => {
         onContextMenuBasicModal({
             e: e,
             modal: <CharacterEdit id={char.id} name={char.name} color={char.color} />,
@@ -111,10 +108,11 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
                                                             key={charIndex}
                                                             {...provided.draggableProps}
                                                             {...provided.dragHandleProps}
+                                                            {...onLongPress({ char: char })}
                                                             ref={provided.innerRef}
                                                             onContextMenu={e => {
                                                                 e.preventDefault();
-                                                                openCharacterEditModal(e, char);
+                                                                openCharacterEditModal({ e: e, char: char });
                                                             }}
                                                         >
                                                             <FlexDiv>

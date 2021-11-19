@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import _ from 'lodash';
 import { toast } from 'react-toastify';
 import { PagingActionContext, PagingStateContext } from '@context/PagingContext';
@@ -35,7 +35,11 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
 
     const [color, setColor] = useState<string>(oriColor);
 
-    const [name, setName] = useState<string>(newName);
+    const [name, setName] = useState<string>('');
+
+    useEffect(() => {
+        setName(newName);
+    }, [newName]);
 
     const { setSpinnerVisible } = useContext(SpinnerContext);
 

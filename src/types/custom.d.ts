@@ -1,5 +1,3 @@
-declare module 'hex-to-css-filter';
-
 declare module '*.svg' {
     import React = require('react');
 

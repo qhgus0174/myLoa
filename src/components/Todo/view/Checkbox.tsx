@@ -1,5 +1,4 @@
 import React, { useContext, useState } from 'react';
-import { LongPressEvent, useLongPress } from 'use-long-press';
 import { getStorage } from '@storage/index';
 import useTodo from '@hooks/storage/useTodo';
 import { PagingStateContext } from '@context/PagingContext';
@@ -11,9 +10,9 @@ import Guardian from '@components/Todo/view/Guardian';
 import { IContextModal, ScheduleContents, ScheduleType } from '@common/types';
 import { CharactersDiv, FlexDiv, FlexHoverDiv } from '@style/common';
 import styled from '@emotion/styled';
-import { css } from '@emotion/react';
 import useCharacterOrd from '@hooks/storage/useCharacterOrd';
 import useCharacter from '@hooks/storage/useCharacter';
+import { useLongPress } from 'use-long-press';
 
 interface ICheckbox {
     todo: ITodo;
@@ -29,14 +28,20 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
     const [storageCharacterOrd, setStorageCharacterOrd] = useCharacterOrd();
     const [guardianStep, setGuardianStep] = useState<string>('1');
 
-    const onLongPress = (charTodo: ICharacterTodo, characterIndex: number) =>
-        useLongPress((e: LongPressEvent<Element> | undefined) => openTodoCheckEditModal(e, charTodo, characterIndex));
+    const onLongPress = ({ charTodo, characterIndex }: { charTodo: ICharacterTodo; characterIndex: number }) =>
+        useLongPress(() => {
+            openTodoCheckEditModal({ charTodo: charTodo, characterIndex: characterIndex });
+        });
 
-    const openTodoCheckEditModal = (
-        e: React.MouseEvent<HTMLElement> | LongPressEvent<Element> | undefined,
-        charTodo: ICharacterTodo,
-        characterIndex: number,
-    ) => {
+    const openTodoCheckEditModal = ({
+        e,
+        charTodo,
+        characterIndex,
+    }: {
+        e?: React.MouseEvent<HTMLElement>;
+        charTodo: ICharacterTodo;
+        characterIndex: number;
+    }) => {
         onContextMenu({
             e: e,
             modal: (
@@ -181,7 +186,10 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                         return (
                             <FlexHoverDiv
                                 key={`drag_char_${characterIndex}`}
-                                onContextMenu={e => openTodoCheckEditModal(e, charTodo, characterIndex)}
+                                {...onLongPress({ charTodo: charTodo, characterIndex: characterIndex })}
+                                onContextMenu={e =>
+                                    openTodoCheckEditModal({ e: e, charTodo: charTodo, characterIndex: characterIndex })
+                                }
                                 onClick={e => onClickCheckTodoHoverArea(e, charTodo.id)}
                             >
                                 {pTodo.checkType === 'check' ? (
