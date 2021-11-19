@@ -31,7 +31,7 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
 
     const { setCurrentPage } = useContext(PagingActionContext);
     const { closeModal } = useContext(ModalActionContext);
-    const { perPage } = useContext(PagingStateContext);
+    const { currentPage, perPage } = useContext(PagingStateContext);
 
     const [color, setColor] = useState<string>(oriColor);
 
@@ -133,8 +133,8 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
     };
 
     const setCurrentCharacterPage = (arr: ICharacter[]) => {
-        const currentPage = Math.ceil(arr.length / perPage);
-        setCurrentPage(currentPage);
+        const page = Math.ceil(arr.length / perPage);
+        page < currentPage && setCurrentPage(page);
     };
 
     const deleteCharacterInfo = (): ICharacter[] => {
