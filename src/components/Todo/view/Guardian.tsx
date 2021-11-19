@@ -1,6 +1,6 @@
 import React from 'react';
 import useTodo from '@hooks/storage/useTodo';
-import { IGurdianInfo, ITodo } from '@components/Todo/TodoType';
+import { ICharacterTodo, IGurdianInfo, ITodo } from '@components/Todo/TodoType';
 import { GuardianInfo, IGurdian } from '@common/data/guardian';
 import { getStorage } from '@storage/index';
 import styled from '@emotion/styled';
@@ -11,8 +11,19 @@ interface IGuardianParam {
     todoIndex: number;
     characterId: number;
     characterGuardianInfo: IGurdianInfo;
+    charTodo: ICharacterTodo;
+    characterIndex: number;
     setGuardianStep: (e: string) => void;
     onClick: (e: React.MouseEvent<HTMLDivElement>, i: number) => void;
+    onTouchEnd: ({
+        e,
+        charTodo,
+        characterIndex,
+    }: {
+        e: React.TouchEvent<HTMLDivElement>;
+        charTodo: ICharacterTodo;
+        characterIndex: number;
+    }) => void;
 }
 
 const Guardian = ({
@@ -20,8 +31,11 @@ const Guardian = ({
     characterId,
     todoIndex,
     characterGuardianInfo,
+    charTodo,
+    characterIndex,
     setGuardianStep,
     onClick,
+    onTouchEnd,
 }: IGuardianParam) => {
     const [storageTodo, setStorageTodo] = useTodo();
 
@@ -60,7 +74,11 @@ const Guardian = ({
     };
 
     return (
-        <GurdianDiv direction="column" onClick={e => onClick(e, characterId)}>
+        <GurdianDiv
+            direction="column"
+            onTouchEnd={e => onTouchEnd({ e: e, charTodo: charTodo, characterIndex: characterIndex })}
+            onClick={e => onClick(e, characterId)}
+        >
             <GurdianSelectBox
                 key={`guardian_step_${characterId}`}
                 onChange={e => updateGuardianStep(e, characterId)}

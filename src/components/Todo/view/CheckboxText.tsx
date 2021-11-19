@@ -5,10 +5,8 @@ import { ITodo } from '@components/Todo/TodoType';
 import PinCheckbox from '@components/Input/PinCheckBox';
 import { getStorage } from '@storage/index';
 import { IContextModal, ScheduleContents } from '@common/types';
-import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { FlexDiv, FlexLeftDiv } from '@style/common';
-import { useLongPress } from 'use-long-press';
 
 interface ICheckbox {
     todo: ITodo;
@@ -19,12 +17,14 @@ const CheckboxText = ({ todo, onContextMenu }: ICheckbox) => {
     const [isFixed, setIsFixed] = useState(todo.isFixed);
     const [storageTodo, setStorageTodo] = useTodo();
 
-    const onLongPress = ({ todo }: { todo: ITodo }) =>
-        useLongPress(() => {
-            openTodoEditModal({ todo: todo });
-        });
-
-    const openTodoEditModal = ({ e, todo }: { e?: React.MouseEvent<HTMLElement>; todo: ITodo }) => {
+    const openTodoEditModal = ({
+        e,
+        todo,
+    }: {
+        e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>;
+        todo: ITodo;
+    }) => {
+        e.preventDefault();
         onContextMenu({ e: e, modal: <TodoEdit {...todo} />, title: '숙제 수정', width: '600', height: '850' });
     };
 
@@ -44,7 +44,11 @@ const CheckboxText = ({ todo, onContextMenu }: ICheckbox) => {
     };
 
     return (
-        <TextContainer contents={todo.contents} onContextMenu={e => openTodoEditModal({ e: e, todo: todo })}>
+        <TextContainer
+            contents={todo.contents}
+            onTouchEnd={(e: React.TouchEvent<HTMLDivElement>) => openTodoEditModal({ e: e, todo: todo })}
+            onContextMenu={(e: React.MouseEvent<HTMLDivElement>) => openTodoEditModal({ e: e, todo: todo })}
+        >
             <TextDiv>
                 <FlexDiv basis="10"></FlexDiv>
                 <FlexDiv basis="10">

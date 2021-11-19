@@ -7,7 +7,7 @@ export type ScheduleCheckType = 'check' | 'text' | 'none';
 export type AddType = 'character' | 'todo' | 'line';
 
 export interface IContextModal {
-    e?: React.MouseEvent<HTMLElement>;
+    e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>;
     modal: JSX.Element;
     title: string;
     width: string;

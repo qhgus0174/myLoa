@@ -12,7 +12,6 @@ import { CharactersDiv, FlexDiv, FlexHoverDiv } from '@style/common';
 import styled from '@emotion/styled';
 import useCharacterOrd from '@hooks/storage/useCharacterOrd';
 import useCharacter from '@hooks/storage/useCharacter';
-import { useLongPress } from 'use-long-press';
 
 interface ICheckbox {
     todo: ITodo;
@@ -28,17 +27,12 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
     const [storageCharacterOrd, setStorageCharacterOrd] = useCharacterOrd();
     const [guardianStep, setGuardianStep] = useState<string>('1');
 
-    const onLongPress = ({ charTodo, characterIndex }: { charTodo: ICharacterTodo; characterIndex: number }) =>
-        useLongPress(() => {
-            openTodoCheckEditModal({ charTodo: charTodo, characterIndex: characterIndex });
-        });
-
     const openTodoCheckEditModal = ({
         e,
         charTodo,
         characterIndex,
     }: {
-        e?: React.MouseEvent<HTMLElement>;
+        e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLDivElement>;
         charTodo: ICharacterTodo;
         characterIndex: number;
     }) => {
@@ -60,6 +54,23 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
             title: '숙제 수정(개별)',
             width: '400',
             height: ['chaos', 'epona', 'guardian'].includes(pTodo.contents) ? '500' : '450',
+        });
+    };
+
+    const onTouchEnd = ({
+        e,
+        charTodo,
+        characterIndex,
+    }: {
+        e: React.TouchEvent<HTMLDivElement>;
+        charTodo: ICharacterTodo;
+        characterIndex: number;
+    }) => {
+        if (e.target !== e.currentTarget) return;
+        openTodoCheckEditModal({
+            e: e,
+            charTodo: charTodo,
+            characterIndex: characterIndex,
         });
     };
 
@@ -186,15 +197,33 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                         return (
                             <FlexHoverDiv
                                 key={`drag_char_${characterIndex}`}
-                                onContextMenu={e =>
-                                    openTodoCheckEditModal({ e: e, charTodo: charTodo, characterIndex: characterIndex })
+                                onContextMenu={(e: React.MouseEvent<HTMLDivElement>) =>
+                                    openTodoCheckEditModal({
+                                        e: e,
+                                        charTodo: charTodo,
+                                        characterIndex: characterIndex,
+                                    })
+                                }
+                                onTouchEnd={(e: React.TouchEvent<HTMLDivElement>) =>
+                                    onTouchEnd({ e: e, charTodo: charTodo, characterIndex: characterIndex })
                                 }
                                 onClick={e => onClickCheckTodoHoverArea(e, charTodo.id)}
                             >
                                 {pTodo.checkType === 'check' ? (
                                     pTodo.showCharacter.includes(charTodo.id) && (
                                         <FlexDiv direction="column" width="100">
-                                            <CheckContainer onClick={e => onClickCheckTodoHoverArea(e, charTodo.id)}>
+                                            <CheckContainer
+                                                onTouchEnd={(e: React.TouchEvent<HTMLDivElement>) =>
+                                                    onTouchEnd({
+                                                        e: e,
+                                                        charTodo: charTodo,
+                                                        characterIndex: characterIndex,
+                                                    })
+                                                }
+                                                onClick={(e: React.MouseEvent<HTMLDivElement>) =>
+                                                    onClickCheckTodoHoverArea(e, charTodo.id)
+                                                }
+                                            >
                                                 <CheckBoxDiv contents={pTodo.contents} todoType={pTodo.type}>
                                                     {charTodo.check.map((checks: number, checkesIndex: number) => {
                                                         return (
@@ -219,7 +248,16 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                                                     ['chaos', 'guardian'].includes(pTodo.contents) && (
                                                         <CheckText>
                                                             <RelaxGaugeDiv
-                                                                onClick={e => onClickCheckTodoHoverArea(e, charTodo.id)}
+                                                                onTouchEnd={(e: React.TouchEvent<HTMLDivElement>) =>
+                                                                    onTouchEnd({
+                                                                        e: e,
+                                                                        charTodo: charTodo,
+                                                                        characterIndex: characterIndex,
+                                                                    })
+                                                                }
+                                                                onClick={(e: React.MouseEvent<HTMLDivElement>) =>
+                                                                    onClickCheckTodoHoverArea(e, charTodo.id)
+                                                                }
                                                             >
                                                                 {charTodo.relaxGauge}
                                                             </RelaxGaugeDiv>
@@ -228,9 +266,14 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                                             </CheckContainer>
                                             {pTodo.type === 'daily' && pTodo.contents === 'guardian' && (
                                                 <Guardian
-                                                    onClick={e => onClickCheckTodoHoverArea(e, charTodo.id)}
+                                                    onTouchEnd={onTouchEnd}
+                                                    onClick={(e: React.MouseEvent<HTMLDivElement>) =>
+                                                        onClickCheckTodoHoverArea(e, charTodo.id)
+                                                    }
                                                     key={`guardian_${characterIndex}`}
                                                     todo={pTodo}
+                                                    charTodo={charTodo}
+                                                    characterIndex={characterIndex}
                                                     characterGuardianInfo={charTodo.guardianInfo}
                                                     characterId={charTodo.id}
                                                     todoIndex={pTodoIndex}

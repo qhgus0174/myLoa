@@ -14,7 +14,6 @@ import { FlexDiv, FlexLeftDiv, FlexHoverDiv, CharactersDiv } from '@style/common
 import { ReactComponent as LeftArrow } from '@assets/img/left-arrow.svg';
 import { ReactComponent as RightArrow } from '@assets/img/right-arrow.svg';
 import useTodo from '@hooks/storage/useTodo';
-import { useLongPress } from 'use-long-press';
 
 const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
     const [storageCharacterOrd, setStorageCharacterOrd] = useCharacterOrd();
@@ -23,12 +22,14 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
     const { onClickNext, onClickPrev } = useContext(PagingActionContext);
     const theme = useTheme();
 
-    const onLongPress = ({ char }: { char: ICharacter }) =>
-        useLongPress(() => {
-            openCharacterEditModal({ char: char });
-        });
-
-    const openCharacterEditModal = ({ e, char }: { e?: React.MouseEvent<HTMLElement>; char: ICharacter }) => {
+    const openCharacterEditModal = ({
+        e,
+        char,
+    }: {
+        e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLDivElement>;
+        char: ICharacter;
+    }) => {
+        e.preventDefault();
         onContextMenuBasicModal({
             e: e,
             modal: <CharacterEdit id={char.id} name={char.name} color={char.color} />,
@@ -109,8 +110,10 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
                                                             {...provided.draggableProps}
                                                             {...provided.dragHandleProps}
                                                             ref={provided.innerRef}
-                                                            onContextMenu={e => {
-                                                                e.preventDefault();
+                                                            onTouchEnd={(e: React.TouchEvent<HTMLDivElement>) => {
+                                                                openCharacterEditModal({ e: e, char: char });
+                                                            }}
+                                                            onContextMenu={(e: React.MouseEvent<HTMLDivElement>) => {
                                                                 openCharacterEditModal({ e: e, char: char });
                                                             }}
                                                         >
