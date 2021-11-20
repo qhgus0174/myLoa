@@ -1,16 +1,23 @@
 {
     "include": ["src/**/*"],
-    "extends": "./tsconfig.paths",
+    "typeRoots": ["src/types/custom.d.ts"],
+    "ts-node": {
+        "compilerOptions": {
+            "module": "CommonJS"
+        }
+    },
     "compilerOptions": {
+        "jsxImportSource": "@emotion/react",
         "removeComments": true,
         "target": "es6",
         "sourceMap": true,
         "strict": true,
-        "baseUrl": "src",
+        "baseUrl": "./src",
         "skipLibCheck": true,
         "jsx": "react-jsx",
-        "module": "esnext",
+        "module": "CommonJS",
         "outDir": "./dist",
+        "rootDir": ".",
         "esModuleInterop": true,
         "forceConsistentCasingInFileNames": true,
         "noFallthroughCasesInSwitch": true,
@@ -19,6 +26,20 @@
         "allowSyntheticDefaultImports": true,
         "moduleResolution": "node",
         "resolveJsonModule": true,
-        "isolatedModules": true
+        "isolatedModules": true,
+        "paths": {
+            "@routes/*": ["routes/*"],
+            "@components/*": ["components/*"],
+            "@hooks/*": ["hooks/*"],
+            "@context/*": ["context/*"],
+            "@common/*": ["common/*"],
+            "@style/*": ["style/*"],
+            "@fonts/*": ["fonts/*"],
+            "@assets/*": ["assets/*"],
+            "@storage/*": ["storage/*"],
+            "@firebaseStore/*": ["firebase/*"],
+            "@service/*": ["service/*"],
+            "@schedule/*": ["schedule/*"]
+        }
     }
 }

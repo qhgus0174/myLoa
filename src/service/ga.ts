@@ -5,17 +5,17 @@ interface TrackPageViewParams {
 }
 
 class GAService {
-    private env: string;
+    private env: 'development' | 'production';
 
     constructor() {
-        if (!GA_TRACKING_ID) {
+        if (!process.env.GA_TRACKING_ID) {
             throw new Error('GA_TRACKING_ID must be provided.');
         }
 
-        this.env = NODE_ENV;
+        this.env = process.env.NODE_ENV;
 
         if (this.isProduction) {
-            ReactGA.initialize(GA_TRACKING_ID);
+            ReactGA.initialize(process.env.GA_TRACKING_ID);
         }
     }
 

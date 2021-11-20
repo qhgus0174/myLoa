@@ -26,12 +26,16 @@ declare module '*.png' {
     export default src;
 }
 
-declare const FIREBASE_API_KEY: string;
-declare const FIREBASE_AUTH_DOMAIN: string;
-declare const FIREBASE_PROJECT_ID: string;
-declare const FIREBASE_STORAGE_BUCKET: string;
-declare const FIREBASE_MESSAGING_SENDER_ID: string;
-declare const FIREBASE_APP_ID: string;
-declare const FIREBASE_MEASUREMENT_ID: string;
-declare const GA_TRACKING_ID: string;
-declare const NODE_ENV: 'development' | 'production';
+declare module NodeJS {
+    interface ProcessEnv {
+        readonly NODE_ENV: 'development' | 'production';
+        readonly GA_TRACKING_ID: string;
+        readonly FIREBASE_API_KEY: string;
+        readonly FIREBASE_AUTH_DOMAIN: string;
+        readonly FIREBASE_PROJECT_ID: string;
+        readonly FIREBASE_STORAGE_BUCKET: string;
+        readonly FIREBASE_MESSAGING_SENDER_ID: string;
+        readonly FIREBASE_APP_ID: string;
+        readonly FIREBASE_MEASUREMENT_ID: string;
+    }
+}
