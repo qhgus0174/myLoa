@@ -89,7 +89,6 @@
     "scripts": {
         "build": "webpack --config webpack.prod.js",
         "dev": "webpack-dev-server --hot --open --config webpack.dev.js",
-        "start": "node server.js",
         "server": "nodemon --watch \"src/**/*.ts\" --exec \"ts-node\" ./src/server/index.ts"
     },
     "_moduleAliases": {
