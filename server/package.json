@@ -1,16 +1,8 @@
 {
-  "name": "chewyserver",
+  "name": "myloatest",
   "version": "1.0.0",
-  "description": "",
-  "scripts": {
-    "build": "tsc -p .",
-    "dev": "concurrently \"yarn dev:server\" \"yarn dev:client\"",
-    "dev:client": "cd ../client && yarn dev",
-    "dev:server": "nodemon --watch \"**/*.ts\" --exec \"ts-node\" index.ts"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "main": "index.js",
+  "license": "MIT",
   "devDependencies": {
     "@types/axios": "^0.14.0",
     "@types/express": "^4.17.13",
@@ -35,7 +27,16 @@
     "body-parser": "^1.19.0",
     "concurrently": "^6.4.0",
     "luxon": "^2.1.1",
-    "pg": "^8.7.1",
-    "riot-api-types": "^1.0.2"
+    "pg": "^8.7.1"
+  },
+  "engines": {
+    "node": "14.17.5",
+    "yarn": "1.22.11"
+  },
+  "scripts": {
+    "build": "tsc -p .",
+    "dev": "concurrently \"yarn dev:server\" \"yarn dev:client\"",
+    "dev:client": "cd ../client && yarn dev",
+    "dev:server": "nodemon --watch \"**/*.ts\" --exec \"ts-node\" index.ts"
   }
 }
