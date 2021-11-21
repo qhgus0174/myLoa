@@ -34,6 +34,7 @@
     "yarn": "1.22.11"
   },
   "scripts": {
+    "start": "nodemon --watch \"**/*.ts\" --exec \"ts-node\" index.ts",
     "build": "tsc -p .",
     "dev": "concurrently \"yarn dev:server\" \"yarn dev:client\"",
     "dev:client": "cd ../client && yarn dev",
