@@ -21,12 +21,10 @@ const getStartIndex = (arr: string[] | string[][], oriData: string): string => {
 };
 
 const updateWeeklyContents = async () => {
-    const { result: weeklyGuardian } = (await (await axios.get(`http://localhost:8080/guardian`)).data) as IResponse;
-    const { result: weeklyAbyss } = (await (await axios.get(`http://localhost:8080/abyss`)).data) as IResponse;
+    const { result: weeklyGuardian } = (await (await axios.get(`/guardian`)).data) as IResponse;
+    const { result: weeklyAbyss } = (await (await axios.get(`/abyss`)).data) as IResponse;
 
-    const { result: weeklycontents } = (await (
-        await axios.get(`http://localhost:8080/weeklyContents`)
-    ).data) as IResponse;
+    const { result: weeklycontents } = (await (await axios.get(`/weeklyContents`)).data) as IResponse;
 
     const guardianArr = weeklyGuardian.map((wG: IGuardian) => {
         return wG.name;
@@ -38,7 +36,7 @@ const updateWeeklyContents = async () => {
 
     const guardianIndex = weeklycontents.guardian;
     const abyssIndex = weeklycontents.abyss;
-    await axios.put(`http://localhost:8080/weeklyContents/edit`, {
+    await axios.put(`/weeklyContents/edit`, {
         guardian: getStartIndex(guardianArr, guardianIndex),
         abyss: getStartIndex(abyssArr, abyssIndex),
     });
