@@ -38,7 +38,7 @@ const updateWeeklyContents = async () => {
 
     const guardianIndex = weeklycontents.guardian;
     const abyssIndex = weeklycontents.abyss;
-    await axios.put('http://localhost:8080/weeklyContents/edit', {
+    await axios.put(`http://localhost:8080/weeklyContents/edit`, {
         guardian: getStartIndex(guardianArr, guardianIndex),
         abyss: getStartIndex(abyssArr, abyssIndex),
     });
