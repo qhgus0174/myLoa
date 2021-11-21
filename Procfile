@@ -1,1 +1,1 @@
-web: yarn start
+web: ts-node ./src/index.ts
