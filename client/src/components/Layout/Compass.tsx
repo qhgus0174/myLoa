@@ -17,7 +17,7 @@ const Compass = () => {
     const getCompass = () => {
         const dayOfWeek = Number(DateTime.now().toFormat('c'));
         const hour = Number(DateTime.now().toFormat('H'));
-        const calcDayOfWeek = hour > 5 ? dayOfWeek - 1 : dayOfWeek - 2;
+        const calcDayOfWeek = hour > 5 ? dayOfWeek - 1 : dayOfWeek - 2 < 0 ? 0 : dayOfWeek - 2;
 
         const { ghost, chaosGate, fieldBoss } = CompassInfo;
 
