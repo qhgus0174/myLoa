@@ -1,6 +1,5 @@
 {
-  "include": ["src/**/*", "server", "server"],
-  "typeRoots": ["src/client/types/custom.d.ts"],
+  "include": ["src/**/*"],
   "ts-node": {
     "compilerOptions": {
       "module": "CommonJS"
@@ -11,6 +10,7 @@
     "target": "es6",
     "sourceMap": true,
     "strict": true,
+    "noEmit": true,
     "baseUrl": "./src",
     "skipLibCheck": true,
     "module": "CommonJS",

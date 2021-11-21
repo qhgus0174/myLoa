@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start": "node dist/app.js",
     "build": "tsc -p .",
     "dev": "concurrently \"yarn dev:server\" \"yarn dev:client\"",
     "dev:client": "cd ../client && yarn dev",
