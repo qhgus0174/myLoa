@@ -35,7 +35,7 @@
   },
   "scripts": {
     "start": "ts-node ./src/index.ts",
-    "heroku-postbuild": "cd client && yarn install -D && yarn build",
+    "heroku-postbuild": "cd client && yarn install && yarn build",
     "dev": "concurrently \"yarn dev:client\" \"yarn dev:server\" ",
     "dev:client": "cd ./client && yarn dev",
     "dev:server": "nodemon --watch \"**/*.ts\" --exec \"ts-node\" ./src/index.ts"
