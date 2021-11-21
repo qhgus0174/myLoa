@@ -36,6 +36,5 @@ declare module NodeJS {
         readonly POSTGRESQL_PASSWORD: string;
         readonly POSTGRESQL_USER: string;
         readonly POSTGRESQL_HOST: string;
-        readonly EXPRESS_PORT: string;
     }
 }

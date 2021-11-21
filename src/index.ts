@@ -5,23 +5,16 @@ import bodyParser from "body-parser";
 
 const app = express();
 const path = require("path");
-const distPath = path.join("client/dist");
+const distPath = path.join("./client/dist");
 
 app.use(bodyParser.json());
 
-//라우터
-app.use("/", router);
-
 app.use(express.static(distPath));
+
+app.use("/", router);
 
 app.get("*", (req, res) => {
   res.sendFile(path.join(distPath, "index.html"));
 });
 
-app.listen(process.env.PORT || 8080, () => {
-  console.log(`
-################################################
-🛡️  Server listening on port: ${process.env.EXPRESS_PORT} 🛡️
-################################################
-`);
-});
+app.listen(process.env.PORT || 8080, () => {});
