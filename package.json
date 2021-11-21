@@ -34,9 +34,8 @@
     "yarn": "1.22.11"
   },
   "scripts": {
-    "build": "tsc -p .",
-    "heroku-postbuild": "concurrently \"yarn dev:server\" \"yarn dev:client\"",
-    "dev": "concurrently \"yarn dev:server\" \"yarn dev:client\"",
+    "start": "ts-node ./src/index.ts",
+    "dev": "concurrently \"yarn dev:client\" \"yarn dev:server\" ",
     "dev:client": "cd ./client && yarn dev",
     "dev:server": "nodemon --watch \"**/*.ts\" --exec \"ts-node\" ./src/index.ts"
   }
