@@ -1,7 +1,7 @@
-import { weeklyAbyss } from '@common/data/weeklyAbyss';
-import { weeklyGuardian } from '@common/data/weeklyGuardian';
+import { weeklyAbyss } from '../common/data/weeklyAbyss';
+import { weeklyGuardian } from '../common/data/weeklyGuardian';
 import axios from 'axios';
-import { IResponse, IWeeklyContents } from '@common/responseType';
+import { IResponse, IWeeklyContents } from '../common/responseType';
 
 const getStartIndex = (arr: string[] | string[][], oriData: string): string => {
     const length = arr.length;
