@@ -72,7 +72,7 @@ const Manage = () => {
             </ManageDiv>
             <ManageDiv direction="column">
                 <ManageInnerDiv>
-                    <span>데이터를 백업하여 다른 브라우저에서 열람 가능합니다. </span>
+                    <span>데이터를 백업하여 다른 브라우저에서 열람 가능합니다. (일회용) </span>
                 </ManageInnerDiv>
                 <ManageInnerDiv>
                     <ManageButton onClick={() => backupData()}>코드 생성</ManageButton>
