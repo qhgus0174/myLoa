@@ -1,6 +1,4 @@
 import ReactGA from 'react-ga';
-import dotenv from 'dotenv';
-dotenv.config();
 
 interface TrackPageViewParams {
     path: string;

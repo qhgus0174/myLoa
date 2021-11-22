@@ -1,5 +1,5 @@
 export interface IResponse {
-  status: "SUCCESS" | "ERR";
-  result: any;
-  message?: string;
+    status: 'SUCCESS' | 'ERR';
+    result: any;
+    message?: string;
 }

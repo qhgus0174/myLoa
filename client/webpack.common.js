@@ -6,7 +6,6 @@ const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin'
 const ForkTsCheckerWebpackPlugin = require('fork-ts-checker-webpack-plugin');
 const isDevelopment = process.env.NODE_ENV !== 'production';
 const TsconfigPathsPlugin = require('tsconfig-paths-webpack-plugin');
-const DotEnv = require('dotenv-webpack');
 
 module.exports = {
     entry: {
@@ -67,7 +66,6 @@ module.exports = {
             showErrors: true,
         }),
         new ForkTsCheckerWebpackPlugin(),
-        new DotEnv(),
     ].concat(isDevelopment ? [new ReactRefreshWebpackPlugin()] : []),
 
     resolve: {

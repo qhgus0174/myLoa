@@ -1,29 +1,29 @@
 {
-  "include": ["src/**/*"],
-  "ts-node": {
+    "include": ["src/**/*"],
+    "ts-node": {
+        "compilerOptions": {
+            "module": "CommonJS"
+        }
+    },
+    "exclude": ["node_modules"],
     "compilerOptions": {
-      "module": "CommonJS"
+        "removeComments": true,
+        "target": "es6",
+        "sourceMap": true,
+        "strict": true,
+        "baseUrl": "./src",
+        "skipLibCheck": true,
+        "module": "CommonJS",
+        "outDir": "./dist",
+        "rootDir": ".",
+        "esModuleInterop": true,
+        "forceConsistentCasingInFileNames": true,
+        "noFallthroughCasesInSwitch": true,
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "allowJs": true,
+        "allowSyntheticDefaultImports": true,
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "isolatedModules": true
     }
-  },
-  "exclude": ["node_modules"],
-  "compilerOptions": {
-    "removeComments": true,
-    "target": "es6",
-    "sourceMap": true,
-    "strict": true,
-    "baseUrl": "./src",
-    "skipLibCheck": true,
-    "module": "CommonJS",
-    "outDir": "./dist",
-    "rootDir": ".",
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "allowSyntheticDefaultImports": true,
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true
-  }
 }
