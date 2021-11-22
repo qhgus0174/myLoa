@@ -37,9 +37,9 @@
     "start": "node dist/index.js",
     "build": "tsc",
     "postinstall": "yarn build",
-    "heroku-postbuild": "cd src/client && npm install --dev && yarn build",
+    "heroku-postbuild": "cd client && npm install --dev && yarn build",
     "dev": "concurrently \"yarn dev:client\" \"yarn dev:server\" ",
-    "dev:client": "cd src/client && yarn dev",
+    "dev:client": "cd client && yarn dev",
     "dev:server": "nodemon --watch \"src/**/*.ts\" --exec \"ts-node\" src/index.ts"
   }
 }
