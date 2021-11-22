@@ -1,4 +1,4 @@
-export interface IGurdian {
+export interface IGuardian {
     step: string;
     stepName: string;
     list: INameValue[];
@@ -9,7 +9,7 @@ interface INameValue {
     name: string;
 }
 
-export const GuardianInfo: IGurdian[] = [
+export const GuardianInfo: IGuardian[] = [
     {
         step: '1',
         stepName: '토벌 1단계',
