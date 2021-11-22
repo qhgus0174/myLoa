@@ -12,7 +12,7 @@ export interface ITodo {
     isFixed: boolean;
 }
 
-export interface IGurdianInfo {
+export interface IGuardianInfo {
     step: string;
     info: string;
 }
@@ -23,7 +23,7 @@ export interface ICharacterTodo {
     relaxGauge: number;
     oriRelaxGauge: number;
     eponaName: string[];
-    guardianInfo: IGurdianInfo;
+    guardianInfo: IGuardianInfo;
     text?: string;
     memo?: string;
 }

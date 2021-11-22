@@ -1,45 +1,35 @@
-import React, { useEffect, useState } from 'react';
-import { DateTime } from 'luxon';
-import { CompassInfo } from '@common/data/compass';
+import React, { useContext, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { FlexDiv } from '@style/common';
 import { widthMedia } from '@style/device';
+import Button from '@components/Button/Button';
+import { ModalActionContext } from '@context/ModalContext';
+import DayContents from '@components/Contents/DayContents';
+import WeeklyContents from '@components/Contents/WeeklyContents';
 
 const Compass = () => {
-    useEffect(() => {
-        getCompass();
-    }, []);
+    const { setModalProps } = useContext(ModalActionContext);
 
-    const [fieldBoss, setFieldBoss] = useState<boolean>(false);
-    const [ghost, setGhost] = useState<boolean>(false);
-    const [chaosGate, setChaosGate] = useState<boolean>(false);
+    const openDayContents = () => {
+        setModalProps({
+            isOpen: true,
+            content: <DayContents />,
+            options: { width: '300', height: '210', headerTitle: '일일 컨텐츠', isHeaderClose: true },
+        });
+    };
 
-    const getCompass = () => {
-        const dayOfWeek = Number(DateTime.now().toFormat('c'));
-        const hour = Number(DateTime.now().toFormat('H'));
-        const calcDayOfWeek = hour > 5 ? dayOfWeek - 1 : dayOfWeek - 2 < 0 ? 0 : dayOfWeek - 2;
-
-        const { ghost, chaosGate, fieldBoss } = CompassInfo;
-
-        fieldBoss[calcDayOfWeek] === 1 && setFieldBoss(true);
-        ghost[calcDayOfWeek] === 1 && setGhost(true);
-        chaosGate[calcDayOfWeek] === 1 && setChaosGate(true);
+    const openWeeklyContents = () => {
+        setModalProps({
+            isOpen: true,
+            content: <WeeklyContents />,
+            options: { width: '400', height: '400', headerTitle: '주간 컨텐츠', isHeaderClose: true },
+        });
     };
 
     return (
         <CompassContainer>
-            <CompassDiv active={fieldBoss}>
-                <span>필드 보스</span>
-                <span> : {fieldBoss ? 'O' : 'X'}</span>
-            </CompassDiv>
-            <CompassDiv active={ghost}>
-                <span>유령선</span>
-                <span> : {ghost ? 'O' : 'X'}</span>
-            </CompassDiv>
-            <CompassDiv active={chaosGate}>
-                <span>카오스 게이트</span>
-                <span> : {chaosGate ? 'O' : 'X'}</span>
-            </CompassDiv>
+            <Button onClick={openDayContents}>🔎 일일 컨텐츠</Button>
+            <Button onClick={openWeeklyContents}>🔎 주간 컨텐츠</Button>
         </CompassContainer>
     );
 };
@@ -56,19 +46,6 @@ const CompassContainer = styled(FlexDiv)`
 
     ${widthMedia.phone} {
         width: 100%;
-    }
-`;
-
-const CompassDiv = styled.span<{ active: boolean }>`
-    span {
-        color: ${props => (props.active ? props.theme.colors.compassActive : props.theme.colors.gray)};
-        font-weight: ${props => (props.active ? `600` : `400`)};
-    }
-
-    ${widthMedia.phone} {
-        span:nth-of-type(2) {
-            display: none;
-        }
     }
 `;
 
