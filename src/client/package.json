@@ -88,8 +88,7 @@
     },
     "scripts": {
         "build": "webpack --config webpack.prod.js",
-        "dev": "webpack-dev-server --hot --open --config webpack.dev.js",
-        "server": "nodemon --watch \"src/**/*.ts\" --exec \"ts-node\" ./src/server/index.ts"
+        "dev": "webpack-dev-server --hot --open --config webpack.dev.js"
     },
     "_moduleAliases": {
         "@routes": [

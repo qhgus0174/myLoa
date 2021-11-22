@@ -6,7 +6,6 @@ import bodyParser from "body-parser";
 const app = express();
 const path = require("path");
 const distPath = path.join(__dirname, "../client/dist");
-
 app.use(bodyParser.json());
 
 app.use(express.static(distPath));

@@ -38,6 +38,10 @@ const Manage = () => {
                 content: <BackupCreate backupCode={backupkey} />,
                 options: { width: '300', height: '250', headerTitle: '백업 코드 생성 완료' },
             });
+            toast.success(
+                '데이터 백업 코드가 생성되었습니다.',
+            );
+
         } catch (err: unknown) {
             const { message } = err as Error;
             toast.error('데이터 백업 중 오류가 발생했습니다.');
