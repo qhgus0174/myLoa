@@ -40,7 +40,7 @@ const BackupModal = () => {
             const { message } = err as Error;
             toast.error('백업 데이터를 가져 오던 중 오류가 발생했습니다.');
 
-            await axios.post('/api/error', {
+            await axios.post('/error', {
                 message: message,
                 dataColumn1: newBackupCode,
                 errType: 'backup',
@@ -55,7 +55,7 @@ const BackupModal = () => {
             const {
                 result: { todo, todoord, character, characterord },
             } = (await (
-                await axios.get(`/api/backup/${newBackupCode}`)
+                await axios.get(`/backup/${newBackupCode}`)
             ).data) as IResponse;
 
             setStorageTodo(todo);
@@ -65,7 +65,7 @@ const BackupModal = () => {
         } catch (err: unknown) {
             const { message } = err as Error;
 
-            await axios.post('/api/error', {
+            await axios.post('/error', {
                 message: message,
                 dataColumn1: newBackupCode,
                 errType: 'setBackup',
@@ -75,11 +75,11 @@ const BackupModal = () => {
 
     const deleteBackupData = async () => {
         try {
-            await axios.delete(`/api/backup/delete/${newBackupCode}`);
+            await axios.delete(`/backup/delete/${newBackupCode}`);
         } catch (err: unknown) {
             const { message } = err as Error;
 
-            await axios.post('/api/error', {
+            await axios.post('/error', {
                 message: message,
                 dataColumn1: newBackupCode,
                 errType: 'deleteBackup',
