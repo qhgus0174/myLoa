@@ -1,10 +1,6 @@
 import dbPool from '../config/db';
 import { QueryResult } from 'pg';
-
-interface IWeeklyContents {
-    guardian: string;
-    abyss: string;
-}
+import { IWeeklyContents } from 'type/response';
 
 const WeeklyContents = {
     getWeeklyContents: async (): Promise<QueryResult<IWeeklyContents>> =>
@@ -16,4 +12,3 @@ const WeeklyContents = {
 };
 
 export { WeeklyContents };
-export type { IWeeklyContents };

@@ -1,7 +1,7 @@
-import { IBackup } from '../../controllers/backup';
 import { Backup } from '../../controllers/backup';
 import express, { Request, Response } from 'express';
-import { IResponse } from '../../type/response';
+import { IBackup, IError, IResponse } from '../../type/response';
+import { QueryResult } from 'pg';
 
 const router = express.Router();
 
@@ -16,10 +16,10 @@ router.get('/:backupKey', async (req: Request, res: Response) => {
         res.status(201).send({
             status: 'SUCCESS',
             result: result.rows[0],
-        } as IResponse);
+        } as IResponse<IBackup>);
     } catch (e: unknown) {
         const { message } = e as Error;
-        res.status(500).send({ status: 'ERR', message: message } as IResponse);
+        res.status(500).send({ status: 'ERR', result: { message: message } } as IResponse<IError>);
     }
 });
 
@@ -35,10 +35,10 @@ router.post('/', async (req: Request, res: Response) => {
         res.status(201).send({
             status: 'SUCCESS',
             result: result,
-        } as IResponse);
+        } as IResponse<QueryResult<Pick<IBackup, 'backupKey'>>>);
     } catch (e: unknown) {
         const { message } = e as Error;
-        res.status(500).send({ status: 'ERR', message: message } as IResponse);
+        res.status(500).send({ status: 'ERR', result: { message: message } } as IResponse<IError>);
     }
 });
 
@@ -55,7 +55,7 @@ router.delete('/delete/:backupKey', async (req: Request, res: Response) => {
         } as IResponse);
     } catch (e: unknown) {
         const { message } = e as Error;
-        res.status(500).send({ status: 'ERR', message: message } as IResponse);
+        res.status(500).send({ status: 'ERR', result: { message: message } } as IResponse<IError>);
     }
 });
 

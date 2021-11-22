@@ -1,14 +1,6 @@
 import dbPool from '../config/db';
-import { QueryResult } from 'pg';
 import { DateTime } from 'luxon';
-
-interface IError {
-    message: string;
-    dataColumn1?: string;
-    dataColumn2?: string;
-    dataColumn3?: string;
-    errType: 'backup' | 'croll' | 'other';
-}
+import { IError } from 'type/response';
 
 const Error = {
     insertError: async ({ message, dataColumn1, dataColumn2, dataColumn3, errType }: IError): Promise<void> => {
@@ -22,4 +14,3 @@ const Error = {
 };
 
 export { Error };
-export type { IError };

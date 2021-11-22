@@ -1,17 +1,17 @@
 import React, { useContext } from 'react';
+import axios from 'axios';
 import { toast } from 'react-toastify';
 import { getStorage } from '@storage/index';
 import { ModalActionContext } from '@context/ModalContext';
 import { SpinnerContext } from '@context/SpinnerContext';
-import Clear from '@components/LocalStorage/Clear';
-import Backup from '@components/LocalStorage/BackupModal';
+import BackupCreate from '@components/Backup/BackupCreate';
+import Clear from '@components/Backup/Clear';
+import Backup from '@components/Backup/BackupModal';
 import Button from '@components/Button/Button';
+import { IBackup, IError, IResponse } from '@common/responseType';
 import styled from '@emotion/styled';
 import { FlexDiv } from '@style/common';
 import { widthMedia } from '@style/device';
-import axios from 'axios';
-import { IError, IResponse } from 'types/response';
-import BackupCreate from '@components/LocalStorage/BackupCreate';
 
 const Manage = () => {
     const { setSpinnerVisible } = useContext(SpinnerContext);
@@ -30,8 +30,8 @@ const Manage = () => {
             const {
                 result: { backupkey },
             } = (await (
-                await axios.post('/backup', params)
-            ).data) as IResponse;
+                await axios.post('/api/backup', params)
+            ).data) as IResponse<Pick<IBackup, 'backupkey'>>;
 
             setModalProps({
                 isOpen: true,
@@ -42,7 +42,7 @@ const Manage = () => {
         } catch (err: unknown) {
             const { message } = err as Error;
             toast.error('데이터 백업 중 오류가 발생했습니다.');
-            await axios.post('/error', { message: message, errType: 'backup' } as IError);
+            await axios.post('/api/error', { message: message, errType: 'backup' } as IError);
         } finally {
             setSpinnerVisible(false);
         }

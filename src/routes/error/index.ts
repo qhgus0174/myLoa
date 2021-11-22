@@ -1,7 +1,6 @@
-import { IError } from '../../controllers/error';
 import { Error } from '../../controllers/error';
 import express, { Request, Response } from 'express';
-import { IResponse } from '../../type/response';
+import { IError, IResponse } from '../../type/response';
 
 const router = express.Router();
 
@@ -25,7 +24,7 @@ router.post('/', async (req: Request, res: Response) => {
 
         console.log('error message : ', message);
 
-        res.status(500).send({ status: 'ERR', message: message } as IResponse);
+        res.status(500).send({ status: 'ERR', result: { message: message } } as IResponse<IError>);
     }
 });
 

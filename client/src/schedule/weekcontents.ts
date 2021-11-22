@@ -1,16 +1,7 @@
+import { weeklyAbyss } from '../common/data/weeklyAbyss';
+import { weeklyGuardian } from '../common/data/weeklyGuardian';
 import axios from 'axios';
-import { IResponse } from 'types/response';
-
-interface IAbyss {
-    id: string;
-    name1: string;
-    name2: string;
-}
-
-interface IGuardian {
-    id: string;
-    name: string;
-}
+import { IResponse, IWeeklyContents } from '@common/responseType';
 
 const getStartIndex = (arr: string[] | string[][], oriData: string): string => {
     const length = arr.length;
@@ -21,24 +12,15 @@ const getStartIndex = (arr: string[] | string[][], oriData: string): string => {
 };
 
 const updateWeeklyContents = async () => {
-    const { result: weeklyGuardian } = (await (await axios.get(`/guardian`)).data) as IResponse;
-    const { result: weeklyAbyss } = (await (await axios.get(`/abyss`)).data) as IResponse;
+    const {
+        result: { guardian: guardianIndex, abyss: abyssIndex },
+    } = (await (
+        await axios.get(`/api/weeklyContents`)
+    ).data) as IResponse<IWeeklyContents>;
 
-    const { result: weeklycontents } = (await (await axios.get(`/weeklyContents`)).data) as IResponse;
-
-    const guardianArr = weeklyGuardian.map((wG: IGuardian) => {
-        return wG.name;
-    });
-
-    const abyssArr = weeklyAbyss.map((wA: IAbyss) => {
-        return [wA.name1, wA.name2];
-    });
-
-    const guardianIndex = weeklycontents.guardian;
-    const abyssIndex = weeklycontents.abyss;
-    await axios.put(`/weeklyContents/edit`, {
-        guardian: getStartIndex(guardianArr, guardianIndex),
-        abyss: getStartIndex(abyssArr, abyssIndex),
+    await axios.put(`/api/weeklyContents/edit`, {
+        guardian: getStartIndex(weeklyAbyss, guardianIndex),
+        abyss: getStartIndex(weeklyGuardian, abyssIndex),
     });
 };
 

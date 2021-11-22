@@ -1,7 +1,6 @@
-import { IWeeklyContents } from '../../controllers/weeklyContents';
 import { WeeklyContents } from '../../controllers/weeklyContents';
 import express, { Request, Response } from 'express';
-import { IResponse } from '../../type/response';
+import { IError, IResponse, IWeeklyContents } from '../../type/response';
 
 const router = express.Router();
 
@@ -12,10 +11,10 @@ router.get('/', async (req: Request, res: Response) => {
         res.status(201).send({
             status: 'SUCCESS',
             result: result.rows[0],
-        } as IResponse);
+        } as IResponse<IWeeklyContents>);
     } catch (e: unknown) {
         const { message } = e as Error;
-        res.status(500).send({ status: 'ERR', message: message } as IResponse);
+        res.status(500).send({ status: 'ERR', result: { message: message } } as IResponse<IError>);
     }
 });
 
@@ -33,7 +32,7 @@ router.put('/edit', async (req: Request, res: Response) => {
         } as IResponse);
     } catch (e: unknown) {
         const { message } = e as Error;
-        res.status(500).send({ status: 'ERR', message: message } as IResponse);
+        res.status(500).send({ status: 'ERR', result: { message: message } } as IResponse<IError>);
     }
 });
 

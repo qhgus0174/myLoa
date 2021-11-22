@@ -1,14 +1,7 @@
 import dbPool from '../config/db';
 import { QueryResult } from 'pg';
 import { DateTime } from 'luxon';
-
-interface IBackup {
-    backupKey: string;
-    todo: string;
-    todoOrd: string;
-    character: string;
-    characterOrd: string;
-}
+import { IBackup } from 'type/response';
 
 const Backup = {
     getBackup: async ({ backupKey }: Pick<IBackup, 'backupKey'>): Promise<QueryResult<IBackup>> =>
@@ -36,4 +29,3 @@ const Backup = {
 };
 
 export { Backup };
-export type { IBackup };
