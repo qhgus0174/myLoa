@@ -80,11 +80,11 @@ module.exports = {
         alias: {
             '@assets': path.resolve(__dirname, 'src/assets'),
         },
+        fallback: {
+            fs: false,
+        },
     },
     performance: {
         hints: false,
-    },
-    node: {
-        fs: 'empty',
     },
 };
