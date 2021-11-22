@@ -1,5 +1,7 @@
 import React, { useContext } from 'react';
 import { useHistory } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import axios from 'axios';
 import { useInput } from '@hooks/useInput';
 import useCharacterOrd from '@hooks/storage/useCharacterOrd';
 import useCharacter from '@hooks/storage/useCharacter';
@@ -9,10 +11,8 @@ import { ModalActionContext } from '@context/ModalContext';
 import { SpinnerContext } from '@context/SpinnerContext';
 import Button from '@components/Button/Button';
 import TextBox from '@components/Input/TextBox';
+import { IBackup, IError, IResponse } from '@common/responseType';
 import { FormButtonContainer, FormContainer, FormDivContainer } from '@style/common/modal';
-import { toast } from 'react-toastify';
-import axios from 'axios';
-import { IError, IResponse } from 'types/response';
 
 const BackupModal = () => {
     const [newBackupCode, setNewBackupCode] = useInput<string>('');
@@ -40,7 +40,7 @@ const BackupModal = () => {
             const { message } = err as Error;
             toast.error('백업 데이터를 가져 오던 중 오류가 발생했습니다.');
 
-            await axios.post('/error', {
+            await axios.post('/api/error', {
                 message: message,
                 dataColumn1: newBackupCode,
                 errType: 'backup',
@@ -55,8 +55,8 @@ const BackupModal = () => {
             const {
                 result: { todo, todoord, character, characterord },
             } = (await (
-                await axios.get(`/backup/${newBackupCode}`)
-            ).data) as IResponse;
+                await axios.get(`/api/backup/${newBackupCode}`)
+            ).data) as IResponse<IBackup>;
 
             setStorageTodo(todo);
             setStorageTodoOrd(todoord);
@@ -65,7 +65,7 @@ const BackupModal = () => {
         } catch (err: unknown) {
             const { message } = err as Error;
 
-            await axios.post('/error', {
+            await axios.post('/api/error', {
                 message: message,
                 dataColumn1: newBackupCode,
                 errType: 'setBackup',
@@ -75,11 +75,11 @@ const BackupModal = () => {
 
     const deleteBackupData = async () => {
         try {
-            await axios.delete(`/backup/delete/${newBackupCode}`);
+            await axios.delete(`/api/backup/delete/${newBackupCode}`);
         } catch (err: unknown) {
             const { message } = err as Error;
 
-            await axios.post('/error', {
+            await axios.post('/api/error', {
                 message: message,
                 dataColumn1: newBackupCode,
                 errType: 'deleteBackup',
