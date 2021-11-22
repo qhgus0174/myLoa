@@ -12,6 +12,7 @@ import styled from '@emotion/styled';
 import { ThemeProvider } from '@emotion/react';
 import { GlobalStyle } from '@style/global-styles';
 import Manage from '@routes/Manage';
+import { widthMedia } from '@style/device';
 
 const AppRouter = () => {
     const { theme } = useContext(GlobalThemeContext);

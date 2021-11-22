@@ -87,7 +87,6 @@ const ManageContainer = styled(FlexDiv)`
     width: 70%;
     justify-content: center;
     align-items: center;
-    height: 50vh;
     margin-top: 3em;
     margin-bottom: 3em;
     box-sizing: border-box;

@@ -1,11 +1,11 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useState } from 'react';
 import styled from '@emotion/styled';
 import { widthMedia } from '@style/device';
 import { GlobalThemeContext } from '@context/GlobalThemeContext';
 import { css } from '@emotion/react';
-import { ReactComponent as PaletteIcon } from '@assets/img/palette.svg';
 import { mainColor } from '@style/theme';
 import { FlexDiv } from '@style/common';
+import Theme from '@assets/icon/theme.png';
 
 const SelectTheme = () => {
     const [visible, setVisible] = useState<boolean>(false);
@@ -13,14 +13,10 @@ const SelectTheme = () => {
 
     return (
         <SelectThemeContainer>
-            <span
-                css={css`
-                    cursor: pointer;
-                `}
-                onClick={() => setVisible(!visible)}
-            >
-                테마
-            </span>
+            <ThemeTitle onClick={() => setVisible(!visible)}>
+                <img src={Theme} />
+                <span>테마</span>
+            </ThemeTitle>
             <PaletteDiv visible={visible}>
                 {mainColor.map((color, index) => {
                     return (
@@ -53,5 +49,26 @@ const PaletteDiv = styled(FlexDiv)<{ visible: boolean }>`
     height: 10em;
     top: 30px;
     position: absolute;
+
+    ${widthMedia.phone} {
+        left: -90px;
+        top: -160px;
+    }
 `;
+
+const ThemeTitle = styled.div`
+    cursor: pointer;
+    img {
+        display: none;
+    }
+    ${widthMedia.smallPhone} {
+        img {
+            display: block;
+        }
+        span {
+            display: none;
+        }
+    }
+`;
+
 export default SelectTheme;

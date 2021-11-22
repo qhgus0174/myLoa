@@ -28,24 +28,44 @@ const Compass = () => {
 
     return (
         <CompassContainer>
-            <Button onClick={openDayContents}>🔎 일일 컨텐츠</Button>
-            <Button onClick={openWeeklyContents}>🔎 주간 컨텐츠</Button>
+            <Button onClick={openDayContents}>
+                🔎 일일 <ButtonInnerText>컨텐츠</ButtonInnerText>
+            </Button>
+            <Button onClick={openWeeklyContents}>
+                🔎 주간 <ButtonInnerText>컨텐츠</ButtonInnerText>
+            </Button>
         </CompassContainer>
     );
 };
 
 const CompassContainer = styled(FlexDiv)`
     align-items: center;
-    width: 50%;
-    justify-content: space-around;
+    justify-content: center;
     font-weight: 500;
+    width: 80%;
 
-    ${widthMedia.desktop} {
+    button:nth-of-type(2) {
+        margin-left: 2em;
+    }
+
+    ${widthMedia.tablet} {
         flex-direction: column;
+        button:nth-of-type(1) {
+            margin-bottom: 0.5em;
+        }
+        button:nth-of-type(2) {
+            margin-left: 0;
+        }
     }
 
     ${widthMedia.phone} {
         width: 100%;
+    }
+`;
+
+const ButtonInnerText = styled.span`
+    ${widthMedia.phone} {
+        display: none;
     }
 `;
 

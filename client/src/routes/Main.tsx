@@ -250,10 +250,13 @@ const Main = () => {
 
 const MainDiv = styled(FlexDiv)`
     width: 88%;
+    margin-top: 0.1em;
     ${widthMedia.phone} {
         width: 95%;
     }
-    margin-top: 0.1em;
+    ${widthMedia.smallPhone} {
+        margin-top: 2.1em;
+    }
 `;
 
 const TodoContentsDiv = styled.div`
@@ -261,6 +264,10 @@ const TodoContentsDiv = styled.div`
     padding: 1.5em;
     border-radius: 1em;
     box-sizing: border-box;
+
+    ${widthMedia.smallPhone} {
+        margin-bottom: 60px;
+    }
 `;
 
 const HideButtonContainer = styled.div<{ isFold: boolean }>`
@@ -270,7 +277,7 @@ const HideButtonContainer = styled.div<{ isFold: boolean }>`
         display: flex;
         justify-content: end;
         align-items: center;
-        margin-bottom: 1em;
+        margin-bottom: 1.2em;
         justify-content: space-between;
     }
 `;

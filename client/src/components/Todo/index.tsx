@@ -108,7 +108,7 @@ const TodoContainer = styled.div`
         height: 55vh;
     }
     ${heightMedia.medium} {
-        height: 50vh;
+        height: 60vh;
     }
     overflow-y: auto;
 `;

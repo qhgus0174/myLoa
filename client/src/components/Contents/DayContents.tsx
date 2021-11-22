@@ -29,22 +29,20 @@ const DayContents = () => {
     };
 
     return (
-        <FormContainer>
-            <CompassContainer>
-                <CompassDiv active={fieldBoss}>
-                    <span> {fieldBoss ? '⭕' : '❌'}</span>
-                    <span>필드 보스</span>
-                </CompassDiv>
-                <CompassDiv active={ghost}>
-                    <span> {ghost ? '⭕' : '❌'}</span>
-                    <span>유령선</span>
-                </CompassDiv>
-                <CompassDiv active={chaosGate}>
-                    <span> {chaosGate ? '⭕' : '❌'}</span>
-                    <span>카오스 게이트</span>
-                </CompassDiv>
-            </CompassContainer>
-        </FormContainer>
+        <CompassContainer>
+            <CompassDiv active={fieldBoss}>
+                <span> {fieldBoss ? '⭕' : '❌'}</span>
+                <span>필드 보스</span>
+            </CompassDiv>
+            <CompassDiv active={ghost}>
+                <span> {ghost ? '⭕' : '❌'}</span>
+                <span>유령선</span>
+            </CompassDiv>
+            <CompassDiv active={chaosGate}>
+                <span> {chaosGate ? '⭕' : '❌'}</span>
+                <span>카오스 게이트</span>
+            </CompassDiv>
+        </CompassContainer>
     );
 };
 
