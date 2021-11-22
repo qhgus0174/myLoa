@@ -34,7 +34,7 @@
     "yarn": "1.22.11"
   },
   "scripts": {
-    "start": "node dist/index.js",
+    "start": "node dist/src/index.js",
     "build": "tsc",
     "postinstall": "yarn build",
     "heroku-postbuild": "cd client && npm install --dev && yarn build",
