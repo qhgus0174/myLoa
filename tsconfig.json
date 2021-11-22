@@ -5,6 +5,7 @@
       "module": "CommonJS"
     }
   },
+  "exclude": ["node_modules"],
   "compilerOptions": {
     "removeComments": true,
     "target": "es6",
