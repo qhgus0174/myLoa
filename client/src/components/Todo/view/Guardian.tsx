@@ -1,7 +1,7 @@
 import React from 'react';
 import useTodo from '@hooks/storage/useTodo';
-import { ICharacterTodo, IGurdianInfo, ITodo } from '@components/Todo/TodoType';
-import { GuardianInfo, IGurdian } from '@common/data/guardian';
+import { ICharacterTodo, IGuardianInfo, ITodo } from '@components/Todo/TodoType';
+import { GuardianInfo, IGuardian } from '@common/data/guardian';
 import { getStorage } from '@storage/index';
 import styled from '@emotion/styled';
 import { FlexDiv } from '@style/common';
@@ -10,7 +10,7 @@ interface IGuardianParam {
     todo: ITodo;
     todoIndex: number;
     characterId: number;
-    characterGuardianInfo: IGurdianInfo;
+    characterGuardianInfo: IGuardianInfo;
     charTodo: ICharacterTodo;
     characterIndex: number;
     setGuardianStep: (e: string) => void;
@@ -74,25 +74,25 @@ const Guardian = ({
     };
 
     return (
-        <GurdianDiv
+        <GuardianDiv
             direction="column"
             onTouchEnd={e => onTouchEnd({ e: e, charTodo: charTodo, characterIndex: characterIndex })}
             onClick={e => onClick(e, characterId)}
         >
-            <GurdianSelectBox
+            <GuardianSelectBox
                 key={`guardian_step_${characterId}`}
                 onChange={e => updateGuardianStep(e, characterId)}
                 value={characterGuardianInfo.step}
             >
-                {GuardianInfo.map((guardian: IGurdian, gIndex: number) => {
+                {GuardianInfo.map((guardian: IGuardian, gIndex: number) => {
                     return (
                         <option key={gIndex} value={guardian.step}>
                             {guardian.stepName}
                         </option>
                     );
                 })}
-            </GurdianSelectBox>
-            <GurdianSelectBox
+            </GuardianSelectBox>
+            <GuardianSelectBox
                 onChange={e => updateGuardianInfo(e, characterId)}
                 key={`guardian_value_${characterId}`}
                 value={characterGuardianInfo.info}
@@ -106,18 +106,18 @@ const Guardian = ({
                         );
                     },
                 )}
-            </GurdianSelectBox>
-        </GurdianDiv>
+            </GuardianSelectBox>
+        </GuardianDiv>
     );
 };
 
-const GurdianDiv = styled(FlexDiv)`
+const GuardianDiv = styled(FlexDiv)`
     align-items: center;
     margin-top: 0.3em;
     box-sizing: border-box;
 `;
 
-const GurdianSelectBox = styled.select`
+const GuardianSelectBox = styled.select`
     width: 124px;
     margin-top: 0.2em;
 `;
