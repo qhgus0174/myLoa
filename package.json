@@ -34,10 +34,10 @@
     "yarn": "1.22.11"
   },
   "scripts": {
-    "start": "ts-node ./src/index.ts",
-    "heroku-postbuild": "cd ./src/client && npm install --dev && yarn build",
+    "start": "ts-node src/index.ts",
+    "heroku-postbuild": "cd src/client && npm install --dev && yarn build",
     "dev": "concurrently \"yarn dev:client\" \"yarn dev:server\" ",
-    "dev:client": "cd ./src/client && yarn dev",
-    "dev:server": "nodemon --watch \"**/*.ts\" --exec \"ts-node\" ./src/index.ts"
+    "dev:client": "cd src/client && yarn dev",
+    "dev:server": "nodemon --watch \"src/**/*.ts\" --exec \"ts-node\" src/index.ts"
   }
 }
