@@ -24,12 +24,20 @@ const WeeklyContents = () => {
         const guardianIndex = Number(guardian);
         const abyssIndex = Number(abyss);
 
+        const guardianLength = weeklyGuardian.length;
+        const secondIndex = guardianIndex + 1;
+        const thirdIndex = guardianIndex + 2;
+
         setGuardian([
             weeklyGuardian[guardianIndex],
-            weeklyGuardian[guardianIndex + 1],
-            weeklyGuardian[guardianIndex + 2],
+            weeklyGuardian[calcIndex(secondIndex, guardianLength)],
+            weeklyGuardian[calcIndex(thirdIndex, guardianLength)],
         ]);
         setAbyss([weeklyAbyss[abyssIndex][0], weeklyAbyss[abyssIndex][1]]);
+    };
+
+    const calcIndex = (index: number, length: number): number => {
+        return index >= length ? index - length : index;
     };
 
     useEffect(() => {

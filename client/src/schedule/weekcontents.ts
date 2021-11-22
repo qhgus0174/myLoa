@@ -19,8 +19,8 @@ const updateWeeklyContents = async () => {
     ).data) as IResponse<IWeeklyContents>;
 
     await axios.put(`/api/weeklyContents/edit`, {
-        guardian: getStartIndex(weeklyAbyss, guardianIndex),
-        abyss: getStartIndex(weeklyGuardian, abyssIndex),
+        guardian: getStartIndex(weeklyGuardian, guardianIndex),
+        abyss: getStartIndex(weeklyAbyss, abyssIndex),
     });
 };
 
