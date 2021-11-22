@@ -79,6 +79,9 @@ const Manage = () => {
                     <ManageButton onClick={() => setBackupData()}>불러오기</ManageButton>
                 </ManageInnerDiv>
             </ManageDiv>
+            <ManageDiv>
+                <span>버그 발생 / 문의 사항이 있을 시 shannon_@hotmail.co.kr로 메일 부탁드립니다. </span>
+            </ManageDiv>
         </ManageContainer>
     );
 };

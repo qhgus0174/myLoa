@@ -1,5 +1,5 @@
-import { weeklyAbyss } from '../common/data/weeklyAbyss';
-import { weeklyGuardian } from '../common/data/weeklyGuardian';
+import { weeklyAbyss } from '@common/data/weeklyAbyss';
+import { weeklyGuardian } from '@common/data/weeklyGuardian';
 import axios from 'axios';
 import { IResponse, IWeeklyContents } from '@common/responseType';
 
