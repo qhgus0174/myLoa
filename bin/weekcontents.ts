@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-import { weeklyAbyss } from '../src/common/data/weeklyAbyss';
-import { weeklyGuardian } from '../src/common/data/weeklyGuardian';
+import { weeklyAbyss } from '../client/src/common/data/weeklyAbyss';
+import { weeklyGuardian } from '../client/src/common/data/weeklyGuardian';
 import axios from 'axios';
-import { IResponse, IWeeklyContents } from '../src/common/responseType';
+import { IResponse, IWeeklyContents } from '../client/src/common/responseType';
 
 const getStartIndex = (arr: string[] | string[][], oriData: string): string => {
     const length = arr.length;
