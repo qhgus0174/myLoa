@@ -2,7 +2,7 @@
 
 import { weeklyAbyss } from '../client/src/common/data/weeklyAbyss';
 import { weeklyGuardian } from '../client/src/common/data/weeklyGuardian';
-import axios from 'axios';
+import axios from '../node_modules/axios';
 import { IResponse, IWeeklyContents } from '../client/src/common/responseType';
 
 const getStartIndex = (arr: string[] | string[][], oriData: string): string => {
