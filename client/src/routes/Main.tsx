@@ -134,6 +134,7 @@ const Main = () => {
 
         dayDiff && dayDiff > 0 && resetTodo({ dayDiff: dayDiff, dayOfWeek: dayOfWeek });
 
+        console.log('now : ', DateTime.now().toISO());
         localStorage.setItem('datetime', now.toFormat('X'));
     };
 
