@@ -165,7 +165,7 @@ const Main = () => {
     return (
         <MainDiv width="88" direction="column">
             <GuideDiv>
-                <QuestionSpan onClick={showGuide}>📢 가이드 지금{DateTime.now().toISO()}</QuestionSpan>
+                <QuestionSpan onClick={showGuide}>📢 가이드</QuestionSpan>
             </GuideDiv>
             <HideButtonContainer isFold={isFold}>
                 <HideGuideDiv>
