@@ -2,7 +2,7 @@ import React from 'react';
 import { CompactPicker, ColorResult } from 'react-color';
 import TextBox from '@components/Input/TextBox';
 import styled from '@emotion/styled';
-import { FlexDiv } from '@style/common';
+import { FlexDiv, RemarkDiv } from '@style/common';
 import { FormDivContainer, ContentsDivTitle, ContentsDiv } from '@style/common/modal';
 
 interface ICharacter {
@@ -15,6 +15,7 @@ interface ICharacter {
 const CharacterForm = ({ color, setColor, name, setName }: ICharacter) => {
     return (
         <FormDivContainer>
+            <RemarkDiv>* 로스트아크 서버 점검 시간에는 캐릭터 정보를 불러올 수 없습니다.</RemarkDiv>
             <CharacterFormDiv direction="column">
                 <ContentsDivTitle>캐릭터명</ContentsDivTitle>
                 <ContentsDiv>

@@ -27,4 +27,4 @@ const updateWeeklyContents = async () => {
     });
 };
 console.log('now : ', DateTime.now().toISO());
-DateTime.now().toFormat('c') === '2' && updateWeeklyContents();
+DateTime.now().toFormat('c') === '3' && updateWeeklyContents();
