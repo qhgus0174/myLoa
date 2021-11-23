@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import { weeklyAbyss } from '../client/src/common/data/weeklyAbyss';
 import { weeklyGuardian } from '../client/src/common/data/weeklyGuardian';
 import axios from 'axios';
