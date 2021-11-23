@@ -6,7 +6,7 @@ const Guide = () => {
     return (
         <FormContainer>
             <FormDivContainer>
-                <GuideUl>
+                <ul>
                     <LiContainter>
                         <span>🔹 데이터</span>
                         <UlContainer>
@@ -51,20 +51,15 @@ const Guide = () => {
                             <li>- 숙제 앞 원은 행 고정 여부 입니다. (붉은색 : 고정)</li>
                         </UlContainer>
                     </LiContainter>
-                </GuideUl>
+                </ul>
             </FormDivContainer>
         </FormContainer>
     );
 };
 
-const GuideUl = styled.ul`
-    line-height: 1.7;
-    font-size: 1.1rem;
-`;
-
 const LiContainter = styled.li`
-    margin-bottom: 0.7em;
-
+    margin-bottom: 0.8em;
+    line-height: 1.921;
     span {
         font-weight: 500;
         font-size: 1.12rem;
@@ -73,6 +68,9 @@ const LiContainter = styled.li`
 
 const UlContainer = styled.ul`
     padding-left: 1.2em;
+    li {
+        font-size: 1.02rem;
+    }
 `;
 
 export default Guide;
