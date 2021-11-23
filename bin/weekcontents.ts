@@ -3,6 +3,7 @@
 import { weeklyAbyss } from '../client/src/common/data/weeklyAbyss';
 import { weeklyGuardian } from '../client/src/common/data/weeklyGuardian';
 import axios from 'axios';
+import { DateTime } from 'luxon';
 import { IResponse, IWeeklyContents } from '../client/src/common/responseType';
 
 const getStartIndex = (arr: string[] | string[][], oriData: string): string => {
@@ -25,5 +26,5 @@ const updateWeeklyContents = async () => {
         abyss: getStartIndex(weeklyAbyss, abyssIndex),
     });
 };
-
-updateWeeklyContents();
+console.log('now : ', DateTime.now().toISO());
+DateTime.now().toFormat('c') === '2' && updateWeeklyContents();
