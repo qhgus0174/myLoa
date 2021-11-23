@@ -61,8 +61,8 @@ const WeeklyContents = () => {
                     <GuardianDiv>
                         <ContentsDivTitle>도전 가디언 토벌</ContentsDivTitle>
                         <ContentsInnerDiv>
-                            {guardian.map(name => {
-                                return <ContentsDiv>🔹 {name}</ContentsDiv>;
+                            {guardian.map((name, guardianIndex) => {
+                                return <ContentsDiv key={guardianIndex}>🔹 {name}</ContentsDiv>;
                             })}
                         </ContentsInnerDiv>
                     </GuardianDiv>
@@ -71,8 +71,8 @@ const WeeklyContents = () => {
                     <AbyssDiv>
                         <ContentsDivTitle>도전 어비스 던전</ContentsDivTitle>
                         <ContentsInnerDiv>
-                            {abyss.map(name => {
-                                return <ContentsDiv>🔹 {name}</ContentsDiv>;
+                            {abyss.map((name, abyssIndex) => {
+                                return <ContentsDiv key={abyssIndex}>🔹 {name}</ContentsDiv>;
                             })}
                         </ContentsInnerDiv>
                     </AbyssDiv>
@@ -84,6 +84,7 @@ const WeeklyContents = () => {
 
 const GuardianDiv = styled(FlexDiv)`
     flex-direction: column;
+    margin-bottom: 1.5em;
 `;
 
 const AbyssDiv = styled(FlexDiv)`

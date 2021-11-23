@@ -27,7 +27,7 @@ const Header = () => {
         setModalProps({
             isOpen: true,
             content: <WeeklyContents />,
-            options: { width: '400', height: '400', headerTitle: '주간 컨텐츠', isHeaderClose: true },
+            options: { width: '400', height: '390', headerTitle: '주간 컨텐츠', isHeaderClose: true },
         });
     };
 
