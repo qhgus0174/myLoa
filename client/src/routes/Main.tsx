@@ -130,16 +130,29 @@ const Main = () => {
                   });
 
         const { days: dayDiff } = now.diff(resetDateTime, 'days');
-        const dayOfWeek = now.toFormat('c');
 
-        dayDiff && dayDiff > 0 && resetTodo({ dayDiff: dayDiff, dayOfWeek: dayOfWeek });
+        dayDiff && dayDiff > 0 && resetTodo({ dayDiff: dayDiff, lastVisitDate: lastVisitDate });
 
         localStorage.setItem('datetime', now.toFormat('X'));
     };
 
-    const resetTodo = ({ dayDiff, dayOfWeek }: { dayDiff: number; dayOfWeek: string }) => {
+    const resetTodo = ({ dayDiff, lastVisitDate }: { dayDiff: number; lastVisitDate: DateTime }) => {
         resetDailyTodoRelax(Math.ceil(dayDiff));
-        dayOfWeek === '3' && resetWeeklyTodo();
+
+        const now = DateTime.now();
+
+        const lastVisitStartOfWeek = lastVisitDate.startOf('week');
+        const lastVisitWendsdaySixHour = lastVisitStartOfWeek.plus({ days: 2, hours: 6, minutes: 0 });
+        const resetWeekDate =
+            lastVisitWendsdaySixHour < lastVisitDate
+                ? lastVisitWendsdaySixHour.plus({ days: 7 })
+                : lastVisitWendsdaySixHour;
+
+        const nowStartOfWeek = now.startOf('week');
+        const nowWendsdaySixHour = nowStartOfWeek.plus({ days: 2, hours: 6, minutes: 0 });
+        const resetWeekDateNow = nowWendsdaySixHour < now ? nowWendsdaySixHour.plus({ days: 7 }) : nowWendsdaySixHour;
+
+        resetWeekDate < resetWeekDateNow && resetWeeklyTodo();
     };
 
     const resetFold = () => {
