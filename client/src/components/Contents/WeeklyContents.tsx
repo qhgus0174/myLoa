@@ -69,7 +69,7 @@ const WeeklyContents = () => {
                 )}
                 {abyss.length > 0 && (
                     <AbyssDiv>
-                        <ContentsDivTitle>도전 도비스 던전</ContentsDivTitle>
+                        <ContentsDivTitle>도전 어비스 던전</ContentsDivTitle>
                         <ContentsInnerDiv>
                             {abyss.map(name => {
                                 return <ContentsDiv>🔹 {name}</ContentsDiv>;
