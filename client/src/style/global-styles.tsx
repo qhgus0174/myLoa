@@ -31,11 +31,6 @@ export const GlobalStyle = () => {
                     padding: 0;
                 }
 
-                ul {
-                    padding-left: 5px;
-                    line-height: 1.7;
-                }
-
                 .Toastify__toast-body div {
                     color: ${theme.colors.black};
                 }
