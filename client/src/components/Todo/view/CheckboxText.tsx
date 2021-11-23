@@ -73,6 +73,7 @@ const TextContainer = styled(FlexLeftDiv)<{ contents: ScheduleContents }>`
     height: ${props => (props.contents === 'guardian' ? '7.75em' : '4.55em')};
     align-items: center;
     font-weight: 600;
+    cursor: pointer;
     &:hover {
         transition: 200ms ease;
         background: ${props => props.theme.colors.hover};
