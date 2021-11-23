@@ -38,14 +38,13 @@ https://north-ravioli-1b6.notion.site/myloa-d2f6981e87c94561a2584ca4adeba08e
 -   공통
     -   숙제 영역 좌/우측 상단의 추가 버튼으로 컨텐츠 및 캐릭터를 추가합니다.
 -   관리
-    -   각 항목 마우스 오른쪽 클릭으로 수정할 수 있습니다. (모바일로 접속했을 경우는 터치)
-
+    -   각 항목 마우스 오른쪽 클릭으로 수정할 수 있습니다. (모바일로 접속했을 경우는 터치)<br /><br />
         ![우클릭](https://user-images.githubusercontent.com/74941162/142993839-dc4afc21-6f37-4aca-8c04-f1df216470df.gif)
     
 <br/>
 
 -   체크박스 체크 시 휴식게이지는 바로 계산됩니다.
--   가디언 토벌, 에포나 : 캐릭터 별 개별 설정 가능합니다.<br />
+-   가디언 토벌, 에포나 : 캐릭터 별 개별 설정 가능합니다.<br /><br />
     <img src="https://user-images.githubusercontent.com/74941162/142993534-685d2f8a-575d-47ac-9a54-c4bffb11f812.gif" width="400" height="320"/>
     
 <br/>
@@ -55,18 +54,18 @@ https://north-ravioli-1b6.notion.site/myloa-d2f6981e87c94561a2584ca4adeba08e
     - 아브 데자뷰, 아르고스 : [숙제유형 : 체크박스형 - 주간]으로 선택하여 매주 수요일에 초기화되는 숙제입니다. 
     - 페르마타 뽑기 : [숙제유형 : 체크박스형 - 일일, 컨텐츠 : 초기화 O]으로 설정하여 매일 초기화되는 숙제입니다. 
     -  큐브, 회랑 : [숙제유형 : 텍스트]로 설정한 모습입니다.
-    
+    <br />
         <img src="https://user-images.githubusercontent.com/74941162/142994397-caad80bd-7585-4812-8346-c17f9c3b75b9.PNG" width="720" height="400"/>
     
 <br/>
 
--   일일 컨텐츠 조회 (헤더 영역 좌상단)<br />
-    <img src="https://user-images.githubusercontent.com/74941162/142995456-40d4f3f7-5876-4294-ae2d-4a4717d422ec.PNG" width="300" height="230"/>
+-   일일 컨텐츠 조회 (헤더 영역 좌상단)<br /><br />
+    <img src="https://user-images.githubusercontent.com/74941162/142995456-40d4f3f7-5876-4294-ae2d-4a4717d422ec.PNG" width="300" height="220"/>
     
 <br/>
 
--   주간 컨텐츠 조회(헤더 영역 좌상단)<br />
-    <img src="https://user-images.githubusercontent.com/74941162/142995475-4ae34e03-9a81-423e-991c-de6e5deb29be.PNG" width="400" height="350"/>
+-   주간 컨텐츠 조회(헤더 영역 좌상단)<br /><br />
+    <img src="https://user-images.githubusercontent.com/74941162/143069620-a27aaae7-1f3f-43b6-9250-54c5fc032bc9.PNG" width="370" height="330"/>
     
 <br/>
 
@@ -79,11 +78,11 @@ https://north-ravioli-1b6.notion.site/myloa-d2f6981e87c94561a2584ca4adeba08e
    - desktop, tablet, mobile
 
 
-    <img src="https://user-images.githubusercontent.com/74941162/143001351-b9c356b7-7729-45ca-b423-2598ee6f7715.PNG" width="960" height="570"/>
+    <img src="https://user-images.githubusercontent.com/74941162/143001351-b9c356b7-7729-45ca-b423-2598ee6f7715.PNG" width="940" height="540"/>
 
-    <img src="https://user-images.githubusercontent.com/74941162/143001365-6a209d09-a3e9-4069-aa9d-285b0809b1aa.PNG" width="629" height="453"/>
+    <img src="https://user-images.githubusercontent.com/74941162/143001365-6a209d09-a3e9-4069-aa9d-285b0809b1aa.PNG" width="629" height="444"/>
 
-    <img src="https://user-images.githubusercontent.com/74941162/143001380-0dfea628-8894-4a71-962e-dab7272ea5b7.PNG" width="300" height="480"/>
+    <img src="https://user-images.githubusercontent.com/74941162/143001380-0dfea628-8894-4a71-962e-dab7272ea5b7.PNG" width="290" height="480"/>
 
 
 <br />
