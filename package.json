@@ -35,8 +35,8 @@
     },
     "scripts": {
         "start": "node dist/src/index.js",
-        "postinstall": "tsc & tsc app/weekcontents.ts",
-        "heroku-postbuild": "cd app && yarn install && cd ../client && npm install --dev && yarn build",
+        "postinstall": "tsc & tsc bin/weekcontents.ts",
+        "heroku-postbuild": "cd bin && yarn install && cd ../client && npm install --dev && yarn build",
         "dev": "concurrently \"yarn dev:client\" \"yarn dev:server\" ",
         "dev:client": "cd client && yarn dev",
         "dev:server": "nodemon --watch \"src/**/*.ts\" --exec \"ts-node\" src/index.ts"
