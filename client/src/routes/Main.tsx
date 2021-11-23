@@ -134,7 +134,6 @@ const Main = () => {
 
         dayDiff && dayDiff > 0 && resetTodo({ dayDiff: dayDiff, dayOfWeek: dayOfWeek });
 
-        console.log('now : ', DateTime.now().toISO());
         localStorage.setItem('datetime', now.toFormat('X'));
     };
 
@@ -166,7 +165,7 @@ const Main = () => {
     return (
         <MainDiv width="88" direction="column">
             <GuideDiv>
-                <QuestionSpan onClick={showGuide}>📢 가이드</QuestionSpan>
+                <QuestionSpan onClick={showGuide}>📢 가이드 지금{DateTime.now().toISO()}</QuestionSpan>
             </GuideDiv>
             <HideButtonContainer isFold={isFold}>
                 <HideGuideDiv>
