@@ -1,5 +1,5 @@
 {
-    "include": ["src/**/*"],
+    "include": ["src/**/*", "bin/weekcontents.ts"],
     "ts-node": {
         "compilerOptions": {
             "module": "CommonJS"
