@@ -1,7 +1,9 @@
-import { weeklyAbyss } from '../common/data/weeklyAbyss';
-import { weeklyGuardian } from '../common/data/weeklyGuardian';
+#!/usr/bin/env node
+
+import { weeklyAbyss } from '../client/src/common/data/weeklyAbyss';
+import { weeklyGuardian } from '../client/src/common/data/weeklyGuardian';
 import axios from 'axios';
-import { IResponse, IWeeklyContents } from '../common/responseType';
+import { IResponse, IWeeklyContents } from '../client/src/common/responseType';
 
 const getStartIndex = (arr: string[] | string[][], oriData: string): string => {
     const length = arr.length;
@@ -15,10 +17,10 @@ const updateWeeklyContents = async () => {
     const {
         result: { guardian: guardianIndex, abyss: abyssIndex },
     } = (await (
-        await axios.get(`/api/weeklyContents`)
+        await axios.get(`https://myloatest.herokuapp.com/api/weeklyContents`)
     ).data) as IResponse<IWeeklyContents>;
 
-    await axios.put(`/api/weeklyContents/edit`, {
+    await axios.put(`https://myloatest.herokuapp.com/api/weeklyContents/edit`, {
         guardian: getStartIndex(weeklyGuardian, guardianIndex),
         abyss: getStartIndex(weeklyAbyss, abyssIndex),
     });
