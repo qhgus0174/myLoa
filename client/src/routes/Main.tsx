@@ -117,16 +117,18 @@ const Main = () => {
             ? localStorage.getItem('datetime')
             : now.toFormat('X');
         const lastVisitDate = DateTime.fromISO(DateTime.fromSeconds(Number(lastVisitTimeStamp)).toISO());
-        const lastVisitDateHour = lastVisitDate.toFormat('HH');
+        const lastVisitDateHour = lastVisitDate.toFormat('HHmm');
 
         const resetDateTime =
-            Number(lastVisitDateHour) < 6
+            Number(lastVisitDateHour) < 540
                 ? DateTime.fromISO(lastVisitDate.toFormat('yyyy-LL-dd')).plus({
-                      hours: 6,
+                      hours: 5,
+                      minutes: 40,
                   })
                 : DateTime.fromISO(lastVisitDate.toFormat('yyyy-LL-dd')).plus({
                       days: 1,
-                      hours: 6,
+                      hours: 5,
+                      minutes: 40,
                   });
 
         const { days: dayDiff } = now.diff(resetDateTime, 'days');
@@ -142,14 +144,14 @@ const Main = () => {
         const now = DateTime.now();
 
         const lastVisitStartOfWeek = lastVisitDate.startOf('week');
-        const lastVisitWendsdaySixHour = lastVisitStartOfWeek.plus({ days: 2, hours: 6, minutes: 0 });
+        const lastVisitWendsdaySixHour = lastVisitStartOfWeek.plus({ days: 2, hours: 5, minutes: 40 });
         const resetWeekDate =
             lastVisitWendsdaySixHour < lastVisitDate
                 ? lastVisitWendsdaySixHour.plus({ days: 7 })
                 : lastVisitWendsdaySixHour;
 
         const nowStartOfWeek = now.startOf('week');
-        const nowWendsdaySixHour = nowStartOfWeek.plus({ days: 2, hours: 6, minutes: 0 });
+        const nowWendsdaySixHour = nowStartOfWeek.plus({ days: 2, hours: 5, minutes: 40 });
         const resetWeekDateNow = nowWendsdaySixHour < now ? nowWendsdaySixHour.plus({ days: 7 }) : nowWendsdaySixHour;
 
         resetWeekDate < resetWeekDateNow && resetWeeklyTodo();
