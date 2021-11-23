@@ -35,7 +35,7 @@
     },
     "scripts": {
         "start": "node dist/src/index.js",
-        "postinstall": "tsc & tsc app/weekcontents.ts",
+        "postinstall": "tsc & tsc bin/weekcontents.ts",
         "heroku-postbuild": "cd client && npm install --dev && yarn build",
         "dev": "concurrently \"yarn dev:client\" \"yarn dev:server\" ",
         "dev:client": "cd client && yarn dev",
