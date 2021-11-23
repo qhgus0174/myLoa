@@ -94,3 +94,10 @@ export const CharactersDiv = styled(FlexRightDiv)<{ length: number; contents?: S
         justify-content: center;
     }
 `;
+
+export const RemarkDiv = styled(FlexDiv)`
+    justify-content: flex-end;
+    margin-bottom: 1em;
+    box-sizing: border-box;
+    color: ${props => props.theme.colors.gray};
+`;

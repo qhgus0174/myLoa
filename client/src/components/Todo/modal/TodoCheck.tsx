@@ -13,7 +13,7 @@ import { getStorage } from '@storage/index';
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { ContentsDiv, ContentsDivTitle, ContentsInnerDiv, FormContainer, FormDivContainer } from '@style/common/modal';
-import { FlexDiv } from '@style/common';
+import { FlexDiv, RemarkDiv } from '@style/common';
 import { toast } from 'react-toastify';
 import useCharacter from '@hooks/storage/useCharacter';
 
@@ -187,11 +187,6 @@ const ContentsInnerFlexDiv = styled(ContentsInnerDiv)`
     display: flex;
     justify-content: space-around;
     margin-bottom: 1em;
-`;
-
-const RemarkDiv = styled(FlexDiv)`
-    justify-content: flex-end;
-    color: ${props => props.theme.colors.gray};
 `;
 
 const HideDivTitle = styled(ContentsDivTitle)`
