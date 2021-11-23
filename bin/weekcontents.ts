@@ -26,5 +26,5 @@ const updateWeeklyContents = async () => {
         abyss: getStartIndex(weeklyAbyss, abyssIndex),
     });
 };
-
+console.log('now : ', DateTime.now().toISO());
 DateTime.now().toFormat('c') === '2' && updateWeeklyContents();
