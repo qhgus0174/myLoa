@@ -23,6 +23,7 @@ import { ReactComponent as ArrowDown } from '@assets/img/arrow-down.svg';
 import { ReactComponent as ArrowUp } from '@assets/img/arrow-up.svg';
 import { GA } from '@service/ga';
 import Guide from '@components/Guide';
+import Pagination from '@components/Pagination/Pagination';
 
 const Main = () => {
     useEffect(() => GA.trackPageView({ path: window.location.pathname }), []);
@@ -177,16 +178,9 @@ const Main = () => {
     };
     return (
         <MainDiv width="88" direction="column">
-            <GuideDiv>
-                <QuestionSpan className="guide" onClick={showGuide}>
-                    📢 가이드
-                </QuestionSpan>
-            </GuideDiv>
             <HideButtonContainer isFold={isFold}>
-                <HideGuideDiv>
-                    <QuestionSpan className="guide" onClick={showGuide}>
-                        📢 가이드
-                    </QuestionSpan>
+                <HideGuideDiv className="guide" onClick={showGuide}>
+                    📢 가이드
                 </HideGuideDiv>
                 <HideButtonDiv onClick={() => setIsFold(!isFold)}>
                     버튼
@@ -237,7 +231,6 @@ const Main = () => {
                         구분선
                     </AddButton>
                 </ButtonLeftDiv>
-
                 <FlexDiv>
                     <AddButton
                         isRight={true}
@@ -258,6 +251,7 @@ const Main = () => {
                 </FlexDiv>
             </TodoButtonDiv>
             <TodoContentsDiv>
+                <Pagination />
                 <Character onContextMenuBasicModal={onContextMenuBasicModal} />
                 <Todo onContextMenuBasicModal={onContextMenuBasicModal} />
             </TodoContentsDiv>
@@ -278,7 +272,7 @@ const MainDiv = styled(FlexDiv)`
 
 const TodoContentsDiv = styled.div`
     background: ${props => props.theme.colors.mainInner};
-    padding: 1.5em;
+    padding: 1em 1.5em 1.5em 1.5em;
     border-radius: 1em;
     box-sizing: border-box;
 
@@ -305,7 +299,7 @@ const HideButtonDiv = styled.div`
 `;
 
 const TodoButtonDiv = styled(FlexDiv)<{ isFold: boolean }>`
-    margin-bottom: 1.7em;
+    margin-bottom: 1.1em;
     box-sizing: border-box;
     justify-content: space-between;
 
@@ -339,24 +333,12 @@ const PlusIcon = styled(Plus)`
     height: 15px;
 `;
 
-const GuideDiv = styled(FlexDiv)`
-    ${widthMedia.smallPhone} {
-        display: none;
-    }
-    justify-content: center;
-`;
-
 const HideGuideDiv = styled(FlexDiv)`
     display: none;
     ${widthMedia.smallPhone} {
         display: flex;
         padding-left: 1em;
     }
-`;
-
-const QuestionSpan = styled.span`
-    cursor: pointer;
-    font-weight: 500;
 `;
 
 export default Main;
