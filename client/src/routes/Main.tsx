@@ -241,7 +241,7 @@ const Main = () => {
                                 modal: <CharacterOrdChange />,
                                 title: '캐릭터 순서 변경',
                                 width: '300',
-                                height: String(getStorage('characterOrd').length * 73),
+                                height: getStorage('characterOrd').length < 5 ? '450' : '600',
                             })
                         }
                     >
