@@ -11,6 +11,7 @@ import { widthMedia } from '@style/device';
 import { FlexDiv } from '@style/common';
 import { Link } from 'react-router-dom';
 import { ModalActionContext } from '@context/ModalContext';
+import Guide from '@components/Guide';
 
 const Header = () => {
     const { setModalProps } = useContext(ModalActionContext);
@@ -31,6 +32,14 @@ const Header = () => {
         });
     };
 
+    const showGuide = () => {
+        setModalProps({
+            isOpen: true,
+            content: <Guide />,
+            options: { width: '700', height: '500', headerTitle: '가이드', isHeaderClose: true },
+        });
+    };
+
     return (
         <>
             <HeaderDiv>
@@ -46,6 +55,11 @@ const Header = () => {
                     <StyledLink to="/">
                         <span>홈</span>
                     </StyledLink>
+                    <GuideDiv>
+                        <QuestionSpan className="guide" onClick={showGuide}>
+                            가이드
+                        </QuestionSpan>
+                    </GuideDiv>
                     <StyledLink to="/mng">
                         <span>관리</span>
                     </StyledLink>
@@ -154,4 +168,13 @@ const FooterDiv = styled.div`
     width: 20%;
 `;
 
+const GuideDiv = styled(FlexDiv)`
+    align-items: center;
+    justify-content: center;
+`;
+
+const QuestionSpan = styled.span`
+    cursor: pointer;
+    font-weight: 500;
+`;
 export default Header;
