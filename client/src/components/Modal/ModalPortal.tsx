@@ -8,19 +8,6 @@ const ModalPortal = () => {
     const { isOpen, content, options } = useContext(ModalStateContext);
     const { closeModal } = useContext(ModalActionContext);
 
-    useEffect(() => {
-        const handleEsc = (event: KeyboardEvent) => {
-            if (event.key === 'Escape') {
-                closeModal();
-            }
-        };
-        window.addEventListener('keydown', (e: KeyboardEvent) => handleEsc(e));
-
-        return () => {
-            window.removeEventListener('keydown', (e: KeyboardEvent) => handleEsc(e));
-        };
-    }, []);
-
     return createPortal(
         isOpen && (
             <ModalContainer>
