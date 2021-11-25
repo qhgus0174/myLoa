@@ -24,6 +24,7 @@ import { ReactComponent as ArrowUp } from '@assets/img/arrow-up.svg';
 import { GA } from '@service/ga';
 import Guide from '@components/Guide';
 import Pagination from '@components/Pagination/Pagination';
+import CharacterOrdChange from '@components/Character/modal/CharacterOrdChange';
 
 const Main = () => {
     useEffect(() => GA.trackPageView({ path: window.location.pathname }), []);
@@ -233,6 +234,20 @@ const Main = () => {
                 </ButtonLeftDiv>
                 <FlexDiv>
                     <AddButton
+                        type="button"
+                        onClick={e =>
+                            onContextMenuBasicModal({
+                                e: e,
+                                modal: <CharacterOrdChange />,
+                                title: '캐릭터 순서 변경',
+                                width: '300',
+                                height: String(getStorage('characterOrd').length * 73),
+                            })
+                        }
+                    >
+                        캐릭터 순서 변경
+                    </AddButton>
+                    <AddButton
                         isRight={true}
                         type="button"
                         icon={<PlusIcon />}
@@ -300,6 +315,7 @@ const HideButtonDiv = styled.div`
 
 const TodoButtonDiv = styled(FlexDiv)<{ isFold: boolean }>`
     margin-bottom: 1.1em;
+    margin-top: 0.3em;
     box-sizing: border-box;
     justify-content: space-between;
 
