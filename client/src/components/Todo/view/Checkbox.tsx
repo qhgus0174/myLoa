@@ -229,6 +229,7 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                                                         return (
                                                             <CheckboxContentDiv key={`todo_char_check_${checkesIndex}`}>
                                                                 <CheckboxInput
+                                                                    className="todoCheckbox"
                                                                     key={checkesIndex}
                                                                     checked={checks === 1}
                                                                     onChange={() =>

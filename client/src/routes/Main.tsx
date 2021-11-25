@@ -178,11 +178,15 @@ const Main = () => {
     return (
         <MainDiv width="88" direction="column">
             <GuideDiv>
-                <QuestionSpan onClick={showGuide}>📢 가이드</QuestionSpan>
+                <QuestionSpan className="guide" onClick={showGuide}>
+                    📢 가이드
+                </QuestionSpan>
             </GuideDiv>
             <HideButtonContainer isFold={isFold}>
                 <HideGuideDiv>
-                    <QuestionSpan onClick={showGuide}>📢 가이드</QuestionSpan>
+                    <QuestionSpan className="guide" onClick={showGuide}>
+                        📢 가이드
+                    </QuestionSpan>
                 </HideGuideDiv>
                 <HideButtonDiv onClick={() => setIsFold(!isFold)}>
                     버튼

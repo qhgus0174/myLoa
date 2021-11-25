@@ -53,8 +53,12 @@ const Header = () => {
                 </RightHeader>
             </HeaderDiv>
             <HeaderResponsiveDiv>
-                <FooterDiv onClick={openDayContents}>🔎 일일</FooterDiv>
-                <FooterDiv onClick={openWeeklyContents}>🔎 주간</FooterDiv>
+                <FooterDiv className="selectDayContents" onClick={openDayContents}>
+                    🔎 일일
+                </FooterDiv>
+                <FooterDiv className="selectWeeklyContents" onClick={openWeeklyContents}>
+                    🔎 주간
+                </FooterDiv>
                 <FooterDiv>
                     <StyledLink to="/">
                         <img src={Home} />

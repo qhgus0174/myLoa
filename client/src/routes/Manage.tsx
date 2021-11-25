@@ -68,15 +68,21 @@ const Manage = () => {
         <ManageContainer direction="column">
             <ManageDiv>
                 <span>오류 발생 시 데이터를 초기화 할 수 있습니다. </span>
-                <ManageButton onClick={() => clearData()}>초기화</ManageButton>
+                <ManageButton className="resetData" onClick={() => clearData()}>
+                    초기화
+                </ManageButton>
             </ManageDiv>
             <ManageDiv direction="column">
                 <ManageInnerDiv>
                     <span>데이터를 백업하여 다른 브라우저에서 열람 가능합니다. (일회용) </span>
                 </ManageInnerDiv>
                 <ManageInnerDiv>
-                    <ManageButton onClick={() => backupData()}>코드 생성</ManageButton>
-                    <ManageButton onClick={() => setBackupData()}>불러오기</ManageButton>
+                    <ManageButton className="createBackupCode" onClick={() => backupData()}>
+                        코드 생성
+                    </ManageButton>
+                    <ManageButton className="getBackupCode" onClick={() => setBackupData()}>
+                        불러오기
+                    </ManageButton>
                 </ManageInnerDiv>
             </ManageDiv>
             <ManageDiv>

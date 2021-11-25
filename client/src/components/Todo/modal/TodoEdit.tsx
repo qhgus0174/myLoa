@@ -109,7 +109,7 @@ const TodoEdit = ({
                 settingName={settingName}
                 setShowCharacterArr={setShowCharacterArr}
             />
-            <EditButtonContainer onClickDelete={onClickDelete} onClickEdit={onClickEdit} />
+            <EditButtonContainer editClassName="editTodo" onClickDelete={onClickDelete} onClickEdit={onClickEdit} />
         </FormContainer>
     );
 };

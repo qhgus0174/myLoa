@@ -5,7 +5,6 @@ import { PagingActionContext, PagingStateContext } from '@context/PagingContext'
 import { ModalActionContext } from '@context/ModalContext';
 import { SpinnerContext } from '@context/SpinnerContext';
 import useCharacterOrd from '@hooks/storage/useCharacterOrd';
-import { useInput } from '@hooks/useInput';
 import useCharacter from '@hooks/storage/useCharacter';
 import useTodo from '@hooks/storage/useTodo';
 import { getCrollCharacterInfo, isDuplicate } from '@components/Character/common/functions';
@@ -189,7 +188,11 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
                 <Button onClick={async () => await reCrollCharacterInfo()}>갱신</Button>
             </RefreshButtonDiv>
             <CharacterForm color={color} setColor={setColor} name={name} setName={setName} />
-            <EditButtonContainer onClickDelete={onClickDelete} onClickEdit={onClickEdit} />
+            <EditButtonContainer
+                editClassName="editCharacter"
+                onClickDelete={onClickDelete}
+                onClickEdit={onClickEdit}
+            />
         </FormContainer>
     );
 };

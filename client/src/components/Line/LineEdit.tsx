@@ -59,7 +59,7 @@ const LineEdit = ({ id: oriId, color: newColor }: Pick<ITodo, 'id' | 'color'>) =
     return (
         <FormContainer>
             <LineForm color={color} setColor={setColor} />
-            <EditButtonContainer onClickDelete={onClickDelete} onClickEdit={onClickEdit} />
+            <EditButtonContainer editClassName="editLine" onClickDelete={onClickDelete} onClickEdit={onClickEdit} />
         </FormContainer>
     );
 };

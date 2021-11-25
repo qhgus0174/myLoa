@@ -28,10 +28,10 @@ const Compass = () => {
 
     return (
         <CompassContainer>
-            <Button onClick={openDayContents}>
+            <Button className="selectDayContents" onClick={openDayContents}>
                 🔎 일일 <ButtonInnerText>컨텐츠</ButtonInnerText>
             </Button>
-            <Button onClick={openWeeklyContents}>
+            <Button className="selectWeeklyContents" onClick={openWeeklyContents}>
                 🔎 주간 <ButtonInnerText>컨텐츠</ButtonInnerText>
             </Button>
         </CompassContainer>

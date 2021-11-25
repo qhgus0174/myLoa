@@ -7,9 +7,10 @@ import { FlexDiv } from '@style/common';
 interface IEditButton {
     onClickEdit: () => void;
     onClickDelete: () => void;
+    editClassName: string;
 }
 
-const DelEditButtonContainer = ({ onClickEdit, onClickDelete }: IEditButton) => {
+const DelEditButtonContainer = ({ onClickEdit, onClickDelete, editClassName }: IEditButton) => {
     const { closeModal } = useContext(ModalActionContext);
 
     return (
@@ -20,7 +21,9 @@ const DelEditButtonContainer = ({ onClickEdit, onClickDelete }: IEditButton) => 
                 </Button>
             </FlexDiv>
             <RightButtonDiv>
-                <Button onClick={onClickEdit}>수정</Button>
+                <Button className={editClassName} onClick={onClickEdit}>
+                    수정
+                </Button>
                 <Button onClick={() => closeModal()}>닫기</Button>
             </RightButtonDiv>
         </FormButtonContainer>
