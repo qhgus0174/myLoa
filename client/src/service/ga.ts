@@ -51,7 +51,7 @@ class GAService {
             return;
         }
 
-        ReactGA.event({ ...params });
+        ReactGA.event(params);
     }
 
     public trackCharacterAdd(params: TrackCharacter) {
