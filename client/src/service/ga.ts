@@ -4,23 +4,12 @@ interface TrackPageViewParams {
     path: string;
 }
 
-interface TrackEventParams {
-    category: string;
-    action: string;
-    value?: number;
-    label?: string;
-}
-
-interface TrackCharacter extends Omit<TrackEventParams, 'category'> {
-    action: 'Add' | 'Edit';
-}
-
 class GAService {
     private env: 'development' | 'production';
 
     constructor() {
         if (!process.env.GA_TRACKING_ID) {
-            throw new Error('GA_TRACKING_ID must be provided .');
+            throw new Error('GA_TRACKING_ID must be provided.');
         }
 
         this.env = process.env.NODE_ENV;
@@ -43,19 +32,6 @@ class GAService {
         }
 
         ReactGA.pageview(decodedPath);
-    }
-
-    private trackEvent(params: TrackEventParams) {
-        if (!this.isProduction) {
-            console.log(params);
-            return;
-        }
-
-        ReactGA.event(params);
-    }
-
-    public trackCharacterAdd(params: TrackCharacter) {
-        this.trackEvent({ category: 'Character', ...params });
     }
 }
 
