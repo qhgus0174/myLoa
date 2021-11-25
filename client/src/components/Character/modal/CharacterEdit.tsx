@@ -185,7 +185,9 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
     return (
         <FormContainer>
             <RefreshButtonDiv>
-                <Button onClick={async () => await reCrollCharacterInfo()}>갱신</Button>
+                <Button className="reCrollCharacter" onClick={async () => await reCrollCharacterInfo()}>
+                    갱신
+                </Button>
             </RefreshButtonDiv>
             <CharacterForm color={color} setColor={setColor} name={name} setName={setName} />
             <EditButtonContainer
