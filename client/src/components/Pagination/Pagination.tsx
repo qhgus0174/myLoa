@@ -90,17 +90,17 @@ const PagingLi = styled.li<IPageStyle>`
     padding: 0.3rem 0.6rem;
     border: none;
 
-    background: ${props => props.active && props.theme.button.hover.background};
+    background: ${props => props.active && props.theme.button.paging.background};
     span {
-        color: ${props => props.active && props.theme.button.hover.color};
+        color: ${props => props.active && props.theme.button.paging.color};
     }
 
     &:hover {
         span {
-            color: ${props => props.theme.button.hover.color};
+            color: ${props => props.theme.button.paging.color};
         }
 
-        background: ${props => props.theme.button.hover.background};
+        background: ${props => props.theme.button.paging.background};
 
         svg {
             fill: ${props => props.theme.button.hover.color};

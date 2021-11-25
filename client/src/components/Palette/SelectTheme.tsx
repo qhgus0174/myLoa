@@ -15,7 +15,19 @@ const SelectTheme = () => {
         <SelectThemeContainer>
             <ThemeTitle onClick={() => setVisible(!visible)}>
                 <img src={Theme} />
-                <span>테마</span>
+                <span
+                    css={css`
+                        -webkit-background-clip: text;
+                        background-image: linear-gradient(to right, #1de9b6, #2979ff);
+                        -webkit-text-fill-color: transparent;
+                        color: #464646;
+                        display: inline-block;
+                        padding: 0;
+                        margin: 0;
+                    `}
+                >
+                    테마
+                </span>
             </ThemeTitle>
             <PaletteDiv visible={visible}>
                 {mainColor.map((color, index) => {

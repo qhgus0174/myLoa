@@ -68,6 +68,10 @@ export const basic: Theme = {
             background: '#ffffff',
             color: '#000000',
         },
+        paging: {
+            background: '#ffffff',
+            color: '#000000',
+        },
     },
     check: {
         background: '#f6f8fd',
@@ -102,6 +106,10 @@ export const pink: Theme = {
         cancel: '#EC4646',
         none: 'transparent',
         hover: {
+            background: '#7a6864',
+            color: mainColor[1].mainColor,
+        },
+        paging: {
             background: '#7a6864',
             color: mainColor[1].mainColor,
         },
@@ -143,6 +151,10 @@ export const violet: Theme = {
             background: '#7d6793',
             color: mainColor[2].mainColor,
         },
+        paging: {
+            background: '#7d6793',
+            color: mainColor[2].mainColor,
+        },
     },
 
     check: {
@@ -178,6 +190,10 @@ export const green: Theme = {
         cancel: '#EC4646',
         none: 'transparent',
         hover: {
+            background: '#3a3834',
+            color: mainColor[3].mainColor,
+        },
+        paging: {
             background: '#3a3834',
             color: mainColor[3].mainColor,
         },
@@ -219,6 +235,10 @@ export const cold: Theme = {
             background: '#777172',
             color: mainColor[4].mainColor,
         },
+        paging: {
+            background: '#777172',
+            color: mainColor[4].mainColor,
+        },
     },
 
     check: {
@@ -254,6 +274,10 @@ export const autumn: Theme = {
         cancel: '#EC4646',
         none: 'transparent',
         hover: {
+            background: '#ffffff',
+            color: mainColor[5].mainColor,
+        },
+        paging: {
             background: '#ffffff',
             color: mainColor[5].mainColor,
         },
@@ -295,6 +319,10 @@ export const violetBrown: Theme = {
             background: '#f4ece7',
             color: mainColor[6].mainColor,
         },
+        paging: {
+            background: '#f4ece7',
+            color: mainColor[6].mainColor,
+        },
     },
 
     check: {
@@ -330,6 +358,10 @@ export const flower: Theme = {
         cancel: '#EC4646',
         none: 'transparent',
         hover: {
+            background: '#a2455f',
+            color: mainColor[7].mainColor,
+        },
+        paging: {
             background: '#a2455f',
             color: mainColor[7].mainColor,
         },
@@ -371,6 +403,10 @@ export const pinkBeige: Theme = {
             background: '#635e59',
             color: mainColor[8].mainColor,
         },
+        paging: {
+            background: '#635e59',
+            color: mainColor[8].mainColor,
+        },
     },
 
     check: {
@@ -406,6 +442,10 @@ export const darkBrown: Theme = {
         cancel: '#EC4646',
         none: 'transparent',
         hover: {
+            background: '#efebeb',
+            color: mainColor[9].mainColor,
+        },
+        paging: {
             background: '#efebeb',
             color: mainColor[9].mainColor,
         },
@@ -447,6 +487,10 @@ export const darkYellow: Theme = {
             background: '#EEEEEE',
             color: mainColor[10].mainColor,
         },
+        paging: {
+            background: '#EEEEEE',
+            color: mainColor[10].mainColor,
+        },
     },
 
     check: {
@@ -482,6 +526,10 @@ export const darkPink: Theme = {
         cancel: '#fe5757',
         none: 'transparent',
         hover: {
+            background: '#EEEEEE',
+            color: mainColor[11].mainColor,
+        },
+        paging: {
             background: '#EEEEEE',
             color: mainColor[11].mainColor,
         },
@@ -523,6 +571,10 @@ export const veryCold: Theme = {
             background: '#5f5774',
             color: mainColor[12].mainColor,
         },
+        paging: {
+            background: '#EEEEEE',
+            color: '#5f5774',
+        },
     },
 
     check: {
@@ -561,6 +613,10 @@ export const darkCyan: Theme = {
             background: '#222831',
             color: '#00ADB5',
         },
+        paging: {
+            background: '#00ADB5',
+            color: '#252b36',
+        },
     },
 
     check: {
@@ -596,6 +652,10 @@ export const lego: Theme = {
         cancel: '#fe5757',
         none: 'transparent',
         hover: {
+            background: '#FFD717',
+            color: '#083358',
+        },
+        paging: {
             background: '#FFD717',
             color: '#083358',
         },
@@ -636,6 +696,10 @@ export const blue: Theme = {
         hover: {
             background: '#1687A7',
             color: '#F6F5F5',
+        },
+        paging: {
+            background: mainColor[15].mainColor,
+            color: '#148cad',
         },
     },
 

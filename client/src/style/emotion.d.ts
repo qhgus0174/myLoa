@@ -27,6 +27,10 @@ declare module '@emotion/react' {
                 color: string;
                 background: string;
             };
+            paging: {
+                color: string;
+                background: string;
+            };
         };
 
         check: {
