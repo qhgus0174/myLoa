@@ -24,6 +24,10 @@ export const usePaging = () => {
         resetCurrentPage();
     }, [String(windowWidth)]);
 
+    useEffect(() => {
+        calcPerPage();
+    }, []);
+
     const resetCurrentPage = () => {
         setCurrentPage(1);
     };

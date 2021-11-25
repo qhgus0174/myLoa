@@ -17,7 +17,7 @@ const Pagination = () => {
 
     useEffect(() => {
         setPageNumbers(Array.from(Array(Math.ceil(getStorage('character').length / perPage)).keys(), x => x + 1));
-    }, [getStorage('character').length, windowWidth]);
+    }, [getStorage('character').length, perPage]);
 
     return (
         <>
