@@ -25,7 +25,7 @@ export const usePaging = () => {
     }, [String(windowWidth)]);
 
     const resetCurrentPage = () => {
-        Object.values(responsiveWidth).includes(windowWidth) && setCurrentPage(1);
+        setCurrentPage(1);
     };
 
     interface IWidthPerPage {
