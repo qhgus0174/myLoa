@@ -2,7 +2,9 @@ import React, { TouchEvent, useContext } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 import { PagingActionContext, PagingStateContext } from '@context/PagingContext';
 import useCharacterOrd from '@hooks/storage/useCharacterOrd';
+import useTodo from '@hooks/storage/useTodo';
 import { getStorage } from '@storage/index';
+import { sortOrd } from '@components/Character/common/functions';
 import CharacterEdit from '@components/Character/modal/CharacterEdit';
 import { ICharacter } from '@components/Character/CharacterType';
 import JobLogo from '@components/Character/JobLogo';
@@ -13,7 +15,6 @@ import styled from '@emotion/styled';
 import { FlexDiv, FlexLeftDiv, FlexHoverDiv, CharactersDiv } from '@style/common';
 import { ReactComponent as LeftArrow } from '@assets/img/left-arrow.svg';
 import { ReactComponent as RightArrow } from '@assets/img/right-arrow.svg';
-import useTodo from '@hooks/storage/useTodo';
 
 const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
     const [storageCharacterOrd, setStorageCharacterOrd] = useCharacterOrd();
@@ -57,14 +58,6 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
 
     const characterSortOrd = (array: number[], start: number, destination: number) => {
         setStorageCharacterOrd(JSON.stringify(sortOrd(array, start, destination)));
-    };
-
-    const sortOrd = (array: number[], start: number, destination: number) => {
-        const newArr = [...array];
-        const [reorderedItem] = newArr.splice(start, 1);
-        newArr.splice(destination, 0, reorderedItem);
-
-        return newArr;
     };
 
     return (

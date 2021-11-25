@@ -41,3 +41,11 @@ export const isDuplicate = (name: string) => {
     const characterArr: ICharacter[] = getStorage('character');
     return characterArr.some(character => character.name === name);
 };
+
+export const sortOrd = (array: number[], start: number, destination: number) => {
+    const newArr = [...array];
+    const [reorderedItem] = newArr.splice(start, 1);
+    newArr.splice(destination, 0, reorderedItem);
+
+    return newArr;
+};
