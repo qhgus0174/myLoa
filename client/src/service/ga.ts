@@ -4,6 +4,17 @@ interface TrackPageViewParams {
     path: string;
 }
 
+interface TrackEventParams {
+    category: string;
+    action: string;
+    value?: number;
+    label?: string;
+}
+
+interface TrackCharacter extends Omit<TrackEventParams, 'category'> {
+    action: 'Add' | 'Edit';
+}
+
 class GAService {
     private env: 'development' | 'production';
 
@@ -32,6 +43,19 @@ class GAService {
         }
 
         ReactGA.pageview(decodedPath);
+    }
+
+    private trackEvent(params: TrackEventParams) {
+        if (!this.isProduction) {
+            console.log(params);
+            return;
+        }
+
+        ReactGA.event({ ...params });
+    }
+
+    public trackCharacterAdd(params: TrackCharacter) {
+        this.trackEvent({ category: 'Character', ...params });
     }
 }
 
