@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import { createPortal } from 'react-dom';
 import { ModalActionContext, ModalStateContext } from '@context/ModalContext';
 import BasicModal from '@components/Modal';
@@ -7,6 +7,19 @@ import styled from '@emotion/styled';
 const ModalPortal = () => {
     const { isOpen, content, options } = useContext(ModalStateContext);
     const { closeModal } = useContext(ModalActionContext);
+
+    useEffect(() => {
+        const handleEsc = (event: KeyboardEvent) => {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        };
+        window.addEventListener('keydown', (e: KeyboardEvent) => handleEsc(e));
+
+        return () => {
+            window.removeEventListener('keydown', (e: KeyboardEvent) => handleEsc(e));
+        };
+    }, []);
 
     return createPortal(
         isOpen && (

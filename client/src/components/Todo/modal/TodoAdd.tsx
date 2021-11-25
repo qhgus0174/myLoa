@@ -107,7 +107,7 @@ const Todo = () => {
                 setShowCharacterArr={setShowCharacterArr}
             />
 
-            <AddButtonContainer onClickAdd={onClickAdd} />
+            <AddButtonContainer addClassName="addTodo" onClickAdd={onClickAdd} />
         </FormContainer>
     );
 };

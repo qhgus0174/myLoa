@@ -5,14 +5,17 @@ import { FormButtonContainer } from '@style/common/modal';
 
 interface IAddButton {
     onClickAdd: () => void;
+    addClassName: string;
 }
 
-const AddButtonContainer = ({ onClickAdd }: IAddButton) => {
+const AddButtonContainer = ({ onClickAdd, addClassName }: IAddButton) => {
     const { closeModal } = useContext(ModalActionContext);
 
     return (
         <FormButtonContainer>
-            <Button onClick={onClickAdd}>추가</Button>
+            <Button className={addClassName} onClick={onClickAdd}>
+                추가
+            </Button>
             <Button onClick={() => closeModal()}>닫기</Button>
         </FormButtonContainer>
     );

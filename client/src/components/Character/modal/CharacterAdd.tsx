@@ -15,7 +15,6 @@ import { FormContainer } from '@style/common/modal';
 import { getResetCheckArr } from '@components/Todo/common/functions';
 import { getStorage } from '@storage/index';
 import { useTheme } from '@emotion/react';
-import { GA } from '@service/ga';
 
 const CharacterAdd = () => {
     const [storageCharacter, setStorageCharacter] = useCharacter();
@@ -141,12 +140,7 @@ const CharacterAdd = () => {
     return (
         <FormContainer>
             <CharacterForm color={color} name={name} setName={setName} setColor={setColor} />
-            <AddButtonContainer
-                onClickAdd={() => {
-                    onClickAdd();
-                    GA.trackCharacterAdd({ action: 'Add' });
-                }}
-            />
+            <AddButtonContainer addClassName="addCharacter" onClickAdd={onClickAdd} />
         </FormContainer>
     );
 };
