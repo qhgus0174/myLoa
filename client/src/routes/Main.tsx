@@ -266,7 +266,7 @@ const Main = () => {
                 </FlexDiv>
             </TodoButtonDiv>
             <TodoContentsDiv>
-                <Pagination />
+                {getStorage('character').length > 0 && <Pagination />}
                 <Character onContextMenuBasicModal={onContextMenuBasicModal} />
                 <Todo onContextMenuBasicModal={onContextMenuBasicModal} />
             </TodoContentsDiv>
