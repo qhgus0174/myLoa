@@ -60,7 +60,7 @@ const LineAdd = () => {
     return (
         <FormContainer>
             <LineForm color={color} setColor={setColor} />
-            <AddButtonContainer onClickAdd={onClickAdd} />
+            <AddButtonContainer addClassName="addLine" onClickAdd={onClickAdd} />
         </FormContainer>
     );
 };
