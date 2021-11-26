@@ -8,6 +8,9 @@ const Guide = () => {
             <FormDivContainer>
                 <ul>
                     <LiContainter>
+                        🤹‍♀️ 버그 발생 / 문의 사항이 있을 시 shannon_@hotmail.co.kr로 메일 부탁드립니다.
+                    </LiContainter>
+                    <LiContainter>
                         <span>🔹 데이터</span>
                         <UlContainer>
                             <li>
