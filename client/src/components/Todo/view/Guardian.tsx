@@ -5,6 +5,8 @@ import { GuardianInfo, IGuardian } from '@common/data/guardian';
 import { getStorage } from '@storage/index';
 import styled from '@emotion/styled';
 import { FlexDiv } from '@style/common';
+import useCharacter from '@hooks/storage/useCharacter';
+import { ICharacter } from '@components/Character/CharacterType';
 
 interface IGuardianParam {
     todo: ITodo;
@@ -38,6 +40,7 @@ const Guardian = ({
     onTouchEnd,
 }: IGuardianParam) => {
     const [storageTodo, setStorageTodo] = useTodo();
+    const [storageCharacter, setStorageCharacter] = useCharacter();
 
     const updateGuardianStep = (e: React.ChangeEvent<HTMLSelectElement>, characterOrdIndex: number) => {
         const {
@@ -46,8 +49,9 @@ const Guardian = ({
 
         const todoArr: ITodo[] = getStorage('todo');
 
-        const characterIndex = getCharacterIndex(characterOrdIndex);
+        const characterIndex = getCharacterIndex();
         const todoIndex = todoArr.findIndex(td => td.id === todo.id);
+
         todoArr[todoIndex].character[characterIndex].guardianInfo.step = value;
 
         setStorageTodo(JSON.stringify(todoArr));
@@ -61,16 +65,16 @@ const Guardian = ({
 
         const todoArr: ITodo[] = getStorage('todo');
 
-        const characterIndex = getCharacterIndex(characterOrdIndex);
+        const characterIndex = getCharacterIndex();
         const todoIndex = todoArr.findIndex(td => td.id === todo.id);
         todoArr[todoIndex].character[characterIndex].guardianInfo.info = value;
 
         setStorageTodo(JSON.stringify(todoArr));
     };
 
-    const getCharacterIndex = (characterOrdIndex: number) => {
-        const todoArr: ITodo[] = getStorage('todo');
-        return todoArr[todoIndex].character.findIndex(character => character.id === characterId);
+    const getCharacterIndex = () => {
+        const characterArr: ICharacter[] = getStorage('character');
+        return characterArr.findIndex(char => char.id === characterId);
     };
 
     return (
