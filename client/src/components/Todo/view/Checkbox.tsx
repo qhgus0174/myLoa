@@ -236,11 +236,11 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                                                                         onClickCheckTodo(charTodo.id, checkesIndex)
                                                                     }
                                                                 />
-                                                                {charTodo.eponaName && (
-                                                                    <EponaTextDiv>
-                                                                        {charTodo.eponaName[checkesIndex]}
-                                                                    </EponaTextDiv>
-                                                                )}
+                                                                <EponaTextDiv>
+                                                                    {pTodo.contents === 'epona' &&
+                                                                        charTodo.eponaName &&
+                                                                        charTodo.eponaName[checkesIndex]}
+                                                                </EponaTextDiv>
                                                             </CheckboxContentDiv>
                                                         );
                                                     })}

@@ -60,7 +60,12 @@ const TodoEdit = ({
             return {
                 ...character,
                 check: contents === newContents ? character.check : getResetCheckArr(contents),
-                eponaName: contents === 'epona' ? new Array(3).fill('') : [],
+                eponaName:
+                    contents === 'epona'
+                        ? character.eponaName && character.eponaName.length > 0
+                            ? character.eponaName
+                            : new Array(3).fill('')
+                        : [],
             };
         });
 
