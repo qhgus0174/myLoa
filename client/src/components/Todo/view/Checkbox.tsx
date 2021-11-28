@@ -74,7 +74,10 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
         });
     };
 
-    const onClickCheckTodo = (characterId: number, checkesIndex: number) => {
+    const onClickCheckTodo = (e: React.ChangeEvent<HTMLInputElement>, characterId: number, checkesIndex: number) => {
+        const {
+            target: { checked: isChecked },
+        } = e;
         const todoArr: ITodo[] = getStorage('todo');
 
         const todoIndex = todoArr.findIndex(td => td.id === pTodo.id);
@@ -87,7 +90,12 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
             },
         );
 
-        const relaxGauge = calcRelaxGauge(todoArr[todoIndex].character[characterIndex].oriRelaxGauge, checkCount);
+        const relaxGauge = calcRelaxGauge({
+            oriRelaxGauge: todoArr[todoIndex].character[characterIndex].oriRelaxGauge,
+            checkArr: checkCount,
+            currentRelaxGauge: todoArr[todoIndex].character[characterIndex].relaxGauge,
+            isChecked: isChecked,
+        });
 
         todoArr[todoIndex].character[characterIndex] = {
             ...todoArr[todoIndex].character[characterIndex],
@@ -111,7 +119,12 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
             ? setOutSideMultiCheck(characterIndex, todoIndex)
             : setOutSideSingleCheck(characterIndex, todoIndex);
 
-        const relaxGauge = calcRelaxGauge(todoArr[todoIndex].character[characterIndex].oriRelaxGauge, checkArr);
+        const relaxGauge = calcRelaxGauge({
+            oriRelaxGauge: todoArr[todoIndex].character[characterIndex].oriRelaxGauge,
+            checkArr: checkArr,
+            currentRelaxGauge: todoArr[todoIndex].character[characterIndex].relaxGauge,
+            isChecked: true,
+        });
 
         todoArr[todoIndex].character[characterIndex] = {
             ...todoArr[todoIndex].character[characterIndex],
@@ -144,12 +157,27 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
         return resultArr;
     };
 
-    const calcRelaxGauge = (oriRelaxGauge: number, checkArr: number[]): number => {
+    const calcRelaxGauge = ({
+        oriRelaxGauge,
+        checkArr,
+        currentRelaxGauge,
+        isChecked,
+    }: {
+        oriRelaxGauge: number;
+        checkArr: number[];
+        currentRelaxGauge: number;
+        isChecked: boolean;
+    }): number => {
         const checkCounts = checkArr.reduce((count, num) => (num === 1 ? count + 1 : count), 0);
 
         const minusGauge = checkCounts * 20;
         const calcMinusGauge = oriRelaxGauge - minusGauge;
-        const calcRelaxGauge = calcMinusGauge < 0 ? 0 : calcMinusGauge;
+        const calcRelaxGauge =
+            oriRelaxGauge === 10 || (currentRelaxGauge === 10 && isChecked)
+                ? 10
+                : calcMinusGauge < 0
+                ? 0
+                : calcMinusGauge;
 
         return calcRelaxGauge;
     };
@@ -232,9 +260,9 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                                                                     className="todoCheckbox"
                                                                     key={checkesIndex}
                                                                     checked={checks === 1}
-                                                                    onChange={() =>
-                                                                        onClickCheckTodo(charTodo.id, checkesIndex)
-                                                                    }
+                                                                    onChange={(
+                                                                        e: React.ChangeEvent<HTMLInputElement>,
+                                                                    ) => onClickCheckTodo(e, charTodo.id, checkesIndex)}
                                                                 />
                                                                 <EponaTextDiv>
                                                                     {pTodo.contents === 'epona' &&
