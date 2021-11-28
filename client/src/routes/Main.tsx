@@ -94,7 +94,10 @@ const Main = () => {
 
     const calcRelaxGauge = (todo: ITodo, character: ICharacterTodo, diffDays: number): ICharacterTodo => {
         const maxCheckCount = ['chaos', 'guardian'].includes(todo.contents) ? 2 : 1;
-        const addGauge = (maxCheckCount - getCheckCounts(character.check)) * 10 * diffDays;
+
+        const multiplicationCount = diffDays < 2 ? getCheckCounts(character.check) : 0;
+
+        const addGauge = (maxCheckCount - multiplicationCount) * 10 * diffDays;
 
         const relaxGauge = Number(character.relaxGauge) + addGauge;
 
