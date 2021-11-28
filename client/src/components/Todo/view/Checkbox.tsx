@@ -169,7 +169,7 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
         isChecked: boolean;
     }): number => {
         const checkCounts = checkArr.reduce((count, num) => (num === 1 ? count + 1 : count), 0);
-        console.log(oriRelaxGauge, currentRelaxGauge, isChecked);
+
         const minusGauge = checkCounts * 20;
         const calcMinusGauge = oriRelaxGauge - minusGauge;
         const calcRelaxGauge =
