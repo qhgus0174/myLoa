@@ -18,10 +18,10 @@ const updateWeeklyContents = async () => {
     const {
         result: { guardian: guardianIndex, abyss: abyssIndex },
     } = (await (
-        await axios.get(`https://myloatest.herokuapp.com/api/weeklyContents`)
+        await axios.get(`/api/weeklyContents`)
     ).data) as IResponse<IWeeklyContents>;
 
-    await axios.put(`https://myloatest.herokuapp.com/api/weeklyContents/edit`, {
+    await axios.put(`/api/weeklyContents/edit`, {
         guardian: getStartIndex(weeklyGuardian, guardianIndex),
         abyss: getStartIndex(weeklyAbyss, abyssIndex),
     });
