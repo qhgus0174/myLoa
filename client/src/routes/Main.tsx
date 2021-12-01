@@ -16,7 +16,7 @@ import { IContextModal } from '@common/types';
 import { getStorage } from '@storage/index';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { FlexDiv } from '@style/common';
+import { FlexArticle } from '@style/common';
 import { responsiveWidth, widthMedia } from '@style/device';
 import { ReactComponent as Plus } from '@assets/img/plus.svg';
 import { ReactComponent as ArrowDown } from '@assets/img/arrow-down.svg';
@@ -179,103 +179,107 @@ const Main = () => {
         });
     };
     return (
-        <MainDiv width="88" direction="column">
-            <HideButtonContainer isFold={isFold}>
-                <HideGuideDiv className="guide" onClick={showGuide}>
-                    📢 가이드
-                </HideGuideDiv>
-                <HideButtonDiv onClick={() => setIsFold(!isFold)}>
-                    버튼
-                    {isFold ? (
-                        <>
-                            <span>&nbsp;보이기</span>
-                            <ArrowDown fill={theme.colors.white} width="25px" height="25px" />
-                        </>
-                    ) : (
-                        <>
-                            <span>&nbsp;숨기기</span>
-                            <ArrowUp fill={theme.colors.white} width="25px" height="25px" />
-                        </>
-                    )}
-                </HideButtonDiv>
-            </HideButtonContainer>
-            <TodoButtonDiv height="100" isFold={isFold} width="100">
-                <ButtonLeftDiv>
-                    <AddButton
-                        type="button"
-                        icon={<PlusIcon />}
-                        onClick={e =>
-                            onContextMenuBasicModal({
-                                e: e,
-                                modal: <TodoAdd />,
-                                title: '숙제 추가',
-                                width: '600',
-                                height: '850',
-                            })
-                        }
-                    >
-                        숙제
-                    </AddButton>
-                    <AddButton
-                        isRight={true}
-                        type="button"
-                        icon={<PlusIcon />}
-                        onClick={e =>
-                            onContextMenuBasicModal({
-                                e: e,
-                                modal: <LineAdd />,
-                                title: '구분선 추가',
-                                width: '360',
-                                height: '290',
-                            })
-                        }
-                    >
-                        구분선
-                    </AddButton>
-                </ButtonLeftDiv>
-                <FlexDiv>
-                    <AddButton
-                        type="button"
-                        onClick={e =>
-                            onContextMenuBasicModal({
-                                e: e,
-                                modal: <CharacterOrdChange />,
-                                title: '캐릭터 순서 변경',
-                                width: '300',
-                                height: getStorage('characterOrd').length < 5 ? '450' : '600',
-                            })
-                        }
-                    >
-                        캐릭터 순서 변경
-                    </AddButton>
-                    <AddButton
-                        isRight={true}
-                        type="button"
-                        icon={<PlusIcon />}
-                        onClick={e =>
-                            onContextMenuBasicModal({
-                                e: e,
-                                modal: <CharacterAdd />,
-                                title: '캐릭터 추가',
-                                width: '470',
-                                height: '420',
-                            })
-                        }
-                    >
-                        캐릭터
-                    </AddButton>
-                </FlexDiv>
-            </TodoButtonDiv>
-            <TodoContentsDiv>
-                {getStorage('character').length > 0 && <Pagination />}
-                <Character onContextMenuBasicModal={onContextMenuBasicModal} />
-                <Todo onContextMenuBasicModal={onContextMenuBasicModal} />
-            </TodoContentsDiv>
-        </MainDiv>
+        <MainContainer>
+            <section>
+                <HideButtonContainer isFold={isFold}>
+                    <HideGuideArticle className="guide" onClick={showGuide}>
+                        📢 가이드
+                    </HideGuideArticle>
+                    <HideButtonSection onClick={() => setIsFold(!isFold)}>
+                        버튼
+                        {isFold ? (
+                            <>
+                                <span>&nbsp;보이기</span>
+                                <ArrowDown fill={theme.colors.white} width="25px" height="25px" />
+                            </>
+                        ) : (
+                            <>
+                                <span>&nbsp;숨기기</span>
+                                <ArrowUp fill={theme.colors.white} width="25px" height="25px" />
+                            </>
+                        )}
+                    </HideButtonSection>
+                </HideButtonContainer>
+                <TodoButtons isFold={isFold}>
+                    <ButtonLeftArticle>
+                        <AddButton
+                            type="button"
+                            icon={<PlusIcon />}
+                            onClick={e =>
+                                onContextMenuBasicModal({
+                                    e: e,
+                                    modal: <TodoAdd />,
+                                    title: '숙제 추가',
+                                    width: '600',
+                                    height: '850',
+                                })
+                            }
+                        >
+                            숙제
+                        </AddButton>
+                        <AddButton
+                            isRight={true}
+                            type="button"
+                            icon={<PlusIcon />}
+                            onClick={e =>
+                                onContextMenuBasicModal({
+                                    e: e,
+                                    modal: <LineAdd />,
+                                    title: '구분선 추가',
+                                    width: '360',
+                                    height: '290',
+                                })
+                            }
+                        >
+                            구분선
+                        </AddButton>
+                    </ButtonLeftArticle>
+                    <FlexArticle>
+                        <AddButton
+                            type="button"
+                            onClick={e =>
+                                onContextMenuBasicModal({
+                                    e: e,
+                                    modal: <CharacterOrdChange />,
+                                    title: '캐릭터 순서 변경',
+                                    width: '300',
+                                    height: getStorage('characterOrd').length < 5 ? '450' : '600',
+                                })
+                            }
+                        >
+                            캐릭터 순서 변경
+                        </AddButton>
+                        <AddButton
+                            isRight={true}
+                            type="button"
+                            icon={<PlusIcon />}
+                            onClick={e =>
+                                onContextMenuBasicModal({
+                                    e: e,
+                                    modal: <CharacterAdd />,
+                                    title: '캐릭터 추가',
+                                    width: '470',
+                                    height: '420',
+                                })
+                            }
+                        >
+                            캐릭터
+                        </AddButton>
+                    </FlexArticle>
+                </TodoButtons>
+                <TodoContentsSection>
+                    {getStorage('character').length > 0 && <Pagination />}
+                    <Character onContextMenuBasicModal={onContextMenuBasicModal} />
+                    <Todo onContextMenuBasicModal={onContextMenuBasicModal} />
+                </TodoContentsSection>
+            </section>
+        </MainContainer>
     );
 };
 
-const MainDiv = styled(FlexDiv)`
+const MainContainer = styled.main`
+    display: flex;
+    flex-direction: column;
     width: 88%;
     margin-top: 0.1em;
     ${widthMedia.phone} {
@@ -286,7 +290,7 @@ const MainDiv = styled(FlexDiv)`
     }
 `;
 
-const TodoContentsDiv = styled.div`
+const TodoContentsSection = styled.section`
     background: ${props => props.theme.colors.mainInner};
     padding: 1em 1.5em 1.5em 1.5em;
     border-radius: 1em;
@@ -297,7 +301,7 @@ const TodoContentsDiv = styled.div`
     }
 `;
 
-const HideButtonContainer = styled.div<{ isFold: boolean }>`
+const HideButtonContainer = styled.header<{ isFold: boolean }>`
     display: none;
     ${widthMedia.smallPhone} {
         width: 100%;
@@ -308,13 +312,16 @@ const HideButtonContainer = styled.div<{ isFold: boolean }>`
         justify-content: space-between;
     }
 `;
-const HideButtonDiv = styled.div`
+const HideButtonSection = styled.section`
     display: flex;
     align-items: center;
     padding-right: 0.5em;
 `;
 
-const TodoButtonDiv = styled(FlexDiv)<{ isFold: boolean }>`
+const TodoButtons = styled.header<{ isFold: boolean }>`
+    display: flex;
+    width: 100%;
+    height: 100%;
     margin-bottom: 1.1em;
     margin-top: 0.3em;
     box-sizing: border-box;
@@ -338,7 +345,7 @@ const AddButton = styled(Button)<{ isRight?: boolean }>`
     }
 `;
 
-const ButtonLeftDiv = styled(FlexDiv)`
+const ButtonLeftArticle = styled(FlexArticle)`
     ${widthMedia.smallPhone} {
         flex-direction: column;
     }
@@ -350,7 +357,7 @@ const PlusIcon = styled(Plus)`
     height: 15px;
 `;
 
-const HideGuideDiv = styled(FlexDiv)`
+const HideGuideArticle = styled(FlexArticle)`
     display: none;
     ${widthMedia.smallPhone} {
         display: flex;

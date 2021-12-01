@@ -15,7 +15,7 @@ const Line = ({
         e,
         todo,
     }: {
-        e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLDivElement>;
+        e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>;
         todo: ITodo;
     }) => {
         onContextMenu({
@@ -28,15 +28,15 @@ const Line = ({
     };
 
     return (
-        <LineDiv
+        <LineArticle
             color={todo.color}
-            onTouchEnd={(e: React.TouchEvent<HTMLDivElement>) => openLineEditModal({ e: e, todo: todo })}
-            onContextMenu={(e: React.MouseEvent<HTMLDivElement>) => openLineEditModal({ e: e, todo: todo })}
-        ></LineDiv>
+            onTouchEnd={(e: React.TouchEvent<HTMLElement>) => openLineEditModal({ e: e, todo: todo })}
+            onContextMenu={(e: React.MouseEvent<HTMLElement>) => openLineEditModal({ e: e, todo: todo })}
+        ></LineArticle>
     );
 };
 
-const LineDiv = styled.div`
+const LineArticle = styled.article`
     height: 1.5em;
     background: ${props => props.color};
 `;

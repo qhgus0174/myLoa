@@ -4,7 +4,7 @@ import { widthMedia } from '@style/device';
 import { GlobalThemeContext } from '@context/GlobalThemeContext';
 import { css } from '@emotion/react';
 import { mainColor } from '@style/theme';
-import { FlexDiv } from '@style/common';
+import { FlexArticle } from '@style/common';
 import Theme from '@assets/icon/theme.png';
 
 const SelectTheme = () => {
@@ -29,10 +29,10 @@ const SelectTheme = () => {
                     테마
                 </span>
             </ThemeTitle>
-            <PaletteDiv visible={visible}>
+            <PaletteArticle visible={visible}>
                 {mainColor.map((color, index) => {
                     return (
-                        <div
+                        <article
                             key={index}
                             css={css`
                                 display: flex;
@@ -40,20 +40,20 @@ const SelectTheme = () => {
                                 background-color: ${color.mainColor};
                             `}
                             onClick={() => setTheme(color.name)}
-                        ></div>
+                        ></article>
                     );
                 })}
-            </PaletteDiv>
+            </PaletteArticle>
         </SelectThemeContainer>
     );
 };
 
-const SelectThemeContainer = styled.div`
+const SelectThemeContainer = styled.section`
     position: relative;
     display: flex;
     justify-content: center;
 `;
-const PaletteDiv = styled(FlexDiv)<{ visible: boolean }>`
+const PaletteArticle = styled(FlexArticle)<{ visible: boolean }>`
     display: ${props => (props.visible ? 'flex' : 'none')};
     flex-wrap: wrap;
     background: white;
@@ -68,7 +68,7 @@ const PaletteDiv = styled(FlexDiv)<{ visible: boolean }>`
     }
 `;
 
-const ThemeTitle = styled.div`
+const ThemeTitle = styled.article`
     cursor: pointer;
     img {
         display: none;

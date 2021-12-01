@@ -8,7 +8,7 @@ import Home from '@assets/icon/home.png';
 import Setting from '@assets/icon/setting.png';
 import styled from '@emotion/styled';
 import { widthMedia } from '@style/device';
-import { FlexDiv } from '@style/common';
+import { FlexArticle } from '@style/common';
 import { Link } from 'react-router-dom';
 import { ModalActionContext } from '@context/ModalContext';
 import Guide from '@components/Guide';
@@ -42,55 +42,55 @@ const Header = () => {
 
     return (
         <>
-            <HeaderDiv>
-                <LeftHeader basis="40">
+            <HeaderContainer>
+                <LeftHeader>
                     <Compass />
                 </LeftHeader>
-                <HeaderInner basis="20">
+                <HeaderInner>
                     <Link to="/">
                         <LogoImg src={Logo} />
                     </Link>
                 </HeaderInner>
-                <RightHeader basis="40">
+                <RightHeader>
                     <StyledLink to="/">
                         <span>홈</span>
                     </StyledLink>
-                    <GuideDiv>
+                    <GuideArticle>
                         <QuestionSpan className="guide" onClick={showGuide}>
                             가이드
                         </QuestionSpan>
-                    </GuideDiv>
+                    </GuideArticle>
                     <StyledLink to="/mng">
                         <span>관리</span>
                     </StyledLink>
                     <SelectTheme />
                 </RightHeader>
-            </HeaderDiv>
-            <HeaderResponsiveDiv>
-                <FooterDiv className="selectDayContents" onClick={openDayContents}>
+            </HeaderContainer>
+            <HeaderResponsiveContainer>
+                <FooterNav className="selectDayContents" onClick={openDayContents}>
                     🔎 일일
-                </FooterDiv>
-                <FooterDiv className="selectWeeklyContents" onClick={openWeeklyContents}>
+                </FooterNav>
+                <FooterNav className="selectWeeklyContents" onClick={openWeeklyContents}>
                     🔎 주간
-                </FooterDiv>
-                <FooterDiv>
+                </FooterNav>
+                <FooterNav>
                     <StyledLink to="/">
                         <img src={Home} />
                     </StyledLink>
-                </FooterDiv>
-                <FooterDiv>
+                </FooterNav>
+                <FooterNav>
                     <StyledLink to="/mng">
                         <img src={Setting} />
                     </StyledLink>
-                </FooterDiv>
-                <FooterDiv>
+                </FooterNav>
+                <FooterNav>
                     <SelectTheme />
-                </FooterDiv>
-            </HeaderResponsiveDiv>
+                </FooterNav>
+            </HeaderResponsiveContainer>
         </>
     );
 };
-const HeaderDiv = styled.div`
+const HeaderContainer = styled.header`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -108,7 +108,9 @@ const HeaderDiv = styled.div`
     }
 `;
 
-const HeaderInner = styled(FlexDiv)`
+const HeaderInner = styled.article`
+    display: flex;
+    flex-basis: 20%;
     justify-content: center;
 `;
 
@@ -120,12 +122,16 @@ const LogoImg = styled.img`
         width: 130px;
     }
 `;
-const LeftHeader = styled(FlexDiv)`
+const LeftHeader = styled.article`
+    display: flex;
+    flex-basis: 40%;
     align-items: center;
     justify-content: space-evenly;
 `;
 
-const RightHeader = styled(FlexDiv)`
+const RightHeader = styled.nav`
+    display: flex;
+    flex-basis: 40%;
     align-items: center;
     justify-content: space-evenly;
 
@@ -141,7 +147,7 @@ const StyledLink = styled(Link)`
     display: flex;
 `;
 
-const HeaderResponsiveDiv = styled.div`
+const HeaderResponsiveContainer = styled.header`
     display: none;
 
     ${widthMedia.smallPhone} {
@@ -160,15 +166,15 @@ const HeaderResponsiveDiv = styled.div`
     }
 `;
 
-const FooterDiv = styled.div`
-    text-decoration: none;
+const FooterNav = styled.nav`
     display: flex;
     align-items: center;
     justify-content: space-evenly;
     width: 20%;
+    text-decoration: none;
 `;
 
-const GuideDiv = styled(FlexDiv)`
+const GuideArticle = styled(FlexArticle)`
     align-items: center;
     justify-content: center;
 `;

@@ -184,11 +184,11 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
 
     return (
         <FormContainer>
-            <RefreshButtonDiv>
+            <RefreshButtonArticle>
                 <Button className="reCrollCharacter" onClick={async () => await reCrollCharacterInfo()}>
                     갱신
                 </Button>
-            </RefreshButtonDiv>
+            </RefreshButtonArticle>
             <CharacterForm color={color} setColor={setColor} name={name} setName={setName} />
             <EditButtonContainer
                 editClassName="editCharacter"
@@ -199,7 +199,7 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
     );
 };
 
-const RefreshButtonDiv = styled.div`
+const RefreshButtonArticle = styled.article`
     position: absolute;
     top: 2.5rem;
     right: 3rem;

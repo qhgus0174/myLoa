@@ -5,8 +5,8 @@ import { IResponse, IWeeklyContents } from '@common/responseType';
 import { weeklyGuardian } from '@common/data/weeklyGuardian';
 import { weeklyAbyss } from '@common/data/weeklyAbyss';
 import styled from '@emotion/styled';
-import { ContentsDivTitle, ContentsInnerDiv, FormContainer, FormDivContainer } from '@style/common/modal';
-import { FlexDiv } from '@style/common';
+import { ContentsArticleTitle, ContentsInnerArticle, FormContainer, FormArticleContainer } from '@style/common/modal';
+import { FlexArticle } from '@style/common';
 
 const WeeklyContents = () => {
     const [guardian, setGuardian] = useState<string[]>([]);
@@ -56,42 +56,42 @@ const WeeklyContents = () => {
 
     return (
         <FormContainer>
-            <FormDivContainer>
+            <FormArticleContainer>
                 {guardian.length > 0 && (
-                    <GuardianDiv>
-                        <ContentsDivTitle>도전 가디언 토벌</ContentsDivTitle>
-                        <ContentsInnerDiv>
+                    <GuardianArticle>
+                        <ContentsArticleTitle>도전 가디언 토벌</ContentsArticleTitle>
+                        <ContentsInnerArticle>
                             {guardian.map((name, guardianIndex) => {
-                                return <ContentsDiv key={guardianIndex}>🔹 {name}</ContentsDiv>;
+                                return <ContentsArticle key={guardianIndex}>🔹 {name}</ContentsArticle>;
                             })}
-                        </ContentsInnerDiv>
-                    </GuardianDiv>
+                        </ContentsInnerArticle>
+                    </GuardianArticle>
                 )}
                 {abyss.length > 0 && (
-                    <AbyssDiv>
-                        <ContentsDivTitle>도전 어비스 던전</ContentsDivTitle>
-                        <ContentsInnerDiv>
+                    <AbyssArticle>
+                        <ContentsArticleTitle>도전 어비스 던전</ContentsArticleTitle>
+                        <ContentsInnerArticle>
                             {abyss.map((name, abyssIndex) => {
-                                return <ContentsDiv key={abyssIndex}>🔹 {name}</ContentsDiv>;
+                                return <ContentsArticle key={abyssIndex}>🔹 {name}</ContentsArticle>;
                             })}
-                        </ContentsInnerDiv>
-                    </AbyssDiv>
+                        </ContentsInnerArticle>
+                    </AbyssArticle>
                 )}
-            </FormDivContainer>
+            </FormArticleContainer>
         </FormContainer>
     );
 };
 
-const GuardianDiv = styled(FlexDiv)`
+const GuardianArticle = styled(FlexArticle)`
     flex-direction: column;
     margin-bottom: 1.5em;
 `;
 
-const AbyssDiv = styled(FlexDiv)`
+const AbyssArticle = styled(FlexArticle)`
     flex-direction: column;
 `;
 
-const ContentsDiv = styled.div`
+const ContentsArticle = styled.article`
     line-height: 2.5rem;
     padding-left: 0.8em;
 `;

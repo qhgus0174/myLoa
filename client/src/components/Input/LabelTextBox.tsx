@@ -8,16 +8,16 @@ interface ILabelTextProps extends ITextProps {
 
 const LabelText = ({ label, ...rest }: ILabelTextProps) => {
     return (
-        <TextFormDiv>
+        <TextFormSection>
             <Label>
                 <Span>{label}</Span>
                 <Text type="text" {...rest} />
             </Label>
-        </TextFormDiv>
+        </TextFormSection>
     );
 };
 
-const TextFormDiv = styled.div`
+const TextFormSection = styled.section`
     display: flex;
     align-items: center;
     justify-content: space-evenly;

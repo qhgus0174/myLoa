@@ -10,14 +10,14 @@ export interface ITextProps extends React.InputHTMLAttributes<HTMLInputElement> 
 
 const TextBox = ({ width, divWidth = '100', type = 'text', align, underline = true, ...rest }: ITextProps) => {
     return (
-        <InputDiv divWidth={divWidth}>
+        <InputSection divWidth={divWidth}>
             <CustomInput align={align} type={type} width={width} underline={underline} {...rest} autoComplete="false" />
             <Span></Span>
-        </InputDiv>
+        </InputSection>
     );
 };
 
-const InputDiv = styled.div<{ divWidth: string }>`
+const InputSection = styled.section<{ divWidth: string }>`
     position: relative;
     display: inline-block;
     width: ${props => props.divWidth}%;

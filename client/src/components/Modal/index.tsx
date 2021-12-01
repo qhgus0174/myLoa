@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { IPortalOption, IPortalProperty } from '@common/types';
 import styled from '@emotion/styled';
 import { widthMedia } from '@style/device';
-import { FlexDiv } from '@style/common';
+import { FlexArticle } from '@style/common';
 import Button from '@components/Button/Button';
 import { ModalActionContext } from '@context/ModalContext';
 
@@ -21,7 +21,7 @@ const BasicModal = ({ children, options }: IPortalProperty) => {
     );
 };
 
-const ModalInner = styled(FlexDiv)<Pick<IPortalOption, 'width' | 'height'>>`
+const ModalInner = styled(FlexArticle)<Pick<IPortalOption, 'width' | 'height'>>`
     z-index: 2;
 
     position: relative;
@@ -62,7 +62,7 @@ const ModalInner = styled(FlexDiv)<Pick<IPortalOption, 'width' | 'height'>>`
     }
 `;
 
-const ModalHeader = styled.div<{ height: string }>`
+const ModalHeader = styled.header<{ height: string }>`
     display: flex;
     align-items: center;
     box-sizing: border-box;
@@ -73,7 +73,7 @@ const ModalHeader = styled.div<{ height: string }>`
     justify-content: space-between;
 `;
 
-const ModalContent = styled.div<{ isHeader: string }>`
+const ModalContent = styled.section<{ isHeader: string }>`
     box-sizing: border-box;
     height: ${props => (props.isHeader ? `calc(100% - 80px)` : `100%`)};
 

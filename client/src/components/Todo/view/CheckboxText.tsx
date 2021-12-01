@@ -6,7 +6,7 @@ import PinCheckbox from '@components/Input/PinCheckBox';
 import { getStorage } from '@storage/index';
 import { IContextModal, ScheduleContents } from '@common/types';
 import styled from '@emotion/styled';
-import { FlexDiv, FlexLeftDiv } from '@style/common';
+import { FlexArticle, FlexLeftArticle } from '@style/common';
 
 interface ICheckbox {
     todo: ITodo;
@@ -21,7 +21,7 @@ const CheckboxText = ({ todo, onContextMenu }: ICheckbox) => {
         e,
         todo,
     }: {
-        e: React.MouseEvent<HTMLDivElement> | React.TouchEvent<HTMLDivElement>;
+        e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>;
         todo: ITodo;
     }) => {
         e.preventDefault();
@@ -46,29 +46,29 @@ const CheckboxText = ({ todo, onContextMenu }: ICheckbox) => {
     return (
         <TextContainer
             contents={todo.contents}
-            onTouchEnd={(e: React.TouchEvent<HTMLDivElement>) => openTodoEditModal({ e: e, todo: todo })}
-            onContextMenu={(e: React.MouseEvent<HTMLDivElement>) => openTodoEditModal({ e: e, todo: todo })}
+            onTouchEnd={(e: React.TouchEvent<HTMLElement>) => openTodoEditModal({ e: e, todo: todo })}
+            onContextMenu={(e: React.MouseEvent<HTMLElement>) => openTodoEditModal({ e: e, todo: todo })}
         >
-            <TextDiv>
-                <FlexDiv basis="10"></FlexDiv>
-                <FlexDiv basis="10">
+            <TextArticle>
+                <FlexArticle basis="10"></FlexArticle>
+                <FlexArticle basis="10">
                     <PinCheckbox onClick={setFixed} isLine={false} checked={isFixed} />
-                </FlexDiv>
-                <RealTextDiv basis="70" color={todo.color}>
+                </FlexArticle>
+                <RealText basis="70" color={todo.color}>
                     {todo.name}
-                </RealTextDiv>
-                <FlexDiv basis="10"></FlexDiv>
-            </TextDiv>
+                </RealText>
+                <FlexArticle basis="10"></FlexArticle>
+            </TextArticle>
         </TextContainer>
     );
 };
 
-const RealTextDiv = styled(FlexDiv)`
+const RealText = styled(FlexArticle)`
     color: ${props => props.color};
     justify-content: center;
 `;
 
-const TextContainer = styled(FlexLeftDiv)<{ contents: ScheduleContents }>`
+const TextContainer = styled(FlexLeftArticle)<{ contents: ScheduleContents }>`
     width: 100%;
     height: ${props => (props.contents === 'guardian' ? '7.75em' : '4.55em')};
     align-items: center;
@@ -80,7 +80,7 @@ const TextContainer = styled(FlexLeftDiv)<{ contents: ScheduleContents }>`
     }
 `;
 
-const TextDiv = styled(FlexDiv)`
+const TextArticle = styled(FlexArticle)`
     width: 100%;
     height: 100%;
     flex-basis: 100%;

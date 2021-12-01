@@ -12,7 +12,7 @@ interface IBasis {
     height?: string;
 }
 
-export const FlexDiv = styled.div<IBasis>`
+export const FlexArticle = styled.article<IBasis>`
     display: flex;
     flex-direction: ${props => (props.direction ? props.direction : `row`)};
     ${props => props.basis && `flex-basis: ${props.basis}%`};
@@ -20,7 +20,7 @@ export const FlexDiv = styled.div<IBasis>`
     ${props => props.height && `height: ${props.height}%`};
 `;
 
-export const FlexLeftDiv = styled.div`
+export const FlexLeftArticle = styled.article`
     display: flex;
     justify-content: center;
     flex-basis: 12%;
@@ -29,7 +29,7 @@ export const FlexLeftDiv = styled.div`
     }
 `;
 
-export const FlexRightDiv = styled.div`
+export const FlexRightArticle = styled.article`
     display: flex;
     flex-basis: 88%;
     ${widthMedia.tablet} {
@@ -39,7 +39,7 @@ export const FlexRightDiv = styled.div`
     justify-content: center;
 `;
 
-export const FlexHoverDiv = styled(FlexLeftDiv)`
+export const FlexHoverArticle = styled(FlexLeftArticle)`
     height: 100%;
     align-items: center;
 
@@ -65,7 +65,7 @@ export const FlexHoverDiv = styled(FlexLeftDiv)`
     cursor: pointer;
 `;
 
-export const CharactersDiv = styled(FlexRightDiv)<{ length: number; contents?: ScheduleContents }>`
+export const CharactersArticle = styled(FlexRightArticle)<{ length: number; contents?: ScheduleContents }>`
     height: ${props => (props.contents === 'guardian' ? '7.75em' : '4.55em')};
 
     ${props => {
@@ -80,7 +80,7 @@ export const CharactersDiv = styled(FlexRightDiv)<{ length: number; contents?: S
         } else if (props.length > 0) {
             return css`
                 justify-content: flex-start;
-                & > div {
+                & > article {
                     margin-right: 6em;
                     ${widthMedia.tablet} {
                         margin-right: 0em;
@@ -95,7 +95,7 @@ export const CharactersDiv = styled(FlexRightDiv)<{ length: number; contents?: S
     }
 `;
 
-export const RemarkDiv = styled(FlexDiv)`
+export const RemarkArticle = styled(FlexArticle)`
     justify-content: flex-end;
     margin-bottom: 1em;
     box-sizing: border-box;

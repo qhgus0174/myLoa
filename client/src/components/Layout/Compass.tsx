@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
-import { FlexDiv } from '@style/common';
+import { FlexArticle } from '@style/common';
 import { widthMedia } from '@style/device';
 import Button from '@components/Button/Button';
 import { ModalActionContext } from '@context/ModalContext';
@@ -38,7 +38,7 @@ const Compass = () => {
     );
 };
 
-const CompassContainer = styled(FlexDiv)`
+const CompassContainer = styled(FlexArticle)`
     align-items: center;
     justify-content: center;
     font-weight: 500;

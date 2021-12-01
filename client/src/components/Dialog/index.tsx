@@ -29,14 +29,14 @@ const Dialog = ({ children, options }: IPortalProperty) => {
     );
 };
 
-const DialogBody = styled.div`
+const DialogBody = styled.section`
     display: flex;
     justify-content: center;
     align-items: center;
     flex-basis: 50%;
 `;
 
-const DialogBottom = styled.div`
+const DialogBottom = styled.footer`
     display: flex;
     justify-content: flex-end;
     flex-basis: 20%;

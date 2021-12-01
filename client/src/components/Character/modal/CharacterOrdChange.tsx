@@ -6,10 +6,10 @@ import useCharacterOrd from '@hooks/storage/useCharacterOrd';
 import { sortOrd } from '@components/Character/common/functions';
 import { ICharacter } from '@components/Character/CharacterType';
 import Button from '@components/Button/Button';
-import { FormButtonContainer, FormContainer, FormDivContainer } from '@style/common/modal';
+import { FormButtonContainer, FormContainer, FormArticleContainer } from '@style/common/modal';
 import { getStorage } from '@storage/index';
 import styled from '@emotion/styled';
-import { FlexDiv } from '@style/common';
+import { FlexArticle } from '@style/common';
 import { DropResult, DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { PagingStateContext } from '@context/PagingContext';
 
@@ -46,12 +46,12 @@ const CharacterOrdChange = () => {
 
     return (
         <FormContainer>
-            <FormDivContainer>
-                <FlexDiv direction="row-reverse">페이지당 최대 캐릭터 수 : {perPage}</FlexDiv>
+            <FormArticleContainer>
+                <FlexArticle direction="row-reverse">페이지당 최대 캐릭터 수 : {perPage}</FlexArticle>
                 <DragDropContext onDragEnd={onDragEndCharacter}>
                     <Droppable droppableId="md">
                         {provided => (
-                            <FlexDiv direction="column" {...provided.droppableProps} ref={provided.innerRef}>
+                            <FlexArticle direction="column" {...provided.droppableProps} ref={provided.innerRef}>
                                 {(getStorage('character') as ICharacter[])
                                     .sort((a, b) => {
                                         return ord.indexOf(a.id) - ord.indexOf(b.id);
@@ -60,7 +60,7 @@ const CharacterOrdChange = () => {
                                         return (
                                             <Draggable key={char.id} draggableId={String(char.id)} index={charIndex}>
                                                 {provided => (
-                                                    <CharacterOrdDiv
+                                                    <CharacterOrdArticle
                                                         {...provided.draggableProps}
                                                         {...provided.dragHandleProps}
                                                         ref={provided.innerRef}
@@ -70,17 +70,17 @@ const CharacterOrdChange = () => {
                                                         <CharacterOrdText color={char.color}>
                                                             <span>{charIndex + 1}.</span> <span>{char.name}</span>
                                                         </CharacterOrdText>
-                                                    </CharacterOrdDiv>
+                                                    </CharacterOrdArticle>
                                                 )}
                                             </Draggable>
                                         );
                                     })}
                                 {provided.placeholder}
-                            </FlexDiv>
+                            </FlexArticle>
                         )}
                     </Droppable>
                 </DragDropContext>
-            </FormDivContainer>
+            </FormArticleContainer>
             <FormButtonContainer>
                 <Button onClick={saveOrd}>저장</Button>
                 <Button onClick={closeModal}>닫기</Button>
@@ -89,7 +89,7 @@ const CharacterOrdChange = () => {
     );
 };
 
-const CharacterOrdText = styled.div<{ color: string }>`
+const CharacterOrdText = styled.article<{ color: string }>`
     padding-left: 1.5em;
     span {
         color: ${props => props.color};
@@ -100,7 +100,7 @@ const CharacterOrdText = styled.div<{ color: string }>`
     }
 `;
 
-const CharacterOrdDiv = styled.div`
+const CharacterOrdArticle = styled.article`
     display: flex;
     align-items: center;
     padding-top: 1em;
@@ -111,7 +111,7 @@ const CharacterOrdDiv = styled.div`
     }
     font-weight: 600;
     width: 100%;
-    div {
+    article {
         color: ${props => props.color};
     }
 `;

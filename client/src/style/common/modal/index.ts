@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const Dimmer = styled.div`
+export const Dimmer = styled.article`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,7 +14,7 @@ export const Dimmer = styled.div`
     backdrop-filter: blur(4px);
 `;
 
-export const FormContainer = styled.div`
+export const FormContainer = styled.article`
     display: flex;
     justify-content: space-between;
     flex-basis: 100%;
@@ -23,14 +23,14 @@ export const FormContainer = styled.div`
     overflow-y: auto;
 `;
 
-export const FormDivContainer = styled.div`
+export const FormArticleContainer = styled.article`
     display: flex;
     justify-content: space-around;
     flex-basis: 90%;
     flex-direction: column;
 `;
 
-export const ContentsDivTitle = styled.div`
+export const ContentsArticleTitle = styled.article`
     display: flex;
     align-items: center;
     box-sizing: border-box;
@@ -39,12 +39,12 @@ export const ContentsDivTitle = styled.div`
     font-size: 1.02em;
 `;
 
-export const ContentsDiv = styled.div`
+export const ContentsArticle = styled.article`
     display: flex;
     align-items: center;
 `;
 
-export const FormButtonContainer = styled.div`
+export const FormButtonContainer = styled.article`
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -59,7 +59,7 @@ export const FormButtonContainer = styled.div`
     }
 `;
 
-export const RightButtonDiv = styled.div`
+export const RightButtonArticle = styled.article`
     display: flex;
     justify-content: flex-end;
     width: 100%;
@@ -69,7 +69,7 @@ export const RightButtonDiv = styled.div`
     }
 `;
 
-export const ContentsInnerDiv = styled.div`
+export const ContentsInnerArticle = styled.article`
     background: ${props => props.theme.colors.mainInner};
     padding: 0.5em;
     border-radius: 1em;

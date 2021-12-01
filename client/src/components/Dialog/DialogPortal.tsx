@@ -35,7 +35,7 @@ const DialogPortal = () => {
     );
 };
 
-const DialogInner = styled.div<Pick<IPortalOption, 'width' | 'height'>>`
+const DialogInner = styled.section<Pick<IPortalOption, 'width' | 'height'>>`
     background-color: #ffffff;
     box-sizing: border-box;
     border-radius: 4px;

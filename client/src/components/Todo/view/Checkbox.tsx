@@ -8,7 +8,7 @@ import TodoCheck from '@components/Todo/modal/TodoCheck';
 import TextBox from '@components/Input/TextBox';
 import Guardian from '@components/Todo/view/Guardian';
 import { IContextModal, ScheduleContents, ScheduleType } from '@common/types';
-import { CharactersDiv, FlexDiv, FlexHoverDiv } from '@style/common';
+import { CharactersArticle, FlexArticle, FlexHoverArticle } from '@style/common';
 import styled from '@emotion/styled';
 import useCharacterOrd from '@hooks/storage/useCharacterOrd';
 import useCharacter from '@hooks/storage/useCharacter';
@@ -32,7 +32,7 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
         charTodo,
         characterIndex,
     }: {
-        e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLDivElement>;
+        e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>;
         charTodo: ICharacterTodo;
         characterIndex: number;
     }) => {
@@ -62,7 +62,7 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
         charTodo,
         characterIndex,
     }: {
-        e: React.TouchEvent<HTMLDivElement>;
+        e: React.TouchEvent<HTMLElement>;
         charTodo: ICharacterTodo;
         characterIndex: number;
     }) => {
@@ -106,7 +106,7 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
         setStorageTodo(JSON.stringify(todoArr));
     };
 
-    const onClickCheckTodoHoverArea = (e: React.MouseEvent<HTMLDivElement>, characterId: number) => {
+    const onClickCheckTodoHoverArea = (e: React.MouseEvent<HTMLElement>, characterId: number) => {
         if (e.target !== e.currentTarget) return;
 
         const todoArr: ITodo[] = getStorage('todo');
@@ -211,7 +211,7 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
     return (
         <>
             <WhiteSpaceDiv></WhiteSpaceDiv>
-            <CharactersDiv
+            <CharactersArticle
                 length={getStorage('character').length - (currentPage - 1) * perPage}
                 contents={pTodo.contents}
             >
@@ -225,36 +225,36 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                     )
                     .map((charTodo: ICharacterTodo, characterIndex: number) => {
                         return (
-                            <FlexHoverDiv
+                            <FlexHoverArticle
                                 key={`drag_char_${characterIndex}`}
-                                onContextMenu={(e: React.MouseEvent<HTMLDivElement>) =>
+                                onContextMenu={(e: React.MouseEvent<HTMLElement>) =>
                                     openTodoCheckEditModal({
                                         e: e,
                                         charTodo: charTodo,
                                         characterIndex: characterIndex,
                                     })
                                 }
-                                onTouchEnd={(e: React.TouchEvent<HTMLDivElement>) =>
+                                onTouchEnd={(e: React.TouchEvent<HTMLElement>) =>
                                     onTouchEnd({ e: e, charTodo: charTodo, characterIndex: characterIndex })
                                 }
                                 onClick={e => onClickCheckTodoHoverArea(e, charTodo.id)}
                             >
                                 {pTodo.checkType === 'check' ? (
                                     pTodo.showCharacter.includes(charTodo.id) && (
-                                        <FlexDiv direction="column" width="100">
+                                        <FlexArticle direction="column" width="100">
                                             <CheckContainer
-                                                onTouchEnd={(e: React.TouchEvent<HTMLDivElement>) =>
+                                                onTouchEnd={(e: React.TouchEvent<HTMLElement>) =>
                                                     onTouchEnd({
                                                         e: e,
                                                         charTodo: charTodo,
                                                         characterIndex: characterIndex,
                                                     })
                                                 }
-                                                onClick={(e: React.MouseEvent<HTMLDivElement>) =>
+                                                onClick={(e: React.MouseEvent<HTMLElement>) =>
                                                     onClickCheckTodoHoverArea(e, charTodo.id)
                                                 }
                                             >
-                                                <CheckBoxDiv contents={pTodo.contents} todoType={pTodo.type}>
+                                                <CheckBoxArticle contents={pTodo.contents} todoType={pTodo.type}>
                                                     {charTodo.check.map((checks: number, checkesIndex: number) => {
                                                         return (
                                                             <CheckboxContentDiv key={`todo_char_check_${checkesIndex}`}>
@@ -266,39 +266,39 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                                                                         e: React.ChangeEvent<HTMLInputElement>,
                                                                     ) => onClickCheckTodo(e, charTodo.id, checkesIndex)}
                                                                 />
-                                                                <EponaTextDiv>
+                                                                <EponaTextArticle>
                                                                     {pTodo.contents === 'epona' &&
                                                                         charTodo.eponaName &&
                                                                         charTodo.eponaName[checkesIndex]}
-                                                                </EponaTextDiv>
+                                                                </EponaTextArticle>
                                                             </CheckboxContentDiv>
                                                         );
                                                     })}
-                                                </CheckBoxDiv>
+                                                </CheckBoxArticle>
                                                 {pTodo.type === 'daily' &&
                                                     ['chaos', 'guardian'].includes(pTodo.contents) && (
-                                                        <CheckText>
-                                                            <RelaxGaugeDiv
-                                                                onTouchEnd={(e: React.TouchEvent<HTMLDivElement>) =>
+                                                        <CheckTextArticle>
+                                                            <RelaxGaugeArticle
+                                                                onTouchEnd={(e: React.TouchEvent<HTMLElement>) =>
                                                                     onTouchEnd({
                                                                         e: e,
                                                                         charTodo: charTodo,
                                                                         characterIndex: characterIndex,
                                                                     })
                                                                 }
-                                                                onClick={(e: React.MouseEvent<HTMLDivElement>) =>
+                                                                onClick={(e: React.MouseEvent<HTMLElement>) =>
                                                                     onClickCheckTodoHoverArea(e, charTodo.id)
                                                                 }
                                                             >
                                                                 {charTodo.relaxGauge}
-                                                            </RelaxGaugeDiv>
-                                                        </CheckText>
+                                                            </RelaxGaugeArticle>
+                                                        </CheckTextArticle>
                                                     )}
                                             </CheckContainer>
                                             {pTodo.type === 'daily' && pTodo.contents === 'guardian' && (
                                                 <Guardian
                                                     onTouchEnd={onTouchEnd}
-                                                    onClick={(e: React.MouseEvent<HTMLDivElement>) =>
+                                                    onClick={(e: React.MouseEvent<HTMLElement>) =>
                                                         onClickCheckTodoHoverArea(e, charTodo.id)
                                                     }
                                                     key={`guardian_${characterIndex}`}
@@ -311,7 +311,7 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                                                     setGuardianStep={setGuardianStep}
                                                 />
                                             )}
-                                        </FlexDiv>
+                                        </FlexArticle>
                                     )
                                 ) : (
                                     <TextBox
@@ -324,16 +324,16 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                                         value={charTodo.text || ''}
                                     />
                                 )}
-                            </FlexHoverDiv>
+                            </FlexHoverArticle>
                         );
                     })}
-            </CharactersDiv>
+            </CharactersArticle>
             <WhiteSpaceDiv></WhiteSpaceDiv>
         </>
     );
 };
 
-const CheckBoxDiv = styled.div<{ todoType: ScheduleType; contents: ScheduleContents }>`
+const CheckBoxArticle = styled.article<{ todoType: ScheduleType; contents: ScheduleContents }>`
     display: flex;
     justify-content: space-evenly;
 
@@ -343,14 +343,14 @@ const CheckBoxDiv = styled.div<{ todoType: ScheduleType; contents: ScheduleConte
     }
 `;
 
-const CheckText = styled.div`
+const CheckTextArticle = styled.article`
     display: flex;
     flex-direction: column;
     flex-basis: 15%;
     justify-content: center;
 `;
 
-const RelaxGaugeDiv = styled.div`
+const RelaxGaugeArticle = styled.article`
     justify-content: center;
     text-align: center;
     color: ${props => props.theme.colors.relax};
@@ -372,7 +372,7 @@ const CheckboxContentDiv = styled.label`
     font-size: 0.9em;
 `;
 
-const EponaTextDiv = styled.div`
+const EponaTextArticle = styled.article`
     font-size: 0.9em;
     white-space: nowrap;
     overflow: hidden;
@@ -383,7 +383,7 @@ const EponaTextDiv = styled.div`
     box-sizing: border-box;
 `;
 
-const CheckContainer = styled(FlexDiv)`
+const CheckContainer = styled(FlexArticle)`
     height: 100%;
     justify-content: center;
 `;

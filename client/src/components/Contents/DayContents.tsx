@@ -3,7 +3,7 @@ import { DateTime } from 'luxon';
 import { ModalActionContext } from '@context/ModalContext';
 import { CompassInfo } from '@common/data/compass';
 import styled from '@emotion/styled';
-import { ContentsInnerDiv, FormContainer } from '@style/common/modal';
+import { ContentsInnerArticle, FormContainer } from '@style/common/modal';
 
 const DayContents = () => {
     const [fieldBoss, setFieldBoss] = useState<boolean>(false);
@@ -30,30 +30,30 @@ const DayContents = () => {
 
     return (
         <CompassContainer>
-            <CompassDiv active={fieldBoss}>
+            <CompassArticle active={fieldBoss}>
                 <span> {fieldBoss ? '⭕' : '❌'}</span>
                 <span>필드 보스</span>
-            </CompassDiv>
-            <CompassDiv active={ghost}>
+            </CompassArticle>
+            <CompassArticle active={ghost}>
                 <span> {ghost ? '⭕' : '❌'}</span>
                 <span>유령선</span>
-            </CompassDiv>
-            <CompassDiv active={chaosGate}>
+            </CompassArticle>
+            <CompassArticle active={chaosGate}>
                 <span> {chaosGate ? '⭕' : '❌'}</span>
                 <span>카오스 게이트</span>
-            </CompassDiv>
+            </CompassArticle>
         </CompassContainer>
     );
 };
 
-const CompassContainer = styled(ContentsInnerDiv)`
+const CompassContainer = styled(ContentsInnerArticle)`
     display: flex;
     flex-direction: column;
     height: 100px;
     justify-content: space-evenly;
 `;
 
-const CompassDiv = styled.div<{ active: boolean }>`
+const CompassArticle = styled.article<{ active: boolean }>`
     display: flex;
     margin-left: 1em;
     span:nth-of-type(2) {

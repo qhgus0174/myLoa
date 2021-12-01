@@ -9,8 +9,8 @@ import TextBox from '@components/Input/TextBox';
 import { ScheduleCheckType, ScheduleContents, ScheduleType } from '@common/types';
 import { getStorage } from '@storage/index';
 import styled from '@emotion/styled';
-import { ContentsDiv, ContentsDivTitle, ContentsInnerDiv, FormDivContainer } from '@style/common/modal';
-import { FlexDiv } from '@style/common';
+import { ContentsArticle, ContentsArticleTitle, ContentsInnerArticle, FormArticleContainer } from '@style/common/modal';
+import { FlexArticle } from '@style/common';
 
 interface ITodo {
     type: ScheduleType;
@@ -40,12 +40,12 @@ const TodoForm = ({
     setShowCharacterArr,
 }: ITodo) => {
     return (
-        <FormDivContainer>
-            <FormFlexDiv direction="column">
-                <ContentsDivTitle>숙제 유형</ContentsDivTitle>
-                <ContentsInnerDiv>
-                    <ContentsDiv>
-                        <SmallTitleDiv>체크박스형</SmallTitleDiv>
+        <FormArticleContainer>
+            <FormFlexArticle direction="column">
+                <ContentsArticleTitle>숙제 유형</ContentsArticleTitle>
+                <ContentsInnerArticle>
+                    <ContentsArticle>
+                        <SmallTitle>체크박스형</SmallTitle>
                         <RadioButton
                             text="일일"
                             name="type"
@@ -70,9 +70,9 @@ const TodoForm = ({
                             }}
                             checked={type === 'weekly'}
                         />
-                    </ContentsDiv>
-                    <ContentsDiv>
-                        <SmallTitleDiv>텍스트형</SmallTitleDiv>
+                    </ContentsArticle>
+                    <ContentsArticle>
+                        <SmallTitle>텍스트형</SmallTitle>
                         <RadioButton
                             text="텍스트"
                             name="type"
@@ -85,15 +85,15 @@ const TodoForm = ({
                             }}
                             checked={type === 'other'}
                         />
-                    </ContentsDiv>
-                </ContentsInnerDiv>
-            </FormFlexDiv>
+                    </ContentsArticle>
+                </ContentsInnerArticle>
+            </FormFlexArticle>
             {type === 'daily' && (
-                <FormFlexDiv direction="column">
-                    <ContentsDivTitle>컨텐츠</ContentsDivTitle>
-                    <ContentsInnerDiv>
-                        <ContentsDiv>
-                            <SmallTitleDiv>특수</SmallTitleDiv>
+                <FormFlexArticle direction="column">
+                    <ContentsArticleTitle>컨텐츠</ContentsArticleTitle>
+                    <ContentsInnerArticle>
+                        <ContentsArticle>
+                            <SmallTitle>특수</SmallTitle>
                             <RadioButton
                                 text="카던"
                                 name="contents"
@@ -125,9 +125,9 @@ const TodoForm = ({
                                 }}
                                 checked={contents === 'epona'}
                             />
-                        </ContentsDiv>
-                        <ContentsDiv>
-                            <SmallTitleDiv>일반</SmallTitleDiv>
+                        </ContentsArticle>
+                        <ContentsArticle>
+                            <SmallTitle>일반</SmallTitle>
                             <RadioButton
                                 text="초기화 O"
                                 name="contents"
@@ -148,15 +148,15 @@ const TodoForm = ({
                                 }}
                                 checked={contents === 'basic'}
                             />
-                        </ContentsDiv>
-                    </ContentsInnerDiv>
-                </FormFlexDiv>
+                        </ContentsArticle>
+                    </ContentsInnerArticle>
+                </FormFlexArticle>
             )}
             {(getStorage('character') as ICharacter[]).length > 0 && (
-                <FormFlexDiv direction="column">
-                    <ContentsDivTitle>숙제 표시 할 캐릭터</ContentsDivTitle>
-                    <ContentsInnerDiv>
-                        <ContentsCharacterDiv>
+                <FormFlexArticle direction="column">
+                    <ContentsArticleTitle>숙제 표시 할 캐릭터</ContentsArticleTitle>
+                    <ContentsInnerArticle>
+                        <ContentsCharacterArticle>
                             {(getStorage('character') as ICharacter[])
                                 ?.sort((a: ICharacter, b: ICharacter) => {
                                     return (
@@ -166,7 +166,7 @@ const TodoForm = ({
                                 })
                                 .map((character: ICharacter, characterIndex: number) => {
                                     return (
-                                        <ShowCharacterDiv key={`todo_show_${characterIndex}`}>
+                                        <ShowCharacterArticle key={`todo_show_${characterIndex}`}>
                                             <BasicCheckbox
                                                 value={character.id}
                                                 checked={showCharacterArr.includes(character.id)}
@@ -177,41 +177,41 @@ const TodoForm = ({
                                                 }
                                                 label={character.name}
                                             />
-                                        </ShowCharacterDiv>
+                                        </ShowCharacterArticle>
                                     );
                                 })}
-                        </ContentsCharacterDiv>
-                    </ContentsInnerDiv>
-                </FormFlexDiv>
+                        </ContentsCharacterArticle>
+                    </ContentsInnerArticle>
+                </FormFlexArticle>
             )}
 
-            <FormFlexDiv direction="column">
-                <ContentsDivTitle>숙제 명</ContentsDivTitle>
-                <ContentsDiv>
+            <FormFlexArticle direction="column">
+                <ContentsArticleTitle>숙제 명</ContentsArticleTitle>
+                <ContentsArticle>
                     <TextBox width="100" placeholder="숙제 이름 입력 (e.g. 비아키스)" {...bindName} />
-                </ContentsDiv>
-            </FormFlexDiv>
-            <FormFlexDiv direction="column">
-                <ContentsDivTitle>색상</ContentsDivTitle>
-                <ContentsDiv>
+                </ContentsArticle>
+            </FormFlexArticle>
+            <FormFlexArticle direction="column">
+                <ContentsArticleTitle>색상</ContentsArticleTitle>
+                <ContentsArticle>
                     <CompactPicker color={color} onChange={(color: ColorResult) => setColor(color.hex)} />
-                </ContentsDiv>
-            </FormFlexDiv>
-        </FormDivContainer>
+                </ContentsArticle>
+            </FormFlexArticle>
+        </FormArticleContainer>
     );
 };
 
-const FormFlexDiv = styled(FlexDiv)`
+const FormFlexArticle = styled(FlexArticle)`
     margin-bottom: 1.5em;
 `;
 
-const SmallTitleDiv = styled.div`
+const SmallTitle = styled.article`
     font-weight: 500;
     margin-left: 0.7em;
     margin-right: 0.5em;
 `;
 
-const ShowCharacterDiv = styled(FlexDiv)`
+const ShowCharacterArticle = styled(FlexArticle)`
     align-items: center;
     box-sizing: border-box;
     & > span {
@@ -219,11 +219,11 @@ const ShowCharacterDiv = styled(FlexDiv)`
     }
 `;
 
-const ContentsCharacterDiv = styled(ContentsDiv)`
+const ContentsCharacterArticle = styled(ContentsArticle)`
     overflow-y: auto;
     max-height: 79px;
     flex-flow: wrap;
-    & > div {
+    & > article {
         margin-left: 2em;
         margin-top: 0.5em;
         margin-bottom: 0.5em;

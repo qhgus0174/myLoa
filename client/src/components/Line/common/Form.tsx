@@ -1,7 +1,7 @@
 import React from 'react';
 import { CompactPicker, ColorResult } from 'react-color';
-import { FormDivContainer, ContentsDivTitle, ContentsDiv } from '@style/common/modal';
-import { FlexDiv } from '@style/common';
+import { FormArticleContainer, ContentsArticleTitle, ContentsArticle } from '@style/common/modal';
+import { FlexArticle } from '@style/common';
 
 interface ICharacter {
     color: string;
@@ -10,14 +10,14 @@ interface ICharacter {
 
 const LineForm = ({ color, setColor }: ICharacter) => {
     return (
-        <FormDivContainer>
-            <FlexDiv direction="column">
-                <ContentsDivTitle>색상</ContentsDivTitle>
-                <ContentsDiv>
+        <FormArticleContainer>
+            <FlexArticle direction="column">
+                <ContentsArticleTitle>색상</ContentsArticleTitle>
+                <ContentsArticle>
                     <CompactPicker color={color} onChange={(color: ColorResult) => setColor(color.hex)} />
-                </ContentsDiv>
-            </FlexDiv>
-        </FormDivContainer>
+                </ContentsArticle>
+            </FlexArticle>
+        </FormArticleContainer>
     );
 };
 

@@ -12,7 +12,7 @@ import Button from '@components/Button/Button';
 import { IContextModalParam } from '@common/types';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { FlexDiv, FlexLeftDiv, FlexHoverDiv, CharactersDiv } from '@style/common';
+import { FlexArticle, FlexLeftArticle, FlexHoverArticle, CharactersArticle } from '@style/common';
 import { ReactComponent as LeftArrow } from '@assets/img/left-arrow.svg';
 import { ReactComponent as RightArrow } from '@assets/img/right-arrow.svg';
 
@@ -27,7 +27,7 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
         e,
         char,
     }: {
-        e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLDivElement>;
+        e: React.MouseEvent<HTMLElement> | React.TouchEvent<HTMLElement>;
         char: ICharacter;
     }) => {
         e.preventDefault();
@@ -65,9 +65,9 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
             <DragDropContext onDragEnd={onDragEndCharacter}>
                 <Droppable droppableId="CharacterDrop" direction="horizontal">
                     {provided => (
-                        <DropDiv>
-                            <FlexDiv {...provided.droppableProps} ref={provided.innerRef}>
-                                <FlexLeftDiv></FlexLeftDiv>
+                        <DropCharacterHeader>
+                            <FlexArticle {...provided.droppableProps} ref={provided.innerRef}>
+                                <FlexLeftArticle></FlexLeftArticle>
                                 <ArrowDiv perPage={perPage}>
                                     <Button
                                         width="100"
@@ -77,7 +77,9 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
                                         iconOnly={true}
                                     />
                                 </ArrowDiv>
-                                <CharactersDiv length={getStorage('characterOrd').length - (currentPage - 1) * perPage}>
+                                <CharactersArticle
+                                    length={getStorage('characterOrd').length - (currentPage - 1) * perPage}
+                                >
                                     {(getStorage('character') as ICharacter[])
                                         .sort((a, b) => {
                                             return (
@@ -97,33 +99,33 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
                                                     index={charIndex}
                                                 >
                                                     {provided => (
-                                                        <CharacterDiv
+                                                        <CharacterArticle
                                                             color={char.color}
                                                             key={charIndex}
                                                             {...provided.draggableProps}
                                                             {...provided.dragHandleProps}
                                                             ref={provided.innerRef}
-                                                            onTouchEnd={(e: React.TouchEvent<HTMLDivElement>) => {
+                                                            onTouchEnd={(e: React.TouchEvent<HTMLElement>) => {
                                                                 openCharacterEditModal({ e: e, char: char });
                                                             }}
-                                                            onContextMenu={(e: React.MouseEvent<HTMLDivElement>) => {
+                                                            onContextMenu={(e: React.MouseEvent<HTMLElement>) => {
                                                                 openCharacterEditModal({ e: e, char: char });
                                                             }}
                                                         >
-                                                            <FlexDiv>
+                                                            <FlexArticle>
                                                                 <JobLogo shape={char.job} />
-                                                            </FlexDiv>
-                                                            <InfoDiv direction="column">
-                                                                <FlexDiv>{char.name}</FlexDiv>
-                                                                <FlexDiv>{`Lv. ${char.level}`}</FlexDiv>
-                                                            </InfoDiv>
-                                                        </CharacterDiv>
+                                                            </FlexArticle>
+                                                            <InfoArticle direction="column">
+                                                                <FlexArticle>{char.name}</FlexArticle>
+                                                                <FlexArticle>{`Lv. ${char.level}`}</FlexArticle>
+                                                            </InfoArticle>
+                                                        </CharacterArticle>
                                                     )}
                                                 </Draggable>
                                             );
                                         })}
                                     {provided.placeholder}
-                                </CharactersDiv>
+                                </CharactersArticle>
                                 <ArrowDiv perPage={perPage}>
                                     <Button
                                         width="100"
@@ -133,8 +135,8 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
                                         iconOnly={true}
                                     />
                                 </ArrowDiv>
-                            </FlexDiv>
-                        </DropDiv>
+                            </FlexArticle>
+                        </DropCharacterHeader>
                     )}
                 </Droppable>
             </DragDropContext>
@@ -142,7 +144,7 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
     );
 };
 
-const DropDiv = styled.div`
+const DropCharacterHeader = styled.header`
     width: 100%;
     ${props =>
         (getStorage('character').length > 0 || getStorage('todo').length > 0) &&
@@ -151,15 +153,15 @@ const DropDiv = styled.div`
     box-sizing: border-box;
 `;
 
-const CharacterDiv = styled(FlexHoverDiv)`
+const CharacterArticle = styled(FlexHoverArticle)`
     font-weight: 600;
     width: 100%;
-    div {
+    article {
         color: ${props => props.color};
     }
 `;
 
-const InfoDiv = styled(FlexDiv)`
+const InfoArticle = styled(FlexArticle)`
     margin-left: 0.8em;
     box-sizing: border-box;
 `;

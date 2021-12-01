@@ -31,7 +31,7 @@ const ModalPortal = () => {
         document.getElementById('modal-root') as HTMLElement,
     );
 };
-const Dimmer = styled.div`
+const Dimmer = styled.article`
     width: 100%;
     height: 100%;
     position: absolute;
@@ -41,7 +41,7 @@ const Dimmer = styled.div`
     backdrop-filter: blur(4px);
 `;
 
-const ModalContainer = styled.div`
+const ModalContainer = styled.section`
     display: flex;
     position: fixed;
     align-items: center;

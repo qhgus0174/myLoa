@@ -2,10 +2,10 @@ import React, { useContext, useState } from 'react';
 import { ModalActionContext } from '@context/ModalContext';
 import Button from '@components/Button/Button';
 import TextBox from '@components/Input/TextBox';
-import { FormButtonContainer, FormContainer, FormDivContainer } from '@style/common/modal';
+import { FormButtonContainer, FormContainer, FormArticleContainer } from '@style/common/modal';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { toast } from 'react-toastify';
-import { FlexDiv } from '@style/common';
+import { FlexArticle } from '@style/common';
 import styled from '@emotion/styled';
 
 const BackupCreate = ({ backupCode }: { backupCode: string }) => {
@@ -25,14 +25,14 @@ const BackupCreate = ({ backupCode }: { backupCode: string }) => {
 
     return (
         <FormContainer>
-            <FormDivContainer>
-                <BackupCopyDiv>
+            <FormArticleContainer>
+                <BackupCopyArticle>
                     <TextBox divWidth="50" placeholder="백업 코드" value={newBackupCode.value} readOnly />
                     <CopyToClipboard text={newBackupCode.value} onCopy={copyCode}>
                         <Button>복사</Button>
                     </CopyToClipboard>
-                </BackupCopyDiv>
-            </FormDivContainer>
+                </BackupCopyArticle>
+            </FormArticleContainer>
             <FormButtonContainer>
                 <Button onClick={closeModal}>닫기</Button>
             </FormButtonContainer>
@@ -40,7 +40,7 @@ const BackupCreate = ({ backupCode }: { backupCode: string }) => {
     );
 };
 
-const BackupCopyDiv = styled(FlexDiv)`
+const BackupCopyArticle = styled(FlexArticle)`
     justify-content: space-evenly;
 `;
 

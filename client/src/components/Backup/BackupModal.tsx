@@ -12,7 +12,7 @@ import { SpinnerContext } from '@context/SpinnerContext';
 import Button from '@components/Button/Button';
 import TextBox from '@components/Input/TextBox';
 import { IBackup, IError, IResponse } from '@common/responseType';
-import { FormButtonContainer, FormContainer, FormDivContainer } from '@style/common/modal';
+import { FormButtonContainer, FormContainer, FormArticleContainer } from '@style/common/modal';
 
 const BackupModal = () => {
     const [newBackupCode, setNewBackupCode] = useInput<string>('');
@@ -89,9 +89,9 @@ const BackupModal = () => {
 
     return (
         <FormContainer>
-            <FormDivContainer>
+            <FormArticleContainer>
                 <TextBox placeholder="백업 코드 입력" {...setNewBackupCode} />
-            </FormDivContainer>
+            </FormArticleContainer>
             <FormButtonContainer>
                 <Button onClick={() => setData()}>불러오기</Button>
                 <Button onClick={closeModal}>취소</Button>

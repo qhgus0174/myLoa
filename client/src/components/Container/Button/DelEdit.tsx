@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { ModalActionContext } from '@context/ModalContext';
 import Button from '@components/Button/Button';
-import { FormButtonContainer, RightButtonDiv } from '@style/common/modal';
-import { FlexDiv } from '@style/common';
+import { FormButtonContainer, RightButtonArticle } from '@style/common/modal';
+import { FlexArticle } from '@style/common';
 
 interface IEditButton {
     onClickEdit: () => void;
@@ -15,17 +15,17 @@ const DelEditButtonContainer = ({ onClickEdit, onClickDelete, editClassName }: I
 
     return (
         <FormButtonContainer>
-            <FlexDiv width="100">
+            <FlexArticle width="100">
                 <Button borderColor="cancel" onClick={onClickDelete}>
                     삭제
                 </Button>
-            </FlexDiv>
-            <RightButtonDiv>
+            </FlexArticle>
+            <RightButtonArticle>
                 <Button className={editClassName} onClick={onClickEdit}>
                     수정
                 </Button>
                 <Button onClick={() => closeModal()}>닫기</Button>
-            </RightButtonDiv>
+            </RightButtonArticle>
         </FormButtonContainer>
     );
 };

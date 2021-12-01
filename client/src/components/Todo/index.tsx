@@ -8,7 +8,7 @@ import Line from '@components/Todo/view/Line';
 import { IContextModalParam, ScheduleContents } from '@common/types';
 import { getStorage } from '@storage/index';
 import styled from '@emotion/styled';
-import { FlexDiv } from '@style/common';
+import { FlexArticle } from '@style/common';
 import useTodo from '@hooks/storage/useTodo';
 import { heightMedia } from '@style/device';
 
@@ -47,7 +47,7 @@ const Todo = ({ onContextMenuBasicModal }: IContextModalParam) => {
             <DragDropContext onDragEnd={onDragEndCharacter}>
                 <Droppable droppableId="TodoDrop">
                     {provided => (
-                        <FlexDiv direction="column" {...provided.droppableProps} ref={provided.innerRef}>
+                        <FlexArticle direction="column" {...provided.droppableProps} ref={provided.innerRef}>
                             {(getStorage('todo') as ITodo[])
                                 .sort((a, b) => {
                                     return (
@@ -94,7 +94,7 @@ const Todo = ({ onContextMenuBasicModal }: IContextModalParam) => {
                                     );
                                 })}
                             {provided.placeholder}
-                        </FlexDiv>
+                        </FlexArticle>
                     )}
                 </Droppable>
             </DragDropContext>
@@ -102,7 +102,7 @@ const Todo = ({ onContextMenuBasicModal }: IContextModalParam) => {
     );
 };
 
-const TodoContainer = styled.div`
+const TodoContainer = styled.section`
     height: 60vh;
     ${heightMedia.big} {
         height: 55vh;
@@ -113,7 +113,7 @@ const TodoContainer = styled.div`
     overflow-y: auto;
 `;
 
-const CheckList = styled.div<{ contents: ScheduleContents }>`
+const CheckList = styled.section<{ contents: ScheduleContents }>`
     display: flex;
     align-items: center;
     height: ${props => (props.contents === 'guardian' ? '7.3em' : '4em')};

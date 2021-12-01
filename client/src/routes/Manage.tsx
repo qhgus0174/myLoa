@@ -10,7 +10,7 @@ import Backup from '@components/Backup/BackupModal';
 import Button from '@components/Button/Button';
 import { IBackup, IError, IResponse } from '@common/responseType';
 import styled from '@emotion/styled';
-import { FlexDiv } from '@style/common';
+import { FlexArticle } from '@style/common';
 import { widthMedia } from '@style/device';
 
 const Manage = () => {
@@ -66,33 +66,33 @@ const Manage = () => {
 
     return (
         <ManageContainer direction="column">
-            <ManageDiv>
+            <ManageArticle>
                 <span>오류 발생 시 데이터를 초기화 할 수 있습니다. </span>
                 <ManageButton className="resetData" onClick={() => clearData()}>
                     초기화
                 </ManageButton>
-            </ManageDiv>
-            <ManageDiv direction="column">
-                <ManageInnerDiv>
+            </ManageArticle>
+            <ManageArticle direction="column">
+                <ManageInnerArticle>
                     <span>데이터를 백업하여 다른 브라우저에서 열람 가능합니다. (일회용) </span>
-                </ManageInnerDiv>
-                <ManageInnerDiv>
+                </ManageInnerArticle>
+                <ManageInnerArticle>
                     <ManageButton className="createBackupCode" onClick={() => backupData()}>
                         코드 생성
                     </ManageButton>
                     <ManageButton className="getBackupCode" onClick={() => setBackupData()}>
                         불러오기
                     </ManageButton>
-                </ManageInnerDiv>
-            </ManageDiv>
-            <ManageDiv>
+                </ManageInnerArticle>
+            </ManageArticle>
+            <ManageArticle>
                 <span>버그 발생 / 문의 사항이 있을 시 shannon_@hotmail.co.kr로 메일 부탁드립니다. </span>
-            </ManageDiv>
+            </ManageArticle>
         </ManageContainer>
     );
 };
 
-const ManageContainer = styled(FlexDiv)`
+const ManageContainer = styled(FlexArticle)`
     width: 70%;
     justify-content: center;
     align-items: center;
@@ -101,7 +101,7 @@ const ManageContainer = styled(FlexDiv)`
     box-sizing: border-box;
 `;
 
-const ManageDiv = styled(FlexDiv)`
+const ManageArticle = styled(FlexArticle)`
     align-items: center;
     margin-bottom: 2em;
     box-sizing: border-box;
@@ -115,7 +115,7 @@ const ManageDiv = styled(FlexDiv)`
     }
 `;
 
-const ManageInnerDiv = styled(FlexDiv)`
+const ManageInnerArticle = styled(FlexArticle)`
     align-items: center;
     justify-content: center;
     margin-bottom: 1em;

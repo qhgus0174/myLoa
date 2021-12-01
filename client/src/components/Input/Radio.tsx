@@ -35,7 +35,7 @@ const Radio = styled.input`
     display: none;
 `;
 
-const Text = styled.div<Pick<IRadio, 'checked'>>`
+const Text = styled.article<Pick<IRadio, 'checked'>>`
     color: ${props => props.theme.colors.gray};
     transition: 0.1s;
 

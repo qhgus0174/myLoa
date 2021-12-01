@@ -9,19 +9,15 @@ export interface ICheckbox extends React.InputHTMLAttributes<HTMLElement> {
 
 const PinCheckbox = ({ checked, label, isLine = false, ...rest }: ICheckbox) => {
     return (
-        <CheckboxDiv checked={checked} onClick={rest.onClick}>
+        <CheckboxArticle checked={checked} onClick={rest.onClick}>
             <Label checked={checked} isLine={isLine}></Label>
-        </CheckboxDiv>
+        </CheckboxArticle>
     );
 };
 
-const CheckboxDiv = styled.div<{ checked: boolean }>`
+const CheckboxArticle = styled.article<{ checked: boolean }>`
     position: relative;
     display: flex;
-`;
-
-const CustomCheckbox = styled.input`
-    display: none;
 `;
 
 const Label = styled.label<{ checked: boolean; isLine: boolean }>`

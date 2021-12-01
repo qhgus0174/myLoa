@@ -4,7 +4,7 @@ import { ICharacterTodo, IGuardianInfo, ITodo } from '@components/Todo/TodoType'
 import { GuardianInfo, IGuardian } from '@common/data/guardian';
 import { getStorage } from '@storage/index';
 import styled from '@emotion/styled';
-import { FlexDiv } from '@style/common';
+import { FlexArticle } from '@style/common';
 import useCharacter from '@hooks/storage/useCharacter';
 import { ICharacter } from '@components/Character/CharacterType';
 
@@ -16,13 +16,13 @@ interface IGuardianParam {
     charTodo: ICharacterTodo;
     characterIndex: number;
     setGuardianStep: (e: string) => void;
-    onClick: (e: React.MouseEvent<HTMLDivElement>, i: number) => void;
+    onClick: (e: React.MouseEvent<HTMLElement>, i: number) => void;
     onTouchEnd: ({
         e,
         charTodo,
         characterIndex,
     }: {
-        e: React.TouchEvent<HTMLDivElement>;
+        e: React.TouchEvent<HTMLElement>;
         charTodo: ICharacterTodo;
         characterIndex: number;
     }) => void;
@@ -78,7 +78,7 @@ const Guardian = ({
     };
 
     return (
-        <GuardianDiv
+        <GuardianArticle
             direction="column"
             onTouchEnd={e => onTouchEnd({ e: e, charTodo: charTodo, characterIndex: characterIndex })}
             onClick={e => onClick(e, characterId)}
@@ -111,11 +111,11 @@ const Guardian = ({
                     },
                 )}
             </GuardianSelectBox>
-        </GuardianDiv>
+        </GuardianArticle>
     );
 };
 
-const GuardianDiv = styled(FlexDiv)`
+const GuardianArticle = styled(FlexArticle)`
     align-items: center;
     margin-top: 0.3em;
     box-sizing: border-box;

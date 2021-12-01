@@ -19,7 +19,7 @@ const Spinner = () => {
     );
 };
 
-const LoadingContainer = styled.div<ISpinner>`
+const LoadingContainer = styled.article<ISpinner>`
     display: ${props => (props.spinnerVisible ? 'flex' : 'none')};
     justify-content: center;
     align-items: center;
