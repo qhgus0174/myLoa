@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import useWindowDimensions from '@hooks/useWindowDimensions';
 import { responsiveWidth } from '@style/device';
 import { getStorage } from '@storage/index';
-import usePage from '@hooks/storage/usePage';
 import useCharacter from './storage/useCharacter';
 
 export interface IPagingOption {
@@ -16,7 +15,7 @@ export interface IPagingOption {
 export const usePaging = () => {
     const [perPage, setPerPage] = useState<IPagingOption['perPage']>(6);
     const { width: windowWidth } = useWindowDimensions();
-    const [currentPage, setCurrentPage] = usePage();
+    const [currentPage, setCurrentPage] = useState<number>(1);
     const [storageCharacter, setStorageCharacter] = useCharacter();
 
     useEffect(() => {
