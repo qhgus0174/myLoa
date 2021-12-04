@@ -1,6 +1,13 @@
 {
-    "include": ["src/**/*", "bin/**/*"],
-    "typeRoots": ["src/types/custom.d.ts"],
+    "include": [
+        "src/**/*",
+        "bin/**/*",
+        "next.config.js",
+        "custom.d.ts",
+        "public/PlusIcon.tsx",
+        "public/PlusIcon.tsx",
+        "public/PlusIcon.tsx"
+    ],
     "ts-node": {
         "compilerOptions": {
             "module": "CommonJS"
@@ -14,7 +21,7 @@
         "strict": true,
         "baseUrl": "./src",
         "skipLibCheck": true,
-        "jsx": "react-jsx",
+        "jsx": "preserve",
         "module": "CommonJS",
         "outDir": "./dist",
         "rootDir": ".",
@@ -40,6 +47,9 @@
             "@service/*": ["service/*"],
             "@schedule/*": ["schedule/*"],
             "@server/*": ["server/*"]
-        }
-    }
+        },
+        "noEmit": true,
+        "incremental": true
+    },
+    "exclude": ["node_modules"]
 }
