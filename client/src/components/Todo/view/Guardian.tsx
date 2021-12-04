@@ -1,11 +1,9 @@
-import React from 'react';
-import useTodo from '@hooks/storage/useTodo';
+import React, { useContext } from 'react';
+import { LocalStorageStateContext, LocalStorageActionContext } from '@context/LocalStorageContext';
 import { ICharacterTodo, IGuardianInfo, ITodo } from '@components/Todo/TodoType';
 import { GuardianInfo, IGuardian } from '@common/data/guardian';
-import { getStorage } from '@storage/index';
 import styled from '@emotion/styled';
 import { FlexArticle } from '@style/common';
-import useCharacter from '@hooks/storage/useCharacter';
 import { ICharacter } from '@components/Character/CharacterType';
 
 interface IGuardianParam {
@@ -39,41 +37,41 @@ const Guardian = ({
     onClick,
     onTouchEnd,
 }: IGuardianParam) => {
-    const [storageTodo, setStorageTodo] = useTodo();
-    const [storageCharacter, setStorageCharacter] = useCharacter();
+    const { storedTodo, storedCharacter } = useContext(LocalStorageStateContext);
+    const { setStoredTodo } = useContext(LocalStorageActionContext);
 
-    const updateGuardianStep = (e: React.ChangeEvent<HTMLSelectElement>, characterOrdIndex: number) => {
+    const updateGuardianStep = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const {
             target: { value },
         } = e;
 
-        const todoArr: ITodo[] = getStorage('todo');
+        const todoArr: ITodo[] = [...storedTodo];
 
         const characterIndex = getCharacterIndex();
         const todoIndex = todoArr.findIndex(td => td.id === todo.id);
 
         todoArr[todoIndex].character[characterIndex].guardianInfo.step = value;
 
-        setStorageTodo(JSON.stringify(todoArr));
+        setStoredTodo(todoArr);
         setGuardianStep(value);
     };
 
-    const updateGuardianInfo = (e: React.ChangeEvent<HTMLSelectElement>, characterOrdIndex: number) => {
+    const updateGuardianInfo = (e: React.ChangeEvent<HTMLSelectElement>) => {
         const {
             target: { value },
         } = e;
 
-        const todoArr: ITodo[] = getStorage('todo');
+        const todoArr: ITodo[] = [...storedTodo];
 
         const characterIndex = getCharacterIndex();
         const todoIndex = todoArr.findIndex(td => td.id === todo.id);
         todoArr[todoIndex].character[characterIndex].guardianInfo.info = value;
 
-        setStorageTodo(JSON.stringify(todoArr));
+        setStoredTodo(todoArr);
     };
 
     const getCharacterIndex = () => {
-        const characterArr: ICharacter[] = getStorage('character');
+        const characterArr: ICharacter[] = [...storedCharacter];
         return characterArr.findIndex(char => char.id === characterId);
     };
 
@@ -85,7 +83,7 @@ const Guardian = ({
         >
             <GuardianSelectBox
                 key={`guardian_step_${characterId}`}
-                onChange={e => updateGuardianStep(e, characterId)}
+                onChange={e => updateGuardianStep(e)}
                 value={characterGuardianInfo.step}
             >
                 {GuardianInfo.map((guardian: IGuardian, gIndex: number) => {
@@ -97,7 +95,7 @@ const Guardian = ({
                 })}
             </GuardianSelectBox>
             <GuardianSelectBox
-                onChange={e => updateGuardianInfo(e, characterId)}
+                onChange={e => updateGuardianInfo(e)}
                 key={`guardian_value_${characterId}`}
                 value={characterGuardianInfo.info}
             >

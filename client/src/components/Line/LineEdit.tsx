@@ -1,18 +1,16 @@
 import React, { useContext, useState } from 'react';
 import _ from 'lodash';
+import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
 import { ModalActionContext } from '@context/ModalContext';
-import useTodo from '@hooks/storage/useTodo';
-import useTodoOrd from '@hooks/storage/useTodoOrd';
 import EditButtonContainer from '@components/Container/Button/DelEdit';
 import { ITodo } from '@components/Todo/TodoType';
 import LineForm from '@components/Line/common/Form';
-import { getStorage } from '@storage/index';
 import { FormContainer } from '@style/common/modal';
 
 const LineEdit = ({ id: oriId, color: newColor }: Pick<ITodo, 'id' | 'color'>) => {
-    const [storageTodo, setStorageTodo] = useTodo();
     const [color, setColor] = useState<string>(newColor);
-    const [storageTodoOrd, setStorageTodoOrd] = useTodoOrd();
+    const { storedTodo, storedTodoOrd } = useContext(LocalStorageStateContext);
+    const { setStoredTodo, setStoredTodoOrd } = useContext(LocalStorageActionContext);
 
     const onClickEdit = () => {
         editTodoInfo();
@@ -26,7 +24,7 @@ const LineEdit = ({ id: oriId, color: newColor }: Pick<ITodo, 'id' | 'color'>) =
     };
 
     const editTodoInfo = () => {
-        const todoArr: ITodo[] = getStorage('todo');
+        const todoArr: ITodo[] = [...storedTodo];
 
         const index = todoArr.findIndex((todoObj: ITodo) => todoObj.id === oriId);
 
@@ -36,23 +34,23 @@ const LineEdit = ({ id: oriId, color: newColor }: Pick<ITodo, 'id' | 'color'>) =
             color: color,
         };
 
-        setStorageTodo(JSON.stringify(newTodoArr));
+        setStoredTodo(newTodoArr);
     };
 
     const deleteTodoInfo = () => {
-        const todoArr: ITodo[] = getStorage('todo');
+        const todoArr: ITodo[] = [...storedTodo];
         const resultArray = _.reject(todoArr, (todo: ITodo) => {
             return todo.id === oriId;
         });
-        setStorageTodo(JSON.stringify(resultArray));
+        setStoredTodo(resultArray);
     };
 
     const deleteTodoOrd = () => {
-        const todoArrOrd: number[] = getStorage('todoOrd');
+        const todoArrOrd: number[] = [...storedTodoOrd];
         const resultOrd = _.reject(todoArrOrd, (ord: number) => {
             return ord === oriId;
         });
-        setStorageTodoOrd(JSON.stringify(resultOrd));
+        setStoredTodoOrd(resultOrd);
     };
 
     const { closeModal } = useContext(ModalActionContext);

@@ -1,16 +1,14 @@
 import React, { useContext, useState } from 'react';
 import _ from 'lodash';
+import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
 import { ModalActionContext } from '@context/ModalContext';
-import useTodoOrd from '@hooks/storage/useTodoOrd';
 import { useInput } from '@hooks/useInput';
-import useTodo from '@hooks/storage/useTodo';
 import TodoForm from '@components/Todo/common/Form';
 import EditButtonContainer from '@components/Container/Button/DelEdit';
 import { getResetCheckArr } from '@components/Todo/common/functions';
 import { ICharacterTodo, ITodo } from '@components/Todo/TodoType';
 import { ScheduleCheckType, ScheduleContents, ScheduleType } from '@common/types';
 import { FormContainer } from '@style/common/modal';
-import { getStorage } from '@storage/index';
 import { toast } from 'react-toastify';
 
 const TodoEdit = ({
@@ -22,19 +20,17 @@ const TodoEdit = ({
     color: newColor,
     showCharacter: newShowChracter,
 }: Omit<ITodo, 'character'>) => {
-    const [storageTodo, setStorageTodo] = useTodo();
-    const [storageTodoOrd, setStorageTodoOrd] = useTodoOrd();
-
+    const { storedTodo, storedTodoOrd } = useContext(LocalStorageStateContext);
+    const { setStoredTodo, setStoredTodoOrd } = useContext(LocalStorageActionContext);
     const { closeModal } = useContext(ModalActionContext);
 
     const [type, setType] = useState<ScheduleType>(newType);
     const [contents, setContents] = useState<ScheduleContents>(newContents);
     const [checkType, setCheckType] = useState<ScheduleCheckType>(newCheckType);
     const [color, setColor] = useState<string>(newColor);
+    const [showCharacterArr, setShowCharacterArr] = useState<number[]>(newShowChracter);
 
     const [name, bindName, settingName] = useInput<string>(newName);
-
-    const [showCharacterArr, setShowCharacterArr] = useState<number[]>(newShowChracter);
 
     const onClickEdit = () => {
         editTodo();
@@ -50,7 +46,7 @@ const TodoEdit = ({
     };
 
     const editTodo = () => {
-        const todoArr: ITodo[] = getStorage('todo');
+        const todoArr: ITodo[] = [...storedTodo];
 
         const index = todoArr.findIndex((todoObj: ITodo) => todoObj.id === oriId);
 
@@ -80,23 +76,23 @@ const TodoEdit = ({
             showCharacter: showCharacterArr,
         };
 
-        setStorageTodo(JSON.stringify(newTodoArr));
+        setStoredTodo(newTodoArr);
     };
 
     const deleteTodo = () => {
-        const todoArr: ITodo[] = getStorage('todo');
+        const todoArr: ITodo[] = [...storedTodo];
         const resultArray = _.reject(todoArr, (todo: ITodo) => {
             return todo.id === oriId;
         });
-        setStorageTodo(JSON.stringify(resultArray));
+        setStoredTodo(resultArray);
     };
 
     const deleteTodoOrd = () => {
-        const todoArrOrd: number[] = getStorage('todoOrd');
+        const todoArrOrd: number[] = [...storedTodoOrd];
         const resultOrd = _.reject(todoArrOrd, (ord: number) => {
             return ord === oriId;
         });
-        setStorageTodoOrd(JSON.stringify(resultOrd));
+        setStoredTodoOrd(resultOrd);
     };
 
     return (

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
 import { ModalActionContext } from '@context/ModalContext';
 import { useInput } from '@hooks/useInput';
-import useTodo from '@hooks/storage/useTodo';
 import { ITodo, ITodoCheck } from '@components/Todo/TodoType';
 import { getShowCheckTodo } from '@components/Todo/common/functions';
 import EditButtonContainer from '@components/Container/Button/Edit';
@@ -9,7 +9,6 @@ import { ICharacter } from '@components/Character/CharacterType';
 import BasicCheckbox from '@components/Input/BasicCheckbox';
 import TextBox from '@components/Input/TextBox';
 import { ScheduleType } from '@common/types';
-import { getStorage } from '@storage/index';
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import {
@@ -21,7 +20,6 @@ import {
 } from '@style/common/modal';
 import { FlexArticle, RemarkArticle } from '@style/common';
 import { toast } from 'react-toastify';
-import useCharacter from '@hooks/storage/useCharacter';
 
 const TodoCheck = ({
     id: characterId,
@@ -38,9 +36,8 @@ const TodoCheck = ({
 }: ITodoCheck) => {
     const theme = useTheme();
 
-    const [storageTodo, setStorageTodo] = useTodo();
-    const [storageCharacter, setStorageCharacter] = useCharacter();
-
+    const { storedTodo, storedCharacter } = useContext(LocalStorageStateContext);
+    const { setStoredTodo } = useContext(LocalStorageActionContext);
     const { closeModal } = useContext(ModalActionContext);
 
     const [relaxGauge, bindRelaxGauge] = useInput<number>(oriRelax, { maxLength: 3, numberOnly: true });
@@ -50,7 +47,6 @@ const TodoCheck = ({
     const [todoType] = useState<ScheduleType>(oriTodoType);
     const [showCharacter, setShowCharacter] = useState<number[]>(oriShowCharacter);
     const [eponaName, setEponaName] = useState<string[]>(oriEponaName);
-
     const [characterName, setCharacterName] = useState<string>('');
 
     useEffect(() => {
@@ -58,7 +54,7 @@ const TodoCheck = ({
     });
 
     const setCharacterNameState = () => {
-        const characterArr: ICharacter[] = getStorage('character');
+        const characterArr: ICharacter[] = [...storedCharacter];
         const characterIndex = characterArr.findIndex(char => char.id === characterId);
         setCharacterName(characterArr[characterIndex].name);
     };
@@ -70,8 +66,8 @@ const TodoCheck = ({
     };
 
     const editTodoCheck = () => {
-        const todoArr: ITodo[] = getStorage('todo');
-        const characterArr: ICharacter[] = getStorage('character');
+        const todoArr: ITodo[] = [...storedTodo];
+        const characterArr: ICharacter[] = [...storedCharacter];
 
         const todoIndex = todoArr.findIndex(todo => todo.id === todoId);
         const characterIndex = characterArr.findIndex(char => char.id === characterId);
@@ -93,7 +89,7 @@ const TodoCheck = ({
             eponaName: eponaName,
         };
 
-        setStorageTodo(JSON.stringify(todoArr));
+        setStoredTodo(todoArr);
     };
 
     const onChangeDetailName = (e: React.ChangeEvent<HTMLInputElement>, oriArr: string[], idx: number) => {

@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { DateTime } from 'luxon';
+import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
 import { ModalActionContext } from '@context/ModalContext';
 import useWindowDimensions from '@hooks/useWindowDimensions';
-import useTodo from '@hooks/storage/useTodo';
 import CharacterAdd from '@components/Character/modal/CharacterAdd';
 import { getResetCheckArr } from '@components/Todo/common/functions';
 import { ITodo, ICharacterTodo } from '@components/Todo/TodoType';
@@ -13,18 +13,18 @@ import Button from '@components/Button/Button';
 import Todo from '@components/Todo';
 import { ScheduleContents } from '@common/types';
 import { IContextModal } from '@common/types';
-import { getStorage } from '@storage/index';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { FlexArticle } from '@style/common';
 import { responsiveWidth, widthMedia } from '@style/device';
-import { ReactComponent as Plus } from '@assets/img/plus.svg';
-import { ReactComponent as ArrowDown } from '@assets/img/arrow-down.svg';
-import { ReactComponent as ArrowUp } from '@assets/img/arrow-up.svg';
+import Image from 'next/image';
 import { GA } from '@service/ga';
 import Guide from '@components/Guide';
 import Pagination from '@components/Pagination/Pagination';
 import CharacterOrdChange from '@components/Character/modal/CharacterOrdChange';
+import PlusIcon from '../assets/PlusIcon';
+import DownArrow from '@assets/DownArrow';
+import UpArrow from '@assets/UpArrow';
 
 const Main = () => {
     useEffect(() => GA.trackPageView({ path: window.location.pathname }), []);
@@ -32,8 +32,8 @@ const Main = () => {
     const { setModalProps } = useContext(ModalActionContext);
     const [isFold, setIsFold] = useState<boolean>(false);
     const { width: windowWidth } = useWindowDimensions();
-
-    const [storageTodo, setStorageTodo] = useTodo();
+    const { storedTodo, storedCharacter, storedCharacterOrd } = useContext(LocalStorageStateContext);
+    const { setStoredTodo } = useContext(LocalStorageActionContext);
 
     const theme = useTheme();
 
@@ -46,7 +46,7 @@ const Main = () => {
     }, []);
 
     const resetDailyTodoRelax = (diffDays: number) => {
-        const todoArr: ITodo[] = getStorage('todo');
+        const todoArr: ITodo[] = [...storedTodo];
         const calcResult: ITodo[] = todoArr.map((todo: ITodo) => {
             todo.character = todo.character.map((character: ICharacterTodo) => {
                 if (todo.type !== 'daily') return character;
@@ -66,11 +66,11 @@ const Main = () => {
             return todo;
         });
 
-        setStorageTodo(JSON.stringify(calcResult));
+        setStoredTodo(calcResult);
     };
 
     const resetWeeklyTodo = () => {
-        const todoArr: ITodo[] = getStorage('todo');
+        const todoArr: ITodo[] = [...storedTodo];
 
         const calcResult: ITodo[] = todoArr.map((todo: ITodo) => {
             todo.character = todo.character.map((character: ICharacterTodo) => {
@@ -80,7 +80,7 @@ const Main = () => {
             return todo;
         });
 
-        setStorageTodo(JSON.stringify(calcResult));
+        setStoredTodo(calcResult);
     };
 
     const resetCheck = (contents: ScheduleContents, character: ICharacterTodo): ICharacterTodo => {
@@ -159,7 +159,7 @@ const Main = () => {
     };
 
     const resetFold = () => {
-        responsiveWidth.smallPhone < windowWidth && setIsFold(false);
+        responsiveWidth.smallPhone < windowWidth! && setIsFold(false);
     };
 
     const onContextMenuBasicModal = ({ e, modal, title, width, height }: IContextModal) => {
@@ -190,12 +190,12 @@ const Main = () => {
                         {isFold ? (
                             <>
                                 <span>&nbsp;보이기</span>
-                                <ArrowDown fill={theme.colors.white} width="25px" height="25px" />
+                                <DownArrow fill={theme.colors.text} width="25" height="25" />
                             </>
                         ) : (
                             <>
                                 <span>&nbsp;숨기기</span>
-                                <ArrowUp fill={theme.colors.white} width="25px" height="25px" />
+                                <UpArrow fill={theme.colors.text} width="25" height="25" />
                             </>
                         )}
                     </HideButtonSection>
@@ -204,7 +204,7 @@ const Main = () => {
                     <ButtonLeftArticle>
                         <AddButton
                             type="button"
-                            icon={<PlusIcon />}
+                            icon={<PlusIcon fill={theme.colors.text} width="15" height="15" />}
                             onClick={e =>
                                 onContextMenuBasicModal({
                                     e: e,
@@ -220,7 +220,7 @@ const Main = () => {
                         <AddButton
                             isRight={true}
                             type="button"
-                            icon={<PlusIcon />}
+                            icon={<PlusIcon fill={theme.colors.text} width="15" height="15" />}
                             onClick={e =>
                                 onContextMenuBasicModal({
                                     e: e,
@@ -243,7 +243,7 @@ const Main = () => {
                                     modal: <CharacterOrdChange />,
                                     title: '캐릭터 순서 변경',
                                     width: '300',
-                                    height: getStorage('characterOrd').length < 5 ? '450' : '600',
+                                    height: storedCharacterOrd.length < 5 ? '450' : '600',
                                 })
                             }
                         >
@@ -252,7 +252,7 @@ const Main = () => {
                         <AddButton
                             isRight={true}
                             type="button"
-                            icon={<PlusIcon />}
+                            icon={<PlusIcon fill={theme.colors.text} width="15" height="15" />}
                             onClick={e =>
                                 onContextMenuBasicModal({
                                     e: e,
@@ -268,7 +268,7 @@ const Main = () => {
                     </FlexArticle>
                 </TodoButtons>
                 <TodoContentsSection>
-                    {getStorage('character').length > 0 && <Pagination />}
+                    {storedCharacter.length > 0 && <Pagination />}
                     <Character onContextMenuBasicModal={onContextMenuBasicModal} />
                     <Todo onContextMenuBasicModal={onContextMenuBasicModal} />
                 </TodoContentsSection>
@@ -349,12 +349,6 @@ const ButtonLeftArticle = styled(FlexArticle)`
     ${widthMedia.smallPhone} {
         flex-direction: column;
     }
-`;
-
-const PlusIcon = styled(Plus)`
-    fill: ${props => props.theme.button.color};
-    width: 15px;
-    height: 15px;
 `;
 
 const HideGuideArticle = styled(FlexArticle)`

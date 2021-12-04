@@ -9,7 +9,7 @@ import Setting from '@assets/icon/setting.png';
 import styled from '@emotion/styled';
 import { widthMedia } from '@style/device';
 import { FlexArticle } from '@style/common';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 import { ModalActionContext } from '@context/ModalContext';
 import Guide from '@components/Guide';
 
@@ -47,12 +47,12 @@ const Header = () => {
                     <Compass />
                 </LeftHeader>
                 <HeaderInner>
-                    <Link to="/">
+                    <Link href="/">
                         <LogoImg src={Logo} />
                     </Link>
                 </HeaderInner>
                 <RightHeader>
-                    <StyledLink to="/">
+                    <StyledLink href="/">
                         <span>홈</span>
                     </StyledLink>
                     <GuideArticle>
@@ -60,7 +60,7 @@ const Header = () => {
                             가이드
                         </QuestionSpan>
                     </GuideArticle>
-                    <StyledLink to="/mng">
+                    <StyledLink href="/mng">
                         <span>관리</span>
                     </StyledLink>
                     <SelectTheme />
@@ -74,12 +74,12 @@ const Header = () => {
                     🔎 주간
                 </FooterNav>
                 <FooterNav>
-                    <StyledLink to="/">
+                    <StyledLink href="/">
                         <img src={Home} />
                     </StyledLink>
                 </FooterNav>
                 <FooterNav>
-                    <StyledLink to="/mng">
+                    <StyledLink href="/mng">
                         <img src={Setting} />
                     </StyledLink>
                 </FooterNav>

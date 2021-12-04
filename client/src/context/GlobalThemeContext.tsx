@@ -1,6 +1,7 @@
 import React, { createContext } from 'react';
-import useTheme from '@hooks/storage/useTheme';
 import { IThemeStyle } from '@style/theme';
+import { useTheme } from '@hooks/useTheme';
+import { ThemeProvider } from '@emotion/react';
 
 interface ITheme {
     theme: IThemeStyle;
@@ -10,9 +11,13 @@ interface ITheme {
 export const GlobalThemeContext = createContext<ITheme>({ theme: 'basic', setTheme: (e: IThemeStyle) => {} });
 
 const GlobalThemeProvider = ({ children }: { children: React.ReactNode }) => {
-    const [theme, setTheme] = useTheme();
+    const { theme, setTheme } = useTheme();
 
-    return <GlobalThemeContext.Provider value={{ theme, setTheme }}>{children}</GlobalThemeContext.Provider>;
+    return (
+        <GlobalThemeContext.Provider value={{ theme, setTheme }}>
+            <ThemeProvider theme={require('@style/theme')[theme]}>{children}</ThemeProvider>
+        </GlobalThemeContext.Provider>
+    );
 };
 
 export default GlobalThemeProvider;

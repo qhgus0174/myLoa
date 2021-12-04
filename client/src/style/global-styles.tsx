@@ -1,5 +1,4 @@
 import { css, Global, useTheme } from '@emotion/react';
-import '@fonts/fonts.css';
 
 export const GlobalStyle = () => {
     const theme = useTheme();

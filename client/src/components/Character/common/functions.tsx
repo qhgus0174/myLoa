@@ -38,7 +38,7 @@ export const getCrollCharacterInfo = async (name: string): Promise<ICrollInfo> =
 };
 
 export const isDuplicate = (name: string) => {
-    const characterArr: ICharacter[] = getStorage('character');
+    const characterArr: ICharacter[] = JSON.parse(JSON.parse(localStorage.getItem('character') as string));
     return characterArr.some(character => character.name === name);
 };
 

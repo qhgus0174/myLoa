@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { ModalActionContext, ModalStateContext } from '@context/ModalContext';
 import BasicModal from '@components/Modal';
@@ -7,8 +7,11 @@ import styled from '@emotion/styled';
 const ModalPortal = () => {
     const { isOpen, content, options } = useContext(ModalStateContext);
     const { closeModal } = useContext(ModalActionContext);
+    const [mounted, setMounted] = useState<boolean>(false);
 
     useEffect(() => {
+        setMounted(true);
+
         const handleEsc = (event: KeyboardEvent) => {
             if (event.key === 'Escape') {
                 closeModal();
@@ -18,18 +21,21 @@ const ModalPortal = () => {
 
         return () => {
             window.removeEventListener('keydown', (e: KeyboardEvent) => handleEsc(e));
+            setMounted(false);
         };
     }, []);
 
-    return createPortal(
-        isOpen && (
-            <ModalContainer>
-                <Dimmer tabIndex={-1} onClick={closeModal}></Dimmer>
-                <BasicModal options={options}>{content}</BasicModal>
-            </ModalContainer>
-        ),
-        document.getElementById('modal-root') as HTMLElement,
-    );
+    return mounted
+        ? createPortal(
+              isOpen && (
+                  <ModalContainer>
+                      <Dimmer tabIndex={-1} onClick={closeModal}></Dimmer>
+                      <BasicModal options={options}>{content}</BasicModal>
+                  </ModalContainer>
+              ),
+              document.getElementById('modal-root') as HTMLElement,
+          )
+        : null;
 };
 const Dimmer = styled.article`
     width: 100%;

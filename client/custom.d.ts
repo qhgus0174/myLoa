@@ -29,12 +29,6 @@ declare module '*.png' {
 declare module NodeJS {
     interface ProcessEnv {
         readonly NODE_ENV: 'development' | 'production';
-        readonly GA_TRACKING_ID: string;
-        readonly POSTGRESQL_URI: string;
-        readonly POSTGRESQL_DATABASE: string;
-        readonly POSTGRESQL_PORT: number;
-        readonly POSTGRESQL_PASSWORD: string;
-        readonly POSTGRESQL_USER: string;
-        readonly POSTGRESQL_HOST: string;
+        readonly NEXT_PUBLIC_GA_TRACKING_ID: string;
     }
 }

@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { getStorage } from '@storage/index';
-import useTodo from '@hooks/storage/useTodo';
+import { LocalStorageStateContext, LocalStorageActionContext } from '@context/LocalStorageContext';
 import { PagingStateContext } from '@context/PagingContext';
 import { default as CheckboxInput } from '@components/Input/TodoCheckbox';
 import { ICharacterTodo, ITodo } from '@components/Todo/TodoType';
@@ -10,8 +9,6 @@ import Guardian from '@components/Todo/view/Guardian';
 import { IContextModal, ScheduleContents, ScheduleType } from '@common/types';
 import { CharactersArticle, FlexArticle, FlexHoverArticle } from '@style/common';
 import styled from '@emotion/styled';
-import useCharacterOrd from '@hooks/storage/useCharacterOrd';
-import useCharacter from '@hooks/storage/useCharacter';
 
 interface ICheckbox {
     todo: ITodo;
@@ -20,11 +17,10 @@ interface ICheckbox {
 }
 
 const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckbox) => {
+    const { storedTodo, storedCharacter, storedCharacterOrd } = useContext(LocalStorageStateContext);
+    const { setStoredTodo } = useContext(LocalStorageActionContext);
     const { perPage, currentPage } = useContext(PagingStateContext);
 
-    const [storageTodo, setStorageTodo] = useTodo();
-    const [storageCharacter, setStorageCharacter] = useCharacter();
-    const [storageCharacterOrd, setStorageCharacterOrd] = useCharacterOrd();
     const [guardianStep, setGuardianStep] = useState<string>('1');
 
     const openTodoCheckEditModal = ({
@@ -78,7 +74,7 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
         const {
             target: { checked: isChecked },
         } = e;
-        const todoArr: ITodo[] = getStorage('todo');
+        const todoArr: ITodo[] = [...storedTodo];
 
         const todoIndex = todoArr.findIndex(td => td.id === pTodo.id);
 
@@ -103,13 +99,13 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
             relaxGauge: relaxGauge,
         };
 
-        setStorageTodo(JSON.stringify(todoArr));
+        setStoredTodo(todoArr);
     };
 
     const onClickCheckTodoHoverArea = (e: React.MouseEvent<HTMLElement>, characterId: number) => {
         if (e.target !== e.currentTarget) return;
 
-        const todoArr: ITodo[] = getStorage('todo');
+        const todoArr: ITodo[] = [...storedTodo];
 
         const todoIndex = todoArr.findIndex(td => td.id === pTodo.id);
 
@@ -132,11 +128,11 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
             check: checkArr,
         };
 
-        setStorageTodo(JSON.stringify(todoArr));
+        setStoredTodo(todoArr);
     };
 
     const setOutSideMultiCheck = (characterIndex: number, todoIndex: number): number[] => {
-        const todoArr: ITodo[] = getStorage('todo');
+        const todoArr: ITodo[] = [...storedTodo];
 
         const noCheckFirstIndex = todoArr[todoIndex].character[characterIndex].check.findIndex((checks: number) => {
             return checks === 0;
@@ -148,7 +144,7 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
     };
 
     const setOutSideSingleCheck = (characterIndex: number, todoIndex: number): number[] => {
-        const todoArr: ITodo[] = getStorage('todo');
+        const todoArr: ITodo[] = [...storedTodo];
 
         const resultArr = todoArr[todoIndex].character[characterIndex].check.map((value: number) => {
             return 1 - value;
@@ -189,7 +185,7 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
             target: { value: newText },
         } = e;
 
-        const todoArr: ITodo[] = getStorage('todo');
+        const todoArr: ITodo[] = [...storedTodo];
 
         const todoIndex = todoArr.findIndex(td => td.id === pTodo.id);
 
@@ -200,24 +196,16 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
             text: newText,
         };
 
-        setStorageTodo(JSON.stringify(todoArr));
-    };
-
-    const getCharacterIndex = (characterId: number) => {
-        const todoArr: ITodo[] = getStorage('todo');
-        return todoArr[pTodoIndex].character.findIndex(character => character.id === characterId);
+        setStoredTodo(todoArr);
     };
 
     return (
         <>
             <WhiteSpaceDiv></WhiteSpaceDiv>
-            <CharactersArticle
-                length={getStorage('character').length - (currentPage - 1) * perPage}
-                contents={pTodo.contents}
-            >
+            <CharactersArticle length={storedCharacter.length - (currentPage - 1) * perPage} contents={pTodo.contents}>
                 {pTodo.character
                     ?.sort((a: ICharacterTodo, b: ICharacterTodo) => {
-                        return getStorage('characterOrd').indexOf(a.id) - getStorage('characterOrd').indexOf(b.id);
+                        return storedCharacterOrd.indexOf(a.id) - storedCharacterOrd.indexOf(b.id);
                     })
                     .slice(
                         currentPage === 1 ? 0 : (currentPage - 1) * perPage,

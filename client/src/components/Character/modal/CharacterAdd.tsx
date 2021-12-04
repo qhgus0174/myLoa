@@ -1,11 +1,9 @@
 import React, { useContext, useState } from 'react';
 import { toast } from 'react-toastify';
+import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
 import { PagingActionContext, PagingStateContext } from '@context/PagingContext';
 import { ModalActionContext } from '@context/ModalContext';
 import { SpinnerContext } from '@context/SpinnerContext';
-import useCharacter from '@hooks/storage/useCharacter';
-import useCharacterOrd from '@hooks/storage/useCharacterOrd';
-import useTodo from '@hooks/storage/useTodo';
 import { ICharacterTodo, ITodo } from '@components/Todo/TodoType';
 import { getCrollCharacterInfo, isDuplicate } from '@components/Character/common/functions';
 import { ICharacter } from '@components/Character/CharacterType';
@@ -13,13 +11,11 @@ import CharacterForm from '@components/Character/common/Form';
 import AddButtonContainer from '@components/Container/Button/Add';
 import { FormContainer } from '@style/common/modal';
 import { getResetCheckArr } from '@components/Todo/common/functions';
-import { getStorage } from '@storage/index';
 import { useTheme } from '@emotion/react';
 
 const CharacterAdd = () => {
-    const [storageCharacter, setStorageCharacter] = useCharacter();
-    const [storageCharacterOrd, setStorageCharacterOrd] = useCharacterOrd();
-    const [storageTodo, setStorageTodo] = useTodo();
+    const { storedTodo, storedCharacter, storedCharacterOrd } = useContext(LocalStorageStateContext);
+    const { setStoredTodo, setStoredCharacter, setStoredCharacterOrd } = useContext(LocalStorageActionContext);
 
     const { setSpinnerVisible } = useContext(SpinnerContext);
     const { setCurrentPage } = useContext(PagingActionContext);
@@ -56,7 +52,7 @@ const CharacterAdd = () => {
     };
 
     const addCharacter = (crollJob: string, crollLevel: string) => {
-        const characterArr: ICharacter[] = getStorage('character');
+        const characterArr: ICharacter[] = [...storedCharacter];
         const maxCharacterId = Math.max(...characterArr.map(char => char.id), 0);
         const characterId = characterArr.length == 0 ? 0 : maxCharacterId + 1;
 
@@ -71,7 +67,7 @@ const CharacterAdd = () => {
     };
 
     const addCharacterInfo = (crollJob: string, crollLevel: string, characterId: number): ICharacter[] => {
-        const characterArr: ICharacter[] = getStorage('character');
+        const characterArr: ICharacter[] = [...storedCharacter];
 
         const characterInfo: ICharacter = {
             id: characterId,
@@ -83,19 +79,19 @@ const CharacterAdd = () => {
         };
 
         characterArr.push(characterInfo);
-        setStorageCharacter(JSON.stringify(characterArr));
+        setStoredCharacter(characterArr);
         return characterArr;
     };
 
     const addCharacterOrd = (characterId: number) => {
-        const characterOrdArr: number[] = getStorage('characterOrd');
+        const characterOrdArr: number[] = [...storedCharacterOrd];
 
         characterOrdArr.push(characterId);
-        setStorageCharacterOrd(JSON.stringify(characterOrdArr));
+        setStoredCharacterOrd(characterOrdArr);
     };
 
     const addTodoCharacterInfo = (characterId: number) => {
-        const todoArr: ITodo[] = getStorage('todo');
+        const todoArr: ITodo[] = [...storedTodo];
 
         const todoCharacterArr = todoArr.map((todo: ITodo) => {
             const todoCharacter: ICharacterTodo = {
@@ -111,7 +107,7 @@ const CharacterAdd = () => {
             return todo.type === 'line' ? todo : Object.assign({}, todo, todo.character.push(todoCharacter));
         });
 
-        setStorageTodo(JSON.stringify(todoCharacterArr));
+        setStoredTodo(todoCharacterArr);
     };
 
     const setCurrentCharacterPage = (arr: ICharacter[]) => {

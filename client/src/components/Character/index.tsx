@@ -1,26 +1,27 @@
-import React, { TouchEvent, useContext } from 'react';
+import React, { useContext } from 'react';
+import Image from 'next/image';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
+import { useTheme } from '@emotion/react';
+import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
 import { PagingActionContext, PagingStateContext } from '@context/PagingContext';
-import useCharacterOrd from '@hooks/storage/useCharacterOrd';
-import useTodo from '@hooks/storage/useTodo';
-import { getStorage } from '@storage/index';
 import { sortOrd } from '@components/Character/common/functions';
 import CharacterEdit from '@components/Character/modal/CharacterEdit';
 import { ICharacter } from '@components/Character/CharacterType';
 import JobLogo from '@components/Character/JobLogo';
 import Button from '@components/Button/Button';
 import { IContextModalParam } from '@common/types';
-import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { FlexArticle, FlexLeftArticle, FlexHoverArticle, CharactersArticle } from '@style/common';
-import { ReactComponent as LeftArrow } from '@assets/img/left-arrow.svg';
-import { ReactComponent as RightArrow } from '@assets/img/right-arrow.svg';
+import LeftArrow from '@assets/LeftArrow';
+import RightArrow from '@assets/RightArrow';
 
 const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
-    const [storageCharacterOrd, setStorageCharacterOrd] = useCharacterOrd();
-    const [storageTodo, setStorageTodo] = useTodo();
     const { perPage, currentPage } = useContext(PagingStateContext);
     const { onClickNext, onClickPrev } = useContext(PagingActionContext);
+
+    const { storedTodo, storedCharacter, storedCharacterOrd } = useContext(LocalStorageStateContext);
+    const { setStoredCharacterOrd } = useContext(LocalStorageActionContext);
+
     const theme = useTheme();
 
     const openCharacterEditModal = ({
@@ -53,11 +54,11 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
             return;
         }
 
-        characterSortOrd(Array.from<number>(getStorage('characterOrd')), source.index, destination.index);
+        characterSortOrd(Array.from<number>(storedCharacterOrd), source.index, destination.index);
     };
 
     const characterSortOrd = (array: number[], start: number, destination: number) => {
-        setStorageCharacterOrd(JSON.stringify(sortOrd(array, start, destination)));
+        setStoredCharacterOrd(sortOrd(array, start, destination));
     };
 
     return (
@@ -65,26 +66,26 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
             <DragDropContext onDragEnd={onDragEndCharacter}>
                 <Droppable droppableId="CharacterDrop" direction="horizontal">
                     {provided => (
-                        <DropCharacterHeader>
+                        <DropCharacterHeader todoLength={storedTodo.length} characterLength={storedCharacter.length}>
                             <FlexArticle {...provided.droppableProps} ref={provided.innerRef}>
                                 <FlexLeftArticle></FlexLeftArticle>
-                                <ArrowDiv perPage={perPage}>
+
+                                <ArrowDiv characterOrd={storedCharacterOrd} perPage={perPage}>
                                     <Button
                                         width="100"
                                         border="none"
                                         onClick={onClickPrev}
-                                        icon={<LeftArrow width="20px" height="20px" fill={theme.colors.white} />}
+                                        icon={<LeftArrow fill={theme.colors.white} width="23" height="23" />}
                                         iconOnly={true}
                                     />
                                 </ArrowDiv>
-                                <CharactersArticle
-                                    length={getStorage('characterOrd').length - (currentPage - 1) * perPage}
-                                >
-                                    {(getStorage('character') as ICharacter[])
+
+                                <CharactersArticle length={storedCharacterOrd.length - (currentPage - 1) * perPage}>
+                                    {(storedCharacter as ICharacter[])
                                         .sort((a, b) => {
                                             return (
-                                                (getStorage('characterOrd') as number[]).indexOf(a.id) -
-                                                (getStorage('characterOrd') as number[]).indexOf(b.id)
+                                                (storedCharacterOrd as number[]).indexOf(a.id) -
+                                                (storedCharacterOrd as number[]).indexOf(b.id)
                                             );
                                         })
                                         .slice(
@@ -126,12 +127,12 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
                                         })}
                                     {provided.placeholder}
                                 </CharactersArticle>
-                                <ArrowDiv perPage={perPage}>
+                                <ArrowDiv characterOrd={storedCharacterOrd} perPage={perPage}>
                                     <Button
                                         width="100"
                                         border="none"
                                         onClick={onClickNext}
-                                        icon={<RightArrow width="23px" height="23px" fill={theme.colors.white} />}
+                                        icon={<RightArrow fill={theme.colors.white} width="23" height="23" />}
                                         iconOnly={true}
                                     />
                                 </ArrowDiv>
@@ -144,12 +145,11 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
     );
 };
 
-const DropCharacterHeader = styled.header`
+const DropCharacterHeader = styled.header<{ characterLength: number; todoLength: number }>`
     width: 100%;
-    ${props =>
-        (getStorage('character').length > 0 || getStorage('todo').length > 0) &&
-        `border-bottom: 1px solid ${props.theme.colors.text}`};
     padding-bottom: 0.3em;
+    ${props =>
+        (props.characterLength > 0 || props.todoLength > 0) && `border-bottom: 1px solid ${props.theme.colors.text}`};
     box-sizing: border-box;
 `;
 
@@ -166,8 +166,8 @@ const InfoArticle = styled(FlexArticle)`
     box-sizing: border-box;
 `;
 
-const ArrowDiv = styled.div<{ perPage: number }>`
-    visibility: ${props => (getStorage('characterOrd').length < props.perPage + 1 ? `hidden` : `visible`)};
+const ArrowDiv = styled.div<{ perPage: number; characterOrd: number[] }>`
+    visibility: ${props => (props.characterOrd.length < props.perPage + 1 ? `hidden` : `visible`)};
     display: flex;
     flex-basis: 2.5%;
 `;

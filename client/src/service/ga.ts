@@ -8,14 +8,14 @@ class GAService {
     private env: 'development' | 'production';
 
     constructor() {
-        if (!process.env.GA_TRACKING_ID) {
+        if (!process.env.NEXT_PUBLIC_GA_TRACKING_ID) {
             throw new Error('GA_TRACKING_ID must be provided.');
         }
 
         this.env = process.env.NODE_ENV;
 
         if (this.isProduction) {
-            ReactGA.initialize(process.env.GA_TRACKING_ID);
+            ReactGA.initialize(process.env.NEXT_PUBLIC_GA_TRACKING_ID);
         }
     }
 

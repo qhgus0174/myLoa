@@ -3,26 +3,20 @@ import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useInput } from '@hooks/useInput';
-import useCharacterOrd from '@hooks/storage/useCharacterOrd';
-import useCharacter from '@hooks/storage/useCharacter';
-import useTodoOrd from '@hooks/storage/useTodoOrd';
-import useTodo from '@hooks/storage/useTodo';
 import { ModalActionContext } from '@context/ModalContext';
 import { SpinnerContext } from '@context/SpinnerContext';
 import Button from '@components/Button/Button';
 import TextBox from '@components/Input/TextBox';
 import { IBackup, IError, IResponse } from '@common/responseType';
 import { FormButtonContainer, FormContainer, FormArticleContainer } from '@style/common/modal';
+import { LocalStorageActionContext } from '@context/LocalStorageContext';
 
 const BackupModal = () => {
     const [newBackupCode, setNewBackupCode] = useInput<string>('');
     const { closeModal } = useContext(ModalActionContext);
     const { setSpinnerVisible } = useContext(SpinnerContext);
-
-    const [storageCharacter, setStorageCharacter] = useCharacter();
-    const [storageCharacterOrd, setStorageCharacterOrd] = useCharacterOrd();
-    const [storageTodo, setStorageTodo] = useTodo();
-    const [storageTodoOrd, setStorageTodoOrd] = useTodoOrd();
+    const { setStoredTodo, setStoredTodoOrd, setStoredCharacter, setStoredCharacterOrd } =
+        useContext(LocalStorageActionContext);
 
     const history = useHistory();
 
@@ -58,10 +52,10 @@ const BackupModal = () => {
                 await axios.get(`/api/backup/${newBackupCode}`)
             ).data) as IResponse<IBackup>;
 
-            setStorageTodo(todo);
-            setStorageTodoOrd(todoord);
-            setStorageCharacter(character);
-            setStorageCharacterOrd(characterord);
+            setStoredTodo(JSON.parse(todo));
+            setStoredTodoOrd(JSON.parse(todoord));
+            setStoredCharacter(JSON.parse(character));
+            setStoredCharacterOrd(JSON.parse(characterord));
         } catch (err: unknown) {
             const { message } = err as Error;
 

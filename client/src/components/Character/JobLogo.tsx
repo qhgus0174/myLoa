@@ -1,5 +1,6 @@
 import React from 'react';
 import { css } from '@emotion/react';
+import Image from 'next/image';
 
 type IIconType =
     | 'Destroyer'
@@ -103,16 +104,10 @@ const JobLogo = ({ shape, width = 36, height = 35 }: IIcon) => {
         }
 
         return (
-            <img
-                css={css`
-                    width: ${calcRatio().width}px;
-                    height: ${calcRatio().height}px;
-                `}
-                src={
-                    engName
-                        ? require(`@assets/img/job/${engName}.png`).default
-                        : require(`@assets/img/job/warning.svg`).default
-                }
+            <Image
+                width={calcRatio().width}
+                height={calcRatio().height}
+                src={engName ? `/assets/img/job/${engName}.png` : `/assets/img/job/warning.svg`}
             />
         );
     };

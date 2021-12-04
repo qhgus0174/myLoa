@@ -1,23 +1,18 @@
 import React, { useContext, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
+import { LocalStorageStateContext } from '@context/LocalStorageContext';
 import { PagingActionContext, PagingStateContext } from '@context/PagingContext';
-import { getStorage } from '@storage/index';
-import useCharacter from '@hooks/storage/useCharacter';
 import { responsiveWidth } from '@style/device';
-import useWindowDimensions from '@hooks/useWindowDimensions';
 
 const Pagination = () => {
     const [pageNumbers, setPageNumbers] = useState<number[]>([]);
     const { setCurrentPage } = useContext(PagingActionContext);
-    const [storageCharacter, setStorageCharacter] = useCharacter();
-
-    const { width: windowWidth } = useWindowDimensions();
-
+    const { storedCharacter } = useContext(LocalStorageStateContext);
     const { perPage, currentPage } = useContext(PagingStateContext);
 
     useEffect(() => {
-        setPageNumbers(Array.from(Array(Math.ceil(getStorage('character').length / perPage)).keys(), x => x + 1));
-    }, [getStorage('character').length, perPage]);
+        setPageNumbers(Array.from(Array(Math.ceil(storedCharacter.length / perPage)).keys(), x => x + 1));
+    }, [storedCharacter.length, perPage]);
 
     return (
         <>

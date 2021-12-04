@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-import { getStorage } from '@storage/index';
+
 import { ModalActionContext } from '@context/ModalContext';
 import { SpinnerContext } from '@context/SpinnerContext';
 import BackupCreate from '@components/Backup/BackupCreate';
@@ -22,10 +22,10 @@ const Manage = () => {
 
         try {
             const params = {
-                todo: JSON.stringify(getStorage('todo')),
-                todoOrd: JSON.stringify(getStorage('todoOrd')),
-                character: JSON.stringify(getStorage('character')),
-                characterOrd: JSON.stringify(getStorage('characterOrd')),
+                todo: JSON.stringify(JSON.parse(JSON.parse(localStorage.getItem('todo') as string))),
+                todoOrd: JSON.stringify(JSON.parse(JSON.parse(localStorage.getItem('todoOrd') as string))),
+                character: JSON.stringify(JSON.parse(JSON.parse(localStorage.getItem('character') as string))),
+                characterOrd: JSON.stringify(JSON.parse(JSON.parse(localStorage.getItem('characterOrd') as string))),
             };
             const {
                 result: { backupkey },

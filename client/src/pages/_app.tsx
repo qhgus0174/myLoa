@@ -1,24 +1,23 @@
-import React, { useContext } from 'react';
-import { BrowserRouter, Redirect, Route, Switch } from 'react-router-dom';
+import React from 'react';
+import { resetServerContext } from 'react-beautiful-dnd';
+import { AppProps } from 'next/dist/shared/lib/router/router';
 import { Flip, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import Main from '@routes/Main';
-import { GlobalThemeContext } from '@context/GlobalThemeContext';
+import GlobalThemeContext, { GlobalThemeContext as aa } from '@context/GlobalThemeContext';
+import LocalStorageContext from '@context/LocalStorageContext';
 import SpinnerContext from '@context/SpinnerContext';
 import PagingContext from '@context/PagingContext';
 import ModalContext from '@context/ModalContext';
 import Header from '@components/Layout/Header';
 import styled from '@emotion/styled';
-import { ThemeProvider } from '@emotion/react';
 import { GlobalStyle } from '@style/global-styles';
-import Manage from '@routes/Manage';
-import { widthMedia } from '@style/device';
 
-const AppRouter = () => {
-    const { theme } = useContext(GlobalThemeContext);
-
+const App = ({ Component, pageProps }: AppProps) => {
+    {
+        resetServerContext();
+    }
     return (
-        <ThemeProvider theme={require('@style/theme')[theme]}>
+        <GlobalThemeContext>
             <GlobalStyle />
             <ToastContainer
                 position="top-right"
@@ -34,23 +33,19 @@ const AppRouter = () => {
                 limit={5}
                 className="tostify-container"
             />
-            <BrowserRouter>
-                <Container>
+            <Container>
+                <LocalStorageContext>
                     <PagingContext>
                         <SpinnerContext>
                             <ModalContext>
                                 <Header />
-                                <Switch>
-                                    <Route exact path="/" component={Main} />
-                                    <Route exact path="/mng" component={Manage} />
-                                    <Route component={() => <Redirect to="/" />} />
-                                </Switch>
+                                <Component {...pageProps} />
                             </ModalContext>
                         </SpinnerContext>
                     </PagingContext>
-                </Container>
-            </BrowserRouter>
-        </ThemeProvider>
+                </LocalStorageContext>
+            </Container>
+        </GlobalThemeContext>
     );
 };
 
@@ -62,4 +57,4 @@ const Container = styled.section`
     height: 100%;
 `;
 
-export default AppRouter;
+export default App;

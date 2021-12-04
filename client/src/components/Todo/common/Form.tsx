@@ -1,13 +1,13 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import _ from 'lodash';
 import { ColorResult, CompactPicker } from 'react-color';
+import { LocalStorageStateContext } from '@context/LocalStorageContext';
 import { getShowCheckTodo } from '@components/Todo/common/functions';
 import { ICharacter } from '@components/Character/CharacterType';
 import BasicCheckbox from '@components/Input/BasicCheckbox';
 import RadioButton from '@components/Input/Radio';
 import TextBox from '@components/Input/TextBox';
 import { ScheduleCheckType, ScheduleContents, ScheduleType } from '@common/types';
-import { getStorage } from '@storage/index';
 import styled from '@emotion/styled';
 import { ContentsArticle, ContentsArticleTitle, ContentsInnerArticle, FormArticleContainer } from '@style/common/modal';
 import { FlexArticle } from '@style/common';
@@ -39,6 +39,8 @@ const TodoForm = ({
     settingName,
     setShowCharacterArr,
 }: ITodo) => {
+    const { storedCharacter, storedCharacterOrd } = useContext(LocalStorageStateContext);
+
     return (
         <FormArticleContainer>
             <FormFlexArticle direction="column">
@@ -152,17 +154,14 @@ const TodoForm = ({
                     </ContentsInnerArticle>
                 </FormFlexArticle>
             )}
-            {(getStorage('character') as ICharacter[]).length > 0 && (
+            {storedCharacter.length > 0 && (
                 <FormFlexArticle direction="column">
                     <ContentsArticleTitle>숙제 표시 할 캐릭터</ContentsArticleTitle>
                     <ContentsInnerArticle>
                         <ContentsCharacterArticle>
-                            {(getStorage('character') as ICharacter[])
-                                ?.sort((a: ICharacter, b: ICharacter) => {
-                                    return (
-                                        getStorage('characterOrd').indexOf(a.id) -
-                                        getStorage('characterOrd').indexOf(b.id)
-                                    );
+                            {storedCharacter
+                                .sort((a: ICharacter, b: ICharacter) => {
+                                    return storedCharacterOrd.indexOf(a.id) - storedCharacterOrd.indexOf(b.id);
                                 })
                                 .map((character: ICharacter, characterIndex: number) => {
                                     return (

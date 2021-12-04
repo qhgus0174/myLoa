@@ -1,24 +1,23 @@
 import React, { useContext, useState } from 'react';
 import { toast } from 'react-toastify';
+import { LocalStorageStateContext, LocalStorageActionContext } from '@context/LocalStorageContext';
 import { ModalActionContext } from '@context/ModalContext';
-import useCharacter from '@hooks/storage/useCharacter';
-import useCharacterOrd from '@hooks/storage/useCharacterOrd';
 import { sortOrd } from '@components/Character/common/functions';
 import { ICharacter } from '@components/Character/CharacterType';
 import Button from '@components/Button/Button';
 import { FormButtonContainer, FormContainer, FormArticleContainer } from '@style/common/modal';
-import { getStorage } from '@storage/index';
 import styled from '@emotion/styled';
 import { FlexArticle } from '@style/common';
 import { DropResult, DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { PagingStateContext } from '@context/PagingContext';
 
 const CharacterOrdChange = () => {
-    const [storageCharacter, setStorageCharacter] = useCharacter();
-    const [storageCharacterOrd, setStorageCharacterOrd] = useCharacterOrd();
+    const { storedCharacter, storedCharacterOrd } = useContext(LocalStorageStateContext);
+    const { setStoredCharacterOrd } = useContext(LocalStorageActionContext);
+
     const { perPage } = useContext(PagingStateContext);
 
-    const [ord, setOrd] = useState<number[]>(getStorage('characterOrd'));
+    const [ord, setOrd] = useState<number[]>(storedCharacterOrd);
 
     const { closeModal } = useContext(ModalActionContext);
 
@@ -39,7 +38,7 @@ const CharacterOrdChange = () => {
     };
 
     const saveOrd = () => {
-        setStorageCharacterOrd(JSON.stringify(ord));
+        setStoredCharacterOrd(ord);
         toast.success('캐릭터 순서가 저장되었습니다.');
         closeModal();
     };
@@ -52,7 +51,7 @@ const CharacterOrdChange = () => {
                     <Droppable droppableId="md">
                         {provided => (
                             <FlexArticle direction="column" {...provided.droppableProps} ref={provided.innerRef}>
-                                {(getStorage('character') as ICharacter[])
+                                {storedCharacter
                                     .sort((a, b) => {
                                         return ord.indexOf(a.id) - ord.indexOf(b.id);
                                     })

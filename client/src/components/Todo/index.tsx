@@ -1,20 +1,18 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
-import useTodoOrd from '@hooks/storage/useTodoOrd';
+import { LocalStorageStateContext, LocalStorageActionContext } from '@context/LocalStorageContext';
 import CheckboxText from '@components/Todo/view/CheckboxText';
 import { ITodo } from '@components/Todo/TodoType';
 import Checkbox from '@components/Todo/view/Checkbox';
 import Line from '@components/Todo/view/Line';
 import { IContextModalParam, ScheduleContents } from '@common/types';
-import { getStorage } from '@storage/index';
 import styled from '@emotion/styled';
 import { FlexArticle } from '@style/common';
-import useTodo from '@hooks/storage/useTodo';
 import { heightMedia } from '@style/device';
 
 const Todo = ({ onContextMenuBasicModal }: IContextModalParam) => {
-    const [storageTodoOrd, setStorageTodoOrd] = useTodoOrd();
-    const [storageTodo, setStorageTodo] = useTodo();
+    const { storedTodo, storedTodoOrd } = useContext(LocalStorageStateContext);
+    const { setStoredTodoOrd } = useContext(LocalStorageActionContext);
 
     const onDragEndCharacter = (result: DropResult) => {
         const { destination, source } = result;
@@ -27,11 +25,11 @@ const Todo = ({ onContextMenuBasicModal }: IContextModalParam) => {
             return;
         }
 
-        todoSortOrd(Array.from<number>(getStorage('todoOrd')), source.index, destination.index);
+        todoSortOrd([...storedTodoOrd], source.index, destination.index);
     };
 
     const todoSortOrd = (array: number[], start: number, destination: number) => {
-        setStorageTodoOrd(JSON.stringify(sortOrd(array, start, destination)));
+        setStoredTodoOrd(sortOrd(array, start, destination));
     };
 
     const sortOrd = (array: number[], start: number, destination: number) => {
@@ -48,12 +46,9 @@ const Todo = ({ onContextMenuBasicModal }: IContextModalParam) => {
                 <Droppable droppableId="TodoDrop">
                     {provided => (
                         <FlexArticle direction="column" {...provided.droppableProps} ref={provided.innerRef}>
-                            {(getStorage('todo') as ITodo[])
+                            {(storedTodo as ITodo[])
                                 .sort((a, b) => {
-                                    return (
-                                        (getStorage('todoOrd') as number[]).indexOf(a.id) -
-                                        (getStorage('todoOrd') as number[]).indexOf(b.id)
-                                    );
+                                    return storedTodoOrd.indexOf(a.id) - storedTodoOrd.indexOf(b.id);
                                 })
                                 .map((todo: ITodo, todoIndex: number, oriArray: ITodo[]) => {
                                     return (

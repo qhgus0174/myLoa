@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-import useTodo from '@hooks/storage/useTodo';
+import React, { useContext, useState } from 'react';
+import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
 import TodoEdit from '@components/Todo/modal/TodoEdit';
 import { ITodo } from '@components/Todo/TodoType';
 import PinCheckbox from '@components/Input/PinCheckBox';
-import { getStorage } from '@storage/index';
 import { IContextModal, ScheduleContents } from '@common/types';
 import styled from '@emotion/styled';
 import { FlexArticle, FlexLeftArticle } from '@style/common';
@@ -14,8 +13,10 @@ interface ICheckbox {
 }
 
 const CheckboxText = ({ todo, onContextMenu }: ICheckbox) => {
+    const { storedTodo } = useContext(LocalStorageStateContext);
+    const { setStoredTodo } = useContext(LocalStorageActionContext);
+
     const [isFixed, setIsFixed] = useState(todo.isFixed);
-    const [storageTodo, setStorageTodo] = useTodo();
 
     const openTodoEditModal = ({
         e,
@@ -29,7 +30,7 @@ const CheckboxText = ({ todo, onContextMenu }: ICheckbox) => {
     };
 
     const setFixed = () => {
-        const todoArr: ITodo[] = getStorage('todo');
+        const todoArr: ITodo[] = [...storedTodo];
 
         const todoIndex = todoArr.findIndex(td => td.id === todo.id);
 
@@ -38,7 +39,7 @@ const CheckboxText = ({ todo, onContextMenu }: ICheckbox) => {
             isFixed: !isFixed,
         };
 
-        setStorageTodo(JSON.stringify(todoArr));
+        setStoredTodo(todoArr);
 
         setIsFixed(!isFixed);
     };
