@@ -17,12 +17,11 @@ import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { FlexArticle } from '@style/common';
 import { responsiveWidth, widthMedia } from '@style/device';
-import Image from 'next/image';
 import { GA } from '@service/ga';
 import Guide from '@components/Guide';
 import Pagination from '@components/Pagination/Pagination';
 import CharacterOrdChange from '@components/Character/modal/CharacterOrdChange';
-import PlusIcon from '../assets/PlusIcon';
+import PlusIcon from '@assets/PlusIcon';
 import DownArrow from '@assets/DownArrow';
 import UpArrow from '@assets/UpArrow';
 
@@ -204,7 +203,7 @@ const Main = () => {
                     <ButtonLeftArticle>
                         <AddButton
                             type="button"
-                            icon={<PlusIcon fill={theme.colors.text} width="15" height="15" />}
+                            icon={<PlusIcon fill={theme.button.color} width="15" height="15" />}
                             onClick={e =>
                                 onContextMenuBasicModal({
                                     e: e,
@@ -220,7 +219,7 @@ const Main = () => {
                         <AddButton
                             isRight={true}
                             type="button"
-                            icon={<PlusIcon fill={theme.colors.text} width="15" height="15" />}
+                            icon={<PlusIcon fill={theme.button.color} width="15" height="15" />}
                             onClick={e =>
                                 onContextMenuBasicModal({
                                     e: e,
@@ -252,7 +251,7 @@ const Main = () => {
                         <AddButton
                             isRight={true}
                             type="button"
-                            icon={<PlusIcon fill={theme.colors.text} width="15" height="15" />}
+                            icon={<PlusIcon fill={theme.button.color} width="15" height="15" />}
                             onClick={e =>
                                 onContextMenuBasicModal({
                                     e: e,

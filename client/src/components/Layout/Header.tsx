@@ -52,17 +52,17 @@ const Header = () => {
                     </Link>
                 </HeaderInner>
                 <RightHeader>
-                    <StyledLink href="/">
-                        <span>홈</span>
-                    </StyledLink>
+                    <Link href="/">
+                        <LinkText>홈</LinkText>
+                    </Link>
                     <GuideArticle>
                         <QuestionSpan className="guide" onClick={showGuide}>
                             가이드
                         </QuestionSpan>
                     </GuideArticle>
-                    <StyledLink href="/mng">
-                        <span>관리</span>
-                    </StyledLink>
+                    <Link href="/Manage">
+                        <LinkText>관리</LinkText>
+                    </Link>
                     <SelectTheme />
                 </RightHeader>
             </HeaderContainer>
@@ -74,14 +74,14 @@ const Header = () => {
                     🔎 주간
                 </FooterNav>
                 <FooterNav>
-                    <StyledLink href="/">
+                    <Link href="/">
                         <img src={Home} />
-                    </StyledLink>
+                    </Link>
                 </FooterNav>
                 <FooterNav>
-                    <StyledLink href="/mng">
+                    <Link href="/Manage">
                         <img src={Setting} />
-                    </StyledLink>
+                    </Link>
                 </FooterNav>
                 <FooterNav>
                     <SelectTheme />
@@ -117,6 +117,7 @@ const HeaderInner = styled.article`
 const LogoImg = styled.img`
     width: 160px;
     height: 100%;
+    cursor: pointer;
 
     ${widthMedia.smallPhone} {
         width: 130px;
@@ -141,12 +142,6 @@ const RightHeader = styled.nav`
     }
 `;
 
-const StyledLink = styled(Link)`
-    cursor: pointer;
-    text-decoration: none;
-    display: flex;
-`;
-
 const HeaderResponsiveContainer = styled.header`
     display: none;
 
@@ -164,6 +159,10 @@ const HeaderResponsiveContainer = styled.header`
         justify-content: space-around;
         box-shadow: 0 -5px 6px -6px ${props => props.theme.colors.shadow};
     }
+`;
+
+const LinkText = styled.span`
+    cursor: pointer;
 `;
 
 const FooterNav = styled.nav`
