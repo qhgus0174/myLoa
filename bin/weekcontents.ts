@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 
-import { weeklyAbyss } from '../client/src/common/data/weeklyAbyss';
-import { weeklyGuardian } from '../client/src/common/data/weeklyGuardian';
+import { weeklyAbyss } from '@common/data/weeklyAbyss';
+import { weeklyGuardian } from '@common/data/weeklyGuardian';
+import { IResponse, IWeeklyContents } from '@common/responseType';
 import axios from 'axios';
 import { DateTime } from 'luxon';
-import { IResponse, IWeeklyContents } from '../client/src/common/responseType';
 
 const getStartIndex = (arr: string[] | string[][], oriData: string): string => {
     const length = arr.length;

@@ -6,7 +6,6 @@ module.exports = withImages({
     images: {
         disableStaticImages: true,
     },
-
     webpack: (config, options) => {
         return {
             ...config,

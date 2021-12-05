@@ -1,16 +1,8 @@
 {
-    "include": [
-        "src/**/*",
-        "bin/**/*",
-        "next.config.js",
-        "custom.d.ts",
-        "public/PlusIcon.tsx",
-        "public/PlusIcon.tsx",
-        "public/PlusIcon.tsx"
-    ],
+    "include": ["src/**/*", "bin/**/*", "next.config.js", "custom.d.ts", "server/**/*", "server/index.ts"],
     "ts-node": {
         "compilerOptions": {
-            "module": "CommonJS"
+            "module": "commonjs"
         }
     },
     "compilerOptions": {
@@ -22,7 +14,7 @@
         "baseUrl": "./src",
         "skipLibCheck": true,
         "jsx": "preserve",
-        "module": "CommonJS",
+        "module": "commonjs",
         "outDir": "./dist",
         "rootDir": ".",
         "esModuleInterop": true,

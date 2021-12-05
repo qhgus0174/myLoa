@@ -9,4 +9,4 @@ router.use('/backup', backup);
 router.use('/error', error);
 router.use('/weeklyContents', weeklyContents);
 
-export = router;
+export default router;

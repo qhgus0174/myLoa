@@ -1,42 +1,32 @@
-import express from 'express';
-import dotenv from 'dotenv';
-import router from './routes';
+import express, { Request, Response } from 'express';
 import next from 'next';
-
-dotenv.config();
+import router from './routes';
 
 const dev = process.env.NODE_ENV !== 'production';
-
 const app = next({ dev });
 const handle = app.getRequestHandler();
+const port = process.env.PORT || 9000;
 
-const path = require('path');
-const port = process.env.PORT || 8080;
-const distPath = path.join(__dirname, '../../client/public');
+(async () => {
+    try {
+        await app.prepare();
+        const server = express();
+        server.use('/', router);
+        server.use('/api', router);
 
-app.prepare().then(() => {
-    const server = express();
+        server.get('/', (req, res) => {
+            return app.render(req, res, '/');
+        });
 
-    server.use(express.static(distPath));
-    server.use(express.json());
-    server.use(express.urlencoded({ extended: true }));
-
-    server.use('/', router);
-    server.use('/api', router);
-
-    server.get('/', (req, res) => {
-        return app.render(req, res, '/');
-    });
-
-    server.get('*', (req, res) => {
-        handle(req, res);
-    });
-
-    server.listen(port, () => {
-        console.log(`
-################################################
-🛡️  Server listening on port: ${port} 🛡️
-################################################
-`);
-    });
-});
+        server.all('*', (req: Request, res: Response) => {
+            return handle(req, res);
+        });
+        server.listen(port, (err?: any) => {
+            if (err) throw err;
+            console.log(`> Ready on localhost:${port} - env ${process.env.NODE_ENV}`);
+        });
+    } catch (e) {
+        console.error(e);
+        process.exit(1);
+    }
+})();

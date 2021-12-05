@@ -14,4 +14,4 @@ const dbPool = new Pool({
     },
 });
 
-export = dbPool;
+export default dbPool;
