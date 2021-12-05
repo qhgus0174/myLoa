@@ -7,14 +7,14 @@ module.exports = withImages({
         disableStaticImages: true,
     },
     async rewrites() {
-        return (
-            isDevelopment && [
-                {
-                    source: '/api/:path*',
-                    destination: 'http://localhost:8080/:path*',
-                },
-            ]
-        );
+        return isDevelopment
+            ? [
+                  {
+                      source: '/api/:path*',
+                      destination: 'http://localhost:8080/:path*',
+                  },
+              ]
+            : [];
     },
     webpack: (config, options) => {
         return {
