@@ -35,5 +35,4 @@ export interface ITodoCheck extends ICharacterTodo {
     todoContents: ScheduleContents;
     showCharacter: number[];
     checkType: ScheduleCheckType;
-    setTodo: (e: any[]) => void;
 }
