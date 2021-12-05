@@ -8,14 +8,14 @@ interface ITheme {
     setTheme: (e: IThemeStyle) => void;
 }
 
-export const GlobalThemeContext = createContext<ITheme>({ theme: 'basic', setTheme: (e: IThemeStyle) => {} });
+export const GlobalThemeContext = createContext<ITheme>({ theme: '', setTheme: (e: IThemeStyle) => {} });
 
 const GlobalThemeProvider = ({ children }: { children: React.ReactNode }) => {
     const { theme, setTheme } = useTheme();
 
     return (
         <GlobalThemeContext.Provider value={{ theme, setTheme }}>
-            <ThemeProvider theme={require('@style/theme')[theme]}>{children}</ThemeProvider>
+            {theme && <ThemeProvider theme={require('@style/theme')[theme]}>{children}</ThemeProvider>}
         </GlobalThemeContext.Provider>
     );
 };

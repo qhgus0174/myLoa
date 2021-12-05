@@ -1,6 +1,7 @@
 import { Theme } from '@emotion/react';
 
 export type IThemeStyle =
+    | ''
     | 'basic'
     | 'pink'
     | 'violet'
