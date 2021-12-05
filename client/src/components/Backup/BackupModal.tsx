@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { useHistory } from 'react-router-dom';
+import Router from 'next/router';
 import { toast } from 'react-toastify';
 import axios from 'axios';
 import { useInput } from '@hooks/useInput';
@@ -18,8 +18,6 @@ const BackupModal = () => {
     const { setStoredTodo, setStoredTodoOrd, setStoredCharacter, setStoredCharacterOrd } =
         useContext(LocalStorageActionContext);
 
-    const history = useHistory();
-
     const setData = async () => {
         setSpinnerVisible(true);
         try {
@@ -27,7 +25,7 @@ const BackupModal = () => {
             await deleteBackupData();
 
             toast.success('데이터를 성공적으로 불러왔습니다. 숙제 관리 화면으로 이동합니다.');
-            history.push('/');
+            Router.push('/');
 
             closeModal();
         } catch (err: unknown) {
