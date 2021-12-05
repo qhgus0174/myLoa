@@ -1,18 +1,27 @@
 {
-    "include": ["src/**/*", "bin/weekcontents.ts"],
+    "include": [
+        "src/**/*",
+        "bin/**/*",
+        "next.config.js",
+        "custom.d.ts",
+        "public/PlusIcon.tsx",
+        "public/PlusIcon.tsx",
+        "public/PlusIcon.tsx"
+    ],
     "ts-node": {
         "compilerOptions": {
             "module": "CommonJS"
         }
     },
-    "exclude": ["node_modules"],
     "compilerOptions": {
+        "jsxImportSource": "@emotion/react",
         "removeComments": true,
         "target": "es6",
         "sourceMap": true,
         "strict": true,
         "baseUrl": "./src",
         "skipLibCheck": true,
+        "jsx": "preserve",
         "module": "CommonJS",
         "outDir": "./dist",
         "rootDir": ".",
@@ -24,6 +33,23 @@
         "allowSyntheticDefaultImports": true,
         "moduleResolution": "node",
         "resolveJsonModule": true,
-        "isolatedModules": true
-    }
+        "isolatedModules": true,
+        "paths": {
+            "@routes/*": ["routes/*"],
+            "@components/*": ["components/*"],
+            "@hooks/*": ["hooks/*"],
+            "@context/*": ["context/*"],
+            "@common/*": ["common/*"],
+            "@style/*": ["style/*"],
+            "@fonts/*": ["fonts/*"],
+            "@assets/*": ["assets/*"],
+            "@storage/*": ["storage/*"],
+            "@service/*": ["service/*"],
+            "@schedule/*": ["schedule/*"],
+            "@server/*": ["server/*"]
+        },
+        "noEmit": true,
+        "incremental": true
+    },
+    "exclude": ["node_modules"]
 }
