@@ -93,8 +93,11 @@
         "build": "webpack --config webpack.prod.js",
         "dev": "webpack-dev-server --hot --open --config webpack.dev.js",
         "dev-start": "next dev -p 9000",
-        "start": "next build && next start"
+        "start": "next start"
     },
+    "cacheDirectories": [
+        ".next/cache"
+    ],
     "_moduleAliases": {
         "@routes": [
             "dist/src/routes"
