@@ -10,6 +10,7 @@ import PagingContext from '@context/PagingContext';
 import ModalContext from '@context/ModalContext';
 import Header from '@components/Layout/Header';
 import styled from '@emotion/styled';
+import '@fonts/fonts.css';
 import { GlobalStyle } from '@style/global-styles';
 
 const App = ({ Component, pageProps }: AppProps) => {
