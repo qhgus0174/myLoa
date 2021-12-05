@@ -90,10 +90,11 @@
         "yarn": "1.22.11"
     },
     "scripts": {
-        "build": "webpack --config webpack.prod.js",
+        "webpack-build": "webpack --config webpack.prod.js",
         "dev": "webpack-dev-server --hot --open --config webpack.dev.js",
         "dev-start": "next dev -p 9000",
-        "start": "next build && next start"
+        "build": "next build",
+        "start": "next start"
     },
     "cacheDirectories": [
         ".next/cache"
