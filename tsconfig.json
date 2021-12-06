@@ -1,5 +1,5 @@
 {
-    "include": ["src/**/*", "bin/**/*", "next.config.js", "custom.d.ts", "server/**/*", "server/index.ts"],
+    "include": ["src/**/*", "bin/**/*", "next.config.js", "custom.d.ts", "server/**/*", "server/index.ts", "script"],
     "ts-node": {
         "compilerOptions": {
             "module": "commonjs"
