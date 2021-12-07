@@ -56,6 +56,11 @@ const ModalInner = styled(FlexArticle)<Pick<IPortalOption, 'width' | 'height'>>`
     max-height: 90vh;
     max-width: 95vw;
 
+    ${widthMedia.smallDesktop} {
+        max-height: 90vh;
+        max-width: 85vw;
+    }
+
     ${widthMedia.phone} {
         max-height: 80vh;
         max-width: 80vw;

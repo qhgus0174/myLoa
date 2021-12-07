@@ -67,6 +67,7 @@ const CheckboxText = ({ todo, onContextMenu }: ICheckbox) => {
 const RealText = styled(FlexArticle)`
     color: ${props => props.color};
     justify-content: center;
+    padding: 10px;
 `;
 
 const TextContainer = styled(FlexLeftArticle)<{ contents: ScheduleContents }>`

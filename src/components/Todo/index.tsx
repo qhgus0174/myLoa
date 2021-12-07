@@ -8,7 +8,7 @@ import Line from '@components/Todo/view/Line';
 import { IContextModalParam, ScheduleContents } from '@common/types';
 import styled from '@emotion/styled';
 import { FlexArticle } from '@style/common';
-import { heightMedia } from '@style/device';
+import { heightMedia, widthMedia } from '@style/device';
 
 const Todo = ({ onContextMenuBasicModal }: IContextModalParam) => {
     const { storedTodo, storedTodoOrd } = useContext(LocalStorageStateContext);
@@ -99,12 +99,19 @@ const Todo = ({ onContextMenuBasicModal }: IContextModalParam) => {
 
 const TodoContainer = styled.section`
     height: 60vh;
+
     ${heightMedia.big} {
         height: 55vh;
     }
+
     ${heightMedia.medium} {
         height: 60vh;
     }
+
+    ${widthMedia.tablet} {
+        height: 55vh;
+    }
+
     overflow-y: auto;
 `;
 
