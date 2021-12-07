@@ -2,16 +2,13 @@ import React, { useContext } from 'react';
 import SelectTheme from '@components/Palette/SelectTheme';
 import WeeklyContents from '@components/Contents/WeeklyContents';
 import DayContents from '@components/Contents/DayContents';
-import Compass from '@components/Layout/Compass';
 import Logo from '@assets/img/logo/logo.png';
 import Home from '@assets/icon/home.png';
 import Setting from '@assets/icon/setting.png';
 import styled from '@emotion/styled';
 import { widthMedia } from '@style/device';
-import { FlexArticle } from '@style/common';
 import Link from 'next/link';
 import { ModalActionContext } from '@context/ModalContext';
-import Guide from '@components/Guide';
 
 const Header = () => {
     const { setModalProps } = useContext(ModalActionContext);
@@ -32,37 +29,15 @@ const Header = () => {
         });
     };
 
-    const showGuide = () => {
-        setModalProps({
-            isOpen: true,
-            content: <Guide />,
-            options: { width: '700', height: '500', headerTitle: '가이드', isHeaderClose: true },
-        });
-    };
-
     return (
         <>
             <HeaderContainer>
-                <LeftHeader>
-                    <Compass />
-                </LeftHeader>
                 <HeaderInner>
                     <Link href="/">
                         <LogoImg src={Logo} />
                     </Link>
                 </HeaderInner>
                 <RightHeader>
-                    <Link href="/">
-                        <LinkText>홈</LinkText>
-                    </Link>
-                    <GuideArticle>
-                        <QuestionSpan className="guide" onClick={showGuide}>
-                            가이드
-                        </QuestionSpan>
-                    </GuideArticle>
-                    <Link href="/Manage">
-                        <LinkText>관리</LinkText>
-                    </Link>
                     <SelectTheme />
                 </RightHeader>
             </HeaderContainer>
@@ -94,9 +69,8 @@ const HeaderContainer = styled.header`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 3.5vh;
-    margin-bottom: 2.5vh;
-    padding-bottom: 3.5vh;
+    padding-top: 2.1vh;
+    padding-bottom: 2.1vh;
     width: 100%;
 
     -webkit-box-shadow: 0 5px 6px -6px ${props => props.theme.colors.shadow};
@@ -110,8 +84,7 @@ const HeaderContainer = styled.header`
 
 const HeaderInner = styled.article`
     display: flex;
-    flex-basis: 20%;
-    justify-content: center;
+    flex-basis: 42%;
 `;
 
 const LogoImg = styled.img`
@@ -123,18 +96,12 @@ const LogoImg = styled.img`
         width: 130px;
     }
 `;
-const LeftHeader = styled.article`
-    display: flex;
-    flex-basis: 40%;
-    align-items: center;
-    justify-content: space-evenly;
-`;
 
 const RightHeader = styled.nav`
     display: flex;
-    flex-basis: 40%;
+    flex-basis: 42%;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: flex-end;
 
     span {
         font-weight: 500;
@@ -161,10 +128,6 @@ const HeaderResponsiveContainer = styled.header`
     }
 `;
 
-const LinkText = styled.span`
-    cursor: pointer;
-`;
-
 const FooterNav = styled.nav`
     display: flex;
     align-items: center;
@@ -173,13 +136,4 @@ const FooterNav = styled.nav`
     text-decoration: none;
 `;
 
-const GuideArticle = styled(FlexArticle)`
-    align-items: center;
-    justify-content: center;
-`;
-
-const QuestionSpan = styled.span`
-    cursor: pointer;
-    font-weight: 500;
-`;
 export default Header;

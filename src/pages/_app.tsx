@@ -12,6 +12,7 @@ import Header from '@components/Layout/Header';
 import styled from '@emotion/styled';
 import '@fonts/fonts.css';
 import { GlobalStyle } from '@style/global-styles';
+import Navbar from '@components/Layout/Navbar';
 
 const App = ({ Component, pageProps }: AppProps) => {
     {
@@ -40,6 +41,7 @@ const App = ({ Component, pageProps }: AppProps) => {
                         <SpinnerContext>
                             <ModalContext>
                                 <Header />
+                                <Navbar />
                                 <Component {...pageProps} />
                             </ModalContext>
                         </SpinnerContext>
