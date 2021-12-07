@@ -58,6 +58,7 @@ export const basic: Theme = {
         black: '#000000',
         white: '#f6f8fd',
         gray: '#6d6d6d',
+        navBorder: '#1b2736',
     },
 
     button: {
@@ -99,6 +100,7 @@ export const pink: Theme = {
         black: '#000000',
         white: '#F6F6F6',
         gray: '#9f979a',
+        navBorder: '#debfc4',
     },
 
     button: {
@@ -141,6 +143,7 @@ export const violet: Theme = {
         black: '#000000',
         white: '#edeff6',
         gray: '#7b728c',
+        navBorder: '#be9bcd',
     },
 
     button: {
@@ -183,6 +186,7 @@ export const green: Theme = {
         black: '#000000',
         white: '#edeff6',
         gray: '#747b75',
+        navBorder: '#6e9a79',
     },
 
     button: {
@@ -225,6 +229,7 @@ export const cold: Theme = {
         black: '#000000',
         white: '#edeff6',
         gray: '#799d9f',
+        navBorder: '#a2b9b5',
     },
 
     button: {
@@ -267,6 +272,7 @@ export const autumn: Theme = {
         black: '#000000',
         white: '#edeff6',
         gray: '#485a50',
+        navBorder: '#ce8e72',
     },
 
     button: {
@@ -309,6 +315,7 @@ export const violetBrown: Theme = {
         black: '#000000',
         white: '#edeff6',
         gray: '#4f4647',
+        navBorder: '#705b64',
     },
 
     button: {
@@ -351,6 +358,7 @@ export const flower: Theme = {
         black: '#000000',
         white: '#edeff6',
         gray: '#768378',
+        navBorder: '#feb3c1',
     },
 
     button: {
@@ -393,6 +401,7 @@ export const pinkBeige: Theme = {
         black: '#000000',
         white: '#fafaf9',
         gray: '#97979f',
+        navBorder: '#d5c5c2',
     },
 
     button: {
@@ -435,6 +444,7 @@ export const darkBrown: Theme = {
         black: '#000000',
         white: '#efebeb',
         gray: '#8a8583',
+        navBorder: '#363535',
     },
 
     button: {
@@ -477,6 +487,7 @@ export const darkYellow: Theme = {
         black: '#000000',
         white: '#EEEEEE',
         gray: '#8a8583',
+        navBorder: '#272e39',
     },
 
     button: {
@@ -519,6 +530,7 @@ export const darkPink: Theme = {
         black: '#000000',
         white: '#EEEEEE',
         gray: '#8a8583',
+        navBorder: '#333456',
     },
 
     button: {
@@ -561,6 +573,7 @@ export const veryCold: Theme = {
         black: '#000000',
         white: '#EEEEEE',
         gray: '#706e77',
+        navBorder: '#897f9e',
     },
 
     button: {
@@ -603,6 +616,7 @@ export const darkCyan: Theme = {
         black: '#000000',
         white: '#EEEEEE',
         gray: '#706e77',
+        navBorder: '#252b36',
     },
 
     button: {
@@ -645,6 +659,7 @@ export const lego: Theme = {
         black: '#000000',
         white: '#EEEEEE',
         gray: '#4d4f50',
+        navBorder: '#114a7c',
     },
 
     button: {
@@ -687,6 +702,7 @@ export const blue: Theme = {
         black: '#000000',
         white: '#F6F5F5',
         gray: '#276678',
+        navBorder: '#90a5ab',
     },
 
     button: {

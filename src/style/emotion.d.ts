@@ -16,6 +16,7 @@ declare module '@emotion/react' {
             pin: string;
             text: string;
             compassActive: string;
+            navBorder: string;
         };
 
         button: {
