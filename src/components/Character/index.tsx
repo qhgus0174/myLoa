@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import Image from 'next/image';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 import { useTheme } from '@emotion/react';
 import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
@@ -7,13 +6,13 @@ import { PagingActionContext, PagingStateContext } from '@context/PagingContext'
 import { sortOrd } from '@components/Character/common/functions';
 import CharacterEdit from '@components/Character/modal/CharacterEdit';
 import { ICharacter } from '@components/Character/CharacterType';
+import RightArrow from '@components/Svg/RightArrow';
 import JobLogo from '@components/Character/JobLogo';
+import LeftArrow from '@components/Svg/LeftArrow';
 import Button from '@components/Button/Button';
 import { IContextModalParam } from '@common/types';
 import styled from '@emotion/styled';
 import { FlexArticle, FlexLeftArticle, FlexHoverArticle, CharactersArticle } from '@style/common';
-import LeftArrow from '@assets/LeftArrow';
-import RightArrow from '@assets/RightArrow';
 
 const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
     const { perPage, currentPage } = useContext(PagingStateContext);
