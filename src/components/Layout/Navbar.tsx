@@ -6,8 +6,8 @@ import WeeklyContents from '@components/Contents/WeeklyContents';
 import DayContents from '@components/Contents/DayContents';
 import Guide from '@components/Guide';
 import styled from '@emotion/styled';
-import { Dimmer } from '@style/common/modal';
 import { css } from '@emotion/react';
+import { Dimmer } from '@style/common/modal';
 
 interface INavbar {
     isMobile: boolean;
