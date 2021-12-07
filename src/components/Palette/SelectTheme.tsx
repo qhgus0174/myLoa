@@ -1,24 +1,28 @@
-import React, { useContext, useState } from 'react';
-import styled from '@emotion/styled';
-import { widthMedia } from '@style/device';
+import React, { useContext, useRef, useState } from 'react';
+import { useOnClickOutside } from '@hooks/useOnClickOutside';
 import { GlobalThemeContext } from '@context/GlobalThemeContext';
-import { css } from '@emotion/react';
-import { mainColor } from '@style/theme';
+import { css, useTheme } from '@emotion/react';
+import styled from '@emotion/styled';
 import { FlexArticle } from '@style/common';
-import Theme from '@assets/icon/theme.png';
+import { mainColor } from '@style/theme';
 
 const SelectTheme = () => {
     const [visible, setVisible] = useState<boolean>(false);
-    const { theme, setTheme } = useContext(GlobalThemeContext);
+    const { setTheme } = useContext(GlobalThemeContext);
+    const theme = useTheme();
+
+    const ref = useRef<HTMLElement>(null);
+
+    useOnClickOutside(ref, () => setVisible(false));
 
     return (
         <SelectThemeContainer>
             <ThemeTitle onClick={() => setVisible(!visible)}>
-                <img src={Theme} />
                 <span
+                    ref={ref}
                     css={css`
                         -webkit-background-clip: text;
-                        background-image: linear-gradient(to right, #1de9b6, #2979ff);
+                        background-image: linear-gradient(to right, ${theme.colors.text}, #2979ff);
                         -webkit-text-fill-color: transparent;
                         color: #464646;
                         display: inline-block;
@@ -29,18 +33,17 @@ const SelectTheme = () => {
                     테마
                 </span>
             </ThemeTitle>
-            <PaletteArticle visible={visible}>
+            <PaletteArticle visible={visible} ref={ref}>
                 {mainColor.map((color, index) => {
                     return (
-                        <article
+                        <ThemeBlock
+                            themeColor={color.mainColor}
                             key={index}
-                            css={css`
-                                display: flex;
-                                flex-basis: 25%;
-                                background-color: ${color.mainColor};
-                            `}
-                            onClick={() => setTheme(color.name)}
-                        ></article>
+                            onClick={() => {
+                                setTheme(color.name);
+                                setVisible(false);
+                            }}
+                        ></ThemeBlock>
                     );
                 })}
             </PaletteArticle>
@@ -53,6 +56,7 @@ const SelectThemeContainer = styled.section`
     display: flex;
     justify-content: center;
 `;
+
 const PaletteArticle = styled(FlexArticle)<{ visible: boolean }>`
     display: ${props => (props.visible ? 'flex' : 'none')};
     flex-wrap: wrap;
@@ -61,26 +65,17 @@ const PaletteArticle = styled(FlexArticle)<{ visible: boolean }>`
     height: 10em;
     top: 30px;
     position: absolute;
-
-    ${widthMedia.phone} {
-        left: -90px;
-        top: -160px;
-    }
 `;
 
 const ThemeTitle = styled.article`
     cursor: pointer;
-    img {
-        display: none;
-    }
-    ${widthMedia.smallPhone} {
-        img {
-            display: block;
-        }
-        span {
-            display: none;
-        }
-    }
+`;
+
+const ThemeBlock = styled.article<{ themeColor: string }>`
+    display: flex;
+    flex-basis: 25%;
+    background-color: ${props => props.themeColor};
+    cursor: pointer;
 `;
 
 export default SelectTheme;
