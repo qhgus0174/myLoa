@@ -12,15 +12,15 @@ export default function useWindowDimensions() {
     });
 
     useEffect(() => {
-        if (typeof window !== 'undefined') {
-            function handleResize() {
-                setWindowDimensions({ width: window.innerWidth, height: window.innerHeight });
-            }
+        if (typeof window === 'undefined') return;
 
-            window.addEventListener('resize', handleResize);
-            handleResize();
-            return () => window.removeEventListener('resize', handleResize);
+        function handleResize() {
+            setWindowDimensions({ width: window.innerWidth, height: window.innerHeight });
         }
+
+        window.addEventListener('resize', handleResize);
+        handleResize();
+        return () => window.removeEventListener('resize', handleResize);
     }, []);
 
     return windowDimensions;
