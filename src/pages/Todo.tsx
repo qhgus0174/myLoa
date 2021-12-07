@@ -1,31 +1,30 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { DateTime } from 'luxon';
+import useWindowDimensions from '@hooks/useWindowDimensions';
 import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
 import { ModalActionContext } from '@context/ModalContext';
-import useWindowDimensions from '@hooks/useWindowDimensions';
-import CharacterAdd from '@components/Character/modal/CharacterAdd';
+import CharacterOrdChange from '@components/Character/modal/CharacterOrdChange';
 import { getResetCheckArr } from '@components/Todo/common/functions';
+import CharacterAdd from '@components/Character/modal/CharacterAdd';
 import { ITodo, ICharacterTodo } from '@components/Todo/TodoType';
-import Character from '@components/Character';
+import Pagination from '@components/Pagination/Pagination';
 import TodoAdd from '@components/Todo/modal/TodoAdd';
+import DownArrow from '@components/Svg/DownArrow';
+import PlusIcon from '@components/Svg/PlusIcon';
 import LineAdd from '@components/Line/LineAdd';
+import UpArrow from '@components/Svg/UpArrow';
 import Button from '@components/Button/Button';
+import Character from '@components/Character';
 import Todo from '@components/Todo';
+import Guide from '@components/Guide';
 import { ScheduleContents } from '@common/types';
 import { IContextModal } from '@common/types';
+import { GA } from '@service/ga';
+import { NextSeo } from 'next-seo';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { FlexArticle } from '@style/common';
 import { responsiveWidth, widthMedia } from '@style/device';
-import { GA } from '@service/ga';
-import Guide from '@components/Guide';
-import Pagination from '@components/Pagination/Pagination';
-import CharacterOrdChange from '@components/Character/modal/CharacterOrdChange';
-import PlusIcon from '@assets/PlusIcon';
-import DownArrow from '@assets/DownArrow';
-import UpArrow from '@assets/UpArrow';
-import Head from 'next/head';
-import { NextSeo } from 'next-seo';
 
 const Main = () => {
     useEffect(() => GA.trackPageView({ path: window.location.pathname }), []);
@@ -202,9 +201,6 @@ const Main = () => {
             />
             <section>
                 <HideButtonContainer isFold={isFold}>
-                    <HideGuideArticle className="guide" onClick={showGuide}>
-                        📢 가이드
-                    </HideGuideArticle>
                     <HideButtonSection onClick={() => setIsFold(!isFold)}>
                         버튼
                         {isFold ? (
@@ -301,12 +297,14 @@ const MainContainer = styled.main`
     display: flex;
     flex-direction: column;
     width: 88%;
-    margin-top: 0.1em;
+    margin-top: 1.2vh;
+
+    ${widthMedia.tablet} {
+        margin-top: 2.8vh;
+    }
+
     ${widthMedia.phone} {
         width: 95%;
-    }
-    ${widthMedia.smallPhone} {
-        margin-top: 2.1em;
     }
 `;
 
@@ -315,10 +313,6 @@ const TodoContentsSection = styled.section`
     padding: 1em 1.5em 1.5em 1.5em;
     border-radius: 1em;
     box-sizing: border-box;
-
-    ${widthMedia.smallPhone} {
-        margin-bottom: 60px;
-    }
 `;
 
 const HideButtonContainer = styled.header<{ isFold: boolean }>`
@@ -326,6 +320,7 @@ const HideButtonContainer = styled.header<{ isFold: boolean }>`
     ${widthMedia.smallPhone} {
         width: 100%;
         display: flex;
+        flex-direction: row-reverse;
         justify-content: end;
         align-items: center;
         margin-bottom: 1.2em;
