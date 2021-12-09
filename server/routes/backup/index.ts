@@ -1,7 +1,9 @@
 import { Backup } from '../../controllers/backup';
 import express, { Request, Response } from 'express';
-import { IBackup, IError, IResponse } from '../../type/response';
+import { IResponse } from '../../type/response';
 import { QueryResult } from 'pg';
+import { IBackup } from './types';
+import { IError } from '../error/types';
 
 const router = express.Router();
 

@@ -1,6 +1,7 @@
 import { Error } from '../../controllers/error';
 import express, { Request, Response } from 'express';
-import { IError, IResponse } from '../../type/response';
+import { IResponse } from '../../type/response';
+import { IError } from './types';
 
 const router = express.Router();
 

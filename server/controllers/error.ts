@@ -1,6 +1,6 @@
 import dbPool from '../config/db';
 import { DateTime } from 'luxon';
-import { IError } from '../type/response';
+import { IError } from '../routes/error/types';
 
 const Error = {
     insertError: async ({ message, dataColumn1, dataColumn2, dataColumn3, errType }: IError): Promise<void> => {
