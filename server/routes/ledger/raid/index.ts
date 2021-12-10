@@ -20,11 +20,9 @@ router.get('/', async (req: Request, res: Response) => {
     }
 });
 
-router.get('/detail/:parentId', async (req: Request, res: Response) => {
-    const { parentId } = req.params as Pick<IRaidGoldDetail, 'parentId'>;
-
+router.get('/detail', async (req: Request, res: Response) => {
     try {
-        const { rows } = await RaidGold.getRaidGoldDetail({ parentId: parentId });
+        const { rows } = await RaidGold.getRaidGoldDetail();
 
         res.status(201).send({
             status: 'SUCCESS',
