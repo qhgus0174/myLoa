@@ -1,27 +1,34 @@
 @font-face {
-    font-family: 'Spoqa Han Sans Neo';
-    font-weight: 200;
-    src: url('SpoqaHanSansNeo-Thin.woff2') format('woff2'), url('SpoqaHanSansNeo-Thin.woff') format('woff'),
-        url('SpoqaHanSansNeo-Thin.ttf') format('truetype');
-}
-
-@font-face {
-    font-family: 'Spoqa Han Sans Neo';
+    font-family: 'Pretendard';
     font-weight: 300;
-    src: url('SpoqaHanSansNeo-Light.woff2') format('woff2'), url('SpoqaHanSansNeo-Light.woff') format('woff'),
-        url('SpoqaHanSansNeo-Light.ttf') format('truetype');
+    src: url('Pretendard-Light.woff2') format('woff2'), url('Pretendard-Light.woff') format('woff'),
+        url('Pretendard-Light.ttf') format('truetype');
 }
 
 @font-face {
-    font-family: 'Spoqa Han Sans Neo';
+    font-family: 'Pretendard';
     font-weight: 400;
-    src: url('SpoqaHanSansNeo-Regular.woff2') format('woff2'), url('SpoqaHanSansNeo-Regular.woff') format('woff'),
-        url('SpoqaHanSansNeo-Regular.ttf') format('truetype');
+    src: url('Pretendard-Regular.woff2') format('woff2'), url('Pretendard-Regular.woff') format('woff'),
+        url('Pretendard-Regular.ttf') format('truetype');
 }
 
 @font-face {
-    font-family: 'Spoqa Han Sans Neo';
+    font-family: 'Pretendard';
     font-weight: 500;
-    src: url('SpoqaHanSansNeo-Bold.woff2') format('woff2'), url('SpoqaHanSansNeo-Bold.woff') format('woff'),
-        url('SpoqaHanSansNeo-Bold.ttf') format('truetype');
+    src: url('Pretendard-Medium.woff2') format('woff2'), url('Pretendard-Medium.woff') format('woff'),
+        url('Pretendard-Medium.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    font-weight: 600;
+    src: url('Pretendard-Bold.woff2') format('woff2'), url('Pretendard-Bold.woff') format('woff'),
+        url('Pretendard-Bold.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: 'Pretendard';
+    font-weight: 700;
+    src: url('Pretendard-ExtraBold.woff2') format('woff2'), url('Pretendard-ExtraBold.woff') format('woff'),
+        url('Pretendard-ExtraBold.ttf') format('truetype');
 }
