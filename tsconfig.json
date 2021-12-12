@@ -38,6 +38,7 @@
             "@storage/*": ["storage/*"],
             "@service/*": ["service/*"],
             "@schedule/*": ["schedule/*"],
+            "@apis/*": ["apis/*"],
             "@server/*": ["server/*"]
         },
         "noEmit": true,
