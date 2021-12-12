@@ -1,7 +1,7 @@
 import React from 'react';
 import { ITodo } from '@components/Todo/TodoType';
 import LineEdit from '@components/Line/LineEdit';
-import { IContextModal } from '@common/types';
+import { IContextModal } from '@common/types/types';
 import styled from '@emotion/styled';
 
 const Line = ({

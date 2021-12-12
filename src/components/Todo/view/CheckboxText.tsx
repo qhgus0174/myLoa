@@ -3,7 +3,7 @@ import { LocalStorageActionContext, LocalStorageStateContext } from '@context/Lo
 import TodoEdit from '@components/Todo/modal/TodoEdit';
 import { ITodo } from '@components/Todo/TodoType';
 import PinCheckbox from '@components/Input/PinCheckBox';
-import { IContextModal, ScheduleContents } from '@common/types';
+import { IContextModal, ScheduleContents } from '@common/types/types';
 import styled from '@emotion/styled';
 import { FlexArticle, FlexLeftArticle } from '@style/common';
 

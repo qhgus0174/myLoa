@@ -1,7 +1,7 @@
 import React, { createContext } from 'react';
 import { useModal } from '@hooks/useModal';
 import ModalPortal from '@components/Modal/ModalPortal';
-import { IPortalProps } from '@common/types';
+import { IPortalProps } from '@common/types/types';
 
 interface IModalAction {
     openModal: () => void;

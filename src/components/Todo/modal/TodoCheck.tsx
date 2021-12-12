@@ -8,7 +8,7 @@ import EditButtonContainer from '@components/Container/Button/Edit';
 import { ICharacter } from '@components/Character/CharacterType';
 import BasicCheckbox from '@components/Input/BasicCheckbox';
 import TextBox from '@components/Input/TextBox';
-import { ScheduleType } from '@common/types';
+import { ScheduleType } from '@common/types/types';
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import {

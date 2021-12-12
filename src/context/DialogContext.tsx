@@ -1,7 +1,7 @@
 import React, { createContext } from 'react';
 import { useDialog } from '@hooks/useDialog';
 import DialogPortal from '@components/Dialog/DialogPortal';
-import { IPortalProps } from '@common/types';
+import { IPortalProps } from '@common/types/types';
 
 interface IDialogAction {
     openDialog: () => void;

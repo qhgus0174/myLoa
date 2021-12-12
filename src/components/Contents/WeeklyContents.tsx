@@ -1,7 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { SpinnerContext } from '@context/SpinnerContext';
-import { IResponse, IWeeklyContents } from '@common/responseType';
+import { IWeeklyContents } from '@common/types/response/weeklyContents';
+import { IResponse } from '@common/types/response';
 import { weeklyGuardian } from '@common/data/weeklyGuardian';
 import { weeklyAbyss } from '@common/data/weeklyAbyss';
 import styled from '@emotion/styled';

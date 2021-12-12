@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { createPortal } from 'react-dom';
 import { DialogActionContext, DialogStateContext } from '@context/DialogContext';
 import Dialog from '@components/Dialog';
-import { IPortalOption } from '@common/types';
+import { IPortalOption } from '@common/types/types';
 import styled from '@emotion/styled';
 import { heightMedia, widthMedia } from '@style/device';
 import { Dimmer } from '@style/common/modal';

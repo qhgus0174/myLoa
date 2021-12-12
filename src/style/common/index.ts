@@ -1,4 +1,4 @@
-import { ScheduleContents } from '@common/types';
+import { ScheduleContents } from '@common/types/types';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { widthMedia } from '@style/device';
@@ -58,7 +58,7 @@ export const FlexHoverArticle = styled(FlexLeftArticle)`
     }
 
     &:hover {
-        transition: 200ms ease;
+        transition: 0.2s ease;
         background: ${props => props.theme.colors.hover};
     }
 

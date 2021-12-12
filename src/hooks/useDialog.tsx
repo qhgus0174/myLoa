@@ -1,4 +1,4 @@
-import { IPortalOption, IPortalProps } from '@common/types';
+import { IPortalOption, IPortalProps } from '@common/types/types';
 import React, { useEffect, useState } from 'react';
 
 export const useDialog = () => {

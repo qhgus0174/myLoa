@@ -6,7 +6,7 @@ import { ICharacterTodo, ITodo } from '@components/Todo/TodoType';
 import TodoCheck from '@components/Todo/modal/TodoCheck';
 import TextBox from '@components/Input/TextBox';
 import Guardian from '@components/Todo/view/Guardian';
-import { IContextModal, ScheduleContents, ScheduleType } from '@common/types';
+import { IContextModal, ScheduleContents, ScheduleType } from '@common/types/types';
 import { CharactersArticle, FlexArticle, FlexHoverArticle } from '@style/common';
 import styled from '@emotion/styled';
 

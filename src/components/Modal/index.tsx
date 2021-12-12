@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { IPortalOption, IPortalProperty } from '@common/types';
+import { IPortalOption, IPortalProperty } from '@common/types/types';
 import styled from '@emotion/styled';
 import { widthMedia } from '@style/device';
 import { FlexArticle } from '@style/common';

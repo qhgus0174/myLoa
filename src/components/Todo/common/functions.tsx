@@ -1,4 +1,4 @@
-import { ScheduleContents } from '@common/types';
+import { ScheduleContents } from '@common/types/types';
 import _ from 'lodash';
 
 const isMultipleArr = (contents: ScheduleContents): boolean => {

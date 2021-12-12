@@ -1,14 +1,15 @@
 import React, { useContext } from 'react';
 import axios from 'axios';
 import { toast } from 'react-toastify';
-
 import { ModalActionContext } from '@context/ModalContext';
 import { SpinnerContext } from '@context/SpinnerContext';
 import BackupCreate from '@components/Backup/BackupCreate';
 import Clear from '@components/Backup/Clear';
 import Backup from '@components/Backup/BackupModal';
 import Button from '@components/Button/Button';
-import { IBackup, IError, IResponse } from '@common/responseType';
+import { IBackup } from '@common/types/response/backup';
+import { IResponse } from '@common/types/response';
+import { insertErrorDB } from '@common/error';
 import styled from '@emotion/styled';
 import { FlexArticle } from '@style/common';
 import { widthMedia } from '@style/device';
@@ -40,9 +41,8 @@ const Manage = () => {
             });
             toast.success('데이터 백업 코드가 생성되었습니다.');
         } catch (err: unknown) {
-            const { message } = err as Error;
+            insertErrorDB({ catchErr: err, errType: 'backup' });
             toast.error('데이터 백업 중 오류가 발생했습니다.');
-            await axios.post('/api/error', { message: message, errType: 'backup' } as IError);
         } finally {
             setSpinnerVisible(false);
         }

@@ -16,10 +16,9 @@ const SelectTheme = () => {
     useOnClickOutside(ref, () => setVisible(false));
 
     return (
-        <SelectThemeContainer>
+        <SelectThemeContainer ref={ref}>
             <ThemeTitle onClick={() => setVisible(!visible)}>
                 <span
-                    ref={ref}
                     css={css`
                         -webkit-background-clip: text;
                         background-image: linear-gradient(to right, ${theme.colors.text}, #2979ff);
@@ -33,7 +32,7 @@ const SelectTheme = () => {
                     테마
                 </span>
             </ThemeTitle>
-            <PaletteArticle visible={visible} ref={ref}>
+            <PaletteArticle visible={visible}>
                 {mainColor.map((color, index) => {
                     return (
                         <ThemeBlock

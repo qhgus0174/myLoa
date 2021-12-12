@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { DialogActionContext } from '@context/DialogContext';
 import { SpinnerContext } from '@context/SpinnerContext';
 import Button from '@components/Button/Button';
-import { IPortalProperty } from '@common/types';
+import { IPortalProperty } from '@common/types/types';
 import styled from '@emotion/styled';
 
 const Dialog = ({ children, options }: IPortalProperty) => {

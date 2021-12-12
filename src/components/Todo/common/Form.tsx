@@ -7,7 +7,7 @@ import { ICharacter } from '@components/Character/CharacterType';
 import BasicCheckbox from '@components/Input/BasicCheckbox';
 import RadioButton from '@components/Input/Radio';
 import TextBox from '@components/Input/TextBox';
-import { ScheduleCheckType, ScheduleContents, ScheduleType } from '@common/types';
+import { ScheduleCheckType, ScheduleContents, ScheduleType } from '@common/types/types';
 import styled from '@emotion/styled';
 import { ContentsArticle, ContentsArticleTitle, ContentsInnerArticle, FormArticleContainer } from '@style/common/modal';
 import { FlexArticle } from '@style/common';
@@ -174,7 +174,7 @@ const TodoForm = ({
                                                         getShowCheckTodo(e, showCharacterArr, character.id),
                                                     )
                                                 }
-                                                label={character.name}
+                                                label={<span>character.name</span>}
                                             />
                                         </ShowCharacterArticle>
                                     );

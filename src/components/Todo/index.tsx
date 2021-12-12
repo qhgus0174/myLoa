@@ -5,7 +5,7 @@ import CheckboxText from '@components/Todo/view/CheckboxText';
 import { ITodo } from '@components/Todo/TodoType';
 import Checkbox from '@components/Todo/view/Checkbox';
 import Line from '@components/Todo/view/Line';
-import { IContextModalParam, ScheduleContents } from '@common/types';
+import { IContextModalParam, ScheduleContents } from '@common/types/types';
 import styled from '@emotion/styled';
 import { FlexArticle } from '@style/common';
 import { heightMedia, widthMedia } from '@style/device';

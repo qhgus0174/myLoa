@@ -1,4 +1,4 @@
-import { ScheduleCheckType, ScheduleContents, ScheduleType } from 'common/types';
+import { ScheduleCheckType, ScheduleContents, ScheduleType } from '@common/types/types';
 
 export interface ITodo {
     id: number;
