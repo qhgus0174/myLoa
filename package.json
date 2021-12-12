@@ -31,6 +31,7 @@
         "react-dom": "^17.0.2",
         "react-ga": "^3.3.0",
         "react-spinners": "^0.11.0",
+        "recharts": "^2.1.6",
         "ts-node": "^10.4.0",
         "tsconfig-paths": "^3.11.0",
         "use-local-storage-state": "^11.0.0",
@@ -56,6 +57,7 @@
         "@types/react-copy-to-clipboard": "^5.0.2",
         "@types/react-dom": "^17.0.9",
         "@types/react-router-dom": "^5.3.1",
+        "@types/recharts": "^1.8.23",
         "@typescript-eslint/eslint-plugin": "^5.1.0",
         "@typescript-eslint/parser": "^5.1.0",
         "babel-loader": "^8.2.2",
@@ -93,47 +95,9 @@
         "build": "next build && tsc",
         "start": "NODE_ENV=production ts-node server/index.ts",
         "dev-start": "next dev -p 9000",
-        "dev:start": "nodemon --watch \"src/**/*.ts\" --exec \"ts-node\" server/index.ts"
+        "dev:start": "nodemon --watch \"server/**/*.{ts,tsx}\" --exec \"ts-node\" server/index.ts"
     },
     "cacheDirectories": [
         ".next/cache"
-    ],
-    "_moduleAliases": {
-        "@routes": [
-            "dist/src/routes"
-        ],
-        "@components": [
-            "dist/src/components"
-        ],
-        "@hooks": [
-            "dist/src/hooks"
-        ],
-        "@context": [
-            "dist/src/context"
-        ],
-        "@common": [
-            "dist/src/common"
-        ],
-        "@style": [
-            "dist/src/style"
-        ],
-        "@fonts": [
-            "dist/src/fonts"
-        ],
-        "@assets": [
-            "dist/src/assets"
-        ],
-        "@storage": [
-            "dist/src/storage"
-        ],
-        "@service": [
-            "dist/src/service"
-        ],
-        "@schedule": [
-            "dist/src/schedule"
-        ],
-        "@server": [
-            "dist/src/server"
-        ]
-    }
+    ]
 }
