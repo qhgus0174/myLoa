@@ -10,7 +10,6 @@ import { DateTime } from 'luxon';
 import { IGoods, IGoodsImg } from '@common/types/response/ledger/goods';
 import GoldIcon from '@components/Image/Gold';
 import TextBox from '@components/Input/TextBox';
-import TextBoxInState from '@components/Input/TextBoxInState';
 import Goods, { ISaveParam } from '@components/Ledger/Goods';
 import { calcSum } from './common/functions';
 import _ from 'lodash';
