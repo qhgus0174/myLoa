@@ -1,6 +1,7 @@
+import { ILedger } from '@components/Ledger/LedgerType';
 import { ICharacter } from '@components/Character/CharacterType';
 import { ITodo } from '@components/Todo/TodoType';
-import { useLocalStorage } from '@hooks/useLocalStorage';
+import { initLedger, useLocalStorage } from '@hooks/useLocalStorage';
 import React, { createContext, useState } from 'react';
 
 interface ILocalStorageState {
@@ -8,6 +9,7 @@ interface ILocalStorageState {
     storedTodoOrd: number[];
     storedCharacter: ICharacter[];
     storedCharacterOrd: number[];
+    storedLedger: ILedger;
 }
 
 interface ILocalStorageAction {
@@ -15,6 +17,7 @@ interface ILocalStorageAction {
     setStoredTodoOrd: (e: number[]) => void;
     setStoredCharacter: (e: ICharacter[]) => void;
     setStoredCharacterOrd: (e: number[]) => void;
+    setStoredLedger: (e: ILedger) => void;
 }
 
 export const LocalStorageStateContext = createContext<ILocalStorageState>({
@@ -22,6 +25,7 @@ export const LocalStorageStateContext = createContext<ILocalStorageState>({
     storedTodoOrd: [],
     storedCharacter: [],
     storedCharacterOrd: [],
+    storedLedger: initLedger,
 });
 
 export const LocalStorageActionContext = createContext<ILocalStorageAction>({
@@ -29,6 +33,7 @@ export const LocalStorageActionContext = createContext<ILocalStorageAction>({
     setStoredTodoOrd: (e: number[]) => {},
     setStoredCharacter: (e: ICharacter[]) => {},
     setStoredCharacterOrd: (e: number[]) => {},
+    setStoredLedger: (e: ILedger) => {},
 });
 
 const LocalStorageProvider = ({ children }: { children: React.ReactNode }) => {
@@ -37,18 +42,20 @@ const LocalStorageProvider = ({ children }: { children: React.ReactNode }) => {
         storedTodoOrd,
         storedCharacter,
         storedCharacterOrd,
+        storedLedger,
         setStoredTodo,
         setStoredTodoOrd,
         setStoredCharacter,
         setStoredCharacterOrd,
+        setStoredLedger,
     } = useLocalStorage();
 
     return (
         <LocalStorageActionContext.Provider
-            value={{ setStoredTodo, setStoredTodoOrd, setStoredCharacter, setStoredCharacterOrd }}
+            value={{ setStoredTodo, setStoredTodoOrd, setStoredCharacter, setStoredCharacterOrd, setStoredLedger }}
         >
             <LocalStorageStateContext.Provider
-                value={{ storedTodo, storedTodoOrd, storedCharacter, storedCharacterOrd }}
+                value={{ storedTodo, storedTodoOrd, storedCharacter, storedCharacterOrd, storedLedger }}
             >
                 {children}
             </LocalStorageStateContext.Provider>
