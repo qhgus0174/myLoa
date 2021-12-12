@@ -3,123 +3,108 @@ import styled from '@emotion/styled';
 
 export interface ICheckbox extends React.InputHTMLAttributes<HTMLInputElement> {
     checked: boolean;
-    label?: string;
+    label?: JSX.Element;
 }
 
 const BasicCheckbox = ({ checked, label, ...rest }: ICheckbox) => {
     return (
-        <CheckboxContainer>
-            <Label checked={checked}>
-                <CustomCheckbox type="checkbox" checked={checked} {...rest} />
-                <Span></Span>
-                {label && <CheckboxTitle checked>{label}</CheckboxTitle>}
-            </Label>
+        <CheckboxContainer disabled={rest.disabled ? rest.disabled : false}>
+            <CustomCheckbox type="checkbox" checked={checked} {...rest} />
+            {label}
         </CheckboxContainer>
     );
 };
 
-const CheckboxContainer = styled.label`
+const CheckboxContainer = styled.label<{ disabled: boolean }>`
     display: flex;
-    vertical-align: middle;
-`;
-
-const Label = styled.label<ICheckbox>`
+    flex-direction: row;
+    align-items: center;
     cursor: pointer;
-    position: relative;
-
-    &:hover {
-        span:nth-of-type(1) {
-            &:before {
-                background: ${props => props.theme.check.border};
-                width: 5px;
-            }
-
-            &:after {
-                background: ${props => props.theme.check.border};
-                width: 10px;
-            }
-        }
-    }
-
     ${props =>
-        props.checked &&
+        props.disabled &&
         `
-        span:nth-of-type(1) {
-                background-color: ${props.theme.check.background};
-
-                &:after {
-                    width: 10px;
-                    background: ${props.theme.check.basicMark};
-                }
-
-                &:before {
-                    width: 5px;
-                    background:${props.theme.check.basicMark};
-                }
-            }
-
-            &:hover {
-                span:nth-of-type(1) {
-                    background-color: ${props.theme.check.background};
-
-                    &:after {
-                        width: 10px;
-                        background: ${props.theme.check.basicMark};
-                    }
-
-                    &:before {
-                        width: 5px;
-                        background: ${props.theme.check.basicMark};
-                    }
-                }
-            }
-    `};
+            cursor: not-allowed;
+    `}
 `;
 
-const Span = styled.span`
-    display: inline-block;
-    background-color: transparent;
-    width: 25px;
-    height: 25px;
-    transform-origin: center;
-    border: 2px solid ${props => props.theme.colors.text};
-    box-sizing: border-box;
-    border-radius: 0%;
-    vertical-align: -6px;
+const CustomCheckbox = styled.input`
+    margin: 0.3em;
+    position: relative !important;
+    appearance: none;
+    box-sizing: content-box;
+    overflow: hidden;
+    cursor: pointer;
 
     &:before {
+        padding: 0.1em;
         content: '';
-        width: 0px;
-        height: 2px;
-        border-radius: 2px;
-        background: ${props => props.theme.colors.main};
-        position: absolute;
-        transform: rotate(45deg);
-        top: 13px;
-        left: 9px;
-        transform-origin: 0% 0%;
+        display: block;
+        box-sizing: content-box;
+        width: 16px;
+        height: 16px;
+        border: 2px solid ${props => props.theme.colors.gray};
+        transition: 0.1s border-color ease;
+        border-radius: 4px;
+        background: ${props => props.theme.check.background};
+
+        ${props =>
+            props.checked &&
+            `
+                border-color: ${props.theme.check.basicMark};
+                transition: 0.1s border-color ease;
+        `}
+
+        ${props =>
+            props.disabled &&
+            `
+                border-color: ${props.theme.colors.gray};
+                background-color: ${props.theme.colors.gray};
+                cursor: not-allowed;
+        `}
     }
 
     &:after {
         content: '';
-        width: 0;
-        height: 2px;
-        border-radius: 2px;
-        background: ${props => props.theme.colors.main};
+        display: block;
         position: absolute;
-        transform: rotate(305deg);
-        top: 16px;
-        left: 10px;
-        transform-origin: 0% 0%;
+        box-sizing: content-box;
+        top: 50%;
+        left: 50%;
+        transform-origin: 50% 50%;
+        background-color: #ffffff;
+        width: 16px;
+        height: 16px;
+        border-radius: 100vh;
+        transform: translate(-50%, -50%) scale(0);
+        ${props =>
+            props.checked &&
+            `
+                animation: toggleOnCheckbox 0.2s ease forwards;
+            `}
+
+        width: 9.6px;
+        height: 16px;
+        border-radius: 0;
+        transform: translate(-50%, -85%) scale(0) rotate(45deg);
+        background-color: transparent;
+        box-shadow: 4px 4px 0px 0px ${props => props.theme.check.basicMark};
     }
-`;
 
-const CustomCheckbox = styled.input`
-    display: none; // hide the system checkbox
-`;
+    @keyframes toggleOnCheckbox {
+        0% {
+            opacity: 0;
+            transform: translate(-50%, -85%) scale(0) rotate(45deg);
+        }
 
-const CheckboxTitle = styled.span<ICheckbox>`
-    margin-left: 0.5em;
+        70% {
+            opacity: 1;
+            transform: translate(-50%, -85%) scale(0.88) rotate(45deg);
+        }
+
+        100% {
+            transform: translate(-50%, -85%) scale(0.78) rotate(45deg);
+        }
+    }
 `;
 
 export default BasicCheckbox;
