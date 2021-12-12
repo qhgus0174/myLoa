@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { ModalActionContext } from '@context/ModalContext';
 import { MobileNavContext } from '@context/MobileNavContext';
 import WeeklyContents from '@components/Contents/WeeklyContents';
@@ -13,12 +14,13 @@ interface INavbar {
     isMobile: boolean;
     visible?: boolean;
     direction?: 'left' | 'right';
+    isActive?: boolean;
 }
 
 const Navbar = ({ isMobile }: INavbar) => {
     const { setModalProps } = useContext(ModalActionContext);
-
     const { visible, setVisible } = useContext(MobileNavContext);
+    const router = useRouter();
 
     const openDayContents = () => {
         setModalProps({
@@ -60,52 +62,52 @@ const Navbar = ({ isMobile }: INavbar) => {
                 <Ul isMobile={isMobile}>
                     <Li isMobile={isMobile} direction="left">
                         <InnerUl isMobile={isMobile}>
-                            <li>
+                            <InnerLinkLi isMobile={isMobile} isActive={router.pathname === '/'}>
                                 <Link href="/">
                                     <LinkText>홈</LinkText>
                                 </Link>
-                            </li>
-                            <li>
+                            </InnerLinkLi>
+                            <InnerLinkLi isMobile={isMobile} isActive={router.pathname === '/todo'}>
                                 <Link href="/todo">
                                     <LinkText>숙제</LinkText>
                                 </Link>
-                            </li>
-                            <li>
-                                <Link href="/accountBook">
+                            </InnerLinkLi>
+                            <InnerLinkLi isMobile={isMobile} isActive={router.pathname === '/ledger'}>
+                                <Link href="/ledger">
                                     <LinkText>가계부</LinkText>
                                 </Link>
-                            </li>
-                            <li>
+                            </InnerLinkLi>
+                            <InnerLinkLi isMobile={isMobile} isActive={router.pathname === '/statistics'}>
                                 <Link href="/statistics">
                                     <LinkText>통계</LinkText>
                                 </Link>
-                            </li>
-                            <li>
+                            </InnerLinkLi>
+                            <InnerLinkLi isMobile={isMobile} isActive={router.pathname === '/manage'}>
                                 <Link href="/manage">
                                     <LinkText>관리</LinkText>
                                 </Link>
-                            </li>
+                            </InnerLinkLi>
                         </InnerUl>
                     </Li>
                     <Li isMobile={isMobile} direction="right">
                         <InnerUl isMobile={isMobile}>
-                            <li>
+                            <InnerLi isMobile={isMobile} isActive={router.pathname === '/'}>
                                 <span className="selectDayContents" onClick={openDayContents}>
                                     🔎 일일 컨텐츠
                                 </span>
-                            </li>
+                            </InnerLi>
                             {!isMobile && <li>|</li>}
-                            <li>
+                            <InnerLi isMobile={isMobile} isActive={router.pathname === '/'}>
                                 <span className="selectWeeklyContents" onClick={openWeeklyContents}>
                                     🔎 주간 컨텐츠
                                 </span>
-                            </li>
+                            </InnerLi>
                             {!isMobile && <li>|</li>}
-                            <li>
+                            <InnerLi isMobile={isMobile} isActive={router.pathname === '/'}>
                                 <span className="guide" onClick={showGuide}>
                                     ❓ 가이드
                                 </span>
-                            </li>
+                            </InnerLi>
                         </InnerUl>
                     </Li>
                 </Ul>
@@ -175,32 +177,60 @@ const InnerUl = styled.ul<INavbar>`
     ${props => !props.isMobile && `justify-content: space-evenly`};
     box-sizing: border-box;
     width: 100%;
+`;
 
-    li {
-        ${props =>
-            props.isMobile &&
-            `
-            padding-top: 20px;
-            padding-bottom: 10px;
-        `}
-
-        ${props =>
-            !props.isMobile &&
-            `
-            box-sizing: border-box;
-            padding-bottom: 5px;
-            cursor: pointer;
-            background-image: linear-gradient(${props.theme.colors.white}, ${props.theme.colors.white});
-            background-size: 0 5px, auto;
-            background-repeat: no-repeat;
-            background-position: center bottom;
-            transition: all 0.15s ease-out;
-        `}
-    }
-
-    li:hover {
+const InnerLinkLi = styled.li<INavbar>`
+    &:hover {
         background-size: 100% 5px, auto;
     }
+
+    ${props =>
+        props.isMobile &&
+        `
+        padding-top: 20px;
+        padding-bottom: 10px;
+    `}
+
+    ${props =>
+        !props.isMobile &&
+        `
+        box-sizing: border-box;
+        padding-bottom: 5px;
+        cursor: pointer;
+        background-image: linear-gradient(${props.theme.colors.white}, ${props.theme.colors.white});
+        background-size: 0 5px, auto;
+        background-repeat: no-repeat;
+        background-position: center bottom;
+        transition: all 0.15s ease-out;
+    `}
+
+    ${props => props.isActive && ` background-size: 100% 5px, auto`};
+`;
+
+const InnerLi = styled.li<INavbar>`
+    &:hover {
+        background-size: 100% 5px, auto;
+    }
+
+    ${props =>
+        props.isMobile &&
+        `
+        padding-top: 20px;
+        padding-bottom: 10px;
+    `}
+
+    ${props =>
+        !props.isMobile &&
+        `
+        box-sizing: border-box;
+        padding-bottom: 5px;
+        cursor: pointer;
+        background-image: linear-gradient(${props.theme.colors.white}, ${props.theme.colors.white});
+        background-size: 0 5px, auto;
+        background-repeat: no-repeat;
+        background-position: center bottom;
+        transition: all 0.15s ease-out;
+    `}
 `;
 
 const LinkText = styled.span`
