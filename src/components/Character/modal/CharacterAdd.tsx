@@ -12,10 +12,12 @@ import AddButtonContainer from '@components/Container/Button/Add';
 import { FormContainer } from '@style/common/modal';
 import { getResetCheckArr } from '@components/Todo/common/functions';
 import { useTheme } from '@emotion/react';
+import { ILedgerOwn } from '@components/Ledger/LedgerType';
 
 const CharacterAdd = () => {
-    const { storedTodo, storedCharacter, storedCharacterOrd } = useContext(LocalStorageStateContext);
-    const { setStoredTodo, setStoredCharacter, setStoredCharacterOrd } = useContext(LocalStorageActionContext);
+    const { storedTodo, storedCharacter, storedCharacterOrd, storedLedger } = useContext(LocalStorageStateContext);
+    const { setStoredTodo, setStoredCharacter, setStoredCharacterOrd, setStoredLedger } =
+        useContext(LocalStorageActionContext);
 
     const { setSpinnerVisible } = useContext(SpinnerContext);
     const { setCurrentPage } = useContext(PagingActionContext);
@@ -60,10 +62,27 @@ const CharacterAdd = () => {
         addCharacterOrd(characterId);
         addTodoCharacterInfo(characterId);
         setCurrentCharacterPage(resultArr);
+        setLedger(characterId);
 
         toast.success(`[${name}] 캐릭터가 추가되었습니다.`);
 
         closeModal();
+    };
+
+    const setLedger = (characterId: number) => {
+        const ledgerCharacterArr = storedLedger.own!.map((goods: ILedgerOwn) => {
+            return goods.characterId;
+        });
+
+        if (ledgerCharacterArr.includes(characterId)) return;
+
+        const charactersLedger: ILedgerOwn = {
+            characterId: characterId,
+            prevWeekGold: [0, 0, 0, 0],
+            histories: { raid: { fold: true, data: [] }, goods: { fold: true, data: [] } },
+        };
+
+        setStoredLedger(Object.assign({}, storedLedger, { ...storedLedger }.own.push(charactersLedger)));
     };
 
     const addCharacterInfo = (crollJob: string, crollLevel: string, characterId: number): ICharacter[] => {

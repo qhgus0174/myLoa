@@ -1,8 +1,7 @@
 import axios, { AxiosResponse } from 'axios';
 import { load } from 'cheerio';
 import { ICharacter } from '@components/Character/CharacterType';
-import { getStorage } from '@storage/index';
-import { IError } from '@common/responseType';
+import { insertErrorDB } from '@common/error';
 
 export interface ICrollInfo {
     status: 'success' | 'error';
@@ -29,10 +28,7 @@ export const getCrollCharacterInfo = async (name: string): Promise<ICrollInfo> =
 
         return { status: 'success', crollJob: crollJob, crollLevel: crollLevel.replace('Lv.', '') };
     } catch (err: unknown) {
-        const { message } = err as Error;
-
-        await axios.post('/api/error', { message: message, errType: 'croll' } as IError);
-
+        insertErrorDB({ catchErr: err, errType: 'croll' });
         return { status: 'error', validMsg: '캐릭터 정보를 불러올 수 없습니다.', crollJob: '', crollLevel: '' };
     }
 };
