@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import _ from 'lodash';
 import { toast } from 'react-toastify';
+import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
 import { PagingActionContext, PagingStateContext } from '@context/PagingContext';
 import { ModalActionContext } from '@context/ModalContext';
 import { SpinnerContext } from '@context/SpinnerContext';
@@ -9,11 +10,10 @@ import { ICharacterTodo, ITodo } from '@components/Todo/TodoType';
 import EditButtonContainer from '@components/Container/Button/DelEdit';
 import { ICharacter } from '@components/Character/CharacterType';
 import CharacterForm from '@components/Character/common/Form';
-import { Container } from '@style/common/modal';
-
+import { ILedgerOwn, ILedger } from '@components/Ledger/LedgerType';
 import Button from '@components/Button/Button';
+import { Container } from '@style/common/modal';
 import styled from '@emotion/styled';
-import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
 
 interface ICharacterEdit {
     id: number;
@@ -22,8 +22,9 @@ interface ICharacterEdit {
 }
 
 const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacterEdit) => {
-    const { storedTodo, storedCharacter, storedCharacterOrd } = useContext(LocalStorageStateContext);
-    const { setStoredTodo, setStoredCharacter, setStoredCharacterOrd } = useContext(LocalStorageActionContext);
+    const { storedTodo, storedCharacter, storedCharacterOrd, storedLedger } = useContext(LocalStorageStateContext);
+    const { setStoredTodo, setStoredCharacter, setStoredCharacterOrd, setStoredLedger } =
+        useContext(LocalStorageActionContext);
 
     const { setCurrentPage } = useContext(PagingActionContext);
     const { closeModal } = useContext(ModalActionContext);
@@ -124,6 +125,7 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
         const deletedCharacterArr = deleteCharacterInfo();
         deleteTodo();
         setCurrentCharacterPage(deletedCharacterArr);
+        deleteLedger();
 
         closeModal();
     };
@@ -177,6 +179,21 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
         } finally {
             setSpinnerVisible(false);
         }
+    };
+
+    const deleteLedger = () => {
+        const ledger = { ...storedLedger };
+
+        const rejectedLedger = _.reject(ledger.own, ({ characterId }: ILedgerOwn) => {
+            return characterId === oriId;
+        });
+
+        const result: ILedger = {
+            ...ledger,
+            own: rejectedLedger,
+        };
+
+        setStoredLedger(result);
     };
 
     return (

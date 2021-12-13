@@ -6,13 +6,13 @@ import { ModalActionContext } from '@context/ModalContext';
 import { SpinnerContext } from '@context/SpinnerContext';
 import { ICharacterTodo, ITodo } from '@components/Todo/TodoType';
 import { getCrollCharacterInfo, isDuplicate } from '@components/Character/common/functions';
+import { getResetCheckArr } from '@components/Todo/common/functions';
+import AddButtonContainer from '@components/Container/Button/Add';
 import { ICharacter } from '@components/Character/CharacterType';
 import CharacterForm from '@components/Character/common/Form';
-import AddButtonContainer from '@components/Container/Button/Add';
-import { Container } from '@style/common/modal';
-import { getResetCheckArr } from '@components/Todo/common/functions';
-import { useTheme } from '@emotion/react';
 import { ILedgerOwn } from '@components/Ledger/LedgerType';
+import { useTheme } from '@emotion/react';
+import { Container } from '@style/common/modal';
 
 const CharacterAdd = () => {
     const { storedTodo, storedCharacter, storedCharacterOrd, storedLedger } = useContext(LocalStorageStateContext);
