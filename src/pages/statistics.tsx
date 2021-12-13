@@ -489,7 +489,7 @@ const OverAllRightArticle = styled.article`
     display: flex;
     flex-direction: column;
     justify-content: center;
-    flex-basis: 45%;
+    flex-basis: 48%;
 `;
 
 const PersonalArticle = styled.article`
