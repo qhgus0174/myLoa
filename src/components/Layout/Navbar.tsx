@@ -205,6 +205,14 @@ const InnerLinkLi = styled.li<INavbar>`
     `}
 
     ${props => props.isActive && ` background-size: 100% 5px, auto`};
+
+    & > span {
+        display: inline-block;
+        position: relative;
+        z-index: 1;
+        padding: 0.9em;
+        margin: -0.9em;
+    }
 `;
 
 const InnerLi = styled.li<INavbar>`
