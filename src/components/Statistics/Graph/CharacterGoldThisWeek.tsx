@@ -27,7 +27,14 @@ const CharacterGoldThisWeek = ({ array }: { array: IStatisticsPersonalPrev[] }) 
                     }}
                 >
                     <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis fontSize={10} stroke={theme.colors.text} type="number" />
+                    <XAxis
+                        tickFormatter={tick => {
+                            return tick.toLocaleString();
+                        }}
+                        fontSize={10}
+                        stroke={theme.colors.text}
+                        type="number"
+                    />
                     <YAxis
                         fontSize="10px !important"
                         width={80}
