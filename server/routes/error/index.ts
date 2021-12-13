@@ -1,20 +1,20 @@
 import { Error } from '../../controllers/error';
 import express, { Request, Response } from 'express';
 import { IResponse } from '../../type/response';
-import { IError } from './types';
+import { ErrType, IError } from './types';
 
 const router = express.Router();
 
 router.post('/', async (req: Request, res: Response) => {
     try {
-        const { message, dataColumn1, dataColumn2, dataColumn3, errType } = req.body as IError;
+        const { message, dataColumn1, dataColumn2, dataColumn3, errType } = req.params;
 
         await Error.insertError({
             message: message,
             dataColumn1: dataColumn1,
             dataColumn2: dataColumn2,
             dataColumn3: dataColumn3,
-            errType: errType,
+            errType: errType as ErrType,
         });
 
         res.status(201).send({

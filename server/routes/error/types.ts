@@ -3,5 +3,7 @@ export interface IError {
     dataColumn1?: string;
     dataColumn2?: string;
     dataColumn3?: string;
-    errType: 'backup' | 'croll' | 'other';
+    errType: ErrType;
 }
+
+export type ErrType = 'backup' | 'setBackup' | 'getBackup' | 'deleteBackup' | 'croll' | 'ledger' | 'other';
