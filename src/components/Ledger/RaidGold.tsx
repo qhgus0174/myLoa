@@ -1,15 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
-import BasicCheckbox from '@components/Input/BasicCheckbox';
-import { IRaidGold, IRaidGoldDetail } from '@common/types/response/ledger/raid';
-import { InnerContent } from '@style/common/modal';
-import { FlexDiv } from '@style/common';
-import { ILedger, ILedgerHistoryRaid, ILedgerOwn } from '@components/Ledger/LedgerType';
 import { DateTime } from 'luxon';
 import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
-import { groupBy } from '@common/utils';
-import Image from 'next/image';
+import { ILedger, ILedgerHistoryRaid, ILedgerOwn } from '@components/Ledger/LedgerType';
+import BasicCheckbox from '@components/Input/BasicCheckbox';
 import GoldIcon from '@components/Image/Gold';
-import { calcSum } from './common/functions';
+import { IRaidGold, IRaidGoldDetail } from '@common/types/response/ledger/raid';
+import { groupBy } from '@common/utils';
+import { InnerContent } from '@style/common/modal';
+import { FlexDiv } from '@style/common';
 
 const RaidGold = ({
     characterId,

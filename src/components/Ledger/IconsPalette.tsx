@@ -1,12 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useOnClickOutside } from '@hooks/useOnClickOutside';
-import { css, useTheme } from '@emotion/react';
-import styled from '@emotion/styled';
-import { FlexDiv } from '@style/common';
 import Image from 'next/image';
+import { useOnClickOutside } from '@hooks/useOnClickOutside';
 import { IGoodsImg } from '@common/types/response/ledger/goods';
-import { getGoodsImg } from '@apis/ledger/goods';
 import ImageBackground from '@components/ImageBackground';
+import styled from '@emotion/styled';
 
 interface IIconPalette {
     imgId?: string;

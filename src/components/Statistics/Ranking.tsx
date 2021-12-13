@@ -1,7 +1,7 @@
 import React from 'react';
+import { IStatisticsPersonalPrev } from '@components/Statistics/StatisticsType';
 import styled from '@emotion/styled';
 import { FlexDiv } from '@style/common';
-import { IStatisticsPersonalPrev } from '@components/Statistics/StatisticsType';
 
 interface IRanking {
     title: string;

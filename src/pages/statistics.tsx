@@ -1,28 +1,15 @@
-import { getCharacterInfoById, groupBy, parseStorageItem } from '@common/utils';
-import { LocalStorageStateContext } from '@context/LocalStorageContext';
-import { css, useTheme } from '@emotion/react';
-import styled from '@emotion/styled';
-import React, { useContext, useEffect, useState } from 'react';
-import {
-    LineChart,
-    Line,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    Legend,
-    LabelList,
-    BarChart,
-    Bar,
-    ResponsiveContainer,
-} from 'recharts';
-import { calcSum, calcSumWithCommma } from '@components/Ledger/common/functions';
-import { ILedger, ILedgerCommon, ILedgerOwn } from '@components/Ledger/LedgerType';
-import { FlexDiv } from '@style/common';
+import React, { useEffect, useState } from 'react';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LabelList, BarChart, Bar } from 'recharts';
 import { IStatisticsCommon, IStatisticsPersonal, IStatisticsPersonalPrev } from '@components/Statistics/StatisticsType';
+import { ILedger, ILedgerCommon, ILedgerOwn } from '@components/Ledger/LedgerType';
+import { calcSum } from '@components/Ledger/common/functions';
+import BasicCheckbox from '@components/Input/BasicCheckbox';
 import Ranking from '@components/Statistics/Ranking';
 import WeekSum from '@components/Statistics/WeekSum';
-import BasicCheckbox from '@components/Input/BasicCheckbox';
+import { getCharacterInfoById, parseStorageItem } from '@common/utils';
+import { css, useTheme } from '@emotion/react';
+import styled from '@emotion/styled';
+import { FlexDiv } from '@style/common';
 
 const Statistics = () => {
     const weekKorArr = ['저번주', '2주전', '3주전', '4주전'];

@@ -1,18 +1,13 @@
-import { insertErrorDB } from '@common/error';
-import { IResponse } from '@common/types/response';
-import { ICommonGold } from '@common/types/response/ledger/common';
-import ImageBackground from '@components/ImageBackground';
-import { SpinnerContext } from '@context/SpinnerContext';
-import axios from 'axios';
-import React, { useContext, useEffect, useState } from 'react';
-import Image from 'next/image';
-import styled from '@emotion/styled';
-import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
-import Goods, { ISaveParam } from '@components/Ledger/Goods';
-import { ICommonHistory, ILedger } from './LedgerType';
+import React, { useContext } from 'react';
 import { DateTime } from 'luxon';
-import { calcSum } from './common/functions';
+import Image from 'next/image';
 import _ from 'lodash';
+import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
+import { ICommonHistory, ILedger } from '@components/Ledger/LedgerType';
+import Goods, { ISaveParam } from '@components/Ledger/Goods';
+import ImageBackground from '@components/ImageBackground';
+import { ICommonGold } from '@common/types/response/ledger/common';
+import styled from '@emotion/styled';
 
 const CommonGold = ({ commonData }: { commonData: ICommonGold[] }) => {
     const { storedLedger } = useContext(LocalStorageStateContext);

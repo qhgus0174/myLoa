@@ -1,18 +1,14 @@
-import { insertErrorDB } from '@common/error';
-import { SpinnerContext } from '@context/SpinnerContext';
 import React, { useContext, useEffect, useState } from 'react';
-import Image from 'next/image';
-import ImageBackground from '@components/ImageBackground';
-import styled from '@emotion/styled';
-import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
-import { ILedger, ILedgerHistoryGoods, ILedgerOwn } from '@components/Ledger/LedgerType';
-import { DateTime } from 'luxon';
-import { IGoods, IGoodsImg } from '@common/types/response/ledger/goods';
-import GoldIcon from '@components/Image/Gold';
-import TextBox from '@components/Input/TextBox';
-import Goods, { ISaveParam } from '@components/Ledger/Goods';
-import { calcSum } from './common/functions';
 import _ from 'lodash';
+import Image from 'next/image';
+import { DateTime } from 'luxon';
+import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
+import { SpinnerContext } from '@context/SpinnerContext';
+import { ILedger, ILedgerHistoryGoods, ILedgerOwn } from '@components/Ledger/LedgerType';
+import Goods, { ISaveParam } from '@components/Ledger/Goods';
+import ImageBackground from '@components/ImageBackground';
+import { IGoods, IGoodsImg } from '@common/types/response/ledger/goods';
+import styled from '@emotion/styled';
 
 const GoodsGold = ({
     characterId,

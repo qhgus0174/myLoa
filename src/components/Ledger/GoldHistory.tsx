@@ -1,5 +1,5 @@
 import React from 'react';
-import TitleAndGold from './TitleAndGold';
+import TitleAndGold from '@components/Ledger/TitleAndGold';
 
 interface IGoldHistory {
     name: string;
