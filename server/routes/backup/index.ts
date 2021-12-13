@@ -27,7 +27,7 @@ router.get('/:backupKey', async (req: Request, res: Response) => {
 
 router.post('/', async (req: Request, res: Response) => {
     try {
-        const { todo, todoOrd, character, characterOrd } = req.body as IBackup;
+        const { todo, todoOrd, character, characterOrd } = req.params;
         const result = await Backup.createBackup({
             todo: todo,
             todoOrd: todoOrd,

@@ -22,7 +22,7 @@ router.get('/', async (req: Request, res: Response) => {
 
 router.put('/edit', async (req: Request, res: Response) => {
     try {
-        const { guardian, abyss } = req.body as Pick<IWeeklyContents, 'guardian' | 'abyss'>;
+        const { guardian, abyss } = req.params as Pick<IWeeklyContents, 'guardian' | 'abyss'>;
 
         await WeeklyContents.updateWeeklyContents({
             guardian: guardian,
