@@ -1,16 +1,19 @@
 import React from 'react';
 import styled from '@emotion/styled';
+import GoldIcon from '@components/Image/Gold';
 
 export interface ITextProps extends React.InputHTMLAttributes<HTMLInputElement> {
     width?: string;
     divWidth?: string;
     align?: 'left' | 'right' | 'center';
     underline?: boolean;
+    icon?: JSX.Element;
 }
 
-const TextBox = ({ width, divWidth = '100', type = 'text', align, underline = true, ...rest }: ITextProps) => {
+const TextBox = ({ width, divWidth = '100', type = 'text', align, underline = true, icon, ...rest }: ITextProps) => {
     return (
         <InputContainer divWidth={divWidth}>
+            {icon && icon}
             <CustomInput align={align} type={type} width={width} underline={underline} {...rest} autoComplete="false" />
             <Span></Span>
         </InputContainer>
@@ -23,6 +26,7 @@ const InputContainer = styled.article<{ divWidth: string }>`
     width: ${props => props.divWidth}%;
     display: flex;
     justify-content: center;
+    align-items: center;
 `;
 
 const Span = styled.span`
@@ -40,9 +44,8 @@ const CustomInput = styled.input<ITextProps>`
     border: none;
     outline: none;
     box-sizing: border-box;
-    padding-bottom: 0.7em;
+    padding-bottom: 0.5em;
     text-overflow: ellipsis;
-
     text-align: ${props => props.align};
 
     border-bottom: ${props => props.underline && `1px solid ${props.theme.colors.text}`};

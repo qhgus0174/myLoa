@@ -21,6 +21,7 @@ export interface ILedgerOwn {
 export interface ILedgerCommon {
     prevWeekGold: number[];
     histories: ICommonHistory[];
+    fold: boolean;
 }
 
 export interface ICommonHistory extends ILedgerHistoryRaid {

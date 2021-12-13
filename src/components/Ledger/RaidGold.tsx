@@ -1,13 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { DateTime } from 'luxon';
+import Image from 'next/image';
 import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
 import { ILedger, ILedgerHistoryRaid, ILedgerOwn } from '@components/Ledger/LedgerType';
+import TitleAndGold from '@components/Ledger/TitleAndGold';
 import BasicCheckbox from '@components/Input/BasicCheckbox';
-import GoldIcon from '@components/Image/Gold';
 import { IRaidGold, IRaidGoldDetail } from '@common/types/response/ledger/raid';
 import { groupBy } from '@common/utils';
-import { InnerContent } from '@style/common/modal';
+import styled from '@emotion/styled';
 import { FlexDiv } from '@style/common';
+import { widthMedia } from '@style/device';
 
 const RaidGold = ({
     characterId,
@@ -47,8 +49,6 @@ const RaidGold = ({
             target: { value: raidId, checked },
         } = e;
         const newLedger: ILedger = { ...storedLedger };
-
-        const ownLedger = newLedger.own[charLedgerIndex];
 
         checked
             ? controlCheckAction({
@@ -206,158 +206,222 @@ const RaidGold = ({
     };
 
     return (
-        <section>
-            <article>
-                {raidDetailData && (
-                    <>
-                        <InnerContent>
-                            <FlexDiv>
-                                {raidCategory.map(
-                                    (
-                                        { id: raidId, name: raidName, openlevel, closelevel }: IRaidGold,
-                                        raidIndex: number,
-                                    ) => {
-                                        const grouppedDetailData = groupBy(
-                                            raidDetailData.filter(x => x.parentid === raidId),
-                                            obj => obj.difficulty,
-                                        );
+        <Container>
+            {raidDetailData &&
+                raidCategory.map(
+                    ({ id: raidId, name: raidName, openlevel, closelevel, imgurl }: IRaidGold, raidIndex: number) => {
+                        const grouppedDetailData = groupBy(
+                            raidDetailData.filter(x => x.parentid === raidId),
+                            obj => obj.difficulty,
+                        );
 
-                                        return (
-                                            <div key={raidIndex}>
-                                                {openlevel <= characterLevel &&
-                                                    characterLevel <= closelevel &&
-                                                    raidName}
-                                                {Object.keys(grouppedDetailData).map(
-                                                    (difficultyName: string, difficultyIndex: number) => {
-                                                        const startLevel =
-                                                            grouppedDetailData[difficultyName][difficultyIndex]
-                                                                .startlevel;
-                                                        const endLevel =
-                                                            grouppedDetailData[difficultyName][difficultyIndex]
-                                                                .endlevel;
+                        return (
+                            <div key={raidIndex}>
+                                {openlevel <= characterLevel && characterLevel <= closelevel && (
+                                    <Article>
+                                        <Title>
+                                            <Image src={imgurl} width="16" height="16" />
+                                            <h4>{raidName}</h4>
+                                        </Title>
+                                        <Content>
+                                            {Object.keys(grouppedDetailData).map(
+                                                (difficultyName: string, difficultyIndex: number) => {
+                                                    const startLevel =
+                                                        grouppedDetailData[difficultyName][difficultyIndex].startlevel;
+                                                    const endLevel =
+                                                        grouppedDetailData[difficultyName][difficultyIndex].endlevel;
 
-                                                        return (
-                                                            <div key={difficultyIndex}>
-                                                                {startLevel <= characterLevel &&
-                                                                    characterLevel <= endLevel && (
-                                                                        <div>
-                                                                            {difficultyName}
-                                                                            {grouppedDetailData[difficultyName].map(
-                                                                                (
-                                                                                    {
-                                                                                        id,
-                                                                                        gateway,
-                                                                                        gold,
-                                                                                        parentid,
-                                                                                        difficulty,
-                                                                                        startlevel,
-                                                                                        endlevel,
-                                                                                    }: IRaidGoldDetail,
-                                                                                    raidDetailIndex: number,
-                                                                                ) => {
-                                                                                    const dupIndex =
-                                                                                        raidDetailData.findIndex(
-                                                                                            ({
-                                                                                                parentid: oriParentId,
-                                                                                                gateway: oriGateway,
-                                                                                                difficulty: oriDiff,
-                                                                                                id: oriId,
-                                                                                            }) =>
-                                                                                                oriParentId ==
-                                                                                                    parentid &&
-                                                                                                oriGateway == gateway &&
-                                                                                                oriDiff != difficulty &&
-                                                                                                oriId != id,
-                                                                                        );
+                                                    return (
+                                                        <div key={difficultyIndex}>
+                                                            {startLevel <= characterLevel &&
+                                                                characterLevel <= endLevel && (
+                                                                    <Contents>
+                                                                        <h5>{difficultyName}</h5>
+                                                                        {grouppedDetailData[difficultyName].map(
+                                                                            (
+                                                                                {
+                                                                                    id,
+                                                                                    gateway,
+                                                                                    gold,
+                                                                                    parentid,
+                                                                                    difficulty,
+                                                                                    startlevel,
+                                                                                    endlevel,
+                                                                                }: IRaidGoldDetail,
+                                                                                raidDetailIndex: number,
+                                                                            ) => {
+                                                                                const dupIndex =
+                                                                                    raidDetailData.findIndex(
+                                                                                        ({
+                                                                                            parentid: oriParentId,
+                                                                                            gateway: oriGateway,
+                                                                                            difficulty: oriDiff,
+                                                                                            id: oriId,
+                                                                                        }) =>
+                                                                                            oriParentId == parentid &&
+                                                                                            oriGateway == gateway &&
+                                                                                            oriDiff != difficulty &&
+                                                                                            oriId != id,
+                                                                                    );
 
-                                                                                    const storedRaidIdArr =
-                                                                                        storedLedger.own[
-                                                                                            charLedgerIndex
-                                                                                        ].histories.raid.data.map(
-                                                                                            x => x.id,
-                                                                                        );
+                                                                                const storedRaidIdArr =
+                                                                                    storedLedger.own[
+                                                                                        charLedgerIndex
+                                                                                    ].histories.raid.data.map(
+                                                                                        x => x.id,
+                                                                                    );
 
-                                                                                    return (
-                                                                                        <div key={raidDetailIndex}>
-                                                                                            {startlevel <=
-                                                                                                characterLevel &&
-                                                                                                characterLevel <=
-                                                                                                    endlevel && (
-                                                                                                    <div>
-                                                                                                        <BasicCheckbox
-                                                                                                            value={id}
-                                                                                                            onChange={e =>
-                                                                                                                onChangeRaidCheckbox(
-                                                                                                                    {
-                                                                                                                        e: e,
-                                                                                                                        gold: gold,
-                                                                                                                        parentId:
-                                                                                                                            parentid,
-                                                                                                                        difficulty:
-                                                                                                                            difficulty,
-                                                                                                                        gateway:
-                                                                                                                            gateway,
-                                                                                                                    },
-                                                                                                                )
-                                                                                                            }
-                                                                                                            checked={storedRaidIdArr.includes(
-                                                                                                                String(
-                                                                                                                    id,
-                                                                                                                ),
-                                                                                                            )}
-                                                                                                            label={
-                                                                                                                <>
-                                                                                                                    {
-                                                                                                                        gateway
+                                                                                return (
+                                                                                    <div key={raidDetailIndex}>
+                                                                                        {startlevel <= characterLevel &&
+                                                                                            characterLevel <=
+                                                                                                endlevel && (
+                                                                                                <BasicCheckbox
+                                                                                                    value={id}
+                                                                                                    onChange={e =>
+                                                                                                        onChangeRaidCheckbox(
+                                                                                                            {
+                                                                                                                e: e,
+                                                                                                                gold: gold,
+                                                                                                                parentId:
+                                                                                                                    parentid,
+                                                                                                                difficulty:
+                                                                                                                    difficulty,
+                                                                                                                gateway:
+                                                                                                                    gateway,
+                                                                                                            },
+                                                                                                        )
+                                                                                                    }
+                                                                                                    checked={storedRaidIdArr.includes(
+                                                                                                        String(id),
+                                                                                                    )}
+                                                                                                    label={
+                                                                                                        <FlexDiv>
+                                                                                                            <RaidGolds>
+                                                                                                                {
+                                                                                                                    gateway
+                                                                                                                }
+                                                                                                            </RaidGolds>
+                                                                                                            <RaidGolds>
+                                                                                                                <TitleAndGold
+                                                                                                                    isPadding={
+                                                                                                                        false
                                                                                                                     }
-                                                                                                                    (
-                                                                                                                    <GoldIcon
-                                                                                                                        type="basic"
-                                                                                                                        width="14"
-                                                                                                                        height="14"
-                                                                                                                    />
-                                                                                                                    {
+                                                                                                                    bracket={
+                                                                                                                        true
+                                                                                                                    }
+                                                                                                                    underline={
+                                                                                                                        false
+                                                                                                                    }
+                                                                                                                    gold={
                                                                                                                         gold
                                                                                                                     }
-                                                                                                                    )
-                                                                                                                </>
-                                                                                                            }
-                                                                                                            disabled={
-                                                                                                                dupIndex >
-                                                                                                                    -1 &&
-                                                                                                                storedRaidIdArr.includes(
-                                                                                                                    String(
-                                                                                                                        raidDetailData[
-                                                                                                                            dupIndex
-                                                                                                                        ]
-                                                                                                                            .id,
-                                                                                                                    ),
-                                                                                                                )
-                                                                                                            }
-                                                                                                        />
-                                                                                                    </div>
-                                                                                                )}
-                                                                                        </div>
-                                                                                    );
-                                                                                },
-                                                                            )}
-                                                                        </div>
-                                                                    )}
-                                                            </div>
-                                                        );
-                                                    },
-                                                )}
-                                            </div>
-                                        );
-                                    },
+                                                                                                                />
+                                                                                                            </RaidGolds>
+                                                                                                        </FlexDiv>
+                                                                                                    }
+                                                                                                    disabled={
+                                                                                                        dupIndex > -1 &&
+                                                                                                        storedRaidIdArr.includes(
+                                                                                                            String(
+                                                                                                                raidDetailData[
+                                                                                                                    dupIndex
+                                                                                                                ].id,
+                                                                                                            ),
+                                                                                                        )
+                                                                                                    }
+                                                                                                />
+                                                                                            )}
+                                                                                    </div>
+                                                                                );
+                                                                            },
+                                                                        )}
+                                                                    </Contents>
+                                                                )}
+                                                        </div>
+                                                    );
+                                                },
+                                            )}
+                                        </Content>
+                                    </Article>
                                 )}
-                            </FlexDiv>
-                        </InnerContent>
-                    </>
+                            </div>
+                        );
+                    },
                 )}
-            </article>
-        </section>
+        </Container>
     );
 };
+
+const Container = styled.section`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+`;
+
+const Article = styled.article`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 1em;
+`;
+
+const Title = styled.div`
+    display: flex;
+    h4 {
+        margin-left: 0.5em;
+    }
+
+    margin-bottom: 0.8em;
+`;
+
+const Content = styled.div`
+    display: flex;
+    width: 100%;
+    border-bottom: 1px dashed ${props => props.theme.colors.white};
+    padding-bottom: 1em;
+    justify-content: space-around;
+    margin-left: 0;
+
+    ${widthMedia.smallDesktop} {
+        flex-direction: column;
+        border-bottom: none;
+        margin-left: 1.5em;
+    }
+
+    ${widthMedia.tablet} {
+        flex-direction: row;
+        border-bottom: 1px dashed ${props => props.theme.colors.white};
+        margin-left: 0;
+    }
+
+    ${widthMedia.smallPhone} {
+        flex-direction: column;
+        border-bottom: none;
+        margin-left: 1.5em;
+    }
+`;
+
+const Contents = styled.div`
+    display: flex;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
+    flex-direction: column;
+    width: 100%;
+
+    h5 {
+        margin-bottom: 0.5em;
+    }
+
+    ${widthMedia.phone} {
+        padding-left: 1em;
+    }
+`;
+
+const RaidGolds = styled.div`
+    display: flex;
+    flex-basis: 50%;
+    align-items: center;
+`;
 
 export default RaidGold;

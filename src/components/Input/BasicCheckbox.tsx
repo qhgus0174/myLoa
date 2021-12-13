@@ -25,6 +25,7 @@ const CheckboxContainer = styled.label<{ disabled: boolean }>`
         `
             cursor: not-allowed;
     `}
+    width:100%;
 `;
 
 const CustomCheckbox = styled.input`
@@ -40,8 +41,8 @@ const CustomCheckbox = styled.input`
         content: '';
         display: block;
         box-sizing: content-box;
-        width: 16px;
-        height: 16px;
+        width: 14px;
+        height: 14px;
         border: 2px solid ${props => props.theme.colors.gray};
         transition: 0.1s border-color ease;
         border-radius: 4px;
@@ -72,8 +73,8 @@ const CustomCheckbox = styled.input`
         left: 50%;
         transform-origin: 50% 50%;
         background-color: #ffffff;
-        width: 16px;
-        height: 16px;
+        width: 14px;
+        height: 14px;
         border-radius: 100vh;
         transform: translate(-50%, -50%) scale(0);
         ${props =>

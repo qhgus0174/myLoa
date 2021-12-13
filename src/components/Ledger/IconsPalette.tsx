@@ -14,31 +14,40 @@ interface IIconPalette {
 
 const IconPalette = ({ imgId, imgPaletteArr, goodsId, onClick }: IIconPalette) => {
     const [visible, setVisible] = useState<boolean>(false);
-    const [goodsImgIndx, setGoodsImgIndx] = useState<number>(0);
-
     const ref = useRef<HTMLElement>(null);
 
     useOnClickOutside(ref, () => setVisible(false));
-
-    useEffect(() => {
-        const iconIndex = imgPaletteArr.findIndex(({ id }) => {
-            return id == imgId;
-        });
-        setGoodsImgIndx(iconIndex);
-    }, [imgPaletteArr]);
 
     return (
         <Container ref={ref}>
             <SelectedImg onClick={() => setVisible(!visible)}>
                 <ImageBackground
                     pointer={true}
-                    grade={imgPaletteArr[goodsImgIndx].background}
+                    grade={
+                        imgPaletteArr[
+                            imgPaletteArr.findIndex(({ id }) => {
+                                return id == imgId;
+                            })
+                        ].background
+                    }
                     hover={{ effect: true }}
                     width="27"
                     height="27"
                 >
                     <Image
-                        src={`/static/img/lostark/${imgPaletteArr[goodsImgIndx].folder}/${imgPaletteArr[goodsImgIndx].filename}`}
+                        src={`/static/img/lostark/${
+                            imgPaletteArr[
+                                imgPaletteArr.findIndex(({ id }) => {
+                                    return id == imgId;
+                                })
+                            ].folder
+                        }/${
+                            imgPaletteArr[
+                                imgPaletteArr.findIndex(({ id }) => {
+                                    return id == imgId;
+                                })
+                            ].filename
+                        }`}
                         width="25"
                         height="25"
                     />

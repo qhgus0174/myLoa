@@ -345,7 +345,7 @@ const Statistics = () => {
                     </PersonalInnerArticle>
                     <PersonalInnerArticle>
                         <PersonalPrevArticle>
-                            <h2>저번주 수입</h2>
+                            <h2>이번주 수입</h2>
                             <GraphDiv>
                                 <BarChart
                                     width={600}
@@ -459,12 +459,6 @@ const InnerDiv = styled.div`
     justify-content: center;
     flex-basis: 50%;
     flex-direction: column;
-`;
-
-const OverAllWeekDiv = styled.div`
-    display: flex;
-    justify-content: center;
-    flex-basis: 50%;
 `;
 
 const OverAllInnerArticle = styled.article`

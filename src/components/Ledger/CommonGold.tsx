@@ -8,15 +8,19 @@ import Goods, { ISaveParam } from '@components/Ledger/Goods';
 import ImageBackground from '@components/ImageBackground';
 import { ICommonGold } from '@common/types/response/ledger/common';
 import styled from '@emotion/styled';
+import GoodsFieldSet from './common/GoodsFieldSet';
 
 const CommonGold = ({ commonData }: { commonData: ICommonGold[] }) => {
     const { storedLedger } = useContext(LocalStorageStateContext);
     const { setStoredLedger } = useContext(LocalStorageActionContext);
 
     const addGoods = ({ imgUrl, name }: { imgUrl: string; name: string }) => {
-        const ledgerArr: ILedger = Object.assign({}, storedLedger);
+        const ledgerArr: ILedger = Object.assign({}, storedLedger),
+            {
+                common: { histories },
+            } = ledgerArr;
 
-        const maxGoodsId = Math.max(...ledgerArr.common.histories.map(({ id }) => Number(id)), 0);
+        const maxGoodsId = Math.max(...histories.map(({ id }) => Number(id)), 0);
 
         const history: ICommonHistory = {
             id: String(maxGoodsId + 1),
@@ -69,31 +73,14 @@ const CommonGold = ({ commonData }: { commonData: ICommonGold[] }) => {
     };
 
     return (
-        <>
-            <ImageContainer>
-                {commonData
-                    .filter(({ id }) => id != '1')
-                    .map(({ id, defaultimgurl, name, defaultbackground }, goodsIndex: number) => {
+        <Container>
+            <GoodsFieldSet onClickCommon={addGoods} array={commonData} />
+            <GoodsContainer>
+                {storedLedger.common.histories.length > 0 ? (
+                    storedLedger.common.histories.map(({ id, name, gold, datetime, imgUrl }, goodsIndex: number) => {
                         return (
-                            <ImageBackground
-                                key={goodsIndex}
-                                pointer={true}
-                                grade={defaultbackground}
-                                hover={{ effect: true, message: name }}
-                                onClick={() => {
-                                    addGoods({ imgUrl: defaultimgurl, name: name });
-                                }}
-                            >
-                                <Image src={defaultimgurl} width="40" height="40" />
-                            </ImageBackground>
-                        );
-                    })}
-            </ImageContainer>
-            <div>
-                {storedLedger.common.histories.map(({ id, name, gold, datetime, imgUrl }, goodsIndex: number) => {
-                    return (
-                        <ul key={goodsIndex}>
                             <Goods
+                                key={goodsIndex}
                                 id={id}
                                 name={name}
                                 gold={gold}
@@ -102,15 +89,35 @@ const CommonGold = ({ commonData }: { commonData: ICommonGold[] }) => {
                                 saveFn={saveData}
                                 removeFn={removeData}
                             />
-                        </ul>
-                    );
-                })}
-            </div>
-        </>
+                        );
+                    })
+                ) : (
+                    <NoData>골드 수급처를 선택하여 내역을 추가 해 주세요!</NoData>
+                )}
+            </GoodsContainer>
+        </Container>
     );
 };
 
-const ImageContainer = styled.section`
+const Container = styled.section`
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
 `;
+
+const GoodsContainer = styled.ul`
+    padding-top: 1em;
+    max-height: 200px;
+    overflow-y: auto;
+    width: 100%;
+`;
+
+const NoData = styled.span`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+`;
+
 export default CommonGold;

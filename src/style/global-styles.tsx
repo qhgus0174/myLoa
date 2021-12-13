@@ -10,13 +10,12 @@ export const GlobalStyle = () => {
                     margin: 0;
                     color: ${theme.colors.text};
                     font-family: 'Pretendard', 'sans-serif';
-                    font-size: 14px;
+                    font-size: 13.5px;
                 }
 
                 body {
                     background-color: ${theme.colors.main};
                     height: 100%;
-                    margin: 0;
                 }
 
                 input[type='text'] {

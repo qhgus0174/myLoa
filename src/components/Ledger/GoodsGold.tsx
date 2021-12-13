@@ -9,6 +9,7 @@ import Goods, { ISaveParam } from '@components/Ledger/Goods';
 import ImageBackground from '@components/ImageBackground';
 import { IGoods, IGoodsImg } from '@common/types/response/ledger/goods';
 import styled from '@emotion/styled';
+import GoodsFieldSet from './common/GoodsFieldSet';
 
 const GoodsGold = ({
     characterId,
@@ -118,30 +119,14 @@ const GoodsGold = ({
 
     return (
         <>
-            <ImageContainer>
-                {goods.map(({ id, defaultimgurl, name, defaultbackground }, goodsIndex: number) => {
-                    return (
-                        <ImageBackground
-                            key={goodsIndex}
-                            pointer={true}
-                            grade={defaultbackground}
-                            hover={{ effect: true, message: name }}
-                            onClick={() => {
-                                setActive(id);
-                                addGoods({ id: id });
-                            }}
-                        >
-                            <Image src={defaultimgurl} width="38" height="38" />
-                        </ImageBackground>
-                    );
-                })}
-            </ImageContainer>
-            <div>
-                {storedLedger.own[charLedgerIndex].histories.goods.data.map(
-                    ({ id, name, gold, categoryId, imgId, datetime }, goodsIndex: number) => {
-                        return (
-                            <ul key={goodsIndex}>
+            <GoodsFieldSet onClickPersonal={addGoods} array={goods} />
+            <GoodsContainer>
+                {storedLedger.own[charLedgerIndex].histories.goods.data.length > 0 ? (
+                    storedLedger.own[charLedgerIndex].histories.goods.data.map(
+                        ({ id, name, gold, categoryId, imgId, datetime }, goodsIndex: number) => {
+                            return (
                                 <Goods
+                                    key={goodsIndex}
                                     categoryId={categoryId}
                                     id={id}
                                     name={name}
@@ -152,17 +137,29 @@ const GoodsGold = ({
                                     saveFn={saveData}
                                     removeFn={removeData}
                                 />
-                            </ul>
-                        );
-                    },
+                            );
+                        },
+                    )
+                ) : (
+                    <NoData>골드 수급처를 선택하여 내역을 추가 해 주세요!</NoData>
                 )}
-            </div>
+            </GoodsContainer>
         </>
     );
 };
 
-const ImageContainer = styled.section`
+const GoodsContainer = styled.ul`
+    padding-top: 1em;
+    height: 200px;
+    overflow-y: auto;
+    width: 100%;
+`;
+
+const NoData = styled.span`
     display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
 `;
 
 export default GoodsGold;

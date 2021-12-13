@@ -3,6 +3,7 @@ export interface IRaidGold {
     name: string;
     openlevel: number;
     closelevel: number;
+    imgurl: string;
 }
 
 export interface IRaidGoldDetail {

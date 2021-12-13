@@ -4,10 +4,10 @@ import { DateTime } from 'luxon';
 import { ILedgerHistoryRaid } from '@components/Ledger/LedgerType';
 import IconPalette from '@components/Ledger/IconsPalette';
 import TextBox from '@components/Input/TextBox';
-import Button from '@components/Button/Button';
 import GoldIcon from '@components/Image/Gold';
 import { IGoodsImg } from '@common/types/response/ledger/goods';
 import styled from '@emotion/styled';
+import { widthMedia } from '@style/device';
 
 export interface ISaveParam {
     goodsId: string;
@@ -30,61 +30,116 @@ interface IGoods extends ILedgerHistoryRaid {
 const Goods = ({ categoryId, id, gold, name, imgId, imgPaletteArr, datetime, imgUrl, saveFn, removeFn }: IGoods) => {
     return (
         <GoodsList>
-            {imgPaletteArr ? (
-                <IconPalette
-                    goodsId={id}
-                    imgId={imgId}
-                    imgPaletteArr={imgPaletteArr.filter(({ categoryid }) => categoryid === categoryId)}
-                    onClick={saveFn}
-                />
-            ) : (
-                imgUrl && <Image src={imgUrl} width="27" height="27" />
-            )}
-            <GoodsTitle
-                divWidth="55"
-                width="55"
-                value={name}
-                onChange={({ target: { value: nameValue } }) => {
-                    saveFn({ name: nameValue, goodsId: id });
-                }}
-                onFocus={(e: React.FocusEvent<HTMLInputElement, Element>) => e.target.select()}
-            />
-            {DateTime.fromISO(DateTime.fromSeconds(Number(datetime)).toISO()).toFormat('yy/MM/dd')}
-            <GoodsGoldIcon>
-                <GoldIcon type="basic" width="18" height="18" />
-                <Gold
-                    value={gold}
-                    onChange={({ target: { value: goldValue } }) => {
-                        saveFn({ gold: Number(goldValue), goodsId: id });
-                    }}
-                    onKeyPress={e => {
-                        if (!/[0-9]/.test(e.key)) e.preventDefault();
+            <Date>{DateTime.fromISO(DateTime.fromSeconds(Number(datetime)).toISO()).toFormat('MM/dd')}</Date>
+            <Icon>
+                {imgPaletteArr ? (
+                    <IconPalette
+                        goodsId={id}
+                        imgId={imgId}
+                        imgPaletteArr={imgPaletteArr.filter(({ categoryid }) => categoryid === categoryId)}
+                        onClick={saveFn}
+                    />
+                ) : (
+                    imgUrl && <Image src={imgUrl} width="27" height="27" />
+                )}
+            </Icon>
+            <Titile>
+                <TextBox
+                    divWidth="100"
+                    width="100"
+                    value={name}
+                    onChange={({ target: { value: nameValue } }) => {
+                        saveFn({ name: nameValue, goodsId: id });
                     }}
                     onFocus={(e: React.FocusEvent<HTMLInputElement, Element>) => e.target.select()}
                 />
-                <Button onClick={() => removeFn({ goodsId: id })}>X</Button>
-            </GoodsGoldIcon>
+            </Titile>
+            <Gold>
+                <GoodsGoldIcon>
+                    <TextBox
+                        icon={<GoldIcon type="basic" />}
+                        divWidth="100"
+                        width="100"
+                        value={gold.toLocaleString()}
+                        onChange={({ target: { value: goldValue } }) => {
+                            saveFn({ gold: Number(goldValue.replaceAll(',', '')), goodsId: id });
+                        }}
+                        onKeyPress={e => {
+                            if (!/[0-9]/.test(e.key)) e.preventDefault();
+                        }}
+                        onFocus={(e: React.FocusEvent<HTMLInputElement, Element>) => e.target.select()}
+                    />
+                </GoodsGoldIcon>
+            </Gold>
+            <Delete>
+                <Image
+                    src="/static/img/icon/x-mark.png"
+                    width="14"
+                    height="14"
+                    onClick={() => removeFn({ goodsId: id })}
+                />
+            </Delete>
         </GoodsList>
     );
 };
 
 const GoodsList = styled.li`
     display: flex;
+    width: 100%;
+    padding-top: 0.8em;
+    padding-bottom: 0.8em;
+    border-top: 0.5px dashed ${props => props.theme.colors.white};
+    border-bottom: 0.5px dashed ${props => props.theme.colors.white};
+    box-sizing: border-box;
     align-items: center;
-`;
-
-const GoodsTitle = styled(TextBox)`
-    width: 55%;
+    justify-content: space-between;
 `;
 
 const GoodsGoldIcon = styled.div`
     display: flex;
     align-items: center;
-    width: 30%;
+    input {
+        padding-left: 5px;
+    }
 `;
 
-const Gold = styled(TextBox)`
-    margin-left: 0.3em;
+const Icon = styled.div`
+    display: flex;
+    flex-basis: 10%;
+    justify-content: center;
 `;
 
+const Titile = styled.div`
+    display: flex;
+    flex-basis: 40%;
+    justify-content: center;
+
+    ${widthMedia.phone} {
+        display: none;
+        flex-basis: 0%;
+    }
+`;
+
+const Date = styled.div`
+    display: flex;
+    flex-basis: 15%;
+    justify-content: center;
+`;
+
+const Gold = styled.div`
+    display: flex;
+    flex-basis: 25%;
+    justify-content: center;
+
+    ${widthMedia.phone} {
+        flex-basis: 40%;
+    }
+`;
+
+const Delete = styled.div`
+    display: flex;
+    flex-basis: 5%;
+    justify-content: center;
+    cursor: pointer;
+`;
 export default Goods;

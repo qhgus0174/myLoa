@@ -17,6 +17,7 @@ export const initCommonHistory: ICommonHistory[] = [
 
 export const initLedger: ILedger = {
     common: {
+        fold: true,
         prevWeekGold: [0, 0, 0, 0],
         histories: initCommonHistory,
     },
