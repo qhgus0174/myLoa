@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-export const Dimmer = styled.article`
+export const Dimmer = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
@@ -14,7 +14,7 @@ export const Dimmer = styled.article`
     backdrop-filter: blur(4px);
 `;
 
-export const FormContainer = styled.article`
+export const Container = styled.section`
     display: flex;
     justify-content: space-between;
     flex-basis: 100%;
@@ -23,14 +23,28 @@ export const FormContainer = styled.article`
     overflow-y: auto;
 `;
 
-export const FormArticleContainer = styled.article`
+export const ContentContainer = styled.article`
     display: flex;
     justify-content: space-around;
     flex-basis: 90%;
     flex-direction: column;
+
+    h3 {
+        font-size: 1.05em;
+    }
+
+    h4 {
+        font-size: 1em;
+    }
 `;
 
-export const ContentsArticleTitle = styled.article`
+export const ContentArticle = styled.article`
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.5em;
+`;
+
+export const Title = styled.h3`
     display: flex;
     align-items: center;
     box-sizing: border-box;
@@ -39,12 +53,12 @@ export const ContentsArticleTitle = styled.article`
     font-size: 1.02em;
 `;
 
-export const ContentsArticle = styled.article`
+export const Contents = styled.article`
     display: flex;
     align-items: center;
 `;
 
-export const FormButtonContainer = styled.article`
+export const ButtonContainer = styled.article`
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -59,17 +73,7 @@ export const FormButtonContainer = styled.article`
     }
 `;
 
-export const RightButtonArticle = styled.article`
-    display: flex;
-    justify-content: flex-end;
-    width: 100%;
-
-    button:nth-of-type(2) {
-        margin-left: 1em;
-    }
-`;
-
-export const ContentsInnerArticle = styled.article`
+export const InnerContent = styled.article`
     background: ${props => props.theme.colors.mainInner};
     padding: 0.5em;
     border-radius: 1em;

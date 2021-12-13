@@ -8,14 +8,14 @@ interface ITitleGold {
 
 const TitleAndGold = ({ title, gold }: ITitleGold) => {
     return (
-        <TitleGoldArticle>
+        <Container>
             <span>{title}</span>
             <span>{gold}</span>
-        </TitleGoldArticle>
+        </Container>
     );
 };
 
-const TitleGoldArticle = styled.article`
+const Container = styled.article`
     display: flex;
 `;
 

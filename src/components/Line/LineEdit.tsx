@@ -5,7 +5,7 @@ import { ModalActionContext } from '@context/ModalContext';
 import EditButtonContainer from '@components/Container/Button/DelEdit';
 import { ITodo } from '@components/Todo/TodoType';
 import LineForm from '@components/Line/common/Form';
-import { FormContainer } from '@style/common/modal';
+import { Container } from '@style/common/modal';
 
 const LineEdit = ({ id: oriId, color: newColor }: Pick<ITodo, 'id' | 'color'>) => {
     const [color, setColor] = useState<string>(newColor);
@@ -55,10 +55,10 @@ const LineEdit = ({ id: oriId, color: newColor }: Pick<ITodo, 'id' | 'color'>) =
 
     const { closeModal } = useContext(ModalActionContext);
     return (
-        <FormContainer>
+        <Container>
             <LineForm color={color} setColor={setColor} />
             <EditButtonContainer editClassName="editLine" onClickDelete={onClickDelete} onClickEdit={onClickEdit} />
-        </FormContainer>
+        </Container>
     );
 };
 

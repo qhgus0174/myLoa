@@ -3,7 +3,7 @@ import { useOnClickOutside } from '@hooks/useOnClickOutside';
 import { GlobalThemeContext } from '@context/GlobalThemeContext';
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { FlexArticle } from '@style/common';
+import { FlexDiv } from '@style/common';
 import { mainColor } from '@style/theme';
 
 const SelectTheme = () => {
@@ -16,7 +16,7 @@ const SelectTheme = () => {
     useOnClickOutside(ref, () => setVisible(false));
 
     return (
-        <SelectThemeContainer ref={ref}>
+        <Container ref={ref}>
             <ThemeTitle onClick={() => setVisible(!visible)}>
                 <span
                     css={css`
@@ -32,7 +32,7 @@ const SelectTheme = () => {
                     테마
                 </span>
             </ThemeTitle>
-            <PaletteArticle visible={visible}>
+            <Palette visible={visible}>
                 {mainColor.map((color, index) => {
                     return (
                         <ThemeBlock
@@ -45,18 +45,18 @@ const SelectTheme = () => {
                         ></ThemeBlock>
                     );
                 })}
-            </PaletteArticle>
-        </SelectThemeContainer>
+            </Palette>
+        </Container>
     );
 };
 
-const SelectThemeContainer = styled.section`
+const Container = styled.section`
     position: relative;
     display: flex;
     justify-content: center;
 `;
 
-const PaletteArticle = styled(FlexArticle)<{ visible: boolean }>`
+const Palette = styled.article<{ visible: boolean }>`
     display: ${props => (props.visible ? 'flex' : 'none')};
     flex-wrap: wrap;
     background: white;
@@ -66,7 +66,7 @@ const PaletteArticle = styled(FlexArticle)<{ visible: boolean }>`
     position: absolute;
 `;
 
-const ThemeTitle = styled.article`
+const ThemeTitle = styled.div`
     cursor: pointer;
 `;
 

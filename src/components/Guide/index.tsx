@@ -1,11 +1,11 @@
 import React from 'react';
-import { FormContainer, FormArticleContainer } from '@style/common/modal';
+import { Container, ContentContainer } from '@style/common/modal';
 import styled from '@emotion/styled';
 
 const Guide = () => {
     return (
-        <FormContainer>
-            <FormArticleContainer>
+        <Container>
+            <ContentContainer>
                 <ul>
                     <LiContainter>
                         🤹‍♀️ 버그 발생 / 문의 사항이 있으시면 shannon_@hotmail.co.kr로 메일 부탁드립니다.
@@ -55,8 +55,8 @@ const Guide = () => {
                         </UlContainer>
                     </LiContainter>
                 </ul>
-            </FormArticleContainer>
-        </FormContainer>
+            </ContentContainer>
+        </Container>
     );
 };
 

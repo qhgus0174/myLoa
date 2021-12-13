@@ -3,7 +3,7 @@ import { LocalStorageStateContext, LocalStorageActionContext } from '@context/Lo
 import { ICharacterTodo, IGuardianInfo, ITodo } from '@components/Todo/TodoType';
 import { GuardianInfo, IGuardian } from '@common/data/guardian';
 import styled from '@emotion/styled';
-import { FlexArticle } from '@style/common';
+import { FlexDiv } from '@style/common';
 import { ICharacter } from '@components/Character/CharacterType';
 
 interface IGuardianParam {
@@ -76,12 +76,12 @@ const Guardian = ({
     };
 
     return (
-        <GuardianArticle
+        <Container
             direction="column"
             onTouchEnd={e => onTouchEnd({ e: e, charTodo: charTodo, characterIndex: characterIndex })}
             onClick={e => onClick(e, characterId)}
         >
-            <GuardianSelectBox
+            <SelectBox
                 key={`guardian_step_${characterId}`}
                 onChange={e => updateGuardianStep(e)}
                 value={characterGuardianInfo.step}
@@ -93,8 +93,8 @@ const Guardian = ({
                         </option>
                     );
                 })}
-            </GuardianSelectBox>
-            <GuardianSelectBox
+            </SelectBox>
+            <SelectBox
                 onChange={e => updateGuardianInfo(e)}
                 key={`guardian_value_${characterId}`}
                 value={characterGuardianInfo.info}
@@ -108,18 +108,18 @@ const Guardian = ({
                         );
                     },
                 )}
-            </GuardianSelectBox>
-        </GuardianArticle>
+            </SelectBox>
+        </Container>
     );
 };
 
-const GuardianArticle = styled(FlexArticle)`
+const Container = styled(FlexDiv)`
     align-items: center;
     margin-top: 0.3em;
     box-sizing: border-box;
 `;
 
-const GuardianSelectBox = styled.select`
+const SelectBox = styled.select`
     width: 124px;
     margin-top: 0.2em;
 `;

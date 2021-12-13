@@ -9,7 +9,7 @@ import { ICharacterTodo, ITodo } from '@components/Todo/TodoType';
 import EditButtonContainer from '@components/Container/Button/DelEdit';
 import { ICharacter } from '@components/Character/CharacterType';
 import CharacterForm from '@components/Character/common/Form';
-import { FormContainer } from '@style/common/modal';
+import { Container } from '@style/common/modal';
 
 import Button from '@components/Button/Button';
 import styled from '@emotion/styled';
@@ -180,23 +180,23 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
     };
 
     return (
-        <FormContainer>
-            <RefreshButtonArticle>
+        <Container>
+            <AbsoulteDiv>
                 <Button className="reCrollCharacter" onClick={async () => await reCrollCharacterInfo()}>
                     갱신
                 </Button>
-            </RefreshButtonArticle>
+            </AbsoulteDiv>
             <CharacterForm color={color} setColor={setColor} name={name} setName={setName} />
             <EditButtonContainer
                 editClassName="editCharacter"
                 onClickDelete={onClickDelete}
                 onClickEdit={onClickEdit}
             />
-        </FormContainer>
+        </Container>
     );
 };
 
-const RefreshButtonArticle = styled.article`
+const AbsoulteDiv = styled.div`
     position: absolute;
     top: 2.5rem;
     right: 3rem;

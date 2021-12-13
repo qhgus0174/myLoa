@@ -5,7 +5,7 @@ import { ITodo } from '@components/Todo/TodoType';
 import PinCheckbox from '@components/Input/PinCheckBox';
 import { IContextModal, ScheduleContents } from '@common/types/types';
 import styled from '@emotion/styled';
-import { FlexArticle, FlexLeftArticle } from '@style/common';
+import { FlexDiv, FlexLeftDiv } from '@style/common';
 
 interface ICheckbox {
     todo: ITodo;
@@ -45,32 +45,32 @@ const CheckboxText = ({ todo, onContextMenu }: ICheckbox) => {
     };
 
     return (
-        <TextContainer
+        <Container
             contents={todo.contents}
             onTouchEnd={(e: React.TouchEvent<HTMLElement>) => openTodoEditModal({ e: e, todo: todo })}
             onContextMenu={(e: React.MouseEvent<HTMLElement>) => openTodoEditModal({ e: e, todo: todo })}
         >
-            <TextArticle>
-                <FlexArticle basis="10"></FlexArticle>
-                <FlexArticle basis="10">
+            <Article>
+                <FlexDiv basis="10"></FlexDiv>
+                <FlexDiv basis="10">
                     <PinCheckbox onClick={setFixed} isLine={false} checked={isFixed} />
-                </FlexArticle>
+                </FlexDiv>
                 <RealText basis="70" color={todo.color}>
                     {todo.name}
                 </RealText>
-                <FlexArticle basis="10"></FlexArticle>
-            </TextArticle>
-        </TextContainer>
+                <FlexDiv basis="10"></FlexDiv>
+            </Article>
+        </Container>
     );
 };
 
-const RealText = styled(FlexArticle)`
+const RealText = styled(FlexDiv)`
     color: ${props => props.color};
     justify-content: center;
     padding: 10px;
 `;
 
-const TextContainer = styled(FlexLeftArticle)<{ contents: ScheduleContents }>`
+const Container = styled(FlexLeftDiv)<{ contents: ScheduleContents }>`
     width: 100%;
     height: ${props => (props.contents === 'guardian' ? '7.75em' : '4.55em')};
     align-items: center;
@@ -82,7 +82,7 @@ const TextContainer = styled(FlexLeftArticle)<{ contents: ScheduleContents }>`
     }
 `;
 
-const TextArticle = styled(FlexArticle)`
+const Article = styled(FlexDiv)`
     width: 100%;
     height: 100%;
     flex-basis: 100%;

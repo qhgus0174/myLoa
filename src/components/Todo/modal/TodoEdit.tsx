@@ -8,7 +8,7 @@ import EditButtonContainer from '@components/Container/Button/DelEdit';
 import { getResetCheckArr } from '@components/Todo/common/functions';
 import { ICharacterTodo, ITodo } from '@components/Todo/TodoType';
 import { ScheduleCheckType, ScheduleContents, ScheduleType } from '@common/types/types';
-import { FormContainer } from '@style/common/modal';
+import { Container } from '@style/common/modal';
 import { toast } from 'react-toastify';
 
 const TodoEdit = ({
@@ -96,7 +96,7 @@ const TodoEdit = ({
     };
 
     return (
-        <FormContainer>
+        <Container>
             <TodoForm
                 type={type}
                 contents={contents}
@@ -111,7 +111,7 @@ const TodoEdit = ({
                 setShowCharacterArr={setShowCharacterArr}
             />
             <EditButtonContainer editClassName="editTodo" onClickDelete={onClickDelete} onClickEdit={onClickEdit} />
-        </FormContainer>
+        </Container>
     );
 };
 

@@ -8,7 +8,7 @@ import AddButtonContainer from '@components/Container/Button/Add';
 import { ICharacter } from '@components/Character/CharacterType';
 import TodoForm from '@components/Todo/common/Form';
 import { ScheduleCheckType, ScheduleContents, ScheduleType } from '@common/types/types';
-import { FormContainer } from '@style/common/modal';
+import { Container } from '@style/common/modal';
 import { useTheme } from '@emotion/react';
 import { toast } from 'react-toastify';
 
@@ -86,7 +86,7 @@ const Todo = () => {
     };
 
     return (
-        <FormContainer>
+        <Container>
             <TodoForm
                 type={type}
                 contents={contents}
@@ -102,7 +102,7 @@ const Todo = () => {
             />
 
             <AddButtonContainer addClassName="addTodo" onClickAdd={onClickAdd} />
-        </FormContainer>
+        </Container>
     );
 };
 

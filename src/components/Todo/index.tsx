@@ -7,7 +7,7 @@ import Checkbox from '@components/Todo/view/Checkbox';
 import Line from '@components/Todo/view/Line';
 import { IContextModalParam, ScheduleContents } from '@common/types/types';
 import styled from '@emotion/styled';
-import { FlexArticle } from '@style/common';
+import { FlexDiv } from '@style/common';
 import { heightMedia, widthMedia } from '@style/device';
 
 const Todo = ({ onContextMenuBasicModal }: IContextModalParam) => {
@@ -45,7 +45,7 @@ const Todo = ({ onContextMenuBasicModal }: IContextModalParam) => {
             <DragDropContext onDragEnd={onDragEndCharacter}>
                 <Droppable droppableId="TodoDrop">
                     {provided => (
-                        <FlexArticle direction="column" {...provided.droppableProps} ref={provided.innerRef}>
+                        <FlexDiv direction="column" {...provided.droppableProps} ref={provided.innerRef}>
                             {(storedTodo as ITodo[])
                                 .sort((a, b) => {
                                     return storedTodoOrd.indexOf(a.id) - storedTodoOrd.indexOf(b.id);
@@ -89,7 +89,7 @@ const Todo = ({ onContextMenuBasicModal }: IContextModalParam) => {
                                     );
                                 })}
                             {provided.placeholder}
-                        </FlexArticle>
+                        </FlexDiv>
                     )}
                 </Droppable>
             </DragDropContext>

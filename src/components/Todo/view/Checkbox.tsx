@@ -7,7 +7,7 @@ import TodoCheck from '@components/Todo/modal/TodoCheck';
 import TextBox from '@components/Input/TextBox';
 import Guardian from '@components/Todo/view/Guardian';
 import { IContextModal, ScheduleContents, ScheduleType } from '@common/types/types';
-import { CharactersArticle, FlexArticle, FlexHoverArticle } from '@style/common';
+import { CharactersDiv, FlexDiv, FlexHoverArticle } from '@style/common';
 import styled from '@emotion/styled';
 
 interface ICheckbox {
@@ -201,8 +201,8 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
 
     return (
         <>
-            <WhiteSpaceDiv></WhiteSpaceDiv>
-            <CharactersArticle length={storedCharacter.length - (currentPage - 1) * perPage} contents={pTodo.contents}>
+            <WhiteSpace></WhiteSpace>
+            <CharactersDiv length={storedCharacter.length - (currentPage - 1) * perPage} contents={pTodo.contents}>
                 {pTodo.character
                     ?.sort((a: ICharacterTodo, b: ICharacterTodo) => {
                         return storedCharacterOrd.indexOf(a.id) - storedCharacterOrd.indexOf(b.id);
@@ -229,8 +229,8 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                             >
                                 {pTodo.checkType === 'check' ? (
                                     pTodo.showCharacter.includes(charTodo.id) && (
-                                        <FlexArticle direction="column" width="100">
-                                            <CheckContainer
+                                        <FlexDiv direction="column" width="100">
+                                            <EContainer
                                                 onTouchEnd={(e: React.TouchEvent<HTMLElement>) =>
                                                     onTouchEnd({
                                                         e: e,
@@ -242,10 +242,10 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                                                     onClickCheckTodoHoverArea(e, charTodo.id)
                                                 }
                                             >
-                                                <CheckBoxArticle contents={pTodo.contents} todoType={pTodo.type}>
+                                                <Article contents={pTodo.contents} todoType={pTodo.type}>
                                                     {charTodo.check.map((checks: number, checkesIndex: number) => {
                                                         return (
-                                                            <CheckboxContentDiv key={`todo_char_check_${checkesIndex}`}>
+                                                            <Content key={`todo_char_check_${checkesIndex}`}>
                                                                 <CheckboxInput
                                                                     className="todoCheckbox"
                                                                     key={checkesIndex}
@@ -254,19 +254,19 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                                                                         e: React.ChangeEvent<HTMLInputElement>,
                                                                     ) => onClickCheckTodo(e, charTodo.id, checkesIndex)}
                                                                 />
-                                                                <EponaTextArticle>
+                                                                <EponaText>
                                                                     {pTodo.contents === 'epona' &&
                                                                         charTodo.eponaName &&
                                                                         charTodo.eponaName[checkesIndex]}
-                                                                </EponaTextArticle>
-                                                            </CheckboxContentDiv>
+                                                                </EponaText>
+                                                            </Content>
                                                         );
                                                     })}
-                                                </CheckBoxArticle>
+                                                </Article>
                                                 {pTodo.type === 'daily' &&
                                                     ['chaos', 'guardian'].includes(pTodo.contents) && (
-                                                        <CheckTextArticle>
-                                                            <RelaxGaugeArticle
+                                                        <Text>
+                                                            <RelaxGauge
                                                                 onTouchEnd={(e: React.TouchEvent<HTMLElement>) =>
                                                                     onTouchEnd({
                                                                         e: e,
@@ -279,10 +279,10 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                                                                 }
                                                             >
                                                                 {charTodo.relaxGauge}
-                                                            </RelaxGaugeArticle>
-                                                        </CheckTextArticle>
+                                                            </RelaxGauge>
+                                                        </Text>
                                                     )}
-                                            </CheckContainer>
+                                            </EContainer>
                                             {pTodo.type === 'daily' && pTodo.contents === 'guardian' && (
                                                 <Guardian
                                                     onTouchEnd={onTouchEnd}
@@ -299,7 +299,7 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                                                     setGuardianStep={setGuardianStep}
                                                 />
                                             )}
-                                        </FlexArticle>
+                                        </FlexDiv>
                                     )
                                 ) : (
                                     <TextBox
@@ -315,13 +315,13 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                             </FlexHoverArticle>
                         );
                     })}
-            </CharactersArticle>
-            <WhiteSpaceDiv></WhiteSpaceDiv>
+            </CharactersDiv>
+            <WhiteSpace></WhiteSpace>
         </>
     );
 };
 
-const CheckBoxArticle = styled.article<{ todoType: ScheduleType; contents: ScheduleContents }>`
+const Article = styled.article<{ todoType: ScheduleType; contents: ScheduleContents }>`
     display: flex;
     justify-content: space-evenly;
 
@@ -331,27 +331,27 @@ const CheckBoxArticle = styled.article<{ todoType: ScheduleType; contents: Sched
     }
 `;
 
-const CheckTextArticle = styled.article`
+const Text = styled.article`
     display: flex;
     flex-direction: column;
     flex-basis: 15%;
     justify-content: center;
 `;
 
-const RelaxGaugeArticle = styled.article`
+const RelaxGauge = styled.article`
     justify-content: center;
     text-align: center;
     color: ${props => props.theme.colors.relax};
     font-weight: 600;
 `;
 
-const WhiteSpaceDiv = styled.div`
+const WhiteSpace = styled.div`
     display: flex;
     width: 2.5%;
     flex-basis: 2.5%;
 `;
 
-const CheckboxContentDiv = styled.label`
+const Content = styled.label`
     display: flex;
     flex-direction: column;
     cursor: pointer;
@@ -360,7 +360,7 @@ const CheckboxContentDiv = styled.label`
     font-size: 0.9em;
 `;
 
-const EponaTextArticle = styled.article`
+const EponaText = styled.article`
     font-size: 0.9em;
     white-space: nowrap;
     overflow: hidden;
@@ -371,7 +371,7 @@ const EponaTextArticle = styled.article`
     box-sizing: border-box;
 `;
 
-const CheckContainer = styled(FlexArticle)`
+const EContainer = styled(FlexDiv)`
     height: 100%;
     justify-content: center;
 `;

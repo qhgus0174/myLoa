@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { IPortalOption, IPortalProperty } from '@common/types/types';
 import styled from '@emotion/styled';
 import { widthMedia } from '@style/device';
-import { FlexArticle } from '@style/common';
+import { FlexDiv } from '@style/common';
 import Button from '@components/Button/Button';
 import { ModalActionContext } from '@context/ModalContext';
 
@@ -21,7 +21,7 @@ const BasicModal = ({ children, options }: IPortalProperty) => {
     );
 };
 
-const ModalInner = styled(FlexArticle)<Pick<IPortalOption, 'width' | 'height'>>`
+const ModalInner = styled(FlexDiv)<Pick<IPortalOption, 'width' | 'height'>>`
     z-index: 2;
 
     position: relative;

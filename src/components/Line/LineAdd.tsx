@@ -5,7 +5,7 @@ import AddButtonContainer from '@components/Container/Button/Add';
 import LineForm from '@components/Line/common/Form';
 import { ITodo } from '@components/Todo/TodoType';
 import { useTheme } from '@emotion/react';
-import { FormContainer } from '@style/common/modal';
+import { Container } from '@style/common/modal';
 
 const LineAdd = () => {
     const { storedTodo, storedTodoOrd } = useContext(LocalStorageStateContext);
@@ -55,10 +55,10 @@ const LineAdd = () => {
     };
 
     return (
-        <FormContainer>
+        <Container>
             <LineForm color={color} setColor={setColor} />
             <AddButtonContainer addClassName="addLine" onClickAdd={onClickAdd} />
-        </FormContainer>
+        </Container>
     );
 };
 

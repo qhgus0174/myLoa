@@ -9,7 +9,7 @@ import { getCrollCharacterInfo, isDuplicate } from '@components/Character/common
 import { ICharacter } from '@components/Character/CharacterType';
 import CharacterForm from '@components/Character/common/Form';
 import AddButtonContainer from '@components/Container/Button/Add';
-import { FormContainer } from '@style/common/modal';
+import { Container } from '@style/common/modal';
 import { getResetCheckArr } from '@components/Todo/common/functions';
 import { useTheme } from '@emotion/react';
 import { ILedgerOwn } from '@components/Ledger/LedgerType';
@@ -153,10 +153,10 @@ const CharacterAdd = () => {
     };
 
     return (
-        <FormContainer>
+        <Container>
             <CharacterForm color={color} name={name} setName={setName} setColor={setColor} />
             <AddButtonContainer addClassName="addCharacter" onClickAdd={onClickAdd} />
-        </FormContainer>
+        </Container>
     );
 };
 

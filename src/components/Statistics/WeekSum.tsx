@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { FlexArticle } from '@style/common';
+import { FlexDiv } from '@style/common';
 
 interface IWeekSum {
     title: string;
@@ -21,6 +21,6 @@ const WeekSum = ({ title, common, personal }: IWeekSum) => {
     );
 };
 
-const Container = styled(FlexArticle)``;
+const Container = styled(FlexDiv)``;
 
 export default WeekSum;

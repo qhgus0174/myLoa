@@ -18,7 +18,7 @@ import {
 } from 'recharts';
 import { calcSum, calcSumWithCommma } from '@components/Ledger/common/functions';
 import { ILedger, ILedgerCommon, ILedgerOwn } from '@components/Ledger/LedgerType';
-import { FlexArticle } from '@style/common';
+import { FlexDiv } from '@style/common';
 import { IStatisticsCommon, IStatisticsPersonal, IStatisticsPersonalPrev } from '@components/Statistics/StatisticsType';
 import Ranking from '@components/Statistics/Ranking';
 import WeekSum from '@components/Statistics/WeekSum';
@@ -211,7 +211,7 @@ const Statistics = () => {
                     <OverAllLeftArticle>
                         <InnerDiv>
                             <h2>통계</h2>
-                            <FlexArticle>
+                            <FlexDiv>
                                 <div>
                                     <WeekSum
                                         title="이번주"
@@ -239,11 +239,11 @@ const Statistics = () => {
                                         }
                                     />
                                 </div>
-                            </FlexArticle>
+                            </FlexDiv>
                         </InnerDiv>
                         <InnerDiv>
                             <h2>순위</h2>
-                            <FlexArticle>
+                            <FlexDiv>
                                 <Ranking
                                     title="이번주"
                                     array={personalGoldThisWeekArr.map(({ name, raid, goods }) => {
@@ -251,7 +251,7 @@ const Statistics = () => {
                                     })}
                                 />
                                 <Ranking title="저번주 ~ 4주전" array={personalGoldPrev} />
-                            </FlexArticle>
+                            </FlexDiv>
                         </InnerDiv>
                     </OverAllLeftArticle>
                     <OverAllInnerArticle>
@@ -504,7 +504,7 @@ const PersonalPrevArticle = styled.article`
     flex-basis: 50%;
 `;
 
-const RankingDiv = styled(FlexArticle)``;
+const RankingDiv = styled(FlexDiv)``;
 
 const CommonArticle = styled.article`
     display: flex;
@@ -512,7 +512,7 @@ const CommonArticle = styled.article`
     width: 100%;
 `;
 
-const GraphDiv = styled(FlexArticle)`
+const GraphDiv = styled(FlexDiv)`
     justify-content: center;
     font-size: 0.8em;
 `;

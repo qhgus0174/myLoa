@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import BasicCheckbox from '@components/Input/BasicCheckbox';
 import { IRaidGold, IRaidGoldDetail } from '@common/types/response/ledger/raid';
-import { ContentsInnerArticle } from '@style/common/modal';
-import { FlexArticle } from '@style/common';
+import { InnerContent } from '@style/common/modal';
+import { FlexDiv } from '@style/common';
 import { ILedger, ILedgerHistoryRaid, ILedgerOwn } from '@components/Ledger/LedgerType';
 import { DateTime } from 'luxon';
 import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
@@ -212,8 +212,8 @@ const RaidGold = ({
             <article>
                 {raidDetailData && (
                     <>
-                        <ContentsInnerArticle>
-                            <FlexArticle>
+                        <InnerContent>
+                            <FlexDiv>
                                 {raidCategory.map(
                                     (
                                         { id: raidId, name: raidName, openlevel, closelevel }: IRaidGold,
@@ -353,8 +353,8 @@ const RaidGold = ({
                                         );
                                     },
                                 )}
-                            </FlexArticle>
-                        </ContentsInnerArticle>
+                            </FlexDiv>
+                        </InnerContent>
                     </>
                 )}
             </article>

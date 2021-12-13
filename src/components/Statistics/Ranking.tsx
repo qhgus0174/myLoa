@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import { FlexArticle } from '@style/common';
+import { FlexDiv } from '@style/common';
 import { IStatisticsPersonalPrev } from '@components/Statistics/StatisticsType';
 
 interface IRanking {
@@ -29,6 +29,6 @@ const Ranking = ({ title, array }: IRanking) => {
     );
 };
 
-const Container = styled(FlexArticle)``;
+const Container = styled(FlexDiv)``;
 
 export default Ranking;

@@ -28,15 +28,15 @@ const Line = ({
     };
 
     return (
-        <LineArticle
+        <Container
             color={todo.color}
             onTouchEnd={(e: React.TouchEvent<HTMLElement>) => openLineEditModal({ e: e, todo: todo })}
             onContextMenu={(e: React.MouseEvent<HTMLElement>) => openLineEditModal({ e: e, todo: todo })}
-        ></LineArticle>
+        ></Container>
     );
 };
 
-const LineArticle = styled.article`
+const Container = styled.article`
     height: 1.5em;
     background: ${props => props.color};
 `;

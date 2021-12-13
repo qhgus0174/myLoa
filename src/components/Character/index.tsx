@@ -12,7 +12,7 @@ import LeftArrow from '@components/Image/LeftArrow';
 import Button from '@components/Button/Button';
 import { IContextModalParam } from '@common/types/types';
 import styled from '@emotion/styled';
-import { FlexArticle, FlexLeftArticle, FlexHoverArticle, CharactersArticle } from '@style/common';
+import { FlexDiv, FlexLeftDiv, FlexHoverArticle, CharactersDiv } from '@style/common';
 
 const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
     const { perPage, currentPage } = useContext(PagingStateContext);
@@ -66,8 +66,8 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
                 <Droppable droppableId="CharacterDrop" direction="horizontal">
                     {provided => (
                         <DropCharacterHeader todoLength={storedTodo.length} characterLength={storedCharacter.length}>
-                            <FlexArticle {...provided.droppableProps} ref={provided.innerRef}>
-                                <FlexLeftArticle></FlexLeftArticle>
+                            <FlexDiv {...provided.droppableProps} ref={provided.innerRef}>
+                                <FlexLeftDiv></FlexLeftDiv>
 
                                 <ArrowDiv characterOrd={storedCharacterOrd} perPage={perPage}>
                                     <Button
@@ -79,7 +79,7 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
                                     />
                                 </ArrowDiv>
 
-                                <CharactersArticle length={storedCharacterOrd.length - (currentPage - 1) * perPage}>
+                                <CharactersDiv length={storedCharacterOrd.length - (currentPage - 1) * perPage}>
                                     {(storedCharacter as ICharacter[])
                                         .sort((a, b) => {
                                             return (
@@ -99,7 +99,7 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
                                                     index={charIndex}
                                                 >
                                                     {provided => (
-                                                        <CharacterArticle
+                                                        <Article
                                                             color={char.color}
                                                             key={charIndex}
                                                             {...provided.draggableProps}
@@ -112,20 +112,20 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
                                                                 openCharacterEditModal({ e: e, char: char });
                                                             }}
                                                         >
-                                                            <FlexArticle>
+                                                            <FlexDiv>
                                                                 <JobLogo shape={char.job} />
-                                                            </FlexArticle>
-                                                            <InfoArticle direction="column">
-                                                                <FlexArticle>{char.name}</FlexArticle>
-                                                                <FlexArticle>{`Lv. ${char.level}`}</FlexArticle>
-                                                            </InfoArticle>
-                                                        </CharacterArticle>
+                                                            </FlexDiv>
+                                                            <InfoDiv direction="column">
+                                                                <FlexDiv>{char.name}</FlexDiv>
+                                                                <FlexDiv>{`Lv. ${char.level}`}</FlexDiv>
+                                                            </InfoDiv>
+                                                        </Article>
                                                     )}
                                                 </Draggable>
                                             );
                                         })}
                                     {provided.placeholder}
-                                </CharactersArticle>
+                                </CharactersDiv>
                                 <ArrowDiv characterOrd={storedCharacterOrd} perPage={perPage}>
                                     <Button
                                         width="100"
@@ -135,7 +135,7 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
                                         iconOnly={true}
                                     />
                                 </ArrowDiv>
-                            </FlexArticle>
+                            </FlexDiv>
                         </DropCharacterHeader>
                     )}
                 </Droppable>
@@ -152,15 +152,15 @@ const DropCharacterHeader = styled.header<{ characterLength: number; todoLength:
     box-sizing: border-box;
 `;
 
-const CharacterArticle = styled(FlexHoverArticle)`
+const Article = styled(FlexHoverArticle)`
     font-weight: 600;
     width: 100%;
-    article {
+    div {
         color: ${props => props.color};
     }
 `;
 
-const InfoArticle = styled(FlexArticle)`
+const InfoDiv = styled(FlexDiv)`
     margin-left: 0.8em;
     box-sizing: border-box;
 `;

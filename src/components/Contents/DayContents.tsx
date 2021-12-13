@@ -1,16 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { DateTime } from 'luxon';
-import { ModalActionContext } from '@context/ModalContext';
 import { CompassInfo } from '@common/data/compass';
 import styled from '@emotion/styled';
-import { ContentsInnerArticle, FormContainer } from '@style/common/modal';
+import { InnerContent } from '@style/common/modal';
 
 const DayContents = () => {
     const [fieldBoss, setFieldBoss] = useState<boolean>(false);
     const [ghost, setGhost] = useState<boolean>(false);
     const [chaosGate, setChaosGate] = useState<boolean>(false);
-
-    const { closeModal } = useContext(ModalActionContext);
 
     useEffect(() => {
         getCompass();
@@ -29,31 +26,31 @@ const DayContents = () => {
     };
 
     return (
-        <CompassContainer>
-            <CompassArticle active={fieldBoss}>
+        <Container>
+            <Article active={fieldBoss}>
                 <span> {fieldBoss ? '⭕' : '❌'}</span>
                 <span>필드 보스</span>
-            </CompassArticle>
-            <CompassArticle active={ghost}>
+            </Article>
+            <Article active={ghost}>
                 <span> {ghost ? '⭕' : '❌'}</span>
                 <span>유령선</span>
-            </CompassArticle>
-            <CompassArticle active={chaosGate}>
+            </Article>
+            <Article active={chaosGate}>
                 <span> {chaosGate ? '⭕' : '❌'}</span>
                 <span>카오스 게이트</span>
-            </CompassArticle>
-        </CompassContainer>
+            </Article>
+        </Container>
     );
 };
 
-const CompassContainer = styled(ContentsInnerArticle)`
+const Container = styled(InnerContent)`
     display: flex;
     flex-direction: column;
     height: 100px;
     justify-content: space-evenly;
 `;
 
-const CompassArticle = styled.article<{ active: boolean }>`
+const Article = styled.article<{ active: boolean }>`
     display: flex;
     margin-left: 1em;
     span:nth-of-type(2) {

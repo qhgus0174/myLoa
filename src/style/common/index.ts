@@ -12,7 +12,7 @@ interface IBasis {
     height?: string;
 }
 
-export const FlexArticle = styled.article<IBasis>`
+export const FlexDiv = styled.div<IBasis>`
     display: flex;
     flex-direction: ${props => (props.direction ? props.direction : `row`)};
     ${props => props.basis && `flex-basis: ${props.basis}%`};
@@ -20,7 +20,7 @@ export const FlexArticle = styled.article<IBasis>`
     ${props => props.height && `height: ${props.height}%`};
 `;
 
-export const FlexLeftArticle = styled.article`
+export const FlexLeftDiv = styled.div`
     display: flex;
     justify-content: center;
     flex-basis: 12%;
@@ -29,7 +29,7 @@ export const FlexLeftArticle = styled.article`
     }
 `;
 
-export const FlexRightArticle = styled.article`
+export const FlexRightDiv = styled.div`
     display: flex;
     flex-basis: 88%;
     ${widthMedia.tablet} {
@@ -39,7 +39,10 @@ export const FlexRightArticle = styled.article`
     justify-content: center;
 `;
 
-export const FlexHoverArticle = styled(FlexLeftArticle)`
+export const FlexHoverArticle = styled.article`
+    display: flex;
+    justify-content: center;
+
     height: 100%;
     align-items: center;
 
@@ -65,7 +68,7 @@ export const FlexHoverArticle = styled(FlexLeftArticle)`
     cursor: pointer;
 `;
 
-export const CharactersArticle = styled(FlexRightArticle)<{ length: number; contents?: ScheduleContents }>`
+export const CharactersDiv = styled(FlexRightDiv)<{ length: number; contents?: ScheduleContents }>`
     height: ${props => (props.contents === 'guardian' ? '7.75em' : '4.55em')};
 
     ${props => {
@@ -95,7 +98,7 @@ export const CharactersArticle = styled(FlexRightArticle)<{ length: number; cont
     }
 `;
 
-export const RemarkArticle = styled(FlexArticle)`
+export const RemarkDiv = styled(FlexDiv)`
     justify-content: flex-end;
     margin-bottom: 1em;
     box-sizing: border-box;

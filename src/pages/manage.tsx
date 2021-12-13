@@ -11,7 +11,7 @@ import { IBackup } from '@common/types/response/backup';
 import { IResponse } from '@common/types/response';
 import { insertErrorDB } from '@common/error';
 import styled from '@emotion/styled';
-import { FlexArticle } from '@style/common';
+import { FlexDiv } from '@style/common';
 import { widthMedia } from '@style/device';
 
 const Manage = () => {
@@ -65,34 +65,36 @@ const Manage = () => {
     };
 
     return (
-        <ManageContainer direction="column">
-            <ManageArticle>
+        <Container>
+            <Content>
                 <span>오류 발생 시 데이터를 초기화 할 수 있습니다. </span>
-                <ManageButton className="resetData" onClick={() => clearData()}>
+                <CustomButton className="resetData" onClick={() => clearData()}>
                     초기화
-                </ManageButton>
-            </ManageArticle>
-            <ManageArticle direction="column">
-                <ManageInnerArticle>
+                </CustomButton>
+            </Content>
+            <Content direction="column">
+                <InnerContent>
                     <span>데이터를 백업하여 다른 브라우저에서 열람 가능합니다. (일회용) </span>
-                </ManageInnerArticle>
-                <ManageInnerArticle>
-                    <ManageButton className="createBackupCode" onClick={() => backupData()}>
+                </InnerContent>
+                <InnerContent>
+                    <CustomButton className="createBackupCode" onClick={() => backupData()}>
                         코드 생성
-                    </ManageButton>
-                    <ManageButton className="getBackupCode" onClick={() => setBackupData()}>
+                    </CustomButton>
+                    <CustomButton className="getBackupCode" onClick={() => setBackupData()}>
                         불러오기
-                    </ManageButton>
-                </ManageInnerArticle>
-            </ManageArticle>
-            <ManageArticle>
+                    </CustomButton>
+                </InnerContent>
+            </Content>
+            <Content>
                 <span>버그 발생 / 문의 사항이 있을 시 shannon_@hotmail.co.kr로 메일 부탁드립니다. </span>
-            </ManageArticle>
-        </ManageContainer>
+            </Content>
+        </Container>
     );
 };
 
-const ManageContainer = styled(FlexArticle)`
+const Container = styled.section`
+    display: flex;
+    flex-direction: column;
     width: 70%;
     justify-content: center;
     align-items: center;
@@ -101,7 +103,8 @@ const ManageContainer = styled(FlexArticle)`
     box-sizing: border-box;
 `;
 
-const ManageArticle = styled(FlexArticle)`
+const Content = styled(FlexDiv)`
+    display: flex;
     align-items: center;
     margin-bottom: 2em;
     box-sizing: border-box;
@@ -115,14 +118,14 @@ const ManageArticle = styled(FlexArticle)`
     }
 `;
 
-const ManageInnerArticle = styled(FlexArticle)`
+const InnerContent = styled(FlexDiv)`
     align-items: center;
     justify-content: center;
     margin-bottom: 1em;
     box-sizing: border-box;
 `;
 
-const ManageButton = styled(Button)`
+const CustomButton = styled(Button)`
     margin-left: 1em;
     box-sizing: border-box;
 `;

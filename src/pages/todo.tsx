@@ -23,7 +23,7 @@ import { GA } from '@service/ga';
 import { NextSeo } from 'next-seo';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { FlexArticle } from '@style/common';
+import { FlexDiv } from '@style/common';
 import { responsiveWidth, widthMedia } from '@style/device';
 
 const Main = () => {
@@ -217,7 +217,7 @@ const Main = () => {
                     </HideButtonSection>
                 </HideButtonContainer>
                 <TodoButtons isFold={isFold}>
-                    <ButtonLeftArticle>
+                    <ButtonLeftDiv>
                         <AddButton
                             type="button"
                             icon={<PlusIcon fill={theme.button.color} width="15" height="15" />}
@@ -249,8 +249,8 @@ const Main = () => {
                         >
                             구분선
                         </AddButton>
-                    </ButtonLeftArticle>
-                    <FlexArticle>
+                    </ButtonLeftDiv>
+                    <FlexDiv>
                         <AddButton
                             type="button"
                             onClick={e =>
@@ -281,7 +281,7 @@ const Main = () => {
                         >
                             캐릭터
                         </AddButton>
-                    </FlexArticle>
+                    </FlexDiv>
                 </TodoButtons>
                 <TodoContentsSection>
                     {storedCharacter.length > 0 && <Pagination />}
@@ -360,17 +360,9 @@ const AddButton = styled(Button)<{ isRight?: boolean }>`
     }
 `;
 
-const ButtonLeftArticle = styled(FlexArticle)`
+const ButtonLeftDiv = styled(FlexDiv)`
     ${widthMedia.smallPhone} {
         flex-direction: column;
-    }
-`;
-
-const HideGuideArticle = styled(FlexArticle)`
-    display: none;
-    ${widthMedia.smallPhone} {
-        display: flex;
-        padding-left: 1em;
     }
 `;
 

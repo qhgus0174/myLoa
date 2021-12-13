@@ -6,8 +6,7 @@ import { IResponse } from '@common/types/response';
 import { weeklyGuardian } from '@common/data/weeklyGuardian';
 import { weeklyAbyss } from '@common/data/weeklyAbyss';
 import styled from '@emotion/styled';
-import { ContentsArticleTitle, ContentsInnerArticle, FormContainer, FormArticleContainer } from '@style/common/modal';
-import { FlexArticle } from '@style/common';
+import { Title, InnerContent, Container, ContentContainer } from '@style/common/modal';
 
 const WeeklyContents = () => {
     const [guardian, setGuardian] = useState<string[]>([]);
@@ -56,43 +55,40 @@ const WeeklyContents = () => {
     }, []);
 
     return (
-        <FormContainer>
-            <FormArticleContainer>
+        <Container>
+            <ContentContainer>
                 {guardian.length > 0 && (
-                    <GuardianArticle>
-                        <ContentsArticleTitle>도전 가디언 토벌</ContentsArticleTitle>
-                        <ContentsInnerArticle>
+                    <Article>
+                        <Title>도전 가디언 토벌</Title>
+                        <InnerContent>
                             {guardian.map((name, guardianIndex) => {
-                                return <ContentsArticle key={guardianIndex}>🔹 {name}</ContentsArticle>;
+                                return <Contents key={guardianIndex}>🔹 {name}</Contents>;
                             })}
-                        </ContentsInnerArticle>
-                    </GuardianArticle>
+                        </InnerContent>
+                    </Article>
                 )}
                 {abyss.length > 0 && (
-                    <AbyssArticle>
-                        <ContentsArticleTitle>도전 어비스 던전</ContentsArticleTitle>
-                        <ContentsInnerArticle>
+                    <Article>
+                        <Title>도전 어비스 던전</Title>
+                        <InnerContent>
                             {abyss.map((name, abyssIndex) => {
-                                return <ContentsArticle key={abyssIndex}>🔹 {name}</ContentsArticle>;
+                                return <Contents key={abyssIndex}>🔹 {name}</Contents>;
                             })}
-                        </ContentsInnerArticle>
-                    </AbyssArticle>
+                        </InnerContent>
+                    </Article>
                 )}
-            </FormArticleContainer>
-        </FormContainer>
+            </ContentContainer>
+        </Container>
     );
 };
 
-const GuardianArticle = styled(FlexArticle)`
+const Article = styled.article`
+    display: flex;
     flex-direction: column;
     margin-bottom: 1.5em;
 `;
 
-const AbyssArticle = styled(FlexArticle)`
-    flex-direction: column;
-`;
-
-const ContentsArticle = styled.article`
+const Contents = styled.article`
     line-height: 2.5rem;
     padding-left: 0.8em;
 `;

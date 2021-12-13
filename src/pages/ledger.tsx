@@ -18,7 +18,7 @@ import { getRaidDetail, getRaid } from '@apis/ledger/raid';
 import { getCommon, initCommonDropDown } from '@apis/ledger/common';
 import { IDropdown } from '@common/types/types';
 import { IRaidGold, IRaidGoldDetail } from '@common/types/response/ledger/raid';
-import { FlexArticle } from '@style/common';
+import { FlexDiv } from '@style/common';
 import TextBox from '@components/Input/TextBox';
 import { IGoods, IGoodsImg } from '@common/types/response/ledger/goods';
 import { getGoods, getGoodsImg } from '@apis/ledger/goods';
@@ -141,12 +141,12 @@ const Ledger = () => {
     return (
         <>
             {status === 'fulfilled' && ledgerData && (
-                <LedgerSection>
-                    <CharacterArticle>
+                <Container>
+                    <Article>
                         <GoldHistory name="공통" prevWeekGold={storedLedger.common.prevWeekGold[0]} />
                         총 골드 : <TextBox value={calcSum(storedLedger.common.histories)} readOnly />
                         <CommonGold commonData={ledgerData.common} />
-                    </CharacterArticle>
+                    </Article>
                     {storedLedger.own.map(
                         (
                             {
@@ -168,7 +168,7 @@ const Ledger = () => {
                             const raidTotalGold = calcSum(storedLedger.own[goodsIndex].histories.raid.data);
 
                             return (
-                                <CharacterArticle key={ledgerIndex}>
+                                <Article key={ledgerIndex}>
                                     <GoldHistory
                                         name={
                                             getCharacterInfoById({ dataArray: storedCharacter, id: characterId }).name
@@ -176,7 +176,7 @@ const Ledger = () => {
                                         prevWeekGold={prevWeekGold[0]}
                                     />
                                     <div>이번 주 총 합 : {goodsTotalGold + raidTotalGold}</div>
-                                    <FlexArticle
+                                    <FlexDiv
                                         onClick={() =>
                                             foldGoodsDiv({ characterIndex: goodsIndex, foldState: goodsFold })
                                         }
@@ -184,7 +184,7 @@ const Ledger = () => {
                                         재화
                                         <DownArrow fill={theme.colors.text} width="25" height="25" />
                                         총 골드 : <TextBox value={goodsTotalGold} readOnly />
-                                    </FlexArticle>
+                                    </FlexDiv>
                                     <GoldDiv fold={goodsFold}>
                                         <GoodsGold
                                             characterId={characterId}
@@ -192,13 +192,13 @@ const Ledger = () => {
                                             imgPaletteArr={ledgerData.goodsImg}
                                         />
                                     </GoldDiv>
-                                    <FlexArticle
+                                    <FlexDiv
                                         onClick={() => foldRaidDiv({ characterIndex: goodsIndex, foldState: raidFold })}
                                     >
                                         레이드
                                         <DownArrow fill={theme.colors.text} width="25" height="25" />
                                         총 골드 : <TextBox value={raidTotalGold} readOnly />
-                                    </FlexArticle>
+                                    </FlexDiv>
                                     <GoldDiv fold={raidFold}>
                                         <RaidGold
                                             raidCategory={ledgerData.raid}
@@ -207,11 +207,11 @@ const Ledger = () => {
                                             characterLevel={Number(level.replace(/\,/g, ''))}
                                         />
                                     </GoldDiv>
-                                </CharacterArticle>
+                                </Article>
                             );
                         },
                     )}
-                </LedgerSection>
+                </Container>
             )}
         </>
     );
@@ -222,14 +222,14 @@ const GoldDiv = styled.div<{ fold: boolean }>`
     flex-direction: column;
 `;
 
-const LedgerSection = styled.section`
+const Container = styled.section`
     display: flex;
     flex-wrap: wrap;
     width: 80%;
     margin-top: 5em;
 `;
 
-const CharacterArticle = styled.article`
+const Article = styled.article`
     border: 1px solid ${props => props.theme.colors.gray};
     padding: 2em;
 `;

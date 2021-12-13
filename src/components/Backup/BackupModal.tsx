@@ -11,7 +11,7 @@ import TextBox from '@components/Input/TextBox';
 import { IBackup } from '@common/types/response/backup';
 import { IResponse } from '@common/types/response';
 import { insertErrorDB } from '@common/error';
-import { FormButtonContainer, FormContainer, FormArticleContainer } from '@style/common/modal';
+import { ButtonContainer, Container, ContentContainer } from '@style/common/modal';
 
 const BackupModal = () => {
     const [newBackupCode, setNewBackupCode] = useInput<string>('');
@@ -64,15 +64,15 @@ const BackupModal = () => {
     };
 
     return (
-        <FormContainer>
-            <FormArticleContainer>
+        <Container>
+            <ContentContainer>
                 <TextBox placeholder="백업 코드 입력" {...setNewBackupCode} />
-            </FormArticleContainer>
-            <FormButtonContainer>
+            </ContentContainer>
+            <ButtonContainer>
                 <Button onClick={() => setData()}>불러오기</Button>
                 <Button onClick={closeModal}>취소</Button>
-            </FormButtonContainer>
-        </FormContainer>
+            </ButtonContainer>
+        </Container>
     );
 };
 

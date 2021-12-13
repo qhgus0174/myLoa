@@ -11,14 +11,8 @@ import TextBox from '@components/Input/TextBox';
 import { ScheduleType } from '@common/types/types';
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import {
-    ContentsArticle,
-    ContentsArticleTitle,
-    ContentsInnerArticle,
-    FormContainer,
-    FormArticleContainer,
-} from '@style/common/modal';
-import { FlexArticle, RemarkArticle } from '@style/common';
+import { Contents, Title, InnerContent, Container, ContentContainer } from '@style/common/modal';
+import { FlexDiv, RemarkDiv } from '@style/common';
 import { toast } from 'react-toastify';
 
 const TodoCheck = ({
@@ -103,48 +97,48 @@ const TodoCheck = ({
     };
 
     return (
-        <FormContainer>
-            <ContentsInnerFlexArticle>
+        <Container>
+            <TodoAndCharacter>
                 <div>
-                    숙제 :<SmallTitleSpan>{todoName}</SmallTitleSpan>
+                    숙제 :<SmallTitle>{todoName}</SmallTitle>
                 </div>
                 <div>
-                    캐릭터명 :<SmallTitleSpan>{characterName}</SmallTitleSpan>
+                    캐릭터명 :<SmallTitle>{characterName}</SmallTitle>
                 </div>
-            </ContentsInnerFlexArticle>
+            </TodoAndCharacter>
             {todoType === 'daily' && ['chaos', 'guardian'].includes(todoContents) && (
-                <RemarkArticle>* 휴식게이지 수동 입력 시 수행횟수는 초기화 됩니다.</RemarkArticle>
+                <RemarkDiv>* 휴식게이지 수동 입력 시 수행횟수는 초기화 됩니다.</RemarkDiv>
             )}
-            <FormArticleContainer>
+            <ContentContainer>
                 {checkType === 'text' ? (
-                    <TodoCheckArticle direction="column">
-                        <ContentsArticleTitle>텍스트</ContentsArticleTitle>
-                        <ContentsArticle>
+                    <Content direction="column">
+                        <Title>텍스트</Title>
+                        <Contents>
                             <TextBox {...bindText} />
-                        </ContentsArticle>
-                    </TodoCheckArticle>
+                        </Contents>
+                    </Content>
                 ) : (
                     todoType === 'daily' &&
                     ['chaos', 'guardian'].includes(todoContents) && (
-                        <TodoCheckArticle direction="column">
-                            <ContentsArticleTitle
+                        <Content direction="column">
+                            <Title
                                 css={css`
                                     color: ${theme.colors.relax};
                                 `}
                             >
                                 휴식 게이지
-                            </ContentsArticleTitle>
-                            <ContentsArticle>
+                            </Title>
+                            <Contents>
                                 <TextBox {...bindRelaxGauge} />
-                            </ContentsArticle>
-                        </TodoCheckArticle>
+                            </Contents>
+                        </Content>
                     )
                 )}
 
                 {todoContents === 'epona' && (
-                    <TodoCheckArticle direction="column">
-                        <ContentsArticleTitle>에포나 명</ContentsArticleTitle>
-                        <ContentsArticle>
+                    <Content direction="column">
+                        <Title>에포나 명</Title>
+                        <Contents>
                             {eponaName.map((eName: string, eNameIdx: number, oriArr: string[]) => {
                                 return (
                                     <TextBox
@@ -156,51 +150,51 @@ const TodoCheck = ({
                                     />
                                 );
                             })}
-                        </ContentsArticle>
-                    </TodoCheckArticle>
+                        </Contents>
+                    </Content>
                 )}
-                <TodoCheckArticle direction="column">
-                    <ContentsArticleTitle>메모</ContentsArticleTitle>
-                    <ContentsArticle>
+                <Content direction="column">
+                    <Title>메모</Title>
+                    <Contents>
                         <TextBox {...bindMemo} />
-                    </ContentsArticle>
-                </TodoCheckArticle>
-                <TodoCheckArticle>
-                    <HideDivTitle>숨김</HideDivTitle>
-                    <HideDivContents>
+                    </Contents>
+                </Content>
+                <Content>
+                    <HideTitle>숨김</HideTitle>
+                    <HideContents>
                         <BasicCheckbox
                             value={characterId}
                             checked={!showCharacter.includes(characterId)}
                             onChange={e => setShowCharacter(getShowCheckTodo(e, showCharacter, characterId))}
                         />
-                    </HideDivContents>
-                </TodoCheckArticle>
-            </FormArticleContainer>
+                    </HideContents>
+                </Content>
+            </ContentContainer>
             <EditButtonContainer onClickEdit={onClickEdit} />
-        </FormContainer>
+        </Container>
     );
 };
 
-const TodoCheckArticle = styled(FlexArticle)`
+const Content = styled(FlexDiv)`
     margin-bottom: 2em;
 `;
 
-const ContentsInnerFlexArticle = styled(ContentsInnerArticle)`
+const TodoAndCharacter = styled(InnerContent)`
     display: flex;
     justify-content: space-around;
     margin-bottom: 1em;
 `;
 
-const HideDivTitle = styled(ContentsArticleTitle)`
+const HideTitle = styled(Title)`
     margin-bottom: 0;
     flex-basis: 10%;
 `;
 
-const HideDivContents = styled(ContentsArticleTitle)`
+const HideContents = styled(Title)`
     flex-basis: 90%;
 `;
 
-const SmallTitleSpan = styled.span`
+const SmallTitle = styled.span`
     font-weight: 500;
     margin-left: 0.7em;
     margin-right: 0.5em;

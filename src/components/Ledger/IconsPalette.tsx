@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useOnClickOutside } from '@hooks/useOnClickOutside';
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { FlexArticle } from '@style/common';
+import { FlexDiv } from '@style/common';
 import Image from 'next/image';
 import { IGoodsImg } from '@common/types/response/ledger/goods';
 import { getGoodsImg } from '@apis/ledger/goods';
@@ -31,7 +31,7 @@ const IconPalette = ({ imgId, imgPaletteArr, goodsId, onClick }: IIconPalette) =
     }, [imgPaletteArr]);
 
     return (
-        <SelectThemeContainer ref={ref}>
+        <Container ref={ref}>
             <SelectedImg onClick={() => setVisible(!visible)}>
                 <ImageBackground
                     pointer={true}
@@ -47,7 +47,7 @@ const IconPalette = ({ imgId, imgPaletteArr, goodsId, onClick }: IIconPalette) =
                     />
                 </ImageBackground>
             </SelectedImg>
-            <PaletteArticle visible={visible}>
+            <Palette visible={visible}>
                 {imgPaletteArr.map(({ folder, filename, id, background }, index) => {
                     return (
                         <ImageBackground
@@ -66,18 +66,18 @@ const IconPalette = ({ imgId, imgPaletteArr, goodsId, onClick }: IIconPalette) =
                         </ImageBackground>
                     );
                 })}
-            </PaletteArticle>
-        </SelectThemeContainer>
+            </Palette>
+        </Container>
     );
 };
 
-const SelectThemeContainer = styled.section`
+const Container = styled.section`
     position: relative;
     display: flex;
     justify-content: center;
 `;
 
-const PaletteArticle = styled(FlexArticle)<{ visible: boolean }>`
+const Palette = styled.article<{ visible: boolean }>`
     display: ${props => (props.visible ? 'flex' : 'none')};
     flex-wrap: wrap;
     background: ${props => props.theme.colors.mainInner};
