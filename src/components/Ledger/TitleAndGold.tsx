@@ -12,6 +12,7 @@ interface ITitleGold {
     opacity?: number;
     bracket?: boolean;
     isPadding?: boolean;
+    className?: string;
 }
 
 const TitleAndGold = ({
@@ -20,12 +21,13 @@ const TitleAndGold = ({
     gold,
     icon,
     opacity,
+    className,
     isPadding = true,
     bracket = false,
     underline = true,
 }: ITitleGold) => {
     return (
-        <Container title={title} underline={underline} opacity={opacity} isPadding={isPadding}>
+        <Container className={className} title={title} underline={underline} opacity={opacity} isPadding={isPadding}>
             <Title icon={icon} title={title}>
                 <span>{icon && icon}</span>
                 {iconUrl && <Image layout="fixed" src={iconUrl} width="21" height="19" />}

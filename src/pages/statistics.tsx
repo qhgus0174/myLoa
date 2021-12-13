@@ -1,7 +1,20 @@
 import React, { useEffect, useState } from 'react';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, LabelList, BarChart, Bar } from 'recharts';
+import {
+    LineChart,
+    Line,
+    XAxis,
+    YAxis,
+    CartesianGrid,
+    Tooltip,
+    Legend,
+    LabelList,
+    BarChart,
+    Bar,
+    ResponsiveContainer,
+} from 'recharts';
 import { IStatisticsCommon, IStatisticsPersonal, IStatisticsPersonalPrev } from '@components/Statistics/StatisticsType';
 import { ILedger, ILedgerCommon, ILedgerOwn } from '@components/Ledger/LedgerType';
+import ResponsiveGraph from '@components/Statistics/Graph/ResponsiveGraph';
 import { calcSum } from '@components/Ledger/common/functions';
 import BasicCheckbox from '@components/Input/BasicCheckbox';
 import Ranking from '@components/Statistics/Ranking';
@@ -10,6 +23,11 @@ import { getCharacterInfoById, parseStorageItem } from '@common/utils';
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { FlexDiv } from '@style/common';
+import { widthMedia } from '@style/device';
+import CustomLineChart from '@components/Statistics/Graph/LineChart';
+import VerticalBarChart from '@components/Statistics/Graph/VerticalBarChart';
+import GoldIcon from '@components/Image/Gold';
+import EmojiTitle from '@components/Emoji/EmojiTitle';
 
 const Statistics = () => {
     const weekKorArr = ['저번주', '2주전', '3주전', '4주전'];
@@ -18,6 +36,8 @@ const Statistics = () => {
 
     const [totalGoldByWeekArr, setTotalGoldByWeekArr] = useState<IStatisticsCommon[]>([]);
     const [commonGoldByWeekArr, setCommonGoldByWeekArr] = useState<IStatisticsCommon[]>([]);
+    const [characterGoldByWeekArr, setCharacterGoldByWeekArr] = useState<IStatisticsCommon[]>([]);
+
     const [personalGoldThisWeekArr, setPersonalGoldThisWeekArr] = useState<IStatisticsPersonal[]>([]);
 
     const [commonGoldThisWeek, setCommonGoldThisWeek] = useState<number>(0);
@@ -37,6 +57,7 @@ const Statistics = () => {
 
         calcTotalGoldByWeek();
         setCommonGoldByWeekArr(getCommonGoldByWeek(common));
+        setCharacterGoldByWeekArr(getCharacterGoldByWeek(own));
 
         calcPersonalGoldThisWeek(own);
         setPersonalGoldPrev(calcPersonalGoldPrev(own));
@@ -114,7 +135,7 @@ const Statistics = () => {
 
         characterGoldByWeek.unshift({ weekKor: '이번주', gold: personalGoldThisWeek });
 
-        return characterGoldByWeek;
+        return characterGoldByWeek.reverse();
     };
 
     const calcTotalGoldByWeek = () => {
@@ -130,7 +151,7 @@ const Statistics = () => {
 
         const totalGoldByWeekArr = Array.from(weekKorMap, ([weekKor, gold]) => ({ weekKor, gold }));
 
-        setTotalGoldByWeekArr(totalGoldByWeekArr.reverse());
+        setTotalGoldByWeekArr(totalGoldByWeekArr);
     };
 
     const getCommonGoldByWeek = (common: ILedgerCommon): IStatisticsCommon[] => {
@@ -197,23 +218,26 @@ const Statistics = () => {
                 <OverAllArticle>
                     <OverAllLeftArticle>
                         <InnerDiv>
-                            <h2>통계</h2>
-                            <FlexDiv>
-                                <div>
+                            <HeaderTitle>
+                                <EmojiTitle label={<h2>골드 총 합</h2>} symbol={'💰'} />
+                            </HeaderTitle>
+                            <OverAllDiv>
+                                <WeekSumDiv>
+                                    <Title>
+                                        <EmojiTitle label={<h4>이번 주</h4>} symbol={'📅'} />
+                                    </Title>
+                                    <WeekSum common={commonGoldThisWeek} personal={personalGoldThisWeek} />
+                                </WeekSumDiv>
+                                <WeekSumDiv>
+                                    <Title>
+                                        <EmojiTitle label={<h4>~ 4주전</h4>} symbol={'📅'} />
+                                        <BasicCheckbox
+                                            checked={isContainThisWeek}
+                                            onChange={e => setIsContainThisWeek(!isContainThisWeek)}
+                                            label={<span>이번 주 포함</span>}
+                                        />
+                                    </Title>
                                     <WeekSum
-                                        title="이번주"
-                                        common={commonGoldThisWeek}
-                                        personal={personalGoldThisWeek}
-                                    />
-                                </div>
-                                <div>
-                                    <BasicCheckbox
-                                        checked={isContainThisWeek}
-                                        onChange={e => setIsContainThisWeek(!isContainThisWeek)}
-                                        label={<span>이번 주 포함</span>}
-                                    />
-                                    <WeekSum
-                                        title={`${isContainThisWeek ? `` : `저번주`} ~ 4주전`}
                                         common={
                                             isContainThisWeek
                                                 ? commonAllGoldPrev + commonGoldThisWeek
@@ -225,192 +249,136 @@ const Statistics = () => {
                                                 : personalAllGoldPrev
                                         }
                                     />
-                                </div>
-                            </FlexDiv>
+                                </WeekSumDiv>
+                            </OverAllDiv>
                         </InnerDiv>
                         <InnerDiv>
-                            <h2>순위</h2>
-                            <FlexDiv>
-                                <Ranking
-                                    title="이번주"
-                                    array={personalGoldThisWeekArr.map(({ name, raid, goods }) => {
-                                        return { name: name, gold: raid + goods };
-                                    })}
-                                />
-                                <Ranking title="저번주 ~ 4주전" array={personalGoldPrev} />
-                            </FlexDiv>
+                            <HeaderTitle>
+                                <EmojiTitle label={<h2>순위</h2>} symbol={'👑'} />
+                            </HeaderTitle>
+                            <RankDiv>
+                                <WeekRank>
+                                    <RankContainer>
+                                        <Ranking
+                                            title="이번 주"
+                                            array={personalGoldThisWeekArr.map(({ name, raid, goods }) => {
+                                                return { name: name, gold: raid + goods };
+                                            })}
+                                        />
+                                    </RankContainer>
+                                </WeekRank>
+                                <WeekRank>
+                                    <RankContainer>
+                                        <Ranking title="저번주 ~ 4주전" array={personalGoldPrev} />
+                                    </RankContainer>
+                                </WeekRank>
+                            </RankDiv>
                         </InnerDiv>
                     </OverAllLeftArticle>
-                    <OverAllInnerArticle>
-                        <h2>~4주 골드 수급량</h2>
-                        <GraphDiv>
-                            <LineChart
-                                width={500}
-                                height={200}
-                                data={totalGoldByWeekArr}
-                                margin={{
-                                    top: 20,
-                                    right: 30,
-                                    left: 20,
-                                    bottom: 10,
-                                }}
-                            >
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <XAxis dataKey="weekKor" stroke={theme.colors.text} fontSize={5} />
-                                <YAxis stroke={theme.colors.text} />
-                                <Line
-                                    type="monotone"
-                                    dataKey="gold"
-                                    stroke={theme.colors.mainInner}
-                                    activeDot={{ r: 8 }}
-                                >
-                                    <LabelList content={<CustomizedLabel stroke={theme.colors.text} />} />
-                                </Line>
-                            </LineChart>
-                        </GraphDiv>
-                    </OverAllInnerArticle>
+                    <OverAllRightArticle>
+                        <EmojiTitle label={<h2>지난 4주</h2>} symbol={'📅'} />
+                        <OverAllInnerArticle>
+                            <CustomLineChart width={500} height={200} array={totalGoldByWeekArr} />
+                            <EmojiTitle label={<h3>총 합</h3>} symbol={'💰'} />
+                        </OverAllInnerArticle>
+                        <OverAllBottom>
+                            <OverAllInnerArticle>
+                                <CustomLineChart width={250} height={200} array={commonGoldByWeekArr} />
+                                <EmojiTitle label={<h3>공통</h3>} symbol={'⭐'} />
+                            </OverAllInnerArticle>
+                            <OverAllInnerArticle>
+                                <CustomLineChart width={250} height={200} array={characterGoldByWeekArr} />
+                                <EmojiTitle label={<h3>캐릭터 별</h3>} symbol={'🎅🏻'} />
+                            </OverAllInnerArticle>
+                        </OverAllBottom>
+                    </OverAllRightArticle>
                 </OverAllArticle>
-            </StatisticsSection>
-            <StatisticsSection>
-                <h1>공통 골드 수입</h1>
-                <CommonArticle>
-                    <h2>4주 변화 요약</h2>
-                    <LineChart
-                        width={300}
-                        height={200}
-                        data={commonGoldByWeekArr}
-                        margin={{
-                            top: 20,
-                            right: 30,
-                            left: 20,
-                            bottom: 10,
-                        }}
-                    >
-                        <CartesianGrid strokeDasharray="3 3" />
-                        <XAxis dataKey="weekKor" stroke={theme.colors.text} fontSize={5} />
-                        <YAxis stroke={theme.colors.text} />
-                        <Line type="monotone" dataKey="gold" stroke={theme.colors.mainInner} activeDot={{ r: 8 }}>
-                            <LabelList content={<CustomizedLabel stroke={theme.colors.text} />} />
-                        </Line>
-                    </LineChart>
-                </CommonArticle>
             </StatisticsSection>
             <StatisticsSection>
                 <h1>개인 골드 수입</h1>
                 <PersonalArticle>
                     <PersonalInnerArticle>
-                        <h2>이번 주</h2>
                         <GraphDiv>
-                            <BarChart
-                                width={600}
-                                height={400}
-                                layout="vertical"
-                                data={personalGoldThisWeekArr}
-                                margin={{
-                                    top: 20,
-                                    right: 30,
-                                    left: 20,
-                                    bottom: 5,
-                                }}
-                            >
-                                <CartesianGrid strokeDasharray="3 3" />
-                                <Tooltip />
-                                <XAxis stroke={theme.colors.text} type="number" />
-                                <YAxis width={80} stroke={theme.colors.text} type="category" dataKey="name" />
-                                <Legend
-                                    wrapperStyle={{ right: 0 }}
-                                    layout="vertical"
-                                    verticalAlign="middle"
-                                    align="right"
-                                    formatter={ColorfulLegendText}
-                                />
-                                <Bar isAnimationActive={false} dataKey="goods" stackId="personal" fill="#8884d8">
-                                    <LabelList
-                                        dataKey="goods"
-                                        position="inside"
-                                        fill="#ffffff"
-                                        formatter={(value: number) => value.toLocaleString()}
-                                    />
-                                </Bar>
-                                <Bar isAnimationActive={false} dataKey="raid" stackId="personal" fill="#82ca9d">
-                                    <LabelList
-                                        dataKey="raid"
-                                        position="inside"
-                                        fill="#ffffff"
-                                        formatter={(value: number) => value.toLocaleString()}
-                                    />
-                                </Bar>
-                            </BarChart>
-                        </GraphDiv>
-                    </PersonalInnerArticle>
-                    <PersonalInnerArticle>
-                        <PersonalPrevArticle>
-                            <h2>이번주 수입</h2>
-                            <GraphDiv>
+                            <ResponsiveGraph>
                                 <BarChart
                                     width={600}
-                                    height={300}
-                                    data={personalGoldPrev.sort(({ gold: beforGold }, { gold: afterGold }) => {
-                                        return afterGold - beforGold;
-                                    })}
+                                    height={400}
+                                    layout="vertical"
+                                    data={personalGoldThisWeekArr}
                                     margin={{
-                                        top: 5,
+                                        top: 20,
                                         right: 30,
                                         left: 20,
-                                        bottom: 5,
+                                        bottom: 10,
                                     }}
                                 >
                                     <CartesianGrid strokeDasharray="3 3" />
-                                    <XAxis stroke={theme.colors.text} dataKey="name" />
-                                    <YAxis stroke={theme.colors.text} />
-                                    <Tooltip />
-                                    <Bar dataKey="gold" fill="#8884d8">
+                                    <XAxis
+                                        tickFormatter={tick => {
+                                            return tick.toLocaleString();
+                                        }}
+                                        stroke={theme.colors.text}
+                                        type="number"
+                                    />
+                                    <YAxis width={80} stroke={theme.colors.text} type="category" dataKey="name" />
+                                    <Legend
+                                        wrapperStyle={{ top: 0 }}
+                                        layout="vertical"
+                                        verticalAlign="top"
+                                        align="center"
+                                        formatter={ColorfulLegendText}
+                                    />
+                                    <Bar isAnimationActive={false} dataKey="goods" stackId="personal" fill="#8884d8">
                                         <LabelList
-                                            dataKey="gold"
-                                            position="top"
+                                            dataKey="goods"
+                                            position="inside"
+                                            fill="#ffffff"
+                                            formatter={(value: number) => value.toLocaleString()}
+                                        />
+                                    </Bar>
+                                    <Bar isAnimationActive={false} dataKey="raid" stackId="personal" fill="#82ca9d">
+                                        <LabelList
+                                            dataKey="raid"
+                                            position="inside"
                                             fill="#ffffff"
                                             formatter={(value: number) => value.toLocaleString()}
                                         />
                                     </Bar>
                                 </BarChart>
-                            </GraphDiv>
-                        </PersonalPrevArticle>
-                        <PersonalPrevArticle>
-                            <h2>지난주 ~ 4주전 수입</h2>
+                            </ResponsiveGraph>
+                        </GraphDiv>
+                        <EmojiTitle label={<h3>이번 주 상세</h3>} symbol={'📅'} />
+                    </PersonalInnerArticle>
+                    <PersonalBottom>
+                        <PersonalInnerArticle>
                             <GraphDiv>
-                                <BarChart
-                                    width={600}
+                                <VerticalBarChart
+                                    width={500}
                                     height={300}
-                                    data={personalGoldThisWeekArr
+                                    array={personalGoldPrev.sort(({ gold: beforGold }, { gold: afterGold }) => {
+                                        return afterGold - beforGold;
+                                    })}
+                                />
+                            </GraphDiv>
+                            <EmojiTitle label={<h3>이번 주</h3>} symbol={'📅'} />
+                        </PersonalInnerArticle>
+                        <PersonalInnerArticle>
+                            <GraphDiv>
+                                <VerticalBarChart
+                                    width={500}
+                                    height={300}
+                                    array={personalGoldThisWeekArr
                                         .map(({ name, raid, goods }) => {
                                             return { name: name, gold: raid + goods };
                                         })
                                         .sort(({ gold: beforeGold }, { gold: afterGold }) => {
                                             return afterGold - beforeGold;
                                         })}
-                                    margin={{
-                                        top: 5,
-                                        right: 30,
-                                        left: 20,
-                                        bottom: 5,
-                                    }}
-                                >
-                                    <CartesianGrid strokeDasharray="3 3" />
-                                    <XAxis stroke={theme.colors.text} dataKey="name" />
-                                    <YAxis stroke={theme.colors.text} />
-                                    <Tooltip />
-                                    <Bar dataKey="gold" fill="#8884d8">
-                                        <LabelList
-                                            dataKey="gold"
-                                            position="top"
-                                            fill="#ffffff"
-                                            formatter={(value: number) => value.toLocaleString()}
-                                        />
-                                    </Bar>
-                                </BarChart>
+                                />
                             </GraphDiv>
-                        </PersonalPrevArticle>
-                    </PersonalInnerArticle>
+                            <EmojiTitle label={<h3>~4주 전</h3>} symbol={'📅'} />
+                        </PersonalInnerArticle>
+                    </PersonalBottom>
                 </PersonalArticle>
             </StatisticsSection>
         </StatisticsContainer>
@@ -418,19 +386,45 @@ const Statistics = () => {
 };
 
 const StatisticsContainer = styled.section`
+    display: flex;
+    flex-direction: column;
     width: 80%;
     margin-top: 4em;
 
     h1 {
-        font-size: 1.7em;
+        font-size: 1.6em;
     }
 
     h2 {
-        font-size: 1.3em;
+        font-size: 1.25em;
     }
 
     h3 {
         font-size: 1.15em;
+    }
+
+    h4 {
+        font-size: 1.05em;
+    }
+    tspan {
+        font-size: 12px;
+    }
+
+    ${widthMedia.phone} {
+        width: 90%;
+    }
+`;
+
+const GoldList = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+
+    ${widthMedia.tablet} {
+        width: 80%;
+        align-self: center;
     }
 `;
 
@@ -441,60 +435,168 @@ const StatisticsSection = styled.article`
     border: 1px solid;
     margin-bottom: 1em;
     padding: 3em;
+    box-sizing: border-box;
+
+    ${widthMedia.phone} {
+        padding: 1.5em;
+    }
 `;
 
 const OverAllArticle = styled.article`
     display: flex;
+    justify-content: space-around;
+
+    ${widthMedia.desktop} {
+        flex-direction: column;
+    }
 `;
 
 const OverAllLeftArticle = styled.article`
     display: flex;
     justify-content: center;
-    flex-basis: 50%;
+    flex-basis: 45%;
     flex-direction: column;
+
+    ${widthMedia.desktop} {
+        margin-bottom: 2em;
+    }
 `;
 
 const InnerDiv = styled.div`
     display: flex;
     justify-content: center;
-    flex-basis: 50%;
+    flex-basis: 45%;
     flex-direction: column;
+    width: 100%;
+    border: 1px dashed ${props => props.theme.colors.text};
+    padding: 1em;
+    margin-top: 1em;
+    box-sizing: border-box;
 `;
 
 const OverAllInnerArticle = styled.article`
     display: flex;
     flex-direction: column;
+    align-items: center;
+    flex-basis: 48%;
+
+    ${widthMedia.tablet} {
+        margin-bottom: 1em;
+    }
+`;
+
+const OverAllRightArticle = styled.article`
+    display: flex;
+    flex-direction: column;
     justify-content: center;
-    flex-basis: 50%;
+    flex-basis: 45%;
 `;
 
 const PersonalArticle = styled.article`
     display: flex;
     width: 100%;
+    flex-direction: column;
 `;
 
 const PersonalInnerArticle = styled.article`
     display: flex;
     flex-direction: column;
-    flex-basis: 50%;
-`;
+    flex-basis: 45%;
+    align-items: center;
+    margin-top: 2em;
+    margin-bottom: 2em;
 
-const PersonalPrevArticle = styled.article`
-    display: flex;
-    flex-direction: column;
-    flex-basis: 50%;
-`;
-
-const RankingDiv = styled(FlexDiv)``;
-
-const CommonArticle = styled.article`
-    display: flex;
-    justify-content: center;
-    width: 100%;
+    h3 {
+        margin-left: 15px;
+    }
 `;
 
 const GraphDiv = styled(FlexDiv)`
     justify-content: center;
     font-size: 0.8em;
+    width: 100%;
+    height: 100%;
 `;
+
+const OverAllDiv = styled.div`
+    display: flex;
+    justify-content: space-around;
+
+    ${widthMedia.phone} {
+        flex-direction: column;
+    }
+`;
+
+const WeekSumDiv = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex-basis: 40%;
+    width: 100%;
+    justify-content: space-around;
+    ${widthMedia.phone} {
+        margin-top: 1em;
+        margin-bottom: 1em;
+    }
+`;
+
+const Title = styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 30px;
+    align-items: center;
+
+    & > h3,
+    & > label {
+        flex-basis: 50%;
+    }
+`;
+
+const RankDiv = styled.div`
+    display: flex;
+    justify-content: space-around;
+
+    ${widthMedia.phone} {
+        flex-direction: column;
+    }
+`;
+const WeekRank = styled.div`
+    display: flex;
+    flex-basis: 45%;
+    width: 100%;
+`;
+
+const RankContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+
+    ${widthMedia.phone} {
+        margin-top: 1em;
+        margin-bottom: 1em;
+    }
+`;
+
+const OverAllBottom = styled.div`
+    display: flex;
+    justify-content: space-evenly;
+
+    ${widthMedia.tablet} {
+        flex-direction: column;
+    }
+`;
+
+const PersonalBottom = styled.div`
+    display: flex;
+    justify-content: space-evenly;
+
+    ${widthMedia.desktop} {
+        flex-direction: column;
+    }
+`;
+
+const HeaderTitle = styled.div`
+    margin-bottom: 1em;
+`;
+
 export default Statistics;

@@ -12,6 +12,7 @@ import { ILedger, ILedgerOwn } from '@components/Ledger/LedgerType';
 import { calcSum } from '@components/Ledger/common/functions';
 import TitleAndGold from '@components/Ledger/TitleAndGold';
 import CommonGold from '@components/Ledger/CommonGold';
+import EmojiTitle from '@components/Emoji/EmojiTitle';
 import GoodsGold from '@components/Ledger/GoodsGold';
 import Ranking from '@components/Statistics/Ranking';
 import DownArrow from '@components/Image/DownArrow';
@@ -227,15 +228,19 @@ const Ledger = () => {
                 <Container>
                     <Summary>
                         <SummaryHeader>
-                            <h1>이번 주 요약 </h1>
-                            <Button onClick={calcStatistics}>새로고침</Button>
+                            <SummaryHeaderTitle>
+                                <h1>이번 주 요약</h1>
+                                <Button onClick={calcStatistics}>
+                                    <EmojiTitle label={<span>새로고침</span>} symbol={'🔃'} />
+                                </Button>
+                            </SummaryHeaderTitle>
                             <Link href="/statistics">통계 메뉴에서 더 자세히 보기 (클릭!😗)</Link>
                         </SummaryHeader>
                         <SummaryDiv>
                             <SummaryLeft>
                                 <DashDiv>
                                     <SummaryHeader>
-                                        <h2>수입</h2>
+                                        <EmojiTitle label={<h2>수입</h2>} symbol={'💰'} />
                                     </SummaryHeader>
                                     <GoldList>
                                         <TitleAndGold
@@ -244,7 +249,7 @@ const Ledger = () => {
                                             gold={commonGoldThisWeek}
                                         />
                                         <TitleAndGold
-                                            iconUrl="/static/img/lostark/material/sun_first.png"
+                                            iconUrl="/static/img/lostark/material/weapon_crystal.png"
                                             title="재화"
                                             gold={goodsGoldThisWeek}
                                         />
@@ -254,6 +259,11 @@ const Ledger = () => {
                                             gold={raidGoldThisWeek}
                                         />
                                         <TitleAndGold
+                                            css={css`
+                                                strong {
+                                                    color: #e6674b;
+                                                }
+                                            `}
                                             title="총 계"
                                             underline={false}
                                             gold={commonGoldThisWeek + goodsGoldThisWeek + raidGoldThisWeek}
@@ -264,7 +274,7 @@ const Ledger = () => {
                             <SummaryRight>
                                 <DashDiv>
                                     <SummaryHeader>
-                                        <h2>순위</h2>
+                                        <EmojiTitle label={<h2>순위</h2>} symbol={'👑'} />
                                         <span
                                             onClick={() =>
                                                 openCharacterGoldGraph(
@@ -283,12 +293,14 @@ const Ledger = () => {
                                     </SummaryHeader>
                                     <RankContent>
                                         <RankInner>
-                                            <Ranking
-                                                title=""
-                                                array={personalGoldThisWeekArr.map(({ name, raid, goods }) => {
-                                                    return { name: name, gold: raid + goods };
-                                                })}
-                                            />
+                                            <RankContainer>
+                                                <Ranking
+                                                    title=""
+                                                    array={personalGoldThisWeekArr.map(({ name, raid, goods }) => {
+                                                        return { name: name, gold: raid + goods };
+                                                    })}
+                                                />
+                                            </RankContainer>
                                         </RankInner>
                                         <ChartInner>
                                             <CharacterGoldThisWeek
@@ -448,7 +460,6 @@ const Container = styled.section`
     box-sizing: border-box;
     h1 {
         font-size: 1.6em;
-        margin-bottom: 1em;
     }
 
     h2 {
@@ -653,6 +664,58 @@ const SummaryHeader = styled.div`
         ${widthMedia.phone} {
             justify-content: flex-end;
         }
+    }
+`;
+
+const RankContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+
+    ${widthMedia.desktop} {
+        align-self: center;
+        padding: 1em;
+        width: 100%;
+    }
+
+    ${widthMedia.tablet} {
+        align-self: center;
+        padding: 1em;
+        width: 80%;
+    }
+
+    ${widthMedia.phone} {
+        width: 100%;
+        padding: 0;
+    }
+`;
+
+const SummaryHeaderTitle = styled.div`
+    display: flex;
+    align-items: center;
+    flex-basis: 20%;
+    justify-content: space-around;
+    margin-bottom: 1em;
+
+    ${widthMedia.mediumDesktop} {
+        flex-basis: 30%;
+    }
+
+    ${widthMedia.desktop} {
+        flex-basis: 30%;
+    }
+
+    ${widthMedia.smallDesktop} {
+        flex-basis: 35%;
+    }
+
+    ${widthMedia.tablet} {
+        flex-basis: 45%;
+    }
+
+    ${widthMedia.phone} {
+        flex-basis: 100%;
+        justify-content: space-between;
     }
 `;
 
