@@ -17,6 +17,7 @@ declare module '@emotion/react' {
             text: string;
             compassActive: string;
             navBorder: string;
+            warn: string;
         };
 
         button: {
