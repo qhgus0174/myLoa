@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios';
 import { SpinnerContext } from '@context/SpinnerContext';
-import { IWeeklyContents } from '@common/types/response/weeklyContents';
+import { IWeeklyContents } from '@common/types/response/contents/weekly';
 import { IResponse } from '@common/types/response';
 import { weeklyGuardian } from '@common/data/weeklyGuardian';
 import { weeklyAbyss } from '@common/data/weeklyAbyss';
 import styled from '@emotion/styled';
 import { Title, InnerContent, Container, ContentContainer } from '@style/common/modal';
+import { getWeekContents } from '@apis/contents/weekly';
 
 const WeeklyContents = () => {
     const [guardian, setGuardian] = useState<string[]>([]);
@@ -15,11 +16,7 @@ const WeeklyContents = () => {
     const { setSpinnerVisible } = useContext(SpinnerContext);
 
     const setData = async () => {
-        const {
-            result: { guardian, abyss },
-        } = (await (
-            await axios.get(`/api/weeklyContents`)
-        ).data) as IResponse<IWeeklyContents>;
+        const { guardian, abyss } = await getWeekContents();
 
         const guardianIndex = Number(guardian);
         const abyssIndex = Number(abyss);

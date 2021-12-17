@@ -3,7 +3,7 @@ import { LocalStorageActionContext, LocalStorageStateContext } from '@context/Lo
 import { ModalActionContext } from '@context/ModalContext';
 import AddButtonContainer from '@components/Container/Button/Add';
 import LineForm from '@components/Line/common/Form';
-import { ITodo } from '@components/Todo/TodoType';
+import { ITodo } from '@common/types/localStorage/Todo';
 import { useTheme } from '@emotion/react';
 import { Container } from '@style/common/modal';
 

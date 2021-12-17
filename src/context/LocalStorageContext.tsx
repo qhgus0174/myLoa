@@ -1,8 +1,10 @@
-import { ILedger } from '@components/Ledger/LedgerType';
-import { ICharacter } from '@components/Character/CharacterType';
-import { ITodo } from '@components/Todo/TodoType';
+import { ILedger } from '@common/types/localStorage/Ledger';
+import { ICharacter } from '@common/types/localStorage/Character';
+import { ITodo } from '@common/types/localStorage/Todo';
 import { initLedger, useLocalStorage } from '@hooks/useLocalStorage';
 import React, { createContext, useState } from 'react';
+import { IShareContents } from '@common/types/localStorage/ShareContents';
+import { IRaid } from '@common/types/localStorage/Raid';
 
 interface ILocalStorageState {
     storedTodo: ITodo[];
@@ -10,6 +12,9 @@ interface ILocalStorageState {
     storedCharacter: ICharacter[];
     storedCharacterOrd: number[];
     storedLedger: ILedger;
+    storedShareContents: IShareContents[];
+    storedRaid: IRaid[];
+    storedRaidCharacterOrd: number[];
 }
 
 interface ILocalStorageAction {
@@ -18,6 +23,9 @@ interface ILocalStorageAction {
     setStoredCharacter: (e: ICharacter[]) => void;
     setStoredCharacterOrd: (e: number[]) => void;
     setStoredLedger: (e: ILedger) => void;
+    setStoredShareContents: (e: IShareContents[]) => void;
+    setStoredRaid: (e: IRaid[]) => void;
+    setStoredRaidCharacterOrd: (e: number[]) => void;
 }
 
 export const LocalStorageStateContext = createContext<ILocalStorageState>({
@@ -26,6 +34,9 @@ export const LocalStorageStateContext = createContext<ILocalStorageState>({
     storedCharacter: [],
     storedCharacterOrd: [],
     storedLedger: initLedger,
+    storedShareContents: [],
+    storedRaid: [],
+    storedRaidCharacterOrd: [],
 });
 
 export const LocalStorageActionContext = createContext<ILocalStorageAction>({
@@ -34,6 +45,9 @@ export const LocalStorageActionContext = createContext<ILocalStorageAction>({
     setStoredCharacter: (e: ICharacter[]) => {},
     setStoredCharacterOrd: (e: number[]) => {},
     setStoredLedger: (e: ILedger) => {},
+    setStoredShareContents: (e: IShareContents[]) => {},
+    setStoredRaid: (e: IRaid[]) => {},
+    setStoredRaidCharacterOrd: (e: number[]) => {},
 });
 
 const LocalStorageProvider = ({ children }: { children: React.ReactNode }) => {
@@ -43,19 +57,43 @@ const LocalStorageProvider = ({ children }: { children: React.ReactNode }) => {
         storedCharacter,
         storedCharacterOrd,
         storedLedger,
+        storedShareContents,
+        storedRaid,
+        storedRaidCharacterOrd,
         setStoredTodo,
         setStoredTodoOrd,
         setStoredCharacter,
         setStoredCharacterOrd,
         setStoredLedger,
+        setStoredShareContents,
+        setStoredRaid,
+        setStoredRaidCharacterOrd,
     } = useLocalStorage();
 
     return (
         <LocalStorageActionContext.Provider
-            value={{ setStoredTodo, setStoredTodoOrd, setStoredCharacter, setStoredCharacterOrd, setStoredLedger }}
+            value={{
+                setStoredTodo,
+                setStoredTodoOrd,
+                setStoredCharacter,
+                setStoredCharacterOrd,
+                setStoredLedger,
+                setStoredShareContents,
+                setStoredRaid,
+                setStoredRaidCharacterOrd,
+            }}
         >
             <LocalStorageStateContext.Provider
-                value={{ storedTodo, storedTodoOrd, storedCharacter, storedCharacterOrd, storedLedger }}
+                value={{
+                    storedTodo,
+                    storedTodoOrd,
+                    storedCharacter,
+                    storedCharacterOrd,
+                    storedLedger,
+                    storedShareContents,
+                    storedRaid,
+                    storedRaidCharacterOrd,
+                }}
             >
                 {children}
             </LocalStorageStateContext.Provider>

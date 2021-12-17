@@ -6,7 +6,7 @@ import { useInput } from '@hooks/useInput';
 import TodoForm from '@components/Todo/common/Form';
 import EditButtonContainer from '@components/Container/Button/DelEdit';
 import { getResetCheckArr } from '@components/Todo/common/functions';
-import { ICharacterTodo, ITodo } from '@components/Todo/TodoType';
+import { ICharacterTodo, ITodo } from '@common/types/localStorage/Todo';
 import { ScheduleCheckType, ScheduleContents, ScheduleType } from '@common/types/types';
 import { Container } from '@style/common/modal';
 import { toast } from 'react-toastify';

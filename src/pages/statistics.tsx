@@ -13,7 +13,7 @@ import {
     ResponsiveContainer,
 } from 'recharts';
 import { IStatisticsCommon, IStatisticsPersonal, IStatisticsPersonalPrev } from '@components/Statistics/StatisticsType';
-import { ILedger, ILedgerCommon, ILedgerOwn } from '@components/Ledger/LedgerType';
+import { ILedger, ILedgerCommon, ILedgerOwn } from '@common/types/localStorage/Ledger';
 import ResponsiveGraph from '@components/Statistics/Graph/ResponsiveGraph';
 import { calcSum } from '@components/Ledger/common/functions';
 import BasicCheckbox from '@components/Input/BasicCheckbox';
@@ -28,6 +28,8 @@ import CustomLineChart from '@components/Statistics/Graph/LineChart';
 import VerticalBarChart from '@components/Statistics/Graph/VerticalBarChart';
 import GoldIcon from '@components/Image/Gold';
 import EmojiTitle from '@components/Emoji/EmojiTitle';
+import Link from 'next/link';
+import Nodata from '@components/article/Nodata';
 
 const Statistics = () => {
     const weekKorArr = ['저번주', '2주전', '3주전', '4주전'];
@@ -50,9 +52,17 @@ const Statistics = () => {
 
     const [isContainThisWeek, setIsContainThisWeek] = useState<boolean>(false);
 
+    const [hasData, setHasData] = useState<boolean>(true);
+
     useEffect(() => {
         if (!parseStorageItem(localStorage.getItem('ledger') as string)) return;
 
+        const { common, own }: ILedger = { ...parseStorageItem(localStorage.getItem('ledger') as string) };
+
+        own.length < 1 ? setHasData(false) : calcStastistics();
+    }, []);
+
+    const calcStastistics = () => {
         const { common, own }: ILedger = { ...parseStorageItem(localStorage.getItem('ledger') as string) };
 
         calcTotalGoldByWeek();
@@ -65,7 +75,7 @@ const Statistics = () => {
         setCommonGoldThisWeek(calcSum(common.histories));
 
         setCharacterAllGoldPrevWeek(own);
-    }, []);
+    };
 
     const calcPersonalGoldPrev = (own: ILedgerOwn[]): IStatisticsPersonalPrev[] => {
         const result = own.map(({ characterId, prevWeekGold }) => {
@@ -214,6 +224,16 @@ const Statistics = () => {
     return (
         <StatisticsContainer>
             <StatisticsSection>
+                {!hasData && (
+                    <Nodata
+                        text={
+                            <strong>
+                                골드 수입 데이터가 존재하지 않네요.😐
+                                <br /> <Link href="/ledger">골드 수입 작성</Link> 후 통계 표시됩니다!
+                            </strong>
+                        }
+                    />
+                )}
                 <h1>종합</h1>
                 <OverAllArticle>
                     <OverAllLeftArticle>

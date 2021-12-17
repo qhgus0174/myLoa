@@ -3,7 +3,7 @@ import { toast } from 'react-toastify';
 import { LocalStorageStateContext, LocalStorageActionContext } from '@context/LocalStorageContext';
 import { ModalActionContext } from '@context/ModalContext';
 import { sortOrd } from '@components/Character/common/functions';
-import { ICharacter } from '@components/Character/CharacterType';
+import { ICharacter } from '@common/types/localStorage/Character';
 import Button from '@components/Button/Button';
 import { ButtonContainer, Container, ContentContainer } from '@style/common/modal';
 import styled from '@emotion/styled';

@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { ICharacter } from '@components/Character/CharacterType';
-import { ITodo } from '@components/Todo/TodoType';
-import { ICommonHistory, ILedger, ILedgerOwn } from '@components/Ledger/LedgerType';
+import { ICharacter } from '@common/types/localStorage/Character';
+import { ITodo } from '@common/types/localStorage/Todo';
+import { ICommonHistory, ILedger, ILedgerOwn } from '@common/types/localStorage/Ledger';
 import { DateTime } from 'luxon';
 import { parseStorageItem, stringifyStorageItem } from '@common/utils';
+import { IShareContents } from '@common/types/localStorage/ShareContents';
+import { IRaid } from '@common/types/localStorage/Raid';
 
 export const initCommonHistory: ICommonHistory[] = [
     {
@@ -29,6 +31,9 @@ export const useLocalStorage = () => {
     const [storedTodoOrd, setStoredTodoOrd] = useState<number[]>([]);
     const [storedCharacter, setStoredCharacter] = useState<ICharacter[]>([]);
     const [storedCharacterOrd, setStoredCharacterOrd] = useState<number[]>([]);
+    const [storedShareContents, setStoredShareContents] = useState<IShareContents[]>([]);
+    const [storedRaid, setStoredRaid] = useState<IRaid[]>([]);
+    const [storedRaidCharacterOrd, setStoredRaidCharacterOrd] = useState<number[]>([]);
     const [storedLedger, setStoredLedger] = useState<ILedger>(initLedger);
 
     useEffect(() => {
@@ -54,32 +59,56 @@ export const useLocalStorage = () => {
     }, []);
 
     useEffect(() => {
+        const shareContentsData: IShareContents[] = parseStorageItem(localStorage.getItem('share') as string);
+        shareContentsData && shareContentsData.length > 0
+            ? setStoredShareContents(shareContentsData)
+            : setStoredShareContents([]);
+    }, []);
+
+    useEffect(() => {
+        const raidData: IRaid[] = parseStorageItem(localStorage.getItem('raid') as string);
+        raidData && raidData.length > 0 ? setStoredRaid(raidData) : setStoredRaid([]);
+    }, []);
+
+    useEffect(() => {
+        const raidOrdData: number[] = parseStorageItem(localStorage.getItem('raidCharacterOrd') as string);
+        raidOrdData && raidOrdData.length > 0 ? setStoredRaidCharacterOrd(raidOrdData) : setStoredRaidCharacterOrd([]);
+    }, []);
+
+    useEffect(() => {
         const storedcharacter: ICharacter[] = parseStorageItem(localStorage.getItem('character') as string);
         const ledgerData: ILedger = parseStorageItem(localStorage.getItem('ledger') as string);
         ledgerData ? setStoredLedger(ledgerData) : ledgerInit(storedcharacter);
     }, []);
 
     useEffect(() => {
-        storedTodo && storedTodo.length > 0 && localStorage.setItem('todo', stringifyStorageItem(storedTodo));
+        storedTodo && localStorage.setItem('todo', stringifyStorageItem(storedTodo));
     }, [storedTodo]);
 
     useEffect(() => {
-        storedTodoOrd &&
-            storedTodoOrd.length > 0 &&
-            localStorage.setItem('todoOrd', stringifyStorageItem(storedTodoOrd));
+        storedTodoOrd && localStorage.setItem('todoOrd', stringifyStorageItem(storedTodoOrd));
     }, [storedTodoOrd]);
 
     useEffect(() => {
-        storedCharacter &&
-            storedCharacter.length > 0 &&
-            localStorage.setItem('character', stringifyStorageItem(storedCharacter));
+        storedCharacter && localStorage.setItem('character', stringifyStorageItem(storedCharacter));
     }, [storedCharacter]);
 
     useEffect(() => {
-        storedCharacterOrd &&
-            storedCharacterOrd.length > 0 &&
-            localStorage.setItem('characterOrd', stringifyStorageItem(storedCharacterOrd));
+        storedCharacterOrd && localStorage.setItem('characterOrd', stringifyStorageItem(storedCharacterOrd));
     }, [storedCharacterOrd]);
+
+    useEffect(() => {
+        storedShareContents && localStorage.setItem('share', stringifyStorageItem(storedShareContents));
+    }, [storedShareContents]);
+
+    useEffect(() => {
+        storedRaid && localStorage.setItem('raid', stringifyStorageItem(storedRaid));
+    }, [storedRaid]);
+
+    useEffect(() => {
+        storedRaidCharacterOrd &&
+            localStorage.setItem('raidCharacterOrd', stringifyStorageItem(storedRaidCharacterOrd));
+    }, [storedRaidCharacterOrd]);
 
     useEffect(() => {
         storedLedger &&
@@ -89,7 +118,6 @@ export const useLocalStorage = () => {
 
     const ledgerInit = (characters: ICharacter[]) => {
         if (!characters || characters.length < 1) return;
-        console.log('asdvb');
 
         const commonLedger = initLedger.common;
 
@@ -110,10 +138,16 @@ export const useLocalStorage = () => {
         storedCharacter,
         storedCharacterOrd,
         storedLedger,
+        storedShareContents,
+        storedRaid,
+        storedRaidCharacterOrd,
         setStoredTodo,
         setStoredTodoOrd,
         setStoredCharacter,
         setStoredCharacterOrd,
         setStoredLedger,
+        setStoredShareContents,
+        setStoredRaid,
+        setStoredRaidCharacterOrd,
     };
 };

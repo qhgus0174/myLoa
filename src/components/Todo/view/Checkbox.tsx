@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { LocalStorageStateContext, LocalStorageActionContext } from '@context/LocalStorageContext';
 import { PagingStateContext } from '@context/PagingContext';
 import { default as CheckboxInput } from '@components/Input/TodoCheckbox';
-import { ICharacterTodo, ITodo } from '@components/Todo/TodoType';
+import { ICharacterTodo, ITodo } from '@common/types/localStorage/Todo';
 import TodoCheck from '@components/Todo/modal/TodoCheck';
 import TextBox from '@components/Input/TextBox';
 import Guardian from '@components/Todo/view/Guardian';

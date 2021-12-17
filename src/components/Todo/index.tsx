@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { DragDropContext, Draggable, Droppable, DropResult } from 'react-beautiful-dnd';
 import { LocalStorageStateContext, LocalStorageActionContext } from '@context/LocalStorageContext';
 import CheckboxText from '@components/Todo/view/CheckboxText';
-import { ITodo } from '@components/Todo/TodoType';
+import { ITodo } from '@common/types/localStorage/Todo';
 import Checkbox from '@components/Todo/view/Checkbox';
 import Line from '@components/Todo/view/Line';
 import { IContextModalParam, ScheduleContents } from '@common/types/types';

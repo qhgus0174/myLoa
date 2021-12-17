@@ -4,13 +4,14 @@ import { LocalStorageActionContext, LocalStorageStateContext } from '@context/Lo
 import { PagingActionContext, PagingStateContext } from '@context/PagingContext';
 import { ModalActionContext } from '@context/ModalContext';
 import { SpinnerContext } from '@context/SpinnerContext';
-import { ICharacterTodo, ITodo } from '@components/Todo/TodoType';
-import { getCrollCharacterInfo, isDuplicate } from '@components/Character/common/functions';
+import { ICharacterTodo, ITodo } from '@common/types/localStorage/Todo';
+import { isDuplicate } from '@components/Character/common/functions';
+import { getCrollCharacterInfo } from '@components/Character/common/croll';
 import { getResetCheckArr } from '@components/Todo/common/functions';
 import AddButtonContainer from '@components/Container/Button/Add';
-import { ICharacter } from '@components/Character/CharacterType';
+import { ICharacter } from '@common/types/localStorage/Character';
 import CharacterForm from '@components/Character/common/Form';
-import { ILedgerOwn } from '@components/Ledger/LedgerType';
+import { ILedgerOwn } from '@common/types/localStorage/Ledger';
 import { useTheme } from '@emotion/react';
 import { Container } from '@style/common/modal';
 
@@ -32,7 +33,8 @@ const CharacterAdd = () => {
     const [name, setName] = useState<string>('');
 
     const onClickAdd = async () => {
-        if (checkNameIsEmpty() || checkNameIsDuplicate()) return;
+        if (checkNameIsEmpty()) return;
+        if (storedCharacterOrd.length > 0 && checkNameIsDuplicate()) return;
 
         try {
             setSpinnerVisible(true);

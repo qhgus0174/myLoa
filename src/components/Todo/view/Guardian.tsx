@@ -1,10 +1,10 @@
 import React, { useContext } from 'react';
 import { LocalStorageStateContext, LocalStorageActionContext } from '@context/LocalStorageContext';
-import { ICharacterTodo, IGuardianInfo, ITodo } from '@components/Todo/TodoType';
+import { ICharacterTodo, IGuardianInfo, ITodo } from '@common/types/localStorage/Todo';
 import { GuardianInfo, IGuardian } from '@common/data/guardian';
 import styled from '@emotion/styled';
 import { FlexDiv } from '@style/common';
-import { ICharacter } from '@components/Character/CharacterType';
+import { ICharacter } from '@common/types/localStorage/Character';
 
 interface IGuardianParam {
     todo: ITodo;

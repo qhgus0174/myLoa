@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
 import { ModalActionContext } from '@context/ModalContext';
 import EditButtonContainer from '@components/Container/Button/DelEdit';
-import { ITodo } from '@components/Todo/TodoType';
+import { ITodo } from '@common/types/localStorage/Todo';
 import LineForm from '@components/Line/common/Form';
 import { Container } from '@style/common/modal';
 

@@ -2,14 +2,15 @@ import React, { useContext, useEffect, useState } from 'react';
 import { DateTime } from 'luxon';
 import Image from 'next/image';
 import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
-import { ILedger, ILedgerHistoryRaid, ILedgerOwn } from '@components/Ledger/LedgerType';
+import { ILedger, ILedgerHistoryRaid, ILedgerOwn } from '@common/types/localStorage/Ledger';
 import TitleAndGold from '@components/Ledger/TitleAndGold';
 import BasicCheckbox from '@components/Input/BasicCheckbox';
 import { IRaidGold, IRaidGoldDetail } from '@common/types/response/ledger/raid';
-import { groupBy } from '@common/utils';
+import { getCharacterInfoById, groupBy, parseStorageItem } from '@common/utils';
 import styled from '@emotion/styled';
 import { FlexDiv } from '@style/common';
 import { widthMedia } from '@style/device';
+import { IRaid } from '@common/types/localStorage/Raid';
 
 const RaidGold = ({
     characterId,
@@ -48,7 +49,6 @@ const RaidGold = ({
         const {
             target: { value: raidId, checked },
         } = e;
-        const newLedger: ILedger = { ...storedLedger };
 
         checked
             ? controlCheckAction({

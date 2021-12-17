@@ -6,4 +6,13 @@ export interface IError {
     errType: ErrType;
 }
 
-export type ErrType = 'backup' | 'setBackup' | 'getBackup' | 'deleteBackup' | 'croll' | 'ledger' | 'other';
+export type ErrType =
+    | 'backup'
+    | 'setBackup'
+    | 'getBackup'
+    | 'deleteBackup'
+    | 'croll'
+    | 'ledger'
+    | 'other'
+    | 'initShare'
+    | 'initRaid';

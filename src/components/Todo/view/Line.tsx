@@ -1,5 +1,5 @@
 import React from 'react';
-import { ITodo } from '@components/Todo/TodoType';
+import { ITodo } from '@common/types/localStorage/Todo';
 import LineEdit from '@components/Line/LineEdit';
 import { IContextModal } from '@common/types/types';
 import styled from '@emotion/styled';

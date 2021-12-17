@@ -3,7 +3,7 @@ import _ from 'lodash';
 import { ColorResult, CompactPicker } from 'react-color';
 import { LocalStorageStateContext } from '@context/LocalStorageContext';
 import { getShowCheckTodo } from '@components/Todo/common/functions';
-import { ICharacter } from '@components/Character/CharacterType';
+import { ICharacter } from '@common/types/localStorage/Character';
 import BasicCheckbox from '@components/Input/BasicCheckbox';
 import RadioButton from '@components/Input/Radio';
 import TextBox from '@components/Input/TextBox';
@@ -11,6 +11,8 @@ import { ScheduleCheckType, ScheduleContents, ScheduleType } from '@common/types
 import styled from '@emotion/styled';
 import { Contents, Title, InnerContent, ContentContainer, ContentArticle } from '@style/common/modal';
 import { FlexDiv } from '@style/common';
+import IconLabel from '@components/Label/IconLabel';
+import EmojiTitle from '@components/Emoji/EmojiTitle';
 
 interface ITodo {
     type: ScheduleType;
@@ -49,7 +51,7 @@ const TodoForm = ({
                     <Contents>
                         <SmallTitle>체크박스형</SmallTitle>
                         <RadioButton
-                            text="일일"
+                            text={<EmojiTitle label={<p>일일</p>} symbol={'⏰'} />}
                             name="type"
                             value="daily"
                             onChange={() => {
@@ -61,7 +63,7 @@ const TodoForm = ({
                             checked={type === 'daily'}
                         />
                         <RadioButton
-                            text="주간"
+                            text={<EmojiTitle label={<p>주간</p>} symbol={'7️⃣'} />}
                             name="type"
                             value="weekly"
                             onChange={() => {
@@ -76,7 +78,7 @@ const TodoForm = ({
                     <Contents>
                         <SmallTitle>텍스트형</SmallTitle>
                         <RadioButton
-                            text="텍스트"
+                            text={<EmojiTitle label={<p>텍스트</p>} symbol={'📝'} />}
                             name="type"
                             value="other"
                             onChange={() => {
@@ -97,7 +99,7 @@ const TodoForm = ({
                         <Contents>
                             <SmallTitle>특수</SmallTitle>
                             <RadioButton
-                                text="카던"
+                                text={<IconLabel label="카던" iconUrl="/static/img/lostark/contents/chaos.png" />}
                                 name="contents"
                                 value="chaos"
                                 onChange={() => {
@@ -107,7 +109,7 @@ const TodoForm = ({
                                 checked={contents === 'chaos'}
                             />
                             <RadioButton
-                                text="가디언"
+                                text={<IconLabel label="가디언" iconUrl="/static/img/lostark/contents/guardian.png" />}
                                 name="contents"
                                 value="guardian"
                                 onChange={() => {
@@ -117,7 +119,7 @@ const TodoForm = ({
                                 checked={contents === 'guardian'}
                             />
                             <RadioButton
-                                text="에포나"
+                                text={<IconLabel label="에포나" iconUrl="/static/img/lostark/contents/epona.png" />}
                                 name="contents"
                                 value="epona"
                                 onClick={() => settingName('에포나')}
@@ -129,9 +131,9 @@ const TodoForm = ({
                             />
                         </Contents>
                         <Contents>
-                            <SmallTitle>일반</SmallTitle>
+                            <SmallTitle>초기화</SmallTitle>
                             <RadioButton
-                                text="초기화 O"
+                                text={<EmojiTitle label={<p>예</p>} symbol={'⭕'} />}
                                 name="contents"
                                 value="basicReset"
                                 onChange={() => {
@@ -141,7 +143,7 @@ const TodoForm = ({
                                 checked={contents === 'basicReset'}
                             />
                             <RadioButton
-                                text="초기화 X"
+                                text={<EmojiTitle label={<p>아니오</p>} symbol={'❌'} />}
                                 name="contents"
                                 value="basic"
                                 onChange={() => {
@@ -200,8 +202,8 @@ const TodoForm = ({
     );
 };
 
-const SmallTitle = styled.h4`
-    font-weight: 500;
+const SmallTitle = styled.h3`
+    font-weight: 600;
     margin-left: 0.7em;
     margin-right: 0.5em;
 `;
@@ -222,9 +224,9 @@ const InnerDiv = styled.div`
     max-height: 79px;
     flex-flow: wrap;
     & > article {
-        margin-left: 2em;
-        margin-top: 0.5em;
-        margin-bottom: 0.5em;
+        margin-left: 1.8em;
+        margin-top: 0.3em;
+        margin-bottom: 0.3em;
     }
     box-sizing: border-box;
 `;

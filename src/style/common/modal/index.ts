@@ -28,6 +28,9 @@ export const ContentContainer = styled.article`
     justify-content: space-around;
     flex-basis: 90%;
     flex-direction: column;
+    h2 {
+        font-size: 1.15em;
+    }
 
     h3 {
         font-size: 1.05em;
@@ -44,7 +47,7 @@ export const ContentArticle = styled.article`
     margin-bottom: 1.5em;
 `;
 
-export const Title = styled.h3`
+export const Title = styled.h2`
     display: flex;
     align-items: center;
     box-sizing: border-box;

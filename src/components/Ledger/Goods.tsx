@@ -1,7 +1,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { DateTime } from 'luxon';
-import { ILedgerHistoryRaid } from '@components/Ledger/LedgerType';
+import { ILedgerHistoryRaid } from '@common/types/localStorage/Ledger';
 import IconPalette from '@components/Ledger/IconsPalette';
 import TextBox from '@components/Input/TextBox';
 import GoldIcon from '@components/Image/Gold';

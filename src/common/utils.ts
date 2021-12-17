@@ -1,5 +1,5 @@
-import { ICharacter } from '@components/Character/CharacterType';
-import { ITodo } from '@components/Todo/TodoType';
+import { ICharacter } from '@common/types/localStorage/Character';
+import { ITodo } from '@common/types/localStorage/Todo';
 
 export const getOwnIdByIndex = (dataArray: any[], ordArray: any[], index: number): number => {
     const id = ordArray[index];
@@ -25,6 +25,6 @@ export const parseStorageItem = (item: string) => {
     return JSON.parse(JSON.parse(item));
 };
 
-export const stringifyStorageItem = (item: any) => {
+export const stringifyStorageItem = (item: any): string => {
     return JSON.stringify(JSON.stringify(item));
 };

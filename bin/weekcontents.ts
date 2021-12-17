@@ -3,7 +3,7 @@
 import { weeklyAbyss } from '@common/data/weeklyAbyss';
 import { weeklyGuardian } from '@common/data/weeklyGuardian';
 import { IResponse } from '@common/types/response';
-import { IWeeklyContents } from '@common/types/response/weeklyContents';
+import { IWeeklyContents } from '@common/types/response/contents/weekly';
 import axios from 'axios';
 import { DateTime } from 'luxon';
 

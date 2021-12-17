@@ -1,6 +1,6 @@
-import dbPool from '../config/db';
 import { QueryResult } from 'pg';
-import { IWeeklyContents } from '../routes/weeklyContents/types';
+import dbPool from '../../config/db';
+import { IWeeklyContents } from '../../routes/contents/weekly/types';
 
 const WeeklyContents = {
     getWeeklyContents: async (): Promise<QueryResult<IWeeklyContents>> =>

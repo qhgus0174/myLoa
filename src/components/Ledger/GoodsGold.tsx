@@ -4,12 +4,13 @@ import Image from 'next/image';
 import { DateTime } from 'luxon';
 import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
 import { SpinnerContext } from '@context/SpinnerContext';
-import { ILedger, ILedgerHistoryGoods, ILedgerOwn } from '@components/Ledger/LedgerType';
+import { ILedger, ILedgerHistoryGoods, ILedgerOwn } from '@common/types/localStorage/Ledger';
 import Goods, { ISaveParam } from '@components/Ledger/Goods';
 import ImageBackground from '@components/ImageBackground';
 import { IGoods, IGoodsImg } from '@common/types/response/ledger/goods';
 import styled from '@emotion/styled';
 import GoodsFieldSet from './common/GoodsFieldSet';
+import Nodata from '@components/article/Nodata';
 
 const GoodsGold = ({
     characterId,
@@ -141,7 +142,7 @@ const GoodsGold = ({
                         },
                     )
                 ) : (
-                    <NoData>골드 수급처를 선택하여 내역을 추가 해 주세요!</NoData>
+                    <Nodata text="골드 수급처를 선택하여 내역을 추가 해 주세요!" />
                 )}
             </GoodsContainer>
         </>
@@ -153,13 +154,6 @@ const GoodsContainer = styled.ul`
     height: 200px;
     overflow-y: auto;
     width: 100%;
-`;
-
-const NoData = styled.span`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
 `;
 
 export default GoodsGold;

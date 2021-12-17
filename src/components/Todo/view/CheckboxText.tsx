@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
 import TodoEdit from '@components/Todo/modal/TodoEdit';
-import { ITodo } from '@components/Todo/TodoType';
+import { ITodo } from '@common/types/localStorage/Todo';
 import PinCheckbox from '@components/Input/PinCheckBox';
 import { IContextModal, ScheduleContents } from '@common/types/types';
 import styled from '@emotion/styled';

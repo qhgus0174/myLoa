@@ -2,7 +2,7 @@ import React from 'react';
 import styled from '@emotion/styled';
 
 interface IRadio extends React.InputHTMLAttributes<HTMLInputElement> {
-    text: string;
+    text: string | JSX.Element;
     checked: boolean;
     value: any;
 }

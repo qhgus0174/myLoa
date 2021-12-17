@@ -5,7 +5,7 @@ import { LocalStorageActionContext, LocalStorageStateContext } from '@context/Lo
 import { PagingActionContext, PagingStateContext } from '@context/PagingContext';
 import { sortOrd } from '@components/Character/common/functions';
 import CharacterEdit from '@components/Character/modal/CharacterEdit';
-import { ICharacter } from '@components/Character/CharacterType';
+import { ICharacter } from '@common/types/localStorage/Character';
 import RightArrow from '@components/Image/RightArrow';
 import JobLogo from '@components/Character/JobLogo';
 import LeftArrow from '@components/Image/LeftArrow';
@@ -14,12 +14,17 @@ import { IContextModalParam } from '@common/types/types';
 import styled from '@emotion/styled';
 import { FlexDiv, FlexLeftDiv, FlexHoverArticle, CharactersDiv } from '@style/common';
 
-const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
+interface ICharacterParam extends IContextModalParam {
+    type: 'raid' | 'all';
+}
+
+const Character = ({ onContextMenuBasicModal, type }: ICharacterParam) => {
     const { perPage, currentPage } = useContext(PagingStateContext);
     const { onClickNext, onClickPrev } = useContext(PagingActionContext);
 
-    const { storedTodo, storedCharacter, storedCharacterOrd } = useContext(LocalStorageStateContext);
-    const { setStoredCharacterOrd } = useContext(LocalStorageActionContext);
+    const { storedTodo, storedCharacter, storedCharacterOrd, storedRaidCharacterOrd } =
+        useContext(LocalStorageStateContext);
+    const { setStoredCharacterOrd, setStoredRaidCharacterOrd } = useContext(LocalStorageActionContext);
 
     const theme = useTheme();
 
@@ -53,11 +58,15 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
             return;
         }
 
-        characterSortOrd(Array.from<number>(storedCharacterOrd), source.index, destination.index);
+        const ordData = type === 'raid' ? storedRaidCharacterOrd : storedCharacterOrd;
+
+        characterSortOrd(Array.from<number>(ordData), source.index, destination.index);
     };
 
     const characterSortOrd = (array: number[], start: number, destination: number) => {
-        setStoredCharacterOrd(sortOrd(array, start, destination));
+        type === 'raid'
+            ? setStoredRaidCharacterOrd(sortOrd(array, start, destination))
+            : setStoredCharacterOrd(sortOrd(array, start, destination));
     };
 
     return (
@@ -69,7 +78,10 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
                             <FlexDiv {...provided.droppableProps} ref={provided.innerRef}>
                                 <FlexLeftDiv></FlexLeftDiv>
 
-                                <ArrowDiv characterOrd={storedCharacterOrd} perPage={perPage}>
+                                <ArrowDiv
+                                    characterOrd={type === 'raid' ? storedRaidCharacterOrd : storedCharacterOrd}
+                                    perPage={perPage}
+                                >
                                     <Button
                                         width="100"
                                         border="none"
@@ -79,12 +91,25 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
                                     />
                                 </ArrowDiv>
 
-                                <CharactersDiv length={storedCharacterOrd.length - (currentPage - 1) * perPage}>
+                                <CharactersDiv
+                                    length={
+                                        (type === 'raid' ? storedRaidCharacterOrd : storedCharacterOrd).length -
+                                        (currentPage - 1) * perPage
+                                    }
+                                >
                                     {(storedCharacter as ICharacter[])
                                         .sort((a, b) => {
                                             return (
-                                                (storedCharacterOrd as number[]).indexOf(a.id) -
-                                                (storedCharacterOrd as number[]).indexOf(b.id)
+                                                (
+                                                    (type === 'raid'
+                                                        ? storedRaidCharacterOrd
+                                                        : storedCharacterOrd) as number[]
+                                                ).indexOf(a.id) -
+                                                (
+                                                    (type === 'raid'
+                                                        ? storedRaidCharacterOrd
+                                                        : storedCharacterOrd) as number[]
+                                                ).indexOf(b.id)
                                             );
                                         })
                                         .slice(
@@ -126,7 +151,10 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
                                         })}
                                     {provided.placeholder}
                                 </CharactersDiv>
-                                <ArrowDiv characterOrd={storedCharacterOrd} perPage={perPage}>
+                                <ArrowDiv
+                                    characterOrd={type === 'raid' ? storedRaidCharacterOrd : storedCharacterOrd}
+                                    perPage={perPage}
+                                >
                                     <Button
                                         width="100"
                                         border="none"

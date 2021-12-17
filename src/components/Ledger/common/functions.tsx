@@ -1,4 +1,4 @@
-import { ILedgerHistoryRaid } from '@components/Ledger/LedgerType';
+import { ILedgerHistoryRaid } from '@common/types/localStorage/Ledger';
 
 export const calcSum = (arr: ILedgerHistoryRaid[]): number => {
     return arr.reduce((prev, { gold }) => prev + gold, 0);

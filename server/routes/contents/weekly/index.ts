@@ -1,7 +1,7 @@
-import { WeeklyContents } from '../../controllers/weeklyContents';
+import { WeeklyContents } from '../../../controllers/contents/weekly';
 import express, { Request, Response } from 'express';
-import { IResponse } from '../../type/response';
-import { IError } from '../error/types';
+import { IResponse } from '../../../type/response';
+import { IError } from '../../error/types';
 import { IWeeklyContents } from './types';
 
 const router = express.Router();

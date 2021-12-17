@@ -3,12 +3,13 @@ import { DateTime } from 'luxon';
 import Image from 'next/image';
 import _ from 'lodash';
 import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
-import { ICommonHistory, ILedger } from '@components/Ledger/LedgerType';
+import { ICommonHistory, ILedger } from '@common/types/localStorage/Ledger';
 import Goods, { ISaveParam } from '@components/Ledger/Goods';
 import ImageBackground from '@components/ImageBackground';
 import { ICommonGold } from '@common/types/response/ledger/common';
 import styled from '@emotion/styled';
 import GoodsFieldSet from './common/GoodsFieldSet';
+import Nodata from '@components/article/Nodata';
 
 const CommonGold = ({ commonData }: { commonData: ICommonGold[] }) => {
     const { storedLedger } = useContext(LocalStorageStateContext);
@@ -92,7 +93,7 @@ const CommonGold = ({ commonData }: { commonData: ICommonGold[] }) => {
                         );
                     })
                 ) : (
-                    <NoData>골드 수급처를 선택하여 내역을 추가 해 주세요!</NoData>
+                    <Nodata text="골드 수급처를 선택하여 내역을 추가 해 주세요!" />
                 )}
             </GoodsContainer>
         </Container>
@@ -111,13 +112,6 @@ const GoodsContainer = styled.ul`
     max-height: 200px;
     overflow-y: auto;
     width: 100%;
-`;
-
-const NoData = styled.span`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
 `;
 
 export default CommonGold;
