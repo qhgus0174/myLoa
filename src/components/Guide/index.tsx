@@ -8,9 +8,6 @@ const Guide = () => {
             <ContentContainer>
                 <ul>
                     <LiContainter>
-                        🤹‍♀️ 버그 발생 / 문의 사항이 있으시면 shannon_@hotmail.co.kr로 메일 부탁드립니다.
-                    </LiContainter>
-                    <LiContainter>
                         <span>🔹 데이터</span>
                         <UlContainer>
                             <li>
@@ -52,6 +49,12 @@ const Guide = () => {
                             <li>- 캐릭터 : 오른쪽 위 갱신 버튼을 클릭하여 레벨을 갱신 </li>
                             <li>- 숙제(개별) : 메모 및 휴식게이지, 숨김 여부 설정</li>
                             <li>- 숙제 앞 원은 행 고정 여부 입니다. (붉은색 : 고정)</li>
+                        </UlContainer>
+                    </LiContainter>
+                    <LiContainter>
+                        <span>🔹 골드 수입</span>
+                        <UlContainer>
+                            <li>- 숙제 페이지에서 최초 하나의 캐릭터를 불러와야 골드 수입을 작성하실 수 있습니다.</li>
                         </UlContainer>
                     </LiContainter>
                 </ul>

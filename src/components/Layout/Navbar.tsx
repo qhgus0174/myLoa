@@ -9,12 +9,14 @@ import Guide from '@components/Guide';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { Dimmer } from '@style/common/modal';
+import Image from 'next/image';
 
 interface INavbar {
     isMobile: boolean;
     visible?: boolean;
     direction?: 'left' | 'right';
     isActive?: boolean;
+    border?: boolean;
 }
 
 const Navbar = ({ isMobile }: INavbar) => {
@@ -105,8 +107,14 @@ const Navbar = ({ isMobile }: INavbar) => {
                             {!isMobile && <li>|</li>}
                             <InnerLi isMobile={isMobile} isActive={router.pathname === '/'}>
                                 <span className="guide" onClick={showGuide}>
-                                    ❓ 가이드
+                                    가이드
                                 </span>
+                            </InnerLi>
+                            {!isMobile && <li>|</li>}
+                            <InnerLi border={false} isMobile={isMobile}>
+                                <a target="_blank" href="https://discord.gg/an2dykC9">
+                                    <Image src="/static/img/icon/discord.png" width="26" height="26" />
+                                </a>
                             </InnerLi>
                         </InnerUl>
                     </Li>
@@ -166,7 +174,7 @@ const Li = styled.li<INavbar>`
         `    
         flex-basis: ${props.direction === `left` ? `60%` : `35%`};
         ${props.direction === `right` && `background: rgba(0, 0, 0, 0.05)`};
-        padding-top: 0.85em;
+        padding-top: 0.5em;
         padding-bottom: calc(0.85em - 5px);
     `}
 `;
@@ -177,6 +185,7 @@ const InnerUl = styled.ul<INavbar>`
     ${props => !props.isMobile && `justify-content: space-evenly`};
     box-sizing: border-box;
     width: 100%;
+    align-items: center;
 `;
 
 const InnerLinkLi = styled.li<INavbar>`
@@ -216,6 +225,10 @@ const InnerLinkLi = styled.li<INavbar>`
 `;
 
 const InnerLi = styled.li<INavbar>`
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
     &:hover {
         background-size: 100% 5px, auto;
     }
@@ -229,6 +242,7 @@ const InnerLi = styled.li<INavbar>`
 
     ${props =>
         !props.isMobile &&
+        props.border &&
         `
         box-sizing: border-box;
         padding-bottom: 5px;
