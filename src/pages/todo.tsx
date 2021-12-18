@@ -34,10 +34,6 @@ import IconLabel from '@components/Label/IconLabel';
 import TodoCheckbox from '@components/Input/TodoCheckbox';
 import { IShareContents } from '@common/types/localStorage/ShareContents';
 import { getCharacterInfoById, groupBy, parseStorageItem, stringifyStorageItem } from '@common/utils';
-import { IRaid, IRaidCharacter } from '@common/types/localStorage/Raid';
-import { getRaid, getRaidDetail } from '@apis/ledger/raid';
-import { IRaidGold, IRaidGoldDetail } from '@common/types/response/ledger/raid';
-import RaidTodo from '@components/RaidTodo';
 import { ICharacter } from '@common/types/localStorage/Character';
 import Nodata from '@components/article/Nodata';
 import { allCharacter, getCrollCharacterInfo } from '@components/Character/common/croll';
@@ -48,8 +44,11 @@ import TextBox from '@components/Input/TextBox';
 import { insertErrorDB } from '@common/error';
 import Router from 'next/router';
 import { PagingActionContext } from '@context/PagingContext';
+import { initDayContents, initLedger } from '@hooks/useLocalStorage';
 
-interface IFileterRaidLevel {
+import { CompassInfo } from '@common/data/compass';
+
+export interface IFileterRaidLevel {
     id: string;
     showArr: number[];
 }
@@ -60,17 +59,17 @@ const Main = () => {
     const { setCurrentPage } = useContext(PagingActionContext);
     const { setSpinnerVisible } = useContext(SpinnerContext);
     const { setModalProps } = useContext(ModalActionContext);
-    const [activeTab, setActiveTab] = useState<number>(0);
+    const [activeTab, setActiveTab] = useState<number>(1);
 
-    const { storedTodo, storedCharacter, storedCharacterOrd, storedShareContents, storedRaid } =
+    const { storedTodo, storedCharacter, storedCharacterOrd, storedShareContents, storedDayContents } =
         useContext(LocalStorageStateContext);
     const {
         setStoredTodo,
         setStoredShareContents,
-        setStoredRaid,
         setStoredCharacter,
         setStoredCharacterOrd,
-        setStoredRaidCharacterOrd,
+        setStoredDayContents,
+        setStoredLedger,
     } = useContext(LocalStorageActionContext);
 
     const [isCrollFinish, setIsCrollFinish] = useState<boolean>(true);
@@ -87,20 +86,38 @@ const Main = () => {
         calcReset();
     }, []);
 
-    interface IPromiseObject {
-        raidDetail: IRaidGoldDetail[];
-    }
-
-    const { status, result: ledgerData } = usePromiseEffect(async (): Promise<IPromiseObject> => {
+    const resolePromise = usePromiseEffect(async () => {
         setSpinnerVisible(true);
 
-        const raidDetail = await getRaidDetail();
-        !localStorage.getItem('share') && (await initShareContents());
-        !localStorage.getItem('raid') && localStorage.getItem('character') && (await initRaid({ refresh: false }));
-        setSpinnerVisible(false);
+        !localStorage.getItem('shareDay') && localStorage.setItem('shareDay', stringifyStorageItem(initDayContents()));
+        (!localStorage.getItem('share') || parseStorageItem(localStorage.getItem('share') as string).length < 1) &&
+            (await initShareContents());
 
-        return { raidDetail };
+        !localStorage.getItem('ledger') && ledgerInit();
+        setSpinnerVisible(false);
     }, []);
+
+    const ledgerInit = () => {
+        if (
+            !parseStorageItem(localStorage.getItem('character') as string) ||
+            parseStorageItem(localStorage.getItem('character') as string).length < 1
+        )
+            return;
+
+        const commonLedger = initLedger.common;
+
+        const goodsLedger: ILedger['own'] = parseStorageItem(localStorage.getItem('character') as string).map(
+            (character: ICharacter) => {
+                const charactersLedger: ILedgerOwn = {
+                    characterId: character.id,
+                    prevWeekGold: [0, 0, 0, 0],
+                    histories: { raid: { fold: true, data: [] }, goods: { fold: true, data: [] } },
+                };
+                return charactersLedger;
+            },
+        );
+        setStoredLedger(Object.assign({}, { common: commonLedger }, { own: goodsLedger }));
+    };
 
     const initShareContents = async () => {
         try {
@@ -124,72 +141,6 @@ const Main = () => {
         }
     };
 
-    const initRaid = async ({ refresh }: { refresh: boolean }) => {
-        try {
-            setSpinnerVisible(true);
-            setRaidData(refresh);
-            //  setSortCharacter();
-        } catch (err: unknown) {
-            insertErrorDB({ catchErr: err, errType: 'initRaid' });
-        } finally {
-            setSpinnerVisible(false);
-            setCurrentPage(1);
-            //   refresh && Router.reload();
-        }
-    };
-
-    const setRaidData = async (refresh: boolean) => {
-        refresh && setStoredRaid([]);
-        const raidData = await getRaid();
-
-        const storedCharacter: ICharacter[] = parseStorageItem(
-            localStorage.getItem('character') as string,
-        ) as ICharacter[];
-
-        const raidCharacterArr: IRaidCharacter[] = storedCharacter.map(({ id }) => {
-            return { id: id, check: 0 };
-        });
-
-        const filterRaidLevel: IFileterRaidLevel[] = raidData.map(
-            ({ id: raidId, openlevel, closelevel }: IRaidGold) => {
-                const showArr = storedCharacter
-                    .filter(({ level: characterLevel }) => {
-                        const level = Number(characterLevel.replaceAll(',', ''));
-
-                        return openlevel <= level && level <= closelevel;
-                    })
-                    .map(({ id: characterId }) => characterId);
-
-                return { id: raidId, showArr: showArr };
-            },
-        );
-
-        const initData = raidData.map(({ id, name, imgurl }) => {
-            const result: IRaid = {
-                id: Number(id),
-                name: name,
-                color: theme.colors.text,
-                showCharacter: filterRaidLevel.filter(({ id: inId }) => id === inId)[0].showArr,
-                character: raidCharacterArr,
-                imgurl: imgurl,
-            };
-            return result;
-        }) as unknown as IRaid[];
-
-        setStoredRaid(initData);
-    };
-
-    const setSortCharacter = () => {
-        const levelSortArr = storedCharacter
-            .sort(({ level: beforeLevel }, { level: afterLevel }) => {
-                return Number(afterLevel.replaceAll(',', '')) - Number(beforeLevel.replaceAll(',', ''));
-            })
-            .map(({ id }) => id);
-
-        setStoredCharacterOrd(levelSortArr);
-        setStoredRaidCharacterOrd(levelSortArr);
-    };
-
     const resetFold = () => {
         responsiveWidth.smallPhone < windowWidth! && setIsFold(false);
     };
@@ -210,6 +161,15 @@ const Main = () => {
         shareContens[index].check = 1 - shareContens[index].check;
 
         setStoredShareContents(shareContens);
+    };
+
+    const setDayContents = ({ id }: { id: number }) => {
+        const dayContens: IShareContents[] = [...storedDayContents];
+
+        const index = storedDayContents.findIndex(({ id: storedId }) => id === storedId);
+        dayContens[index].check = 1 - dayContens[index].check;
+
+        setStoredDayContents(dayContens);
     };
 
     const crollAllMyCharacter = async () => {
@@ -238,35 +198,66 @@ const Main = () => {
     };
 
     const initAllCharacters = async (array: string[]) => {
+        let characters: ICharacter[] = [];
+        let charactersOrd: number[] = [];
+        let ledger: ILedger = initLedger;
+
         for (let index = 0; index < array.length; index++) {
             const { status, validMsg, crollJob, crollLevel } = await getCrollCharacterInfo(array[index]);
 
             const setCharacterInfo = {
-                success: () => addCharacter(array[index], crollJob || '', crollLevel || ''),
+                success: () =>
+                    addCharacter(
+                        array[index],
+                        crollJob || '',
+                        crollLevel || '',
+                        index + 1,
+                        characters,
+                        charactersOrd,
+                        ledger,
+                    ),
                 error: () => toast.error(validMsg || ''),
             };
             setCharacterInfo[status] && setCharacterInfo[status]();
         }
 
-        initRaid({ refresh: true });
+        setStoredCharacter(characters);
+
+        const levelSortArr = characters
+            .sort(({ level: beforeLevel }, { level: afterLevel }) => {
+                return Number(afterLevel.replaceAll(',', '')) - Number(beforeLevel.replaceAll(',', ''));
+            })
+            .map(({ id }) => id);
+
+        await initShareContents();
+        setStoredCharacterOrd(levelSortArr);
+        localStorage.setItem('ledger', stringifyStorageItem(ledger));
     };
 
-    const addCharacter = (name: string, crollJob: string, crollLevel: string) => {
-        const characterArr: ICharacter[] = localStorage.getItem('character')
-            ? [...parseStorageItem(localStorage.getItem('character') as string)]
-            : [];
-        const maxCharacterId = Math.max(...characterArr.map(char => char.id), 0);
-        const characterId = characterArr.length == 0 ? 0 : maxCharacterId + 1;
-
-        addCharacterInfo(name, crollJob, crollLevel, characterId);
-        addCharacterOrd(characterId);
-        addTodoCharacterInfo(characterId);
+    const addCharacter = (
+        name: string,
+        crollJob: string,
+        crollLevel: string,
+        characterId: number,
+        characters: ICharacter[],
+        charactersOrd: number[],
+        ledger: ILedger,
+    ) => {
+        characters.push(addCharacterInfo(name, crollJob, crollLevel, characterId));
+        charactersOrd.push(characterId);
+        ledger.own.push(setLedger(characterId));
     };
 
-    const addCharacterInfo = (name: string, crollJob: string, crollLevel: string, characterId: number) => {
-        const characterArr: ICharacter[] = localStorage.getItem('character')
-            ? [...parseStorageItem(localStorage.getItem('character') as string)]
-            : [];
+    const setLedger = (characterId: number) => {
+        const charactersLedger: ILedgerOwn = {
+            characterId: characterId,
+            prevWeekGold: [0, 0, 0, 0],
+            histories: { raid: { fold: true, data: [] }, goods: { fold: true, data: [] } },
+        };
+        return charactersLedger;
+    };
+
+    const addCharacterInfo = (name: string, crollJob: string, crollLevel: string, characterId: number): ICharacter => {
         const characterInfo: ICharacter = {
             id: characterId,
             name: name,
@@ -276,38 +267,7 @@ const Main = () => {
             lastSearch: 0,
         };
 
-        setStoredCharacter([...characterArr, characterInfo]);
-    };
-
-    const addCharacterOrd = (characterId: number) => {
-        const characterOrdArr: number[] = localStorage.getItem('characterOrd')
-            ? [...parseStorageItem(localStorage.getItem('characterOrd') as string)]
-            : [];
-        characterOrdArr.push(characterId);
-        setStoredCharacterOrd(characterOrdArr);
-        setStoredRaidCharacterOrd(characterOrdArr);
-    };
-
-    const addTodoCharacterInfo = (characterId: number) => {
-        const todoArr: ITodo[] = localStorage.getItem('todo')
-            ? [...parseStorageItem(localStorage.getItem('todo') as string)]
-            : [];
-
-        const todoCharacterArr = todoArr.map((todo: ITodo) => {
-            const todoCharacter: ICharacterTodo = {
-                id: characterId,
-                check: getResetCheckArr(todo.contents),
-                relaxGauge: 0,
-                oriRelaxGauge: 0,
-                eponaName: todo.contents === 'epona' ? new Array(3).fill('') : [],
-                guardianInfo: { info: '2', step: '5' },
-            };
-            todo.showCharacter.push(characterId);
-
-            return todo.type === 'line' ? todo : Object.assign({}, todo, todo.character.push(todoCharacter));
-        });
-
-        setStoredTodo(todoCharacterArr);
+        return characterInfo;
     };
 
     const resetDailyTodoRelax = (diffDays: number) => {
@@ -336,7 +296,6 @@ const Main = () => {
 
     const resetWeeklyTodo = () => {
         localStorage.getItem('todo') && resetTodoWeek();
-        localStorage.getItem('raid') && resetRaidWeek();
         localStorage.getItem('share') && resetShareWeek();
     };
 
@@ -352,23 +311,6 @@ const Main = () => {
         });
 
         localStorage.setItem('todo', stringifyStorageItem(calcResult));
-    };
-
-    const resetRaidWeek = () => {
-        const raidArr: IRaid[] = [...parseStorageItem(localStorage.getItem('raid') as string)];
-
-        const calcResult: IRaid[] = raidArr.map((raid: IRaid) => {
-            raid.character = raid.character.map((character: IRaidCharacter) => {
-                return {
-                    ...character,
-                    check: 0,
-                };
-            });
-
-            return raid;
-        });
-
-        localStorage.setItem('raid', stringifyStorageItem(calcResult));
     };
 
     const resetShareWeek = () => {
@@ -439,6 +381,7 @@ const Main = () => {
 
     const resetTodo = ({ dayDiff, lastVisitDate }: { dayDiff: number; lastVisitDate: DateTime }) => {
         resetDailyTodoRelax(Math.ceil(dayDiff));
+        localStorage.setItem('shareDay', stringifyStorageItem(initDayContents()));
 
         const now = DateTime.now();
 
@@ -458,237 +401,233 @@ const Main = () => {
 
     return (
         <>
-            {status === 'fulfilled' && ledgerData && (
-                <MainContainer>
-                    <NextSeo
-                        title="MyLoa - 로스트아크 숙제 관리"
-                        description="로스트 아크 숙제 관리 페이지입니다."
-                        openGraph={{
-                            title: 'MyLoa - 로스트아크 숙제 관리',
-                            description: '로스트 아크 숙제 관리 페이지입니다.',
-                            url: 'https://myloatest.herokuapp.com/Todo',
-                            locale: 'ko_KR',
-                            type: 'website',
-                            images: [
-                                {
-                                    url: 'https://myloatest.herokuapp.com/profile_image.png',
-                                    width: 1200,
-                                    height: 1200,
-                                    type: 'image/png',
-                                },
-                            ],
-                        }}
-                    />
-                    <Tabs>
-                        <TabList
-                            css={css`
-                                display: flex;
-                                justify-content: center;
-                                & > li {
-                                    cursor: pointer;
-                                    padding-top: 1em;
-                                    padding-bottom: 1em;
-                                    padding-right: 3em;
-                                    padding-left: 3em;
-                                    margin-top: 1em;
-                                    margin-bottom: 1em;
-                                    border: 1px solid;
-                                }
-                            `}
-                        >
-                            <Tab selected={true}>주간</Tab>
-                            <Tab>일일 / 커스텀</Tab>
-                        </TabList>
-                        <TabPanel>
-                            <WeeklyContainer>
+            {storedCharacter.length < 1 ? (
+                <Nodata
+                    text={
+                        <NodataDiv>
+                            <NodataInner>
+                                <strong>
+                                    데이터가 존재하지 않습니다. 보유 캐릭터 중 하나를 입력하여 추가 해보세요!
+                                </strong>
+                            </NodataInner>
+                            <NodataInner>
+                                <TextBox
+                                    placeholder="캐릭터 명 입력"
+                                    width="80"
+                                    divWidth="70"
+                                    {...bindRepreCharacter}
+                                />
+                                <Button width="40" onClick={crollAllMyCharacter}>
+                                    캐릭터 가져오기!😎
+                                </Button>
+                            </NodataInner>
+                        </NodataDiv>
+                    }
+                />
+            ) : (
+                resolePromise.status === 'fulfilled' && (
+                    <MainContainer>
+                        <NextSeo
+                            title="MyLoa - 로스트아크 숙제 관리"
+                            description="로스트 아크 숙제 관리 페이지입니다."
+                            openGraph={{
+                                title: 'MyLoa - 로스트아크 숙제 관리',
+                                description: '로스트 아크 숙제 관리 페이지입니다.',
+                                url: 'https://myloatest.herokuapp.com/Todo',
+                                locale: 'ko_KR',
+                                type: 'website',
+                                images: [
+                                    {
+                                        url: 'https://myloatest.herokuapp.com/profile_image.png',
+                                        width: 1200,
+                                        height: 1200,
+                                        type: 'image/png',
+                                    },
+                                ],
+                            }}
+                        />
+                        <TabsContainer activetab={activeTab} role="tabs">
+                            <TabList role="tablist">
+                                <Tab onClick={() => setActiveTab(1)} selected={activeTab == 1} role="tab">
+                                    원정대 공유
+                                </Tab>
+                                <Tab onClick={() => setActiveTab(2)} selected={activeTab == 2} role="tab">
+                                    일일 / 주간
+                                </Tab>
+                            </TabList>
+                            <TabPanel role="tabpanel">
                                 <WeeklyShare>
-                                    <ShareTable>
-                                        <thead>
-                                            <tr>
-                                                <th colSpan={3}>원정대 공유 숙제</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {storedShareContents.map(({ id, name, iconurl, check }, index) => {
-                                                return (
-                                                    <tr key={index}>
-                                                        <td>
-                                                            <IconLabel label={name} iconUrl={iconurl} />
-                                                        </td>
-                                                        <td>
-                                                            <TodoCheckbox
-                                                                onChange={() => setShareContents({ id: id })}
-                                                                checked={check === 1}
-                                                            />
-                                                        </td>
-                                                    </tr>
-                                                );
-                                            })}
-                                        </tbody>
-                                    </ShareTable>
-                                </WeeklyShare>
-                                <Raid>
-                                    <TodoContentsSection>
-                                        {isCrollFinish ? (
-                                            storedCharacter.length < 1 ? (
-                                                <Nodata
-                                                    text={
-                                                        <NodataDiv>
-                                                            <NodataInner>
-                                                                <strong>
-                                                                    데이터가 존재하지 않습니다. 보유 캐릭터 중 하나를
-                                                                    입력하여 추가 해보세요!
-                                                                </strong>
-                                                            </NodataInner>
-                                                            <NodataInner>
-                                                                <TextBox
-                                                                    placeholder="캐릭터 명 입력"
-                                                                    width="80"
-                                                                    divWidth="70"
-                                                                    {...bindRepreCharacter}
+                                    <SharedLeftDiv>
+                                        <SharedDiv>
+                                            <h3>일일</h3>
+                                            <SharedInner>
+                                                {storedDayContents.map(({ id, name, iconurl, check }, index) => {
+                                                    return (
+                                                        <ContentsDiv key={index}>
+                                                            <LabelDiv>
+                                                                <IconLabel label={name} iconUrl={iconurl} />
+                                                            </LabelDiv>
+                                                            <CheckboxDiv>
+                                                                <TodoCheckbox
+                                                                    onChange={() => setDayContents({ id: id })}
+                                                                    checked={check === 1}
                                                                 />
-                                                                <Button width="40" onClick={crollAllMyCharacter}>
-                                                                    캐릭터 가져오기!😎
-                                                                </Button>
-                                                            </NodataInner>
-                                                        </NodataDiv>
-                                                    }
-                                                />
+                                                            </CheckboxDiv>
+                                                        </ContentsDiv>
+                                                    );
+                                                })}
+                                            </SharedInner>
+                                        </SharedDiv>
+                                    </SharedLeftDiv>
+                                    <SharedRightDiv>
+                                        <SharedDiv>
+                                            <h3>주간</h3>
+                                            <SharedInner>
+                                                {storedShareContents.map(({ id, name, iconurl, check }, index) => {
+                                                    return (
+                                                        <ContentsDiv key={index}>
+                                                            <LabelDiv>
+                                                                <IconLabel label={name} iconUrl={iconurl} />
+                                                            </LabelDiv>
+                                                            <CheckboxDiv>
+                                                                <TodoCheckbox
+                                                                    onChange={() => setShareContents({ id: id })}
+                                                                    checked={check === 1}
+                                                                />
+                                                            </CheckboxDiv>
+                                                        </ContentsDiv>
+                                                    );
+                                                })}
+                                            </SharedInner>
+                                        </SharedDiv>
+                                    </SharedRightDiv>
+                                </WeeklyShare>
+                            </TabPanel>
+                            <TabPanel>
+                                <section>
+                                    <HideButtonContainer isFold={isFold}>
+                                        <HideButtonSection onClick={() => setIsFold(!isFold)}>
+                                            버튼
+                                            {isFold ? (
+                                                <>
+                                                    <span>&nbsp;보이기</span>
+                                                    <DownArrow fill={theme.colors.text} width="25" height="25" />
+                                                </>
                                             ) : (
                                                 <>
-                                                    <Character
-                                                        type="raid"
-                                                        onContextMenuBasicModal={onContextMenuBasicModal}
-                                                    />
-                                                    <RaidTodo />
+                                                    <span>&nbsp;숨기기</span>
+                                                    <UpArrow fill={theme.colors.text} width="25" height="25" />
                                                 </>
-                                            )
-                                        ) : (
-                                            <span>캐릭터 정보 가져오는 중.....</span>
-                                        )}
+                                            )}
+                                        </HideButtonSection>
+                                    </HideButtonContainer>
+                                    <TodoButtons isFold={isFold}>
+                                        <ButtonLeftDiv>
+                                            <AddButton
+                                                type="button"
+                                                icon={<PlusIcon fill={theme.button.color} width="15" height="15" />}
+                                                onClick={e =>
+                                                    onContextMenuBasicModal({
+                                                        e: e,
+                                                        modal: <TodoAdd />,
+                                                        title: '숙제 추가',
+                                                        width: '600',
+                                                        height: '850',
+                                                    })
+                                                }
+                                            >
+                                                숙제
+                                            </AddButton>
+                                            <AddButton
+                                                isRight={true}
+                                                type="button"
+                                                icon={<PlusIcon fill={theme.button.color} width="15" height="15" />}
+                                                onClick={e =>
+                                                    onContextMenuBasicModal({
+                                                        e: e,
+                                                        modal: <LineAdd />,
+                                                        title: '구분선 추가',
+                                                        width: '360',
+                                                        height: '290',
+                                                    })
+                                                }
+                                            >
+                                                구분선
+                                            </AddButton>
+                                        </ButtonLeftDiv>
+                                        <FlexDiv>
+                                            <AddButton
+                                                type="button"
+                                                onClick={e =>
+                                                    onContextMenuBasicModal({
+                                                        e: e,
+                                                        modal: <CharacterOrdChange />,
+                                                        title: '캐릭터 순서 변경',
+                                                        width: '300',
+                                                        height: storedCharacterOrd.length < 5 ? '450' : '600',
+                                                    })
+                                                }
+                                            >
+                                                캐릭터 순서 변경
+                                            </AddButton>
+                                            <AddButton
+                                                isRight={true}
+                                                type="button"
+                                                icon={<PlusIcon fill={theme.button.color} width="15" height="15" />}
+                                                onClick={e =>
+                                                    onContextMenuBasicModal({
+                                                        e: e,
+                                                        modal: <CharacterAdd />,
+                                                        title: '캐릭터 추가',
+                                                        width: '470',
+                                                        height: '420',
+                                                    })
+                                                }
+                                            >
+                                                캐릭터
+                                            </AddButton>
+                                        </FlexDiv>
+                                    </TodoButtons>
+                                    <TodoContentsSection>
+                                        {storedCharacter.length > 0 && <Pagination />}
+                                        <Character onContextMenuBasicModal={onContextMenuBasicModal} />
+                                        <Todo onContextMenuBasicModal={onContextMenuBasicModal} />
                                     </TodoContentsSection>
-                                </Raid>
-                            </WeeklyContainer>
-                        </TabPanel>
-                        <TabPanel>
-                            <section>
-                                <HideButtonContainer isFold={isFold}>
-                                    <HideButtonSection onClick={() => setIsFold(!isFold)}>
-                                        버튼
-                                        {isFold ? (
-                                            <>
-                                                <span>&nbsp;보이기</span>
-                                                <DownArrow fill={theme.colors.text} width="25" height="25" />
-                                            </>
-                                        ) : (
-                                            <>
-                                                <span>&nbsp;숨기기</span>
-                                                <UpArrow fill={theme.colors.text} width="25" height="25" />
-                                            </>
-                                        )}
-                                    </HideButtonSection>
-                                </HideButtonContainer>
-                                <TodoButtons isFold={isFold}>
-                                    <ButtonLeftDiv>
-                                        <AddButton
-                                            type="button"
-                                            icon={<PlusIcon fill={theme.button.color} width="15" height="15" />}
-                                            onClick={e =>
-                                                onContextMenuBasicModal({
-                                                    e: e,
-                                                    modal: <TodoAdd />,
-                                                    title: '숙제 추가',
-                                                    width: '600',
-                                                    height: '850',
-                                                })
-                                            }
-                                        >
-                                            숙제
-                                        </AddButton>
-                                        <AddButton
-                                            isRight={true}
-                                            type="button"
-                                            icon={<PlusIcon fill={theme.button.color} width="15" height="15" />}
-                                            onClick={e =>
-                                                onContextMenuBasicModal({
-                                                    e: e,
-                                                    modal: <LineAdd />,
-                                                    title: '구분선 추가',
-                                                    width: '360',
-                                                    height: '290',
-                                                })
-                                            }
-                                        >
-                                            구분선
-                                        </AddButton>
-                                    </ButtonLeftDiv>
-                                    <FlexDiv>
-                                        <AddButton
-                                            type="button"
-                                            onClick={e =>
-                                                onContextMenuBasicModal({
-                                                    e: e,
-                                                    modal: <CharacterOrdChange />,
-                                                    title: '캐릭터 순서 변경',
-                                                    width: '300',
-                                                    height: storedCharacterOrd.length < 5 ? '450' : '600',
-                                                })
-                                            }
-                                        >
-                                            캐릭터 순서 변경
-                                        </AddButton>
-                                        <AddButton
-                                            isRight={true}
-                                            type="button"
-                                            icon={<PlusIcon fill={theme.button.color} width="15" height="15" />}
-                                            onClick={e =>
-                                                onContextMenuBasicModal({
-                                                    e: e,
-                                                    modal: <CharacterAdd />,
-                                                    title: '캐릭터 추가',
-                                                    width: '470',
-                                                    height: '420',
-                                                })
-                                            }
-                                        >
-                                            캐릭터
-                                        </AddButton>
-                                    </FlexDiv>
-                                </TodoButtons>
-                                <TodoContentsSection>
-                                    {storedCharacter.length > 0 && <Pagination />}
-                                    <Character type="all" onContextMenuBasicModal={onContextMenuBasicModal} />
-                                    <Todo onContextMenuBasicModal={onContextMenuBasicModal} />
-                                </TodoContentsSection>
-                            </section>
-                        </TabPanel>
-                    </Tabs>
-                </MainContainer>
+                                </section>
+                            </TabPanel>
+                        </TabsContainer>
+                    </MainContainer>
+                )
             )}
         </>
     );
 };
 
-const CustomTabList = styled(TabList)`
-    display: flex;
-    width: 88%;
-    margin-top: 1.2vh;
-`;
+const TabsContainer = styled(Tabs)<{ activetab: number }>`
+    & > ul {
+        display: flex;
+        justify-content: center;
+        margin-top: 1em;
+        margin-bottom: 1.5em;
+    }
 
-const WeeklyContainer = styled.section`
-    display: flex;
-`;
-
-const WeeklyShare = styled.article`
-    display: flex;
-    flex-basis: 30%;
-    width: 100%;
-`;
-
-const Raid = styled.article`
-    display: flex;
-    flex-basis: 70%;
-    width: 100%;
+    & > ul > li {
+        cursor: pointer;
+        padding-top: 0.7em;
+        padding-bottom: 0.7em;
+        padding-right: 2.5em;
+        padding-left: 2.5em;
+        border: 1px solid;
+        background: ${props => props.theme.colors.mainInner};
+    }
+    ${props =>
+        props.activetab == 1
+            ? `& > ul > li:nth-of-type(2){
+        opacity:0.5;
+    }`
+            : `& > ul > li:nth-of-type(1){
+        opacity:0.5;
+    }`}
 `;
 
 const MainContainer = styled.main`
@@ -708,10 +647,14 @@ const MainContainer = styled.main`
 
 const TodoContentsSection = styled.section`
     background: ${props => props.theme.colors.mainInner};
-    padding: 1em 1.5em 1.5em 1.5em;
-    border-radius: 1em;
+    padding: 0.3em 1.5em 1.5em 1.5em;
+    border-radius: 0 0 0.8em 0.8em;
     box-sizing: border-box;
     width: 100%;
+    ${widthMedia.smallPhone} {
+        padding-top: 1em;
+        border-radius: 0.8em;
+    }
 `;
 
 const HideButtonContainer = styled.header<{ isFold: boolean }>`
@@ -736,13 +679,17 @@ const TodoButtons = styled.header<{ isFold: boolean }>`
     display: flex;
     width: 100%;
     height: 100%;
-    margin-bottom: 1.1em;
-    margin-top: 0.3em;
+    padding: 1.7em;
     box-sizing: border-box;
     justify-content: space-between;
+    padding-bottom: 0.7em;
+    border-radius: 0.8em 0.8em 0 0;
+    background: ${props => props.theme.colors.mainInner};
 
     ${widthMedia.smallPhone} {
         flex-direction: column;
+        padding-top: 0;
+        background: transparent;
     }
 
     ${props => props.isFold && 'display:none'};
@@ -769,6 +716,9 @@ const NodataDiv = styled.div`
     display: flex;
     flex-direction: column;
     width: 100%;
+    height: 100%;
+    margin-top: 3em;
+    align-items: center;
 `;
 
 const NodataInner = styled.div`
@@ -779,11 +729,75 @@ const NodataInner = styled.div`
     align-items: center;
 `;
 
-const ShareTable = styled.table`
+const SharedDiv = styled.div`
     display: flex;
     flex-direction: column;
-    width: 90%;
     border-collapse: collapse;
+    align-items: center;
+    background: ${props => props.theme.colors.mainInner};
+    padding: 1em 1.8em 1.5em 1.8em;
+    border-radius: 1em;
+    box-sizing: border-box;
+    width: 90%;
+    height: 400px;
+    justify-content: space-around;
+
+    h3 {
+        font-size: 1.15em;
+        text-decoration: underline;
+        text-underline-position: under;
+    }
+
+    ${widthMedia.tablet} {
+        margin-bottom: 1.1em;
+    }
 `;
 
+const WeeklyShare = styled.article`
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    height: 100%;
+    margin-top: 2em;
+
+    ${widthMedia.tablet} {
+        flex-direction: column;
+    }
+`;
+
+const SharedRightDiv = styled.div`
+    display: flex;
+    flex-basis: 35%;
+    justify-content: center;
+`;
+
+const SharedLeftDiv = styled.div`
+    display: flex;
+    flex-basis: 35%;
+    justify-content: center;
+`;
+
+const SharedInner = styled.div`
+    padding-bottom: 10px;
+    align-items: center;
+    width: 80%;
+    height: 300px;
+`;
+
+const LabelDiv = styled.div`
+    flex-basis: 80%;
+`;
+const CheckboxDiv = styled.div`
+    flex-basis: 20%;
+`;
+
+const ContentsDiv = styled.div`
+    display: flex;
+    padding-top: 1em;
+    padding-bottom: 1em;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    border-bottom: 1px dashed ${props => props.theme.colors.scroll};
+`;
 export default Main;
