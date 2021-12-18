@@ -3,6 +3,8 @@ import { DateTime } from 'luxon';
 import { CompassInfo } from '@common/data/compass';
 import styled from '@emotion/styled';
 import { InnerContent } from '@style/common/modal';
+import Image from 'next/image';
+import { getDayContents } from '@common/getCommonData';
 
 const DayContents = () => {
     const [fieldBoss, setFieldBoss] = useState<boolean>(false);
@@ -10,34 +12,35 @@ const DayContents = () => {
     const [chaosGate, setChaosGate] = useState<boolean>(false);
 
     useEffect(() => {
-        getCompass();
+        const { fieldBoss, ghost, chaosGate } = getDayContents();
+
+        setFieldBoss(fieldBoss);
+        setGhost(ghost);
+        setChaosGate(chaosGate);
     }, []);
-
-    const getCompass = () => {
-        const dayOfWeek = Number(DateTime.now().toFormat('c'));
-        const hour = Number(DateTime.now().toFormat('H'));
-        const calcDayOfWeek = hour > 5 ? dayOfWeek - 1 : dayOfWeek - 2 < 0 ? 0 : dayOfWeek - 2;
-
-        const { ghost, chaosGate, fieldBoss } = CompassInfo;
-
-        fieldBoss[calcDayOfWeek] === 1 && setFieldBoss(true);
-        ghost[calcDayOfWeek] === 1 && setGhost(true);
-        chaosGate[calcDayOfWeek] === 1 && setChaosGate(true);
-    };
 
     return (
         <Container>
-            <Article active={fieldBoss}>
+            <Article>
                 <span> {fieldBoss ? '⭕' : '❌'}</span>
-                <span>필드 보스</span>
+                <TextDiv active={fieldBoss}>
+                    <span>필드 보스</span>
+                    <Image src="/static/img/lostark/contents/fieldboss.png" width="20" height="20" />
+                </TextDiv>
             </Article>
-            <Article active={ghost}>
+            <Article>
                 <span> {ghost ? '⭕' : '❌'}</span>
-                <span>유령선</span>
+                <TextDiv active={ghost}>
+                    <span>유령선</span>
+                    <Image src="/static/img/lostark/contents/ghost.png" width="20" height="20" />
+                </TextDiv>
             </Article>
-            <Article active={chaosGate}>
+            <Article>
                 <span> {chaosGate ? '⭕' : '❌'}</span>
-                <span>카오스 게이트</span>
+                <TextDiv active={chaosGate}>
+                    <span>카오스 게이트</span>
+                    <Image src="/static/img/lostark/contents/choasgate.png" width="20" height="20" />
+                </TextDiv>
             </Article>
         </Container>
     );
@@ -50,13 +53,24 @@ const Container = styled(InnerContent)`
     justify-content: space-evenly;
 `;
 
-const Article = styled.article<{ active: boolean }>`
+const Article = styled.article`
     display: flex;
     margin-left: 1em;
-    span:nth-of-type(2) {
-        color: ${props => (props.active ? props.theme.colors.compassActive : props.theme.colors.gray)};
-        font-weight: ${props => props.active && `600`};
-        padding-left: 0.5em;
+    span {
+        display: flex;
+        align-items: end;
+    }
+`;
+
+const TextDiv = styled.div<{ active: boolean }>`
+    display: flex;
+    color: ${props => (props.active ? props.theme.colors.compassActive : props.theme.colors.gray)};
+    font-weight: ${props => props.active && `600`};
+    padding-left: 0.5em;
+    align-items: center;
+
+    span {
+        margin-right: 5px;
     }
 `;
 

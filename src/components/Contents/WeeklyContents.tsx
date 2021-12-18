@@ -8,6 +8,8 @@ import { weeklyAbyss } from '@common/data/weeklyAbyss';
 import styled from '@emotion/styled';
 import { Title, InnerContent, Container, ContentContainer } from '@style/common/modal';
 import { getWeekContents } from '@apis/contents/weekly';
+import Image from 'next/image';
+import { getWeeklyContents } from '@common/getCommonData';
 
 const WeeklyContents = () => {
     const [guardian, setGuardian] = useState<string[]>([]);
@@ -15,33 +17,13 @@ const WeeklyContents = () => {
 
     const { setSpinnerVisible } = useContext(SpinnerContext);
 
-    const setData = async () => {
-        const { guardian, abyss } = await getWeekContents();
-
-        const guardianIndex = Number(guardian);
-        const abyssIndex = Number(abyss);
-
-        const guardianLength = weeklyGuardian.length;
-        const secondIndex = guardianIndex + 1;
-        const thirdIndex = guardianIndex + 2;
-
-        setGuardian([
-            weeklyGuardian[guardianIndex],
-            weeklyGuardian[calcIndex(secondIndex, guardianLength)],
-            weeklyGuardian[calcIndex(thirdIndex, guardianLength)],
-        ]);
-        setAbyss([weeklyAbyss[abyssIndex][0], weeklyAbyss[abyssIndex][1]]);
-    };
-
-    const calcIndex = (index: number, length: number): number => {
-        return index >= length ? index - length : index;
-    };
-
     useEffect(() => {
         const getWeekly = async () => {
             try {
                 setSpinnerVisible(true);
-                await setData();
+                const { abyss, guardian } = await getWeeklyContents();
+                setGuardian(guardian);
+                setAbyss(abyss);
             } catch {
             } finally {
                 setSpinnerVisible(false);
@@ -56,7 +38,10 @@ const WeeklyContents = () => {
             <ContentContainer>
                 {guardian.length > 0 && (
                     <Article>
-                        <Title>도전 가디언 토벌</Title>
+                        <Title>
+                            <Image src="/static/img/lostark/contents/guardian.png" width="24" height="24" />
+                            <span>도전 가디언 토벌</span>
+                        </Title>
                         <InnerContent>
                             {guardian.map((name, guardianIndex) => {
                                 return <Contents key={guardianIndex}>🔹 {name}</Contents>;
@@ -66,7 +51,10 @@ const WeeklyContents = () => {
                 )}
                 {abyss.length > 0 && (
                     <Article>
-                        <Title>도전 어비스 던전</Title>
+                        <Title>
+                            <Image src="/static/img/lostark/contents/abyss.png" width="24" height="24" />
+                            <span>도전 어비스 던전</span>
+                        </Title>
                         <InnerContent>
                             {abyss.map((name, abyssIndex) => {
                                 return <Contents key={abyssIndex}>🔹 {name}</Contents>;
