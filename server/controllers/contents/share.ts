@@ -4,7 +4,7 @@ import { IShareContents } from '../../routes/contents/share/types';
 
 const ShareContents = {
     getShareContents: async (): Promise<QueryResult<IShareContents>> =>
-        await dbPool.query(`SELECT * FROM shareContents`),
+        await dbPool.query(`SELECT * FROM shareContents ORDER BY id`),
 };
 
 export { ShareContents };
