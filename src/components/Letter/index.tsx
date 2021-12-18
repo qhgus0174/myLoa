@@ -22,10 +22,10 @@ const Letter = () => {
             <br />
             <br /> 취미로 만들어 본 사이트라 아직 부족한 점이 많습니다.
             <br /> 많은 관심 부탁드리며 버그 제보와 요청 사항은 감사히 받겠습니당 💜
-            <a target="_blank" href="https://discord.gg/an2dykC9">
+            <a className="discord" target="_blank" href="https://discord.gg/an2dykC9">
                 디스코드 바로가기 🐇
             </a>
-            <a target="_blank" href="https://loa-day.com/">
+            <a className="loaday" target="_blank" href="https://loa-day.com/">
                 로요일좋아 바로가기 🐇
             </a>
             <span

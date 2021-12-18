@@ -18,6 +18,7 @@ const SelectTheme = () => {
         <Container ref={ref}>
             <ThemeTitle onClick={() => setVisible(!visible)}>
                 <span
+                    className="theme"
                     css={css`
                         -webkit-background-clip: text;
                         background-image: linear-gradient(to right, ${theme.colors.text}, #2979ff);

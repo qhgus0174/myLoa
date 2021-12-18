@@ -29,7 +29,9 @@ const Header = () => {
             </HeaderInner>
             <RightHeader>
                 <SelectTheme />
-                <LetterArea onClick={() => openLetter()}>💌</LetterArea>
+                <LetterArea className="letter" onClick={() => openLetter()}>
+                    💌
+                </LetterArea>
                 <ResponsiveMenu>
                     <ResponsiveLi>
                         <SidebarImg

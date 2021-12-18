@@ -272,6 +272,7 @@ const RaidGold = ({
                                                                                     {startlevel <= characterLevel &&
                                                                                         characterLevel <= endlevel && (
                                                                                             <BasicCheckbox
+                                                                                                className="raidgold"
                                                                                                 value={id}
                                                                                                 onChange={e =>
                                                                                                     onChangeRaidCheckbox(

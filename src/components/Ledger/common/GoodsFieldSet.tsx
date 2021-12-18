@@ -26,6 +26,7 @@ const GoodsFieldSet = ({
                 {array.map(({ id, defaultimgurl, name, defaultbackground }, goodsIndex: number) => {
                     return (
                         <ImageBackground
+                            className="goodsCommon"
                             key={goodsIndex}
                             pointer={true}
                             grade={defaultbackground}
