@@ -1,6 +1,8 @@
 import React, { useContext } from 'react';
 import axios from 'axios';
+import { NextSeo } from 'next-seo';
 import { toast } from 'react-toastify';
+import Image from 'next/image';
 import { ModalActionContext } from '@context/ModalContext';
 import { SpinnerContext } from '@context/SpinnerContext';
 import BackupCreate from '@components/Backup/BackupCreate';
@@ -70,6 +72,26 @@ const Manage = () => {
 
     return (
         <Container>
+            <NextSeo
+                title="로요일좋아 - 관리"
+                description="로스트 아크 유틸 모음 페이지입니다! 내 캐릭터 골드 수입 확인도 하고 일일, 주간 숙제를 편하게 체크해보세요."
+                openGraph={{
+                    title: '로요일좋아',
+                    description:
+                        '로스트 아크 유틸 모음 페이지입니다! 내 캐릭터 골드 수입 확인도 하고 일일, 주간 숙제를 편하게 체크해보세요.',
+                    url: 'https://loa-day.com/',
+                    locale: 'ko_KR',
+                    type: 'website',
+                    images: [
+                        {
+                            url: 'https://loa-day.com/static/img/logo/logo.png',
+                            width: 1200,
+                            height: 1200,
+                            type: 'image/png',
+                        },
+                    ],
+                }}
+            />
             <Content>
                 <span>💥 데이터를 초기화 합니다. </span>
                 <CustomButton className="resetData" onClick={() => clearData()}>
@@ -89,6 +111,22 @@ const Manage = () => {
                     </CustomButton>
                 </InnerContent>
             </Content>
+            <Content direction="column">
+                <InnerContent>
+                    <span>📞 버그 제보, 기타 문의는 디스코드나 오픈 채팅방 또는 메일을 이용해주세요! </span>
+                </InnerContent>
+                <InnerContent>
+                    <a target="_blank" href="https://discord.gg/an2dykC9">
+                        <Image src="/static/img/icon/discord.png" width="45" height="45" />
+                    </a>
+                    <a target="_blank" href="https://open.kakao.com/o/g2kVnGPd">
+                        <Image src="/static/img/icon/kakao.png" width="45" height="45" />
+                    </a>
+                </InnerContent>
+                <InnerContent>
+                    <div>shannon_@hotmail.co.kr</div>
+                </InnerContent>
+            </Content>
         </Container>
     );
 };
@@ -103,7 +141,8 @@ const Container = styled.section`
     border: 1px solid ${props => props.theme.colors.text};
     padding: 4em;
     margin: 4em;
-    & > div:nth-of-type(1) {
+    & > div:nth-of-type(1),
+    & > div:nth-of-type(2) {
         border-bottom: 1px dashed ${props => props.theme.colors.text};
     }
 
@@ -116,7 +155,7 @@ const Container = styled.section`
     }
 
     ${widthMedia.phone} {
-        width: 98%;
+        width: 92%;
     }
 `;
 
