@@ -13,6 +13,7 @@ import { ILedger } from '@common/types/localStorage/Ledger';
 import { getCharacterInfoById, parseStorageItem } from '@common/utils';
 import styled from '@emotion/styled';
 import { widthMedia } from '@style/device';
+import IconLabel from '@components/Label/IconLabel';
 
 const Main = () => {
     const [fieldBoss, setFieldBoss] = useState<boolean>(false);
@@ -107,9 +108,9 @@ const Main = () => {
                         symbolPosition="right"
                     />
                     <br />
-                    <GoTodoButton>
-                        <Link href="/todo">숙제 관리 바로가기</Link>
-                    </GoTodoButton>
+                    <Link href="/todo">
+                        <GoTodo>숙제 관리 바로가기</GoTodo>
+                    </Link>
                 </TextDiv>
             </TopArea>
             <ContentsDiv>
@@ -146,8 +147,10 @@ const Main = () => {
                             <WeekContents>
                                 <WeekContent>
                                     <h2>
-                                        <Image src="/static/img/lostark/contents/abyss.png" width="22" height="22" />
-                                        도전 어비스 던전
+                                        <IconLabel
+                                            label="도전 어비스 던전"
+                                            iconUrl="/static/img/lostark/contents/abyss.png"
+                                        />
                                     </h2>
                                     {abyss.length > 0 && (
                                         <InnerContents>
@@ -163,8 +166,10 @@ const Main = () => {
                                 </WeekContent>
                                 <WeekContent>
                                     <h2>
-                                        <Image src="/static/img/lostark/contents/guardian.png" width="22" height="22" />
-                                        도전 가디언 토벌
+                                        <IconLabel
+                                            label="도전 가디언 토벌"
+                                            iconUrl="/static/img/lostark/contents/guardian.png"
+                                        />
                                     </h2>
                                     {guardian.length > 0 && (
                                         <InnerContents>
@@ -412,5 +417,11 @@ const ContentsInnerRight = styled.div`
     & > span {
         text-align: center;
     }
+`;
+
+const GoTodo = styled.span`
+    cursor: pointer;
+    border: 1px solid ${props => props.theme.colors.text};
+    padding: 0.8em 3em 0.8em 3em;
 `;
 export default Main;
