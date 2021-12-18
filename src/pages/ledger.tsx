@@ -55,7 +55,7 @@ const Ledger = () => {
 
     const { setSpinnerVisible } = useContext(SpinnerContext);
 
-    const { storedCharacter, storedLedger } = useContext(LocalStorageStateContext);
+    const { storedCharacter, storedLedger, storedCharacterOrd } = useContext(LocalStorageStateContext);
     const { setStoredLedger } = useContext(LocalStorageActionContext);
 
     const { setModalProps } = useContext(ModalActionContext);
@@ -75,10 +75,8 @@ const Ledger = () => {
         const common = await getCommon();
         const goods = await getGoods();
         const goodsImg = await getGoodsImg();
-
         localStorage.getItem('ledger') && calcWeekGold();
         localStorage.getItem('ledger') && calcStatistics();
-
         setSpinnerVisible(false);
 
         return { raid, raidDetail, common, goods, goodsImg };
@@ -246,6 +244,7 @@ const Ledger = () => {
     };
 
     const calcStatistics = () => {
+        if (parseStorageItem(localStorage.getItem('ledger') as string).length < 1) return;
         const { common: storageCommon, own }: ILedger = {
             ...parseStorageItem(localStorage.getItem('ledger') as string),
         };
@@ -397,115 +396,135 @@ const Ledger = () => {
                                     <CommonGold commonData={ledgerData.common} />
                                 </Contents>
                             </Article>
-                            {storedLedger.own.map(
-                                (
-                                    {
-                                        characterId,
-                                        prevWeekGold,
-                                        histories: {
-                                            goods: { fold: goodsFold },
-                                            raid: { fold: raidFold },
-                                        },
-                                    }: ILedgerOwn,
-                                    ledgerIndex: number,
-                                ) => {
-                                    const level = getCharacterInfoById({
-                                        dataArray: storedCharacter,
-                                        id: characterId,
-                                    }).level;
-                                    const goodsIndex = storedLedger.own.findIndex(
-                                        ({ characterId: goodsCharId }: ILedgerOwn) => goodsCharId === characterId,
-                                    );
-
-                                    const goodsTotalGold = calcSum(storedLedger.own[goodsIndex].histories.goods.data);
-                                    const raidTotalGold = calcSum(storedLedger.own[goodsIndex].histories.raid.data);
-
+                            {storedLedger.own
+                                .sort((a, b) => {
                                     return (
-                                        <Article key={ledgerIndex}>
-                                            <Header>
-                                                <Info>
-                                                    <h2>
-                                                        {
-                                                            getCharacterInfoById({
-                                                                dataArray: storedCharacter,
-                                                                id: characterId,
-                                                            }).name
-                                                        }
-                                                    </h2>
-                                                    <h4>
-                                                        {
-                                                            getCharacterInfoById({
-                                                                dataArray: storedCharacter,
-                                                                id: characterId,
-                                                            }).level
-                                                        }
-                                                    </h4>
-                                                </Info>
-                                                <GoldSum>
-                                                    <TitleAndGold
-                                                        opacity={0.8}
-                                                        title="저번 주"
-                                                        gold={prevWeekGold[0]}
-                                                    />
-                                                    <TitleAndGold
-                                                        title="이번 주"
-                                                        gold={goodsTotalGold + raidTotalGold}
-                                                    />
-                                                </GoldSum>
-                                            </Header>
-                                            <PersonalHeader
-                                                onClick={() =>
-                                                    foldGoodsDiv({ characterIndex: goodsIndex, foldState: goodsFold })
-                                                }
-                                            >
-                                                <PersonalInner>
-                                                    <h4>재화</h4>
-                                                    {goodsFold ? (
-                                                        <UpArrow fill={theme.colors.text} width="25" height="25" />
-                                                    ) : (
-                                                        <DownArrow fill={theme.colors.text} width="25" height="25" />
-                                                    )}
-                                                </PersonalInner>
-                                                <PersonalInner>
-                                                    <TitleAndGold underline={false} gold={goodsTotalGold} />
-                                                </PersonalInner>
-                                            </PersonalHeader>
-                                            <Contents fold={goodsFold}>
-                                                <GoodsGold
-                                                    characterId={characterId}
-                                                    goods={ledgerData.goods}
-                                                    imgPaletteArr={ledgerData.goodsImg}
-                                                />
-                                            </Contents>
-                                            <PersonalHeader
-                                                onClick={() =>
-                                                    foldRaidDiv({ characterIndex: goodsIndex, foldState: raidFold })
-                                                }
-                                            >
-                                                <PersonalInner>
-                                                    <h4>레이드</h4>
-                                                    {raidFold ? (
-                                                        <UpArrow fill={theme.colors.text} width="25" height="25" />
-                                                    ) : (
-                                                        <DownArrow fill={theme.colors.text} width="25" height="25" />
-                                                    )}
-                                                </PersonalInner>
-                                                <PersonalInner>
-                                                    <TitleAndGold underline={false} gold={raidTotalGold} />
-                                                </PersonalInner>
-                                            </PersonalHeader>
-                                            <Contents fold={raidFold}>
-                                                <RaidGold
-                                                    raidCategory={ledgerData.raid}
-                                                    raidDetailData={ledgerData.raidDetail}
-                                                    characterId={characterId}
-                                                    characterLevel={Number(level.replace(/\,/g, ''))}
-                                                />
-                                            </Contents>
-                                        </Article>
+                                        (storedCharacterOrd as number[]).indexOf(Number(a.characterId)) -
+                                        (storedCharacterOrd as number[]).indexOf(Number(b.characterId))
                                     );
-                                },
-                            )}
+                                })
+                                .map(
+                                    (
+                                        {
+                                            characterId,
+                                            prevWeekGold,
+                                            histories: {
+                                                goods: { fold: goodsFold },
+                                                raid: { fold: raidFold },
+                                            },
+                                        }: ILedgerOwn,
+                                        ledgerIndex: number,
+                                    ) => {
+                                        const level = getCharacterInfoById({
+                                            dataArray: storedCharacter,
+                                            id: characterId,
+                                        }).level;
+                                        const goodsIndex = storedLedger.own.findIndex(
+                                            ({ characterId: goodsCharId }: ILedgerOwn) => goodsCharId === characterId,
+                                        );
+
+                                        const goodsTotalGold = calcSum(
+                                            storedLedger.own[goodsIndex].histories.goods.data,
+                                        );
+                                        const raidTotalGold = calcSum(storedLedger.own[goodsIndex].histories.raid.data);
+
+                                        return (
+                                            <Article key={ledgerIndex}>
+                                                <Header>
+                                                    <Info>
+                                                        <h2>
+                                                            {
+                                                                getCharacterInfoById({
+                                                                    dataArray: storedCharacter,
+                                                                    id: characterId,
+                                                                }).name
+                                                            }
+                                                        </h2>
+                                                        <h4>
+                                                            {
+                                                                getCharacterInfoById({
+                                                                    dataArray: storedCharacter,
+                                                                    id: characterId,
+                                                                }).level
+                                                            }
+                                                        </h4>
+                                                    </Info>
+                                                    <GoldSum>
+                                                        <TitleAndGold
+                                                            opacity={0.8}
+                                                            title="저번 주"
+                                                            gold={prevWeekGold[0]}
+                                                        />
+                                                        <TitleAndGold
+                                                            title="이번 주"
+                                                            gold={goodsTotalGold + raidTotalGold}
+                                                        />
+                                                    </GoldSum>
+                                                </Header>
+                                                <PersonalHeader
+                                                    onClick={() =>
+                                                        foldGoodsDiv({
+                                                            characterIndex: goodsIndex,
+                                                            foldState: goodsFold,
+                                                        })
+                                                    }
+                                                >
+                                                    <PersonalInner>
+                                                        <h4>재화</h4>
+                                                        {goodsFold ? (
+                                                            <UpArrow fill={theme.colors.text} width="25" height="25" />
+                                                        ) : (
+                                                            <DownArrow
+                                                                fill={theme.colors.text}
+                                                                width="25"
+                                                                height="25"
+                                                            />
+                                                        )}
+                                                    </PersonalInner>
+                                                    <PersonalInner>
+                                                        <TitleAndGold underline={false} gold={goodsTotalGold} />
+                                                    </PersonalInner>
+                                                </PersonalHeader>
+                                                <Contents fold={goodsFold}>
+                                                    <GoodsGold
+                                                        characterId={characterId}
+                                                        goods={ledgerData.goods}
+                                                        imgPaletteArr={ledgerData.goodsImg}
+                                                    />
+                                                </Contents>
+                                                <PersonalHeader
+                                                    onClick={() =>
+                                                        foldRaidDiv({ characterIndex: goodsIndex, foldState: raidFold })
+                                                    }
+                                                >
+                                                    <PersonalInner>
+                                                        <h4>레이드</h4>
+                                                        {raidFold ? (
+                                                            <UpArrow fill={theme.colors.text} width="25" height="25" />
+                                                        ) : (
+                                                            <DownArrow
+                                                                fill={theme.colors.text}
+                                                                width="25"
+                                                                height="25"
+                                                            />
+                                                        )}
+                                                    </PersonalInner>
+                                                    <PersonalInner>
+                                                        <TitleAndGold underline={false} gold={raidTotalGold} />
+                                                    </PersonalInner>
+                                                </PersonalHeader>
+                                                <Contents fold={raidFold}>
+                                                    <RaidGold
+                                                        raidCategory={ledgerData.raid}
+                                                        raidDetailData={ledgerData.raidDetail}
+                                                        characterId={characterId}
+                                                        characterLevel={Number(level.replace(/\,/g, ''))}
+                                                    />
+                                                </Contents>
+                                            </Article>
+                                        );
+                                    },
+                                )}
                         </GoldContents>
                     ) : (
                         <Nodata

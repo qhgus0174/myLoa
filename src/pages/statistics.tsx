@@ -60,10 +60,14 @@ const Statistics = () => {
 
         const { common, own }: ILedger = { ...parseStorageItem(localStorage.getItem('ledger') as string) };
 
-        own.length < 1 ? setHasData(false) : calcStastistics();
+        own.length < 1
+            ? setHasData(false)
+            : localStorage.getItem('character') && localStorage.getItem('ledger') && calcStastistics();
     }, []);
 
     const calcStastistics = () => {
+        if (parseStorageItem(localStorage.getItem('character') as string).length < 1) return;
+
         const { common, own }: ILedger = { ...parseStorageItem(localStorage.getItem('ledger') as string) };
 
         calcTotalGoldByWeek();
@@ -190,25 +194,6 @@ const Statistics = () => {
         });
 
         setPersonalGoldThisWeekArr(result);
-    };
-
-    const CustomizedLabel = (props: any) => {
-        const { x, y, stroke, value } = props;
-
-        return (
-            <text
-                x={x}
-                y={y}
-                dy={-4}
-                fill={stroke}
-                css={css`
-                    font-size: 0.88em;
-                `}
-                textAnchor="middle"
-            >
-                {value.toLocaleString()}
-            </text>
-        );
     };
 
     const ColorfulLegendText = (value: string, entry: any) => {
