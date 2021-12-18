@@ -43,5 +43,11 @@ declare module '@emotion/react' {
         };
 
         logoColor: string;
+
+        graph: {
+            primary: string;
+            secondary: string;
+            thirdly: string;
+        };
     }
 }

@@ -84,6 +84,12 @@ export const basic: Theme = {
     },
 
     logoColor: '#f6f8fd',
+
+    graph: {
+        primary: '#396EB0',
+        secondary: '#F2789F',
+        thirdly: '#BEAEE2',
+    },
 };
 
 export const pink: Theme = {
@@ -128,6 +134,12 @@ export const pink: Theme = {
     },
 
     logoColor: '#7a6864',
+
+    graph: {
+        primary: '#F8BD7F',
+        secondary: '#82ca9d',
+        thirdly: '#47597E',
+    },
 };
 
 export const violet: Theme = {
@@ -172,6 +184,11 @@ export const violet: Theme = {
     },
 
     logoColor: '#7a6864',
+    graph: {
+        primary: '#B4AEE8',
+        secondary: '#4C3F91',
+        thirdly: '#F2789F',
+    },
 };
 
 export const green: Theme = {
@@ -216,6 +233,11 @@ export const green: Theme = {
     },
 
     logoColor: '#7a6864',
+    graph: {
+        primary: '#3E8E7E',
+        secondary: '#C7B198',
+        thirdly: '#406882',
+    },
 };
 
 export const cold: Theme = {
@@ -260,6 +282,11 @@ export const cold: Theme = {
     },
 
     logoColor: '#7a6864',
+    graph: {
+        primary: '#7CD1B8',
+        secondary: '#5584AC',
+        thirdly: '#4C3F91',
+    },
 };
 
 export const autumn: Theme = {
@@ -304,6 +331,11 @@ export const autumn: Theme = {
     },
 
     logoColor: '#7a6864',
+    graph: {
+        primary: '#DE834D',
+        secondary: '#A3423C',
+        thirdly: '#FC997C',
+    },
 };
 
 export const violetBrown: Theme = {
@@ -348,6 +380,11 @@ export const violetBrown: Theme = {
     },
 
     logoColor: '#7a6864',
+    graph: {
+        primary: '#D8B6A4',
+        secondary: '#A2416B',
+        thirdly: '#6C4A4A',
+    },
 };
 
 export const flower: Theme = {
@@ -392,6 +429,11 @@ export const flower: Theme = {
     },
 
     logoColor: '#7a6864',
+    graph: {
+        primary: '#B24080',
+        secondary: '#664E88',
+        thirdly: '#F2789F',
+    },
 };
 
 export const pinkBeige: Theme = {
@@ -436,6 +478,11 @@ export const pinkBeige: Theme = {
     },
 
     logoColor: '#7a6864',
+    graph: {
+        primary: '#8884d8',
+        secondary: '#EB92BE',
+        thirdly: '#F2789F',
+    },
 };
 
 export const darkBrown: Theme = {
@@ -480,6 +527,11 @@ export const darkBrown: Theme = {
     },
 
     logoColor: '#7a6864',
+    graph: {
+        primary: '#865439',
+        secondary: '#C68B59',
+        thirdly: '#362222',
+    },
 };
 
 export const darkYellow: Theme = {
@@ -524,6 +576,11 @@ export const darkYellow: Theme = {
     },
 
     logoColor: '#7a6864',
+    graph: {
+        primary: '#22577E',
+        secondary: '#E2C275',
+        thirdly: '#96C7C1',
+    },
 };
 
 export const darkPink: Theme = {
@@ -568,6 +625,11 @@ export const darkPink: Theme = {
     },
 
     logoColor: '#7a6864',
+    graph: {
+        primary: '#8884d8',
+        secondary: '#82ca9d',
+        thirdly: '#FFA6D5',
+    },
 };
 
 export const veryCold: Theme = {
@@ -590,7 +652,7 @@ export const veryCold: Theme = {
     },
 
     button: {
-        color: '#5C5470',
+        color: '#EEEEEE',
         ok: '#8BC34A',
         cancel: '#fe5757',
         none: 'transparent',
@@ -612,6 +674,11 @@ export const veryCold: Theme = {
     },
 
     logoColor: '#7a6864',
+    graph: {
+        primary: '#916BBF',
+        secondary: '#EB92BE',
+        thirdly: '#79B4B7',
+    },
 };
 
 export const darkCyan: Theme = {
@@ -656,6 +723,11 @@ export const darkCyan: Theme = {
     },
 
     logoColor: '#7a6864',
+    graph: {
+        primary: '#22577A',
+        secondary: '#87A8A4',
+        thirdly: '#BFA2DB',
+    },
 };
 
 export const lego: Theme = {
@@ -700,6 +772,11 @@ export const lego: Theme = {
     },
 
     logoColor: '#7a6864',
+    graph: {
+        primary: '#FF7600',
+        secondary: '#00C1D4',
+        thirdly: '#FFC947',
+    },
 };
 
 export const blue: Theme = {
@@ -722,7 +799,7 @@ export const blue: Theme = {
     },
 
     button: {
-        color: '#1687A7',
+        color: '#194551',
         ok: '#8BC34A',
         cancel: '#fe5757',
         none: 'transparent',
@@ -744,4 +821,9 @@ export const blue: Theme = {
     },
 
     logoColor: '#7a6864',
+    graph: {
+        primary: '#262A53',
+        secondary: '#628395',
+        thirdly: '#ED8E7C',
+    },
 };
