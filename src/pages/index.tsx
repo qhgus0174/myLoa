@@ -165,7 +165,7 @@ const Main = () => {
 const Container = styled.section`
     display: flex;
     flex-direction: column;
-    width: 80%;
+    width: 75%;
     height: 100%;
     margin: 4em;
     padding: 4em;

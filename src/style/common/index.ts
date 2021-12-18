@@ -82,7 +82,7 @@ export const CharactersDiv = styled(FlexRightDiv)<{ length: number; contents?: S
             `;
         } else if (props.length > 2) {
             return css`
-                justify-content: space-evenly;
+                justify-content: flex-start;
             `;
         } else if (props.length > 0) {
             return css`

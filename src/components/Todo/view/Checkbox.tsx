@@ -340,7 +340,7 @@ const RelaxGauge = styled.article`
 const WhiteSpace = styled.div`
     display: flex;
     width: 2.5%;
-    flex-basis: 2.5%;
+    flex-basis: 2.2%;
 `;
 
 const Content = styled.label`

@@ -71,14 +71,14 @@ const Manage = () => {
     return (
         <Container>
             <Content>
-                <span>오류 발생 시 데이터를 초기화 할 수 있습니다. </span>
+                <span>💥 데이터를 초기화 합니다. </span>
                 <CustomButton className="resetData" onClick={() => clearData()}>
-                    초기화
+                    초기화 실행
                 </CustomButton>
             </Content>
             <Content direction="column">
                 <InnerContent>
-                    <span>데이터를 백업하여 다른 브라우저에서 열람 가능합니다. (일회용) </span>
+                    <span>⭐ 데이터를 백업하여 다른 브라우저에서 열람 가능합니다. (일회용) </span>
                 </InnerContent>
                 <InnerContent>
                     <CustomButton className="createBackupCode" onClick={() => backupData()}>
@@ -89,9 +89,6 @@ const Manage = () => {
                     </CustomButton>
                 </InnerContent>
             </Content>
-            <Content>
-                <span>버그 발생 / 문의 사항이 있을 시 shannon_@hotmail.co.kr로 메일 부탁드립니다. </span>
-            </Content>
         </Container>
     );
 };
@@ -99,19 +96,38 @@ const Manage = () => {
 const Container = styled.section`
     display: flex;
     flex-direction: column;
-    width: 70%;
+    width: 50%;
     justify-content: center;
     align-items: center;
-    margin-top: 3em;
-    margin-bottom: 3em;
     box-sizing: border-box;
+    border: 1px solid ${props => props.theme.colors.text};
+    padding: 4em;
+    margin: 4em;
+    & > div:nth-of-type(1) {
+        border-bottom: 1px dashed ${props => props.theme.colors.text};
+    }
+
+    ${widthMedia.smallDesktop} {
+        width: 80%;
+    }
+
+    ${widthMedia.tablet} {
+        width: 85%;
+    }
+
+    ${widthMedia.phone} {
+        width: 98%;
+    }
 `;
 
 const Content = styled(FlexDiv)`
     display: flex;
     align-items: center;
-    margin-bottom: 2em;
     box-sizing: border-box;
+    padding-top: 1.8em;
+    padding-bottom: 1.8em;
+    width: 100%;
+    justify-content: center;
 
     ${widthMedia.phone} {
         flex-direction: column;
@@ -125,8 +141,10 @@ const Content = styled(FlexDiv)`
 const InnerContent = styled(FlexDiv)`
     align-items: center;
     justify-content: center;
-    margin-bottom: 1em;
+    margin-top: 0.5em;
+    margin-bottom: 0.5em;
     box-sizing: border-box;
+    align-items: center;
 `;
 
 const CustomButton = styled(Button)`
