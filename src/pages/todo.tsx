@@ -436,7 +436,7 @@ const Main = () => {
                                     divWidth="70"
                                     {...bindRepreCharacter}
                                 />
-                                <Button width="40" onClick={crollAllMyCharacter}>
+                                <Button width="40" className="crollAllCharacter" onClick={crollAllMyCharacter}>
                                     캐릭터 가져오기!😎
                                 </Button>
                             </NodataInner>
