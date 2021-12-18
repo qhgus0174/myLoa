@@ -529,30 +529,30 @@ const MainContainer = styled.main`
 const NodataDiv = styled.div`
     display: flex;
     flex-direction: column;
-    width: 35%;
+    width: 40%;
     height: 100%;
     margin-top: 9em;
     justify-content: center;
     align-items: center;
     ${widthMedia.desktop} {
-        width: 40%;
+        width: 47%;
     }
     ${widthMedia.mediumDesktop} {
-        width: 45%;
+        width: 52%;
     }
     ${widthMedia.smallDesktop} {
-        width: 60%;
+        width: 67%;
     }
     ${widthMedia.tablet} {
-        width: 70%;
+        width: 77%;
     }
 
     ${widthMedia.tablet} {
-        width: 70%;
+        width: 77%;
     }
 
     ${widthMedia.smallPhone} {
-        width: 80%;
+        width: 85%;
     }
 `;
 
