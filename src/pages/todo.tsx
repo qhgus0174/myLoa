@@ -437,7 +437,9 @@ const Main = () => {
                     <NodataInner>
                         <h2>
                             데이터가 존재하지 않습니다.
-                            <br /> 보유 캐릭터 중 하나를 입력하여 추가 해보세요!
+                            <br /> 보유 캐릭터 중 하나를 입력 해 주세요! <br />
+                            <br />
+                            캐릭터 입력이 완료되면, 숙제를 추가하거나 골드 수입을 작성 할 수 있습니다.
                         </h2>
                     </NodataInner>
                     <NodataInner>
@@ -564,7 +566,7 @@ const NodataInner = styled.div`
     justify-content: center;
 
     h2 {
-        font-size: 1.3em;
+        font-size: 1.2em;
     }
 `;
 
