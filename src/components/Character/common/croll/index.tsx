@@ -50,25 +50,42 @@ export const allCharacter = async (name: string): Promise<ICrollInfoAll> => {
             `https://corsanywheremyloa.herokuapp.com/https://lostark.game.onstove.com/Profile/Character/${name}`,
         );
         const $ = load(data);
-
-        const server = $('.profile-character-info__server').text();
+        const server =
+            $('.profile-character-info__server').text() == '' && $($('.wrapper-define dl.define > dd')[0]).text();
         const otherServer = $('.profile-character-list__server');
 
-        let characterArr: string[] = [];
-        otherServer.each((i, allServerData) => {
-            const all = $(allServerData);
+        if (otherServer.length > 0) {
+            let characterArr: string[] = [];
+            otherServer.each((i, allServerData) => {
+                const all = $(allServerData);
 
-            if (all.text() === server) {
-                $(all.next())
-                    .find('span')
-                    .each((j, sameServerData) => {
-                        $(sameServerData).find('span').text() != '' &&
-                            characterArr.push($(sameServerData).find('span').text());
-                    });
-            }
-        });
+                if (all.text() === server) {
+                    $(all.next())
+                        .find('span')
+                        .each((j, sameServerData) => {
+                            $(sameServerData).find('span').text() != '' &&
+                                characterArr.push($(sameServerData).find('span').text());
+                        });
+                }
+            });
 
-        return { status: 'success', data: characterArr };
+            return { status: 'success', data: characterArr };
+        } else {
+            const otherServer = $('.myinfo__character--wrapper2 strong');
+            let characterArr: string[] = [];
+
+            otherServer.each((i, allServerData) => {
+                const all = $(allServerData);
+                if (all.text() === server) {
+                    $(all.next())
+                        .find('li')
+                        .each((j, sameServerData) => {
+                            $(sameServerData).text() != '' && characterArr.push($(sameServerData).text().slice(6));
+                        });
+                }
+            });
+            return { status: 'success', data: characterArr };
+        }
     } catch (err: unknown) {
         insertErrorDB({ catchErr: err, errType: 'croll' });
         return {
