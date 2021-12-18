@@ -24,7 +24,7 @@ export const getDayContents = (): IDayContents => {
     };
 };
 
-interface IWeeklyContents {
+export interface IWeeklyContents {
     abyss: string[];
     guardian: string[];
 }
