@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { toast } from 'react-toastify';
 import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
 import { ModalActionContext } from '@context/ModalContext';
 import { useInput } from '@hooks/useInput';
@@ -8,9 +9,8 @@ import AddButtonContainer from '@components/Container/Button/Add';
 import { ICharacter } from '@common/types/localStorage/Character';
 import TodoForm from '@components/Todo/common/Form';
 import { ScheduleCheckType, ScheduleContents, ScheduleType } from '@common/types/types';
-import { Container } from '@style/common/modal';
 import { useTheme } from '@emotion/react';
-import { toast } from 'react-toastify';
+import { Container } from '@style/common/modal';
 
 const Todo = () => {
     const [type, setType] = useState<ScheduleType>('daily');
