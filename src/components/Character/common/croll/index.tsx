@@ -3,14 +3,14 @@ import { load } from 'cheerio';
 import { insertErrorDB } from '@common/error';
 
 export interface ICrollInfo {
-    status: 'success' | 'error';
+    status: 'success' | 'error' | 'nodata';
     validMsg?: string;
     crollJob?: string | undefined;
     crollLevel?: string | undefined;
 }
 
 export interface ICrollInfoAll {
-    status: 'success' | 'error';
+    status: 'success' | 'error' | 'nodata';
     validMsg?: string;
     data: string[];
 }
@@ -21,6 +21,9 @@ export const getCrollCharacterInfo = async (name: string): Promise<ICrollInfo> =
             `https://corsanywheremyloa.herokuapp.com/https://lostark.game.onstove.com/Profile/Character/${name}`,
         );
         const $ = load(data);
+
+        if (data.includes('없습니다'))
+            return { status: 'nodata', validMsg: '캐릭터 정보가 없습니다.', crollJob: '', crollLevel: '' };
 
         const crollJob: string | undefined =
             $('.profile-character-info__img').length > 0
@@ -50,6 +53,9 @@ export const allCharacter = async (name: string): Promise<ICrollInfoAll> => {
             `https://corsanywheremyloa.herokuapp.com/https://lostark.game.onstove.com/Profile/Character/${name}`,
         );
         const $ = load(data);
+
+        if (data.includes('없습니다')) return { status: 'nodata', validMsg: '캐릭터 정보가 없습니다.', data: [] };
+
         const server =
             $('.profile-character-info__server').text() == ''
                 ? $($('.wrapper-define dl.define > dd')[0]).text()
