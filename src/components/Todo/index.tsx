@@ -98,18 +98,22 @@ const Todo = ({ onContextMenuBasicModal }: IContextModalParam) => {
 };
 
 const TodoContainer = styled.section`
-    height: 60vh;
+    height: 55vh;
 
-    ${heightMedia.big} {
-        height: 55vh;
-    }
-
-    ${heightMedia.medium} {
+    ${heightMedia.verybig} {
         height: 60vh;
     }
 
+    ${heightMedia.big} {
+        height: 45vh;
+    }
+
+    ${heightMedia.medium} {
+        height: 50vh;
+    }
+
     ${widthMedia.tablet} {
-        height: 55vh;
+        height: 45vh;
     }
 
     overflow-y: auto;

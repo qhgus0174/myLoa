@@ -13,8 +13,7 @@ interface ILocalStorageState {
     storedCharacterOrd: number[];
     storedLedger: ILedger;
     storedShareContents: IShareContents[];
-    storedRaid: IRaid[];
-    storedRaidCharacterOrd: number[];
+    storedDayContents: IShareContents[];
 }
 
 interface ILocalStorageAction {
@@ -24,8 +23,7 @@ interface ILocalStorageAction {
     setStoredCharacterOrd: (e: number[]) => void;
     setStoredLedger: (e: ILedger) => void;
     setStoredShareContents: (e: IShareContents[]) => void;
-    setStoredRaid: (e: IRaid[]) => void;
-    setStoredRaidCharacterOrd: (e: number[]) => void;
+    setStoredDayContents: (e: IShareContents[]) => void;
 }
 
 export const LocalStorageStateContext = createContext<ILocalStorageState>({
@@ -35,8 +33,7 @@ export const LocalStorageStateContext = createContext<ILocalStorageState>({
     storedCharacterOrd: [],
     storedLedger: initLedger,
     storedShareContents: [],
-    storedRaid: [],
-    storedRaidCharacterOrd: [],
+    storedDayContents: [],
 });
 
 export const LocalStorageActionContext = createContext<ILocalStorageAction>({
@@ -46,8 +43,7 @@ export const LocalStorageActionContext = createContext<ILocalStorageAction>({
     setStoredCharacterOrd: (e: number[]) => {},
     setStoredLedger: (e: ILedger) => {},
     setStoredShareContents: (e: IShareContents[]) => {},
-    setStoredRaid: (e: IRaid[]) => {},
-    setStoredRaidCharacterOrd: (e: number[]) => {},
+    setStoredDayContents: (e: IShareContents[]) => {},
 });
 
 const LocalStorageProvider = ({ children }: { children: React.ReactNode }) => {
@@ -58,16 +54,14 @@ const LocalStorageProvider = ({ children }: { children: React.ReactNode }) => {
         storedCharacterOrd,
         storedLedger,
         storedShareContents,
-        storedRaid,
-        storedRaidCharacterOrd,
+        storedDayContents,
         setStoredTodo,
         setStoredTodoOrd,
         setStoredCharacter,
         setStoredCharacterOrd,
         setStoredLedger,
         setStoredShareContents,
-        setStoredRaid,
-        setStoredRaidCharacterOrd,
+        setStoredDayContents,
     } = useLocalStorage();
 
     return (
@@ -79,8 +73,7 @@ const LocalStorageProvider = ({ children }: { children: React.ReactNode }) => {
                 setStoredCharacterOrd,
                 setStoredLedger,
                 setStoredShareContents,
-                setStoredRaid,
-                setStoredRaidCharacterOrd,
+                setStoredDayContents,
             }}
         >
             <LocalStorageStateContext.Provider
@@ -91,8 +84,7 @@ const LocalStorageProvider = ({ children }: { children: React.ReactNode }) => {
                     storedCharacterOrd,
                     storedLedger,
                     storedShareContents,
-                    storedRaid,
-                    storedRaidCharacterOrd,
+                    storedDayContents,
                 }}
             >
                 {children}

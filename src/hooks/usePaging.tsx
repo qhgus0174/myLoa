@@ -11,7 +11,7 @@ export interface IPagingOption {
 }
 
 export const usePaging = () => {
-    const [perPage, setPerPage] = useState<IPagingOption['perPage']>(6);
+    const [perPage, setPerPage] = useState<IPagingOption['perPage']>(7);
     const { width: windowWidth } = useWindowDimensions();
     const [currentPage, setCurrentPage] = useState<number>(1);
 
@@ -33,13 +33,14 @@ export const usePaging = () => {
         page: number;
     }
     const getPerPage: IWidthPerPage[] = [
-        { key: responsiveWidth.phone, page: 1 },
-        { key: responsiveWidth.tablet, page: 2 },
-        { key: responsiveWidth.smallDesktop, page: 3 },
-        { key: responsiveWidth.desktop, page: 4 },
-        { key: responsiveWidth.mediumDesktop, page: 5 },
-        { key: responsiveWidth.wideDesktop, page: 6 },
-        { key: responsiveWidth.bigDesktop, page: 7 },
+        { key: responsiveWidth.smallPhone, page: 1 },
+        { key: responsiveWidth.phone, page: 2 },
+        { key: responsiveWidth.tablet, page: 3 },
+        { key: responsiveWidth.smallDesktop, page: 4 },
+        { key: responsiveWidth.desktop, page: 5 },
+        { key: responsiveWidth.mediumDesktop, page: 6 },
+        { key: responsiveWidth.wideDesktop, page: 7 },
+        { key: responsiveWidth.bigDesktop, page: 8 },
     ];
 
     const calcPerPage = () => {

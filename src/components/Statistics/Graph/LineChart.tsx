@@ -53,7 +53,7 @@ const CustomLineChart = ({ array, width, height }: ILineChart) => {
                     }}
                     stroke={theme.colors.text}
                 />
-                <Line type="monotone" dataKey="gold" stroke={theme.colors.mainInner} activeDot={{ r: 8 }}>
+                <Line type="monotone" dataKey="gold" stroke={theme.colors.text} activeDot={{ r: 8 }}>
                     <LabelList content={<CustomizedLabel stroke={theme.colors.text} />} />
                 </Line>
             </LineChart>

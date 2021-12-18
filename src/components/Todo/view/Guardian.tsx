@@ -5,6 +5,7 @@ import { GuardianInfo, IGuardian } from '@common/data/guardian';
 import styled from '@emotion/styled';
 import { FlexDiv } from '@style/common';
 import { ICharacter } from '@common/types/localStorage/Character';
+import { widthMedia } from '@style/device';
 
 interface IGuardianParam {
     todo: ITodo;
@@ -120,8 +121,12 @@ const Container = styled(FlexDiv)`
 `;
 
 const SelectBox = styled.select`
-    width: 124px;
+    width: 115px;
     margin-top: 0.2em;
+
+    ${widthMedia.tablet} {
+        width: 100px;
+    }
 `;
 
 export default Guardian;

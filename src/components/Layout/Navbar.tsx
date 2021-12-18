@@ -26,7 +26,7 @@ const Navbar = ({ isMobile }: INavbar) => {
         setModalProps({
             isOpen: true,
             content: <DayContents />,
-            options: { width: '300', height: '210', headerTitle: '일일 컨텐츠', isHeaderClose: true },
+            options: { width: '300', height: '200', headerTitle: '일일 컨텐츠', isHeaderClose: true },
         });
     };
 
@@ -74,12 +74,12 @@ const Navbar = ({ isMobile }: INavbar) => {
                             </InnerLinkLi>
                             <InnerLinkLi isMobile={isMobile} isActive={router.pathname === '/ledger'}>
                                 <Link href="/ledger">
-                                    <LinkText>가계부</LinkText>
+                                    <LinkText>골드 수입</LinkText>
                                 </Link>
                             </InnerLinkLi>
                             <InnerLinkLi isMobile={isMobile} isActive={router.pathname === '/statistics'}>
                                 <Link href="/statistics">
-                                    <LinkText>통계</LinkText>
+                                    <LinkText>수입 통계</LinkText>
                                 </Link>
                             </InnerLinkLi>
                             <InnerLinkLi isMobile={isMobile} isActive={router.pathname === '/manage'}>

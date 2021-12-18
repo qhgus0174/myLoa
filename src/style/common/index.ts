@@ -46,18 +46,22 @@ export const FlexHoverArticle = styled.article`
     height: 100%;
     align-items: center;
 
-    flex-basis: 15.8%;
+    flex-basis: 11.8%;
 
     ${widthMedia.desktop} {
-        flex-basis: 23.75%;
+        flex-basis: 19%;
     }
 
     ${widthMedia.tablet} {
-        flex-basis: 47.5%;
+        flex-basis: 31.6%;
     }
 
     ${widthMedia.phone} {
         flex-basis: 90%;
+    }
+
+    ${widthMedia.smallPhone} {
+        flex-basis: 85%;
     }
 
     &:hover {

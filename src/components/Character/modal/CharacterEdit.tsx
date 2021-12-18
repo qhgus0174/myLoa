@@ -24,16 +24,9 @@ interface ICharacterEdit {
 }
 
 const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacterEdit) => {
-    const { storedTodo, storedCharacter, storedCharacterOrd, storedLedger, storedRaid, storedRaidCharacterOrd } =
-        useContext(LocalStorageStateContext);
-    const {
-        setStoredTodo,
-        setStoredCharacter,
-        setStoredCharacterOrd,
-        setStoredLedger,
-        setStoredRaid,
-        setStoredRaidCharacterOrd,
-    } = useContext(LocalStorageActionContext);
+    const { storedTodo, storedCharacter, storedCharacterOrd, storedLedger } = useContext(LocalStorageStateContext);
+    const { setStoredTodo, setStoredCharacter, setStoredCharacterOrd, setStoredLedger } =
+        useContext(LocalStorageActionContext);
 
     const { setCurrentPage } = useContext(PagingActionContext);
     const { closeModal } = useContext(ModalActionContext);
@@ -135,7 +128,6 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
         deleteTodo();
         setCurrentCharacterPage(deletedCharacterArr);
         deleteLedger();
-        deleteRaidInfo();
 
         closeModal();
     };
@@ -150,18 +142,11 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
         return deleteCharacter();
     };
 
-    const deleteRaidInfo = () => {
-        deleteRaid();
-        deleteRaidCharacterOrd();
-    };
-
     const deleteCharacter = (): ICharacter[] => {
         const characterArr: ICharacter[] = [...storedCharacter];
         const resultArray = _.reject(characterArr, ({ id }: ICharacter) => {
-            console.log(id, oriId, storedCharacter);
             return id === oriId;
         });
-        console.log(resultArray);
         setStoredCharacter(resultArray);
 
         return resultArray;
@@ -173,14 +158,6 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
             return ord === oriId;
         });
         setStoredCharacterOrd(resultOrd);
-    };
-
-    const deleteRaidCharacterOrd = () => {
-        const characterRaidOrdArr: number[] = [...storedRaidCharacterOrd];
-        const resultOrd = _.reject(characterRaidOrdArr, (ord: number) => {
-            return ord === oriId;
-        });
-        setStoredRaidCharacterOrd(resultOrd);
     };
 
     const deleteTodo = () => {
@@ -219,20 +196,6 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
         };
 
         setStoredLedger(result);
-    };
-
-    const deleteRaid = () => {
-        const todoArr: IRaid[] = [...storedRaid];
-
-        const deleteResult = todoArr.map((obj: IRaid) => {
-            obj.character = _.reject(obj.character, (character: IRaidCharacter) => {
-                return character.id === oriId;
-            });
-
-            return obj;
-        });
-
-        setStoredRaid(deleteResult);
     };
 
     return (

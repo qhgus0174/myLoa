@@ -348,7 +348,12 @@ const Statistics = () => {
                                         align="center"
                                         formatter={ColorfulLegendText}
                                     />
-                                    <Bar isAnimationActive={false} dataKey="goods" stackId="personal" fill="#8884d8">
+                                    <Bar
+                                        isAnimationActive={false}
+                                        dataKey="goods"
+                                        stackId="personal"
+                                        fill={theme.graph.primary}
+                                    >
                                         <LabelList
                                             dataKey="goods"
                                             position="inside"
@@ -356,7 +361,12 @@ const Statistics = () => {
                                             formatter={(value: number) => value.toLocaleString()}
                                         />
                                     </Bar>
-                                    <Bar isAnimationActive={false} dataKey="raid" stackId="personal" fill="#82ca9d">
+                                    <Bar
+                                        isAnimationActive={false}
+                                        dataKey="raid"
+                                        stackId="personal"
+                                        fill={theme.graph.secondary}
+                                    >
                                         <LabelList
                                             dataKey="raid"
                                             position="inside"

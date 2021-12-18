@@ -5,7 +5,6 @@ import { LocalStorageActionContext, LocalStorageStateContext } from '@context/Lo
 import { PagingActionContext, PagingStateContext } from '@context/PagingContext';
 import { sortOrd } from '@components/Character/common/functions';
 import CharacterEdit from '@components/Character/modal/CharacterEdit';
-import { ICharacter } from '@common/types/localStorage/Character';
 import RightArrow from '@components/Image/RightArrow';
 import JobLogo from '@components/Character/JobLogo';
 import LeftArrow from '@components/Image/LeftArrow';
@@ -13,18 +12,15 @@ import Button from '@components/Button/Button';
 import { IContextModalParam } from '@common/types/types';
 import styled from '@emotion/styled';
 import { FlexDiv, FlexLeftDiv, FlexHoverArticle, CharactersDiv } from '@style/common';
+import { ICharacter } from '@common/types/localStorage/Character';
+import Image from 'next/image';
 
-interface ICharacterParam extends IContextModalParam {
-    type: 'raid' | 'all';
-}
-
-const Character = ({ onContextMenuBasicModal, type }: ICharacterParam) => {
+const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
     const { perPage, currentPage } = useContext(PagingStateContext);
     const { onClickNext, onClickPrev } = useContext(PagingActionContext);
 
-    const { storedTodo, storedCharacter, storedCharacterOrd, storedRaidCharacterOrd } =
-        useContext(LocalStorageStateContext);
-    const { setStoredCharacterOrd, setStoredRaidCharacterOrd } = useContext(LocalStorageActionContext);
+    const { storedTodo, storedCharacter, storedCharacterOrd } = useContext(LocalStorageStateContext);
+    const { setStoredCharacterOrd } = useContext(LocalStorageActionContext);
 
     const theme = useTheme();
 
@@ -58,15 +54,11 @@ const Character = ({ onContextMenuBasicModal, type }: ICharacterParam) => {
             return;
         }
 
-        const ordData = type === 'raid' ? storedRaidCharacterOrd : storedCharacterOrd;
-
-        characterSortOrd(Array.from<number>(ordData), source.index, destination.index);
+        characterSortOrd(Array.from<number>(storedCharacterOrd), source.index, destination.index);
     };
 
     const characterSortOrd = (array: number[], start: number, destination: number) => {
-        type === 'raid'
-            ? setStoredRaidCharacterOrd(sortOrd(array, start, destination))
-            : setStoredCharacterOrd(sortOrd(array, start, destination));
+        setStoredCharacterOrd(sortOrd(array, start, destination));
     };
 
     return (
@@ -78,38 +70,23 @@ const Character = ({ onContextMenuBasicModal, type }: ICharacterParam) => {
                             <FlexDiv {...provided.droppableProps} ref={provided.innerRef}>
                                 <FlexLeftDiv></FlexLeftDiv>
 
-                                <ArrowDiv
-                                    characterOrd={type === 'raid' ? storedRaidCharacterOrd : storedCharacterOrd}
-                                    perPage={perPage}
-                                >
+                                <ArrowDiv characterOrd={storedCharacterOrd} perPage={perPage}>
                                     <Button
                                         width="100"
                                         border="none"
                                         onClick={onClickPrev}
-                                        icon={<LeftArrow fill={theme.colors.white} width="23" height="23" />}
+                                        //icon={<LeftArrow fill={theme.colors.white} width="23" height="23" />}
+                                        icon={<Image src="/static/img/icon/left.png" width="23" height="23" />}
                                         iconOnly={true}
                                     />
                                 </ArrowDiv>
 
-                                <CharactersDiv
-                                    length={
-                                        (type === 'raid' ? storedRaidCharacterOrd : storedCharacterOrd).length -
-                                        (currentPage - 1) * perPage
-                                    }
-                                >
+                                <CharactersDiv length={storedCharacterOrd.length - (currentPage - 1) * perPage}>
                                     {(storedCharacter as ICharacter[])
                                         .sort((a, b) => {
                                             return (
-                                                (
-                                                    (type === 'raid'
-                                                        ? storedRaidCharacterOrd
-                                                        : storedCharacterOrd) as number[]
-                                                ).indexOf(a.id) -
-                                                (
-                                                    (type === 'raid'
-                                                        ? storedRaidCharacterOrd
-                                                        : storedCharacterOrd) as number[]
-                                                ).indexOf(b.id)
+                                                (storedCharacterOrd as number[]).indexOf(a.id) -
+                                                (storedCharacterOrd as number[]).indexOf(b.id)
                                             );
                                         })
                                         .slice(
@@ -151,10 +128,7 @@ const Character = ({ onContextMenuBasicModal, type }: ICharacterParam) => {
                                         })}
                                     {provided.placeholder}
                                 </CharactersDiv>
-                                <ArrowDiv
-                                    characterOrd={type === 'raid' ? storedRaidCharacterOrd : storedCharacterOrd}
-                                    perPage={perPage}
-                                >
+                                <ArrowDiv characterOrd={storedCharacterOrd} perPage={perPage}>
                                     <Button
                                         width="100"
                                         border="none"
@@ -189,7 +163,7 @@ const Article = styled(FlexHoverArticle)`
 `;
 
 const InfoDiv = styled(FlexDiv)`
-    margin-left: 0.8em;
+    margin-left: 0.25em;
     box-sizing: border-box;
 `;
 

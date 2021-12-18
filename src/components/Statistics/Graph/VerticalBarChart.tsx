@@ -36,11 +36,11 @@ const VerticalBarChart = ({ array, width, height }: IVerticalBarChart) => {
                     type="number"
                 />
                 <YAxis width={80} stroke={theme.colors.text} type="category" dataKey="name" />
-                <Bar dataKey="gold" fill="#8884d8">
+                <Bar dataKey="gold" fill={theme.graph.thirdly}>
                     <LabelList
                         dataKey="gold"
                         position="inside"
-                        fill={theme.colors.text}
+                        fill="#ffffff"
                         formatter={(value: number) => value.toLocaleString()}
                     />
                 </Bar>

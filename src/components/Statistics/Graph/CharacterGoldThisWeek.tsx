@@ -42,7 +42,7 @@ const CharacterGoldThisWeek = ({ array }: { array: IStatisticsPersonalPrev[] }) 
                         type="category"
                         dataKey="name"
                     />
-                    <Bar isAnimationActive={false} dataKey="gold" stackId="personal" fill="#8884d8">
+                    <Bar isAnimationActive={false} dataKey="gold" stackId="personal" fill={theme.graph.primary}>
                         <LabelList
                             fontSize="12em"
                             dataKey="gold"

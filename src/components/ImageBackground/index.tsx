@@ -102,6 +102,9 @@ const ImageContainer = styled.article<Omit<IImageBackground, 'children'>>`
                     opacity: 1;
                     font-size: 0.8em;
                 }
+                span{
+                    color:white;
+                }
                 span:nth-of-type(1) img{
                     opacity: 0.5;
                 }

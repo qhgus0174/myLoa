@@ -73,6 +73,7 @@ const PagingUl = styled.ul`
     height: 100%;
     align-items: center;
     margin-bottom: 0.2em;
+    flex-flow: wrap;
 `;
 
 interface IPageStyle {

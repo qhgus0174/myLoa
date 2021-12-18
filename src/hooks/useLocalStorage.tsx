@@ -6,6 +6,7 @@ import { DateTime } from 'luxon';
 import { parseStorageItem, stringifyStorageItem } from '@common/utils';
 import { IShareContents } from '@common/types/localStorage/ShareContents';
 import { IRaid } from '@common/types/localStorage/Raid';
+import { CompassInfo } from '@common/data/compass';
 
 export const initCommonHistory: ICommonHistory[] = [
     {
@@ -26,14 +27,50 @@ export const initLedger: ILedger = {
     own: [],
 };
 
+export const initDayContents = (): IShareContents[] => {
+    const dayOfWeek = Number(DateTime.now().toFormat('c'));
+    const hour = Number(DateTime.now().toFormat('H'));
+    const calcDayOfWeek = hour > 5 ? dayOfWeek - 1 : dayOfWeek - 2 < 0 ? 0 : dayOfWeek - 2;
+
+    const { ghost, chaosGate, fieldBoss } = CompassInfo;
+
+    const resultArr: IShareContents[] = [];
+
+    const fieldBossData: IShareContents = {
+        id: 1,
+        name: '필드보스',
+        iconurl: '/static/img/lostark/contents/fieldboss.png',
+        check: 0,
+    };
+
+    const ghostData: IShareContents = {
+        id: 2,
+        name: '유령선',
+        iconurl: '/static/img/lostark/contents/ghost.png',
+        check: 0,
+    };
+
+    const chaosGateData: IShareContents = {
+        id: 3,
+        name: '카오스게이트',
+        iconurl: '/static/img/lostark/contents/choasgate.png',
+        check: 0,
+    };
+
+    fieldBoss[calcDayOfWeek] === 1 && resultArr.push(fieldBossData);
+    ghost[calcDayOfWeek] === 1 && resultArr.push(ghostData);
+    chaosGate[calcDayOfWeek] === 1 && resultArr.push(chaosGateData);
+    console.log(resultArr);
+    return resultArr;
+};
+
 export const useLocalStorage = () => {
     const [storedTodo, setStoredTodo] = useState<ITodo[]>([]);
     const [storedTodoOrd, setStoredTodoOrd] = useState<number[]>([]);
     const [storedCharacter, setStoredCharacter] = useState<ICharacter[]>([]);
     const [storedCharacterOrd, setStoredCharacterOrd] = useState<number[]>([]);
     const [storedShareContents, setStoredShareContents] = useState<IShareContents[]>([]);
-    const [storedRaid, setStoredRaid] = useState<IRaid[]>([]);
-    const [storedRaidCharacterOrd, setStoredRaidCharacterOrd] = useState<number[]>([]);
+    const [storedDayContents, setStoredDayContents] = useState<IShareContents[]>([]);
     const [storedLedger, setStoredLedger] = useState<ILedger>(initLedger);
 
     useEffect(() => {
@@ -66,13 +103,10 @@ export const useLocalStorage = () => {
     }, []);
 
     useEffect(() => {
-        const raidData: IRaid[] = parseStorageItem(localStorage.getItem('raid') as string);
-        raidData && raidData.length > 0 ? setStoredRaid(raidData) : setStoredRaid([]);
-    }, []);
-
-    useEffect(() => {
-        const raidOrdData: number[] = parseStorageItem(localStorage.getItem('raidCharacterOrd') as string);
-        raidOrdData && raidOrdData.length > 0 ? setStoredRaidCharacterOrd(raidOrdData) : setStoredRaidCharacterOrd([]);
+        const dayContentsData: IShareContents[] = parseStorageItem(localStorage.getItem('shareDay') as string);
+        dayContentsData && dayContentsData.length > 0
+            ? setStoredDayContents(dayContentsData)
+            : setStoredDayContents(initDayContents());
     }, []);
 
     useEffect(() => {
@@ -102,13 +136,9 @@ export const useLocalStorage = () => {
     }, [storedShareContents]);
 
     useEffect(() => {
-        storedRaid && localStorage.setItem('raid', stringifyStorageItem(storedRaid));
-    }, [storedRaid]);
-
-    useEffect(() => {
-        storedRaidCharacterOrd &&
-            localStorage.setItem('raidCharacterOrd', stringifyStorageItem(storedRaidCharacterOrd));
-    }, [storedRaidCharacterOrd]);
+        console.log(storedDayContents);
+        storedDayContents && localStorage.setItem('shareDay', stringifyStorageItem(storedDayContents));
+    }, [storedDayContents]);
 
     useEffect(() => {
         storedLedger &&
@@ -117,7 +147,11 @@ export const useLocalStorage = () => {
     }, [storedLedger]);
 
     const ledgerInit = (characters: ICharacter[]) => {
-        if (!characters || characters.length < 1) return;
+        if (
+            !parseStorageItem(localStorage.getItem('character') as string) ||
+            parseStorageItem(localStorage.getItem('character') as string).length < 1
+        )
+            return;
 
         const commonLedger = initLedger.common;
 
@@ -139,15 +173,13 @@ export const useLocalStorage = () => {
         storedCharacterOrd,
         storedLedger,
         storedShareContents,
-        storedRaid,
-        storedRaidCharacterOrd,
+        storedDayContents,
         setStoredTodo,
         setStoredTodoOrd,
         setStoredCharacter,
         setStoredCharacterOrd,
         setStoredLedger,
         setStoredShareContents,
-        setStoredRaid,
-        setStoredRaidCharacterOrd,
+        setStoredDayContents,
     };
 };

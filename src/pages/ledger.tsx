@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { DateTime } from 'luxon';
 import Link from 'next/link';
-import { initCommonHistory } from '@hooks/useLocalStorage';
+import { initCommonHistory, initLedger } from '@hooks/useLocalStorage';
 import { usePromiseEffect } from '@hooks/usePromiseEffect';
 import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
 import { SpinnerContext } from '@context/SpinnerContext';
@@ -18,19 +18,19 @@ import Ranking from '@components/Statistics/Ranking';
 import DownArrow from '@components/Image/DownArrow';
 import RaidGold from '@components/Ledger/RaidGold';
 import UpArrow from '@components/Image/UpArrow';
+import Nodata from '@components/article/Nodata';
 import Button from '@components/Button/Button';
 import { getCharacterInfoById, parseStorageItem } from '@common/utils';
 import { IRaidGold, IRaidGoldDetail } from '@common/types/response/ledger/raid';
 import { IGoods, IGoodsImg } from '@common/types/response/ledger/goods';
 import { ICommonGold } from '@common/types/response/ledger/common';
+import { ICharacter } from '@common/types/localStorage/Character';
 import { getRaidDetail, getRaid } from '@apis/ledger/raid';
 import { getGoods, getGoodsImg } from '@apis/ledger/goods';
 import { getCommon } from '@apis/ledger/common';
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { widthMedia } from '@style/device';
-import { FlexDiv } from '@style/common';
-import Nodata from '@components/article/Nodata';
 
 interface ILedgerObjects {
     raid: IRaidGold[];
@@ -50,6 +50,8 @@ interface IFold {
 }
 
 const Ledger = () => {
+    const theme = useTheme();
+
     const { setSpinnerVisible } = useContext(SpinnerContext);
 
     const { storedCharacter, storedLedger } = useContext(LocalStorageStateContext);
@@ -65,6 +67,7 @@ const Ledger = () => {
 
     const { status, result: ledgerData } = usePromiseEffect(async (): Promise<ILedgerObjects> => {
         setSpinnerVisible(true);
+        !localStorage.getItem('ledger') && ledgerInit();
 
         const raid = await getRaid();
         const raidDetail = await getRaidDetail();
@@ -80,7 +83,27 @@ const Ledger = () => {
         return { raid, raidDetail, common, goods, goodsImg };
     }, []);
 
-    const theme = useTheme();
+    const ledgerInit = () => {
+        if (
+            !parseStorageItem(localStorage.getItem('character') as string) ||
+            parseStorageItem(localStorage.getItem('character') as string).length < 1
+        )
+            return;
+
+        const commonLedger = initLedger.common;
+
+        const goodsLedger: ILedger['own'] = parseStorageItem(localStorage.getItem('character') as string).map(
+            (character: ICharacter) => {
+                const charactersLedger: ILedgerOwn = {
+                    characterId: character.id,
+                    prevWeekGold: [0, 0, 0, 0],
+                    histories: { raid: { fold: true, data: [] }, goods: { fold: true, data: [] } },
+                };
+                return charactersLedger;
+            },
+        );
+        setStoredLedger(Object.assign({}, { common: commonLedger }, { own: goodsLedger }));
+    };
 
     const foldCommonDiv = ({ e, foldState }: { e: React.MouseEvent<HTMLElement, MouseEvent>; foldState: boolean }) => {
         const ledgerArr: ILedger = Object.assign({}, storedLedger);
@@ -559,7 +582,7 @@ const SummaryRight = styled.div`
 const Article = styled.article`
     display: flex;
     flex-direction: column;
-    border: 1px solid ${props => props.theme.colors.white};
+    border: 1px solid ${props => props.theme.colors.text};
     padding: 2em;
     margin-bottom: 1em;
     box-sizing: border-box;
@@ -593,7 +616,7 @@ const Header = styled.div`
 const DashDiv = styled.div`
     display: flex;
     flex-direction: column;
-    border: 1px dashed ${props => props.theme.colors.white};
+    border: 1px dashed ${props => props.theme.colors.text};
     padding: 1.5em;
     margin-left: 2em;
     margin-right: 2em;
@@ -656,8 +679,7 @@ const PersonalHeader = styled.div`
     justify-content: space-between;
     padding-top: 1em;
     padding-bottom: 1em;
-    border-bottom: 1px dashed ${props => props.theme.colors.white};
-    border-top: 1px dashed ${props => props.theme.colors.white};
+    border-bottom: 1px dashed ${props => props.theme.colors.text};
     margin-top: 2em;
 `;
 

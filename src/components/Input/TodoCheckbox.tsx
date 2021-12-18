@@ -22,6 +22,7 @@ const TodoCheckbox = ({ checked, label, shape = 'circle', ...rest }: ICheckbox) 
 const CheckboxContainer = styled.label`
     display: flex;
     vertical-align: middle;
+    justify-content: center;
 `;
 
 const Label = styled.label<ICheckbox>`
@@ -99,8 +100,8 @@ const Span = styled.span<Pick<ICheckbox, 'shape'>>`
     display: inline-block;
     position: relative;
     background-color: transparent;
-    width: 25px;
-    height: 25px;
+    width: 22px;
+    height: 22px;
     transform-origin: center;
     border: 2px solid ${props => props.theme.check.border};
     border-radius: ${props => (props.shape === 'circle' ? '50%' : '0%')};
@@ -115,8 +116,8 @@ const Span = styled.span<Pick<ICheckbox, 'shape'>>`
         background: ${props => props.theme.check.background};
         position: absolute;
         transform: rotate(45deg);
-        top: 13px;
-        left: 9px;
+        top: 11.2px;
+        left: 7.6px;
         transition: width 50ms ease 50ms;
         transform-origin: 0% 0%;
     }
@@ -129,8 +130,8 @@ const Span = styled.span<Pick<ICheckbox, 'shape'>>`
         background: ${props => props.theme.check.background};
         position: absolute;
         transform: rotate(305deg);
-        top: 16px;
-        left: 10px;
+        top: 15.5px;
+        left: 8.5px;
         transition: width 50ms ease;
         transform-origin: 0% 0%;
     }

@@ -9,6 +9,7 @@ import Guardian from '@components/Todo/view/Guardian';
 import { IContextModal, ScheduleContents, ScheduleType } from '@common/types/types';
 import { CharactersDiv, FlexDiv, FlexHoverArticle } from '@style/common';
 import styled from '@emotion/styled';
+import { parseStorageItem } from '@common/utils';
 
 interface ICheckbox {
     todo: ITodo;
@@ -17,7 +18,7 @@ interface ICheckbox {
 }
 
 const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckbox) => {
-    const { storedTodo, storedCharacter, storedCharacterOrd } = useContext(LocalStorageStateContext);
+    const { storedCharacter, storedCharacterOrd } = useContext(LocalStorageStateContext);
     const { setStoredTodo } = useContext(LocalStorageActionContext);
     const { perPage, currentPage } = useContext(PagingStateContext);
 
@@ -74,7 +75,7 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
         const {
             target: { checked: isChecked },
         } = e;
-        const todoArr: ITodo[] = [...storedTodo];
+        const todoArr: ITodo[] = [...parseStorageItem(localStorage.getItem('todo') as string)];
 
         const todoIndex = todoArr.findIndex(td => td.id === pTodo.id);
 
@@ -105,7 +106,7 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
     const onClickCheckTodoHoverArea = (e: React.MouseEvent<HTMLElement>, characterId: number) => {
         if (e.target !== e.currentTarget) return;
 
-        const todoArr: ITodo[] = [...storedTodo];
+        const todoArr: ITodo[] = [...parseStorageItem(localStorage.getItem('todo') as string)];
 
         const todoIndex = todoArr.findIndex(td => td.id === pTodo.id);
 
@@ -132,7 +133,7 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
     };
 
     const setOutSideMultiCheck = (characterIndex: number, todoIndex: number): number[] => {
-        const todoArr: ITodo[] = [...storedTodo];
+        const todoArr: ITodo[] = [...parseStorageItem(localStorage.getItem('todo') as string)];
 
         const noCheckFirstIndex = todoArr[todoIndex].character[characterIndex].check.findIndex((checks: number) => {
             return checks === 0;
@@ -144,7 +145,7 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
     };
 
     const setOutSideSingleCheck = (characterIndex: number, todoIndex: number): number[] => {
-        const todoArr: ITodo[] = [...storedTodo];
+        const todoArr: ITodo[] = [...parseStorageItem(localStorage.getItem('todo') as string)];
 
         const resultArr = todoArr[todoIndex].character[characterIndex].check.map((value: number) => {
             return 1 - value;
@@ -185,7 +186,7 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
             target: { value: newText },
         } = e;
 
-        const todoArr: ITodo[] = [...storedTodo];
+        const todoArr: ITodo[] = [...parseStorageItem(localStorage.getItem('todo') as string)];
 
         const todoIndex = todoArr.findIndex(td => td.id === pTodo.id);
 
@@ -324,18 +325,9 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
 const Article = styled.article<{ todoType: ScheduleType; contents: ScheduleContents }>`
     display: flex;
     justify-content: space-evenly;
+    width: 100%;
 
-    & > label:nth-of-type(2),
-    & > label:nth-of-type(3) {
-        margin-left: 0.5em;
-    }
-`;
-
-const Text = styled.article`
-    display: flex;
-    flex-direction: column;
-    flex-basis: 15%;
-    justify-content: center;
+    ${props => (props.contents === 'epona' ? `flex-basis:100%;` : `flex-basis: 75%;`)}
 `;
 
 const RelaxGauge = styled.article`
@@ -366,13 +358,21 @@ const EponaText = styled.article`
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: center;
-    width: 46.75px;
     margin-top: 0.1em;
     box-sizing: border-box;
 `;
 
 const EContainer = styled(FlexDiv)`
     height: 100%;
+    flex-basis: 50%;
+    justify-content: center;
+    width: 100%;
+`;
+
+const Text = styled.article`
+    display: flex;
+    flex-direction: column;
+    flex-basis: 20%;
     justify-content: center;
 `;
 

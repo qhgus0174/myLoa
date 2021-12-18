@@ -23,31 +23,29 @@ const GoodsFieldSet = ({
                 <h4>골드 수급처</h4>
             </legend>
             <ImageContainer>
-                {array
-                    .filter(({ id }) => id != '1')
-                    .map(({ id, defaultimgurl, name, defaultbackground }, goodsIndex: number) => {
-                        return (
-                            <ImageBackground
-                                key={goodsIndex}
-                                pointer={true}
-                                grade={defaultbackground}
-                                hover={{ effect: true, message: name }}
-                                onClick={() => {
-                                    onClickCommon && onClickCommon({ imgUrl: defaultimgurl, name: name });
-                                    onClickPersonal && onClickPersonal({ id: id });
-                                }}
-                            >
-                                <Image src={defaultimgurl} width="40" height="40" />
-                            </ImageBackground>
-                        );
-                    })}
+                {array.map(({ id, defaultimgurl, name, defaultbackground }, goodsIndex: number) => {
+                    return (
+                        <ImageBackground
+                            key={goodsIndex}
+                            pointer={true}
+                            grade={defaultbackground}
+                            hover={{ effect: true, message: name }}
+                            onClick={() => {
+                                onClickCommon && onClickCommon({ imgUrl: defaultimgurl, name: name });
+                                onClickPersonal && onClickPersonal({ id: id });
+                            }}
+                        >
+                            <Image src={defaultimgurl} width="40" height="40" />
+                        </ImageBackground>
+                    );
+                })}
             </ImageContainer>
         </Container>
     );
 };
 
 const Container = styled.fieldset`
-    border: 1px solid ${props => props.theme.colors.white};
+    border: 1px solid ${props => props.theme.colors.text};
     padding: 1em;
     width: 60%;
     display: flex;
