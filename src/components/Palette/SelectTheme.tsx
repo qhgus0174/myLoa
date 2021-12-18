@@ -3,7 +3,6 @@ import { useOnClickOutside } from '@hooks/useOnClickOutside';
 import { GlobalThemeContext } from '@context/GlobalThemeContext';
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { FlexDiv } from '@style/common';
 import { mainColor } from '@style/theme';
 
 const SelectTheme = () => {

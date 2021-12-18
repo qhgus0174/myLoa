@@ -1,6 +1,6 @@
 import React from 'react';
-import { Container, ContentContainer } from '@style/common/modal';
 import styled from '@emotion/styled';
+import { Container, ContentContainer } from '@style/common/modal';
 
 const Guide = () => {
     return (
