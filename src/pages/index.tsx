@@ -8,24 +8,21 @@ import { calcSum } from '@components/Ledger/common/functions';
 import Ranking from '@components/Statistics/Ranking';
 import EmojiTitle from '@components/Emoji/EmojiTitle';
 import Button from '@components/Button/Button';
-import { getDayContents, getWeeklyContents } from '@common/getCommonData';
+import { getDayContents, getWeeklyContents, IWeeklyContents } from '@common/getCommonData';
 import { ILedger } from '@common/types/localStorage/Ledger';
 import { getCharacterInfoById, parseStorageItem } from '@common/utils';
 import styled from '@emotion/styled';
 import { widthMedia } from '@style/device';
 import IconLabel from '@components/Label/IconLabel';
+import { GetStaticProps } from 'next';
 
-const Main = () => {
+const Main = ({ abyss, guardian }: IWeeklyContents) => {
     const [fieldBoss, setFieldBoss] = useState<boolean>(false);
     const [ghost, setGhost] = useState<boolean>(false);
     const [chaosGate, setChaosGate] = useState<boolean>(false);
-    const [guardian, setGuardian] = useState<string[]>([]);
-    const [abyss, setAbyss] = useState<string[]>([]);
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [noLedger, setNoLedger] = useState<boolean>(false);
     const [personalGoldThisWeekArr, setPersonalGoldThisWeekArr] = useState<IStatisticsPersonal[]>([]);
-
-    const { setSpinnerVisible } = useContext(SpinnerContext);
 
     useEffect(() => {
         const { fieldBoss, ghost, chaosGate } = getDayContents();
@@ -34,20 +31,6 @@ const Main = () => {
         setGhost(ghost);
         setChaosGate(chaosGate);
 
-        const getWeekly = async () => {
-            try {
-                setSpinnerVisible(true);
-                const { abyss, guardian } = await getWeeklyContents();
-                setGuardian(guardian);
-                setAbyss(abyss);
-            } catch {
-            } finally {
-                setSpinnerVisible(false);
-                setIsLoading(false);
-            }
-        };
-
-        getWeekly();
         localStorage.getItem('character') && localStorage.getItem('ledger')
             ? calcPersonalGoldThisWeek()
             : setNoLedger(true);
@@ -425,3 +408,20 @@ const GoTodo = styled.span`
     padding: 0.8em 3em 0.8em 3em;
 `;
 export default Main;
+
+export const getStaticProps: GetStaticProps = async () => {
+    const { abyss, guardian } = await getWeeklyContents();
+
+    if (!abyss || !guardian) {
+        return {
+            notFound: true,
+        };
+    }
+
+    return {
+        props: {
+            abyss,
+            guardian,
+        },
+    };
+};
