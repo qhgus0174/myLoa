@@ -23,8 +23,6 @@ router.post('/', async (req: Request, res: Response) => {
     } catch (e: unknown) {
         const { message } = e as Error;
 
-        console.log('error message : ', message);
-
         res.status(500).send({ status: 'ERR', result: { message: message } } as IResponse<IError>);
     }
 });
