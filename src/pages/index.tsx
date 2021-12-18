@@ -16,6 +16,7 @@ const Main = () => {
     const [chaosGate, setChaosGate] = useState<boolean>(false);
     const [guardian, setGuardian] = useState<string[]>([]);
     const [abyss, setAbyss] = useState<string[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const { setSpinnerVisible } = useContext(SpinnerContext);
 
@@ -35,6 +36,7 @@ const Main = () => {
             } catch {
             } finally {
                 setSpinnerVisible(false);
+                setIsLoading(false);
             }
         };
 
@@ -65,82 +67,96 @@ const Main = () => {
             />
             <TopArea>
                 <TextDiv>
-                    <span>
-                        더 이상 숙제 관리를 엑셀로 하지마세요😵
-                        <br />
-                        로요일좋아를 통해 로스트아크 일일, 주간 숙제 관리를 편하게 하세요!😎
-                    </span>
+                    <span>로스트아크 일일, 주간 숙제 관리를 편하게 관리하고 캐릭터들의 수입을 관리해보세요!😎</span>
                     <Link href="/todo">
                         <Button>숙제 관리 바로가기</Button>
                     </Link>
                 </TextDiv>
             </TopArea>
             <ContentsDiv>
-                <EmojiTitle label={<h1>이번주 일정</h1>} symbol={'📅'} />
-                <ContentsInner>
-                    <Contents>
-                        <EmojiTitle label={<h2>일일 컨텐츠</h2>} symbol={'⏰'} />
-                        <InnerContents>
-                            <Article>
-                                <span> {fieldBoss ? '⭕' : '❌'}</span>
-                                <DayTitle active={fieldBoss}>
-                                    <span>필드 보스</span>
-                                    <Image src="/static/img/lostark/contents/fieldboss.png" width="20" height="20" />
-                                </DayTitle>
-                            </Article>
-                            <Article>
-                                <span> {ghost ? '⭕' : '❌'}</span>
-                                <DayTitle active={ghost}>
-                                    <span>유령선</span>
-                                    <Image src="/static/img/lostark/contents/ghost.png" width="20" height="20" />
-                                </DayTitle>
-                            </Article>
-                            <Article>
-                                <span> {chaosGate ? '⭕' : '❌'}</span>
-                                <DayTitle active={chaosGate}>
-                                    <span>카오스 게이트</span>
-                                    <Image src="/static/img/lostark/contents/choasgate.png" width="20" height="20" />
-                                </DayTitle>
-                            </Article>
-                        </InnerContents>
-                    </Contents>
-                    <WeekContents>
-                        <WeekContent>
-                            <h2>
-                                <Image src="/static/img/lostark/contents/guardian.png" width="24" height="24" />
-                                도전 가디언 토벌
-                            </h2>
-                            {guardian.length > 0 && (
+                {isLoading ? (
+                    <EmojiTitle label={<h1>이번 주 일정 로딩 중...</h1>} symbol={'📅'} />
+                ) : (
+                    <>
+                        <EmojiTitle label={<h1>이번주 일정</h1>} symbol={'📅'} />
+                        <ContentsInner>
+                            <Contents>
+                                <EmojiTitle label={<h2>일일 컨텐츠</h2>} symbol={'⏰'} />
                                 <InnerContents>
-                                    {guardian.map((name, guardianIndex) => {
-                                        return (
-                                            <WeekTitle key={guardianIndex}>
-                                                🔹<span> {name}</span>
-                                            </WeekTitle>
-                                        );
-                                    })}
+                                    <Article>
+                                        <span> {fieldBoss ? '⭕' : '❌'}</span>
+                                        <DayTitle active={fieldBoss}>
+                                            <span>필드 보스</span>
+                                            <Image
+                                                src="/static/img/lostark/contents/fieldboss.png"
+                                                width="20"
+                                                height="20"
+                                            />
+                                        </DayTitle>
+                                    </Article>
+                                    <Article>
+                                        <span> {ghost ? '⭕' : '❌'}</span>
+                                        <DayTitle active={ghost}>
+                                            <span>유령선</span>
+                                            <Image
+                                                src="/static/img/lostark/contents/ghost.png"
+                                                width="20"
+                                                height="20"
+                                            />
+                                        </DayTitle>
+                                    </Article>
+                                    <Article>
+                                        <span> {chaosGate ? '⭕' : '❌'}</span>
+                                        <DayTitle active={chaosGate}>
+                                            <span>카오스 게이트</span>
+                                            <Image
+                                                src="/static/img/lostark/contents/choasgate.png"
+                                                width="20"
+                                                height="20"
+                                            />
+                                        </DayTitle>
+                                    </Article>
                                 </InnerContents>
-                            )}
-                        </WeekContent>
-                        <WeekContent>
-                            <h2>
-                                <Image src="/static/img/lostark/contents/abyss.png" width="24" height="24" /> 도전
-                                어비스 던전
-                            </h2>
-                            {abyss.length > 0 && (
-                                <InnerContents>
-                                    {abyss.map((name, abyssIndex) => {
-                                        return (
-                                            <WeekTitle key={abyssIndex}>
-                                                🔹 <span>{name}</span>
-                                            </WeekTitle>
-                                        );
-                                    })}
-                                </InnerContents>
-                            )}
-                        </WeekContent>
-                    </WeekContents>
-                </ContentsInner>
+                            </Contents>
+                            <WeekContents>
+                                <WeekContent>
+                                    <h2>
+                                        <Image src="/static/img/lostark/contents/guardian.png" width="24" height="24" />
+                                        도전 가디언 토벌
+                                    </h2>
+                                    {guardian.length > 0 && (
+                                        <InnerContents>
+                                            {guardian.map((name, guardianIndex) => {
+                                                return (
+                                                    <WeekTitle key={guardianIndex}>
+                                                        🔹<span> {name}</span>
+                                                    </WeekTitle>
+                                                );
+                                            })}
+                                        </InnerContents>
+                                    )}
+                                </WeekContent>
+                                <WeekContent>
+                                    <h2>
+                                        <Image src="/static/img/lostark/contents/abyss.png" width="24" height="24" />{' '}
+                                        도전 어비스 던전
+                                    </h2>
+                                    {abyss.length > 0 && (
+                                        <InnerContents>
+                                            {abyss.map((name, abyssIndex) => {
+                                                return (
+                                                    <WeekTitle key={abyssIndex}>
+                                                        🔹 <span>{name}</span>
+                                                    </WeekTitle>
+                                                );
+                                            })}
+                                        </InnerContents>
+                                    )}
+                                </WeekContent>
+                            </WeekContents>
+                        </ContentsInner>
+                    </>
+                )}
             </ContentsDiv>
         </Container>
     );
