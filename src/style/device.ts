@@ -41,6 +41,7 @@ export const widthMedia = {
 
 export const heightMedia = {
     custom: customMediaQueryHeight,
+    verybig: customMediaQueryHeight(1080),
     big: customMediaQueryHeight(900),
     medium: customMediaQueryHeight(720),
     small: customMediaQueryHeight(620),
