@@ -124,11 +124,19 @@ const Main = () => {
 
             const setCharacterInfo = {
                 success: async () => await initAllCharacters(data),
-                error: () => toast.error(validMsg || ''),
+                error: () => {
+                    toast.error(validMsg || '');
+                    setSpinnerVisible(false);
+                },
+                nodata: () => {
+                    toast.error(validMsg || '');
+                    setSpinnerVisible(false);
+                },
             };
 
             setCharacterInfo[status] && (await setCharacterInfo[status]());
         } catch (err: unknown) {
+            console.log(err);
             setSpinnerVisible(false);
             toast.error('캐릭터 정보를 불러올 수 없습니다. 로스트아크 점검시간이 아닌지 확인 해 주세요.');
             insertErrorDB({ catchErr: err, errType: 'croll' });
@@ -161,6 +169,7 @@ const Main = () => {
                         eponaChar,
                     ),
                 error: () => toast.error(validMsg || ''),
+                nodata: () => toast.error(validMsg || ''),
             };
             setCharacterInfo[status] && setCharacterInfo[status]();
         }
