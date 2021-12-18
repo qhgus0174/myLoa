@@ -30,6 +30,7 @@ import GoldIcon from '@components/Image/Gold';
 import EmojiTitle from '@components/Emoji/EmojiTitle';
 import Link from 'next/link';
 import Nodata from '@components/article/Nodata';
+import { NextSeo } from 'next-seo';
 
 const Statistics = () => {
     const weekKorArr = ['저번주', '2주전', '3주전', '4주전'];
@@ -223,6 +224,25 @@ const Statistics = () => {
 
     return (
         <StatisticsContainer>
+            <NextSeo
+                title="로요일좋아 - 골드 수입 통계"
+                description="로스트 아크 캐릭터의 골드 수입 통계를 한눈에 보세요!"
+                openGraph={{
+                    title: '로요일좋아 - 골드 수입 통계',
+                    description: '로스트 아크 캐릭터의 골드 수입 통계를 한눈에 보세요!',
+                    url: 'https://loa-day.com/statistics',
+                    locale: 'ko_KR',
+                    type: 'website',
+                    images: [
+                        {
+                            url: 'https://loa-day.com/static/img/logo/logo.png',
+                            width: 1200,
+                            height: 1200,
+                            type: 'image/png',
+                        },
+                    ],
+                }}
+            />
             <StatisticsSection>
                 {!hasData && (
                     <Nodata

@@ -31,6 +31,7 @@ import { getCommon } from '@apis/ledger/common';
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { widthMedia } from '@style/device';
+import { NextSeo } from 'next-seo';
 
 interface ILedgerObjects {
     raid: IRaidGold[];
@@ -257,6 +258,25 @@ const Ledger = () => {
 
     return (
         <>
+            <NextSeo
+                title="로요일좋아 - 골드 수입 관리"
+                description="로스트 아크 캐릭터의 골드 수입을 편하게 관리해보세요!"
+                openGraph={{
+                    title: '로요일좋아 - 골드 수입 관리',
+                    description: '로스트 아크 캐릭터의 골드 수입을 편하게 관리해보세요!',
+                    url: 'https://loa-day.com/statistics',
+                    locale: 'ko_KR',
+                    type: 'website',
+                    images: [
+                        {
+                            url: 'https://loa-day.com/static/img/logo/logo.png',
+                            width: 1200,
+                            height: 1200,
+                            type: 'image/png',
+                        },
+                    ],
+                }}
+            />
             {status === 'fulfilled' && ledgerData && (
                 <Container>
                     <Summary>

@@ -401,6 +401,25 @@ const Main = () => {
 
     return (
         <>
+            <NextSeo
+                title="로요일좋아 - 로스트아크 숙제 관리"
+                description="로스트 아크 숙제 관리 페이지입니다. 일일, 주간 컨텐츠를 편하게 체크해보세요."
+                openGraph={{
+                    title: '로요일좋아 - 로스트아크 숙제 관리',
+                    description: '로스트 아크 숙제 관리 페이지입니다. 일일, 주간 컨텐츠를 편하게 체크해보세요.',
+                    url: 'https://loa-day.com/todo',
+                    locale: 'ko_KR',
+                    type: 'website',
+                    images: [
+                        {
+                            url: 'https://loa-day.com/static/img/logo/logo.png',
+                            width: 1200,
+                            height: 1200,
+                            type: 'image/png',
+                        },
+                    ],
+                }}
+            />
             {storedCharacter.length < 1 ? (
                 <Nodata
                     text={
@@ -427,25 +446,6 @@ const Main = () => {
             ) : (
                 resolePromise.status === 'fulfilled' && (
                     <MainContainer>
-                        <NextSeo
-                            title="MyLoa - 로스트아크 숙제 관리"
-                            description="로스트 아크 숙제 관리 페이지입니다."
-                            openGraph={{
-                                title: 'MyLoa - 로스트아크 숙제 관리',
-                                description: '로스트 아크 숙제 관리 페이지입니다.',
-                                url: 'https://myloatest.herokuapp.com/Todo',
-                                locale: 'ko_KR',
-                                type: 'website',
-                                images: [
-                                    {
-                                        url: 'https://myloatest.herokuapp.com/profile_image.png',
-                                        width: 1200,
-                                        height: 1200,
-                                        type: 'image/png',
-                                    },
-                                ],
-                            }}
-                        />
                         <TabsContainer activetab={activeTab} role="tabs">
                             <TabList role="tablist">
                                 <Tab onClick={() => setActiveTab(1)} selected={activeTab == 1} role="tab">
