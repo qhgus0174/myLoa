@@ -5,7 +5,7 @@ interface TrackPageViewParams {
 }
 
 class GAService {
-    private env: 'development' | 'production';
+    private env: 'development' | 'production' | 'test';
 
     constructor() {
         if (!process.env.NEXT_PUBLIC_GA_TRACKING_ID) {
