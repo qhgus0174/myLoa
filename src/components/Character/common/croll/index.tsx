@@ -51,11 +51,14 @@ export const allCharacter = async (name: string): Promise<ICrollInfoAll> => {
         );
         const $ = load(data);
         const server =
-            $('.profile-character-info__server').text() == '' && $($('.wrapper-define dl.define > dd')[0]).text();
+            $('.profile-character-info__server').text() == ''
+                ? $($('.wrapper-define dl.define > dd')[0]).text()
+                : $('.profile-character-info__server').text();
         const otherServer = $('.profile-character-list__server');
 
         if (otherServer.length > 0) {
             let characterArr: string[] = [];
+
             otherServer.each((i, allServerData) => {
                 const all = $(allServerData);
 
@@ -68,7 +71,6 @@ export const allCharacter = async (name: string): Promise<ICrollInfoAll> => {
                         });
                 }
             });
-
             return { status: 'success', data: characterArr };
         } else {
             const otherServer = $('.myinfo__character--wrapper2 strong');
