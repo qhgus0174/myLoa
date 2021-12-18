@@ -3,9 +3,14 @@ import { NextSeo } from 'next-seo';
 import Link from 'next/link';
 import Image from 'next/image';
 import { SpinnerContext } from '@context/SpinnerContext';
+import { IStatisticsPersonal } from '@components/Statistics/StatisticsType';
+import { calcSum } from '@components/Ledger/common/functions';
+import Ranking from '@components/Statistics/Ranking';
 import EmojiTitle from '@components/Emoji/EmojiTitle';
 import Button from '@components/Button/Button';
 import { getDayContents, getWeeklyContents } from '@common/getCommonData';
+import { ILedger } from '@common/types/localStorage/Ledger';
+import { getCharacterInfoById, parseStorageItem } from '@common/utils';
 import styled from '@emotion/styled';
 import { widthMedia } from '@style/device';
 
@@ -16,6 +21,8 @@ const Main = () => {
     const [guardian, setGuardian] = useState<string[]>([]);
     const [abyss, setAbyss] = useState<string[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [noLedger, setNoLedger] = useState<boolean>(false);
+    const [personalGoldThisWeekArr, setPersonalGoldThisWeekArr] = useState<IStatisticsPersonal[]>([]);
 
     const { setSpinnerVisible } = useContext(SpinnerContext);
 
@@ -40,7 +47,33 @@ const Main = () => {
         };
 
         getWeekly();
+        localStorage.getItem('character') && localStorage.getItem('ledger')
+            ? calcPersonalGoldThisWeek()
+            : setNoLedger(true);
     }, []);
+
+    const calcPersonalGoldThisWeek = () => {
+        if (parseStorageItem(localStorage.getItem('character') as string).length < 1) return;
+
+        const { own }: ILedger = {
+            ...parseStorageItem(localStorage.getItem('ledger') as string),
+        };
+        if (own.length < 1) return;
+
+        const result: IStatisticsPersonal[] = own.map(({ characterId, histories }) => {
+            return {
+                name: getCharacterInfoById({
+                    dataArray: parseStorageItem(localStorage.getItem('character') as string),
+                    id: characterId,
+                }).name,
+                raid: calcSum(histories.raid.data),
+                goods: calcSum(histories.goods.data),
+            };
+        });
+
+        setPersonalGoldThisWeekArr(result);
+        setNoLedger(false);
+    };
 
     return (
         <Container>
@@ -74,77 +107,46 @@ const Main = () => {
                         symbolPosition="right"
                     />
                     <br />
-                    <Link href="/todo">
-                        <Button>숙제 관리 바로가기</Button>
-                    </Link>
+                    <GoTodoButton>
+                        <Link href="/todo">숙제 관리 바로가기</Link>
+                    </GoTodoButton>
                 </TextDiv>
             </TopArea>
             <ContentsDiv>
                 {isLoading ? (
                     <EmojiTitle label={<h2>이번 주 일정 로딩 중...</h2>} symbol={'📅'} />
                 ) : (
-                    <>
-                        <EmojiTitle label={<h2>이번주 일정</h2>} symbol={'📅'} />
+                    <ContentsContainer>
                         <ContentsInner>
                             <Contents>
-                                <EmojiTitle label={<h2>일일 컨텐츠</h2>} symbol={'⏰'} />
-                                <InnerContents>
-                                    <Article>
-                                        <span> {fieldBoss ? '⭕' : '❌'}</span>
-                                        <DayTitle active={fieldBoss}>
-                                            <span>필드 보스</span>
-                                            <Image
-                                                src="/static/img/lostark/contents/fieldboss.png"
-                                                width="20"
-                                                height="20"
-                                            />
-                                        </DayTitle>
-                                    </Article>
-                                    <Article>
-                                        <span> {ghost ? '⭕' : '❌'}</span>
-                                        <DayTitle active={ghost}>
-                                            <span>유령선</span>
-                                            <Image
-                                                src="/static/img/lostark/contents/ghost.png"
-                                                width="20"
-                                                height="20"
-                                            />
-                                        </DayTitle>
-                                    </Article>
-                                    <Article>
-                                        <span> {chaosGate ? '⭕' : '❌'}</span>
-                                        <DayTitle active={chaosGate}>
-                                            <span>카오스 게이트</span>
-                                            <Image
-                                                src="/static/img/lostark/contents/choasgate.png"
-                                                width="20"
-                                                height="20"
-                                            />
-                                        </DayTitle>
-                                    </Article>
-                                </InnerContents>
+                                <WeekContent>
+                                    <EmojiTitle label={<h2>일일 컨텐츠</h2>} symbol={'⏰'} />
+                                    <InnerContents>
+                                        <Article>
+                                            <span> {fieldBoss ? '⭕' : '❌'}</span>
+                                            <DayTitle active={fieldBoss}>
+                                                <span>필드 보스</span>
+                                            </DayTitle>
+                                        </Article>
+                                        <Article>
+                                            <span> {ghost ? '⭕' : '❌'}</span>
+                                            <DayTitle active={ghost}>
+                                                <span>유령선</span>
+                                            </DayTitle>
+                                        </Article>
+                                        <Article>
+                                            <span> {chaosGate ? '⭕' : '❌'}</span>
+                                            <DayTitle active={chaosGate}>
+                                                <span>카오스 게이트</span>
+                                            </DayTitle>
+                                        </Article>
+                                    </InnerContents>
+                                </WeekContent>
                             </Contents>
                             <WeekContents>
                                 <WeekContent>
                                     <h2>
-                                        <Image src="/static/img/lostark/contents/guardian.png" width="24" height="24" />
-                                        도전 가디언 토벌
-                                    </h2>
-                                    {guardian.length > 0 && (
-                                        <InnerContents>
-                                            {guardian.map((name, guardianIndex) => {
-                                                return (
-                                                    <WeekTitle key={guardianIndex}>
-                                                        🔹<span> {name}</span>
-                                                    </WeekTitle>
-                                                );
-                                            })}
-                                        </InnerContents>
-                                    )}
-                                </WeekContent>
-                                <WeekContent>
-                                    <h2>
-                                        <Image src="/static/img/lostark/contents/abyss.png" width="24" height="24" />{' '}
+                                        <Image src="/static/img/lostark/contents/abyss.png" width="22" height="22" />
                                         도전 어비스 던전
                                     </h2>
                                     {abyss.length > 0 && (
@@ -159,9 +161,38 @@ const Main = () => {
                                         </InnerContents>
                                     )}
                                 </WeekContent>
+                                <WeekContent>
+                                    <h2>
+                                        <Image src="/static/img/lostark/contents/guardian.png" width="22" height="22" />
+                                        도전 가디언 토벌
+                                    </h2>
+                                    {guardian.length > 0 && (
+                                        <InnerContents>
+                                            {guardian.map((name, guardianIndex) => {
+                                                return (
+                                                    <WeekTitle key={guardianIndex}>
+                                                        🔹<span> {name}</span>
+                                                    </WeekTitle>
+                                                );
+                                            })}
+                                        </InnerContents>
+                                    )}
+                                </WeekContent>
                             </WeekContents>
                         </ContentsInner>
-                    </>
+                        <ContentsInnerRight>
+                            {noLedger ? (
+                                <span> 캐릭터 정보가 없습니다!</span>
+                            ) : (
+                                <Ranking
+                                    title="이번 주 골드 순위"
+                                    array={personalGoldThisWeekArr.map(({ name, raid, goods }) => {
+                                        return { name: name, gold: raid + goods };
+                                    })}
+                                />
+                            )}
+                        </ContentsInnerRight>
+                    </ContentsContainer>
                 )}
             </ContentsDiv>
         </Container>
@@ -217,6 +248,14 @@ const ContentsDiv = styled.div`
     }
 `;
 
+const ContentsContainer = styled.div`
+    display: flex;
+    width: 100%;
+    ${widthMedia.desktop} {
+        flex-direction: column;
+    }
+`;
+
 const Contents = styled.div`
     display: flex;
     flex-basis: 25%;
@@ -227,8 +266,8 @@ const Contents = styled.div`
 
     h2 {
         font-size: 1.1em;
-        margin-top: 10px;
-        margin-bottom: 10px;
+        margin-top: 14px;
+        margin-bottom: 13px;
         display: flex;
         align-items: center;
     }
@@ -244,6 +283,7 @@ const WeekContent = styled.div`
     flex-direction: column;
     align-items: center;
     box-sizing: border-box;
+    height: 100%;
 
     h2 {
         font-size: 1.1em;
@@ -309,9 +349,10 @@ const ContentsInner = styled.div`
     justify-content: center;
     align-items: center;
     width: 100%;
+    flex-basis: 70%;
 
     box-sizing: border-box;
-    ${widthMedia.tablet} {
+    ${widthMedia.phone} {
         flex-direction: column;
     }
 `;
@@ -334,14 +375,42 @@ const WeekContents = styled.div`
     }
 
     ${widthMedia.tablet} {
-        flex-basis: 57%;
         width: 100%;
         margin-top: 2em;
     }
 
     ${widthMedia.phone} {
         flex-direction: column;
+        margin-top: 0em;
     }
 `;
 
+const GoTodoButton = styled(Button)`
+    a {
+        text-decoration: none;
+    }
+    &:hover {
+        span > a {
+            color: ${props => props.theme.colors.main};
+        }
+    }
+`;
+
+const ContentsInnerRight = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex-basis: 30%;
+    justify-content: center;
+
+    ${widthMedia.desktop} {
+        align-self: center;
+        width: 80%;
+        justify-content: center;
+        margin-top: 3em;
+    }
+
+    & > span {
+        text-align: center;
+    }
+`;
 export default Main;
