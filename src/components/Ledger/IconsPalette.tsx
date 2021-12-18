@@ -87,12 +87,13 @@ const Palette = styled.article<{ visible: boolean }>`
     display: ${props => (props.visible ? 'flex' : 'none')};
     flex-wrap: wrap;
     background: ${props => props.theme.colors.mainInner};
-    width: 10em;
+    width: 150px;
     top: 30px;
     position: absolute;
     transition: all 0.09s;
     z-index: 10;
     padding: 0.5em;
+    left: 0;
 `;
 
 const SelectedImg = styled.div`
