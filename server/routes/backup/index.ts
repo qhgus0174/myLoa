@@ -8,7 +8,7 @@ import { IError } from '../error/types';
 const router = express.Router();
 
 router.get('/:backupKey', async (req: Request, res: Response) => {
-    const { backupKey } = req.body as Pick<IBackup, 'backupKey'>;
+    const { backupKey } = req.params as Pick<IBackup, 'backupKey'>;
 
     try {
         const result = await Backup.getBackup({
