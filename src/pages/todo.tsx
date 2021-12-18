@@ -39,8 +39,14 @@ const Main = () => {
     const [activeTab, setActiveTab] = useState<number>(1);
 
     const { storedCharacter } = useContext(LocalStorageStateContext);
-    const { setStoredShareContents, setStoredCharacter, setStoredCharacterOrd, setStoredLedger } =
-        useContext(LocalStorageActionContext);
+    const {
+        setStoredShareContents,
+        setStoredCharacter,
+        setStoredCharacterOrd,
+        setStoredLedger,
+        setStoredTodo,
+        setStoredTodoOrd,
+    } = useContext(LocalStorageActionContext);
 
     const [repreCharacter, bindRepreCharacter] = useInput<string>('');
 
@@ -133,6 +139,9 @@ const Main = () => {
         let characters: ICharacter[] = [];
         let charactersOrd: number[] = [];
         let ledger: ILedger = initLedger;
+        let chaosChar: ICharacterTodo[] = [];
+        let guardianChar: ICharacterTodo[] = [];
+        let eponaChar: ICharacterTodo[] = [];
 
         for (let index = 0; index < array.length; index++) {
             const { status, validMsg, crollJob, crollLevel } = await getCrollCharacterInfo(array[index]);
@@ -147,6 +156,9 @@ const Main = () => {
                         characters,
                         charactersOrd,
                         ledger,
+                        chaosChar,
+                        guardianChar,
+                        eponaChar,
                     ),
                 error: () => toast.error(validMsg || ''),
             };
@@ -164,6 +176,8 @@ const Main = () => {
         await initShareContents();
         setStoredCharacterOrd(levelSortArr);
         localStorage.setItem('ledger', stringifyStorageItem(ledger));
+        initTodo(chaosChar, guardianChar, eponaChar);
+        setStoredTodoOrd([0, 1, 2]);
     };
 
     const addCharacter = (
@@ -174,10 +188,76 @@ const Main = () => {
         characters: ICharacter[],
         charactersOrd: number[],
         ledger: ILedger,
+        chaosChar: ICharacterTodo[],
+        guardianChar: ICharacterTodo[],
+        eponaChar: ICharacterTodo[],
     ) => {
         characters.push(addCharacterInfo(name, crollJob, crollLevel, characterId));
         charactersOrd.push(characterId);
         ledger.own.push(setLedger(characterId));
+        chaosChar.push(addTodoCharacters({ characterId: characterId, type: 'chaos' }));
+        guardianChar.push(addTodoCharacters({ characterId: characterId, type: 'guardian' }));
+        eponaChar.push(addTodoCharacters({ characterId: characterId, type: 'epona' }));
+    };
+
+    const addTodoCharacters = ({
+        characterId,
+        type,
+    }: {
+        characterId: number;
+        type: 'chaos' | 'guardian' | 'epona';
+    }) => {
+        const checkArr = getResetCheckArr(type);
+
+        const character: ICharacterTodo = {
+            id: characterId,
+            check: checkArr,
+            relaxGauge: 0,
+            oriRelaxGauge: 0,
+            eponaName: type === 'epona' ? new Array(3).fill('') : [],
+            guardianInfo: { info: '2', step: '5' },
+        };
+
+        return character;
+    };
+
+    const initTodos = ({
+        initCharacterArr,
+        type,
+        id,
+    }: {
+        initCharacterArr: ICharacterTodo[];
+        type: 'chaos' | 'guardian' | 'epona';
+        id: number;
+    }): ITodo => {
+        const names = {
+            chaos: '카던',
+            guardian: '가디언',
+            epona: '에포나',
+        };
+
+        const todoInfo: ITodo = {
+            id: id,
+            name: names[type],
+            type: 'daily',
+            contents: type,
+            checkType: 'check',
+            color: theme.colors.text,
+            character: initCharacterArr,
+            showCharacter: initCharacterArr.map(({ id }) => id),
+            isFixed: false,
+        };
+        return todoInfo;
+    };
+
+    const initTodo = (chaosChar: ICharacterTodo[], guardianChar: ICharacterTodo[], eponaChar: ICharacterTodo[]) => {
+        const todoArr: ITodo[] = [];
+
+        todoArr.push(initTodos({ initCharacterArr: chaosChar, type: 'chaos', id: 0 }));
+        todoArr.push(initTodos({ initCharacterArr: guardianChar, type: 'guardian', id: 1 }));
+        todoArr.push(initTodos({ initCharacterArr: eponaChar, type: 'epona', id: 2 }));
+
+        setStoredTodo(todoArr);
     };
 
     const setLedger = (characterId: number) => {
