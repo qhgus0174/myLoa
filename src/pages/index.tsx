@@ -1,14 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { NextSeo } from 'next-seo';
 import Link from 'next/link';
 import Image from 'next/image';
 import { SpinnerContext } from '@context/SpinnerContext';
-import { getDayContents, getWeeklyContents } from '@common/getCommonData';
-import styled from '@emotion/styled';
-import { FlexDiv } from '@style/common';
 import EmojiTitle from '@components/Emoji/EmojiTitle';
 import Button from '@components/Button/Button';
+import { getDayContents, getWeeklyContents } from '@common/getCommonData';
+import styled from '@emotion/styled';
 import { widthMedia } from '@style/device';
-import { NextSeo } from 'next-seo';
 
 const Main = () => {
     const [fieldBoss, setFieldBoss] = useState<boolean>(false);
@@ -67,7 +66,14 @@ const Main = () => {
             />
             <TopArea>
                 <TextDiv>
-                    <span>로스트아크 일일, 주간 숙제 관리를 편하게 관리하고 캐릭터들의 수입을 관리해보세요!😎</span>
+                    <EmojiTitle
+                        label={
+                            <h2>로스트아크 일일, 주간 숙제 관리를 편하게 관리하고 캐릭터들의 수입을 관리해보세요!</h2>
+                        }
+                        symbol={'😎'}
+                        symbolPosition="right"
+                    />
+                    <br />
                     <Link href="/todo">
                         <Button>숙제 관리 바로가기</Button>
                     </Link>
@@ -75,10 +81,10 @@ const Main = () => {
             </TopArea>
             <ContentsDiv>
                 {isLoading ? (
-                    <EmojiTitle label={<h1>이번 주 일정 로딩 중...</h1>} symbol={'📅'} />
+                    <EmojiTitle label={<h2>이번 주 일정 로딩 중...</h2>} symbol={'📅'} />
                 ) : (
                     <>
-                        <EmojiTitle label={<h1>이번주 일정</h1>} symbol={'📅'} />
+                        <EmojiTitle label={<h2>이번주 일정</h2>} symbol={'📅'} />
                         <ContentsInner>
                             <Contents>
                                 <EmojiTitle label={<h2>일일 컨텐츠</h2>} symbol={'⏰'} />
@@ -189,6 +195,10 @@ const TextDiv = styled.div`
     & > span {
         font-size: 1.1em;
         margin-bottom: 1em;
+    }
+
+    h2 {
+        font-size: 1.3em;
     }
 `;
 

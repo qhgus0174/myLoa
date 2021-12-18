@@ -1,6 +1,5 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { DateTime } from 'luxon';
-import Image from 'next/image';
 import useWindowDimensions from '@hooks/useWindowDimensions';
 import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
 import { ModalActionContext } from '@context/ModalContext';
@@ -21,7 +20,7 @@ import { ScheduleContents } from '@common/types/types';
 import { IContextModal } from '@common/types/types';
 import { GA } from '@service/ga';
 import { NextSeo } from 'next-seo';
-import { css, useTheme } from '@emotion/react';
+import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { FlexDiv } from '@style/common';
 import { responsiveWidth, widthMedia } from '@style/device';
@@ -29,11 +28,10 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { getShareContents } from '@apis/contents/share';
 import { SpinnerContext } from '@context/SpinnerContext';
 import { usePromiseEffect } from '@hooks/usePromiseEffect';
-import { IShareContents as IShareContentsResponse } from '@common/types/response/contents/share';
 import IconLabel from '@components/Label/IconLabel';
 import TodoCheckbox from '@components/Input/TodoCheckbox';
 import { IShareContents } from '@common/types/localStorage/ShareContents';
-import { getCharacterInfoById, groupBy, parseStorageItem, stringifyStorageItem } from '@common/utils';
+import { parseStorageItem, stringifyStorageItem } from '@common/utils';
 import { ICharacter } from '@common/types/localStorage/Character';
 import Nodata from '@components/article/Nodata';
 import { allCharacter, getCrollCharacterInfo } from '@components/Character/common/croll';
@@ -42,11 +40,8 @@ import { ILedger, ILedgerOwn } from '@common/types/localStorage/Ledger';
 import { useInput } from '@hooks/useInput';
 import TextBox from '@components/Input/TextBox';
 import { insertErrorDB } from '@common/error';
-import Router from 'next/router';
 import { PagingActionContext } from '@context/PagingContext';
 import { initDayContents, initLedger } from '@hooks/useLocalStorage';
-
-import { CompassInfo } from '@common/data/compass';
 
 export interface IFileterRaidLevel {
     id: string;
@@ -421,28 +416,29 @@ const Main = () => {
                 }}
             />
             {storedCharacter.length < 1 ? (
-                <Nodata
-                    text={
-                        <NodataDiv>
-                            <NodataInner>
-                                <strong>
-                                    데이터가 존재하지 않습니다. 보유 캐릭터 중 하나를 입력하여 추가 해보세요!
-                                </strong>
-                            </NodataInner>
-                            <NodataInner>
-                                <TextBox
-                                    placeholder="캐릭터 명 입력"
-                                    width="80"
-                                    divWidth="70"
-                                    {...bindRepreCharacter}
-                                />
-                                <Button width="40" className="crollAllCharacter" onClick={crollAllMyCharacter}>
-                                    캐릭터 가져오기!😎
-                                </Button>
-                            </NodataInner>
-                        </NodataDiv>
-                    }
-                />
+                <NodataDiv>
+                    <NodataInner>
+                        <h2>
+                            데이터가 존재하지 않습니다.
+                            <br /> 보유 캐릭터 중 하나를 입력하여 추가 해보세요!
+                        </h2>
+                    </NodataInner>
+                    <NodataInner>
+                        <TextBox
+                            placeholder="캐릭터 명 입력"
+                            width="80"
+                            divWidth="70"
+                            align="center"
+                            {...bindRepreCharacter}
+                            onKeyPress={e => {
+                                if (e.key === 'Enter') crollAllMyCharacter();
+                            }}
+                        />
+                        <Button width="45" className="crollAllCharacter" onClick={() => crollAllMyCharacter()}>
+                            모든 캐릭터 가져오기😎
+                        </Button>
+                    </NodataInner>
+                </NodataDiv>
             ) : (
                 resolePromise.status === 'fulfilled' && (
                     <MainContainer>
@@ -715,18 +711,45 @@ const ButtonLeftDiv = styled(FlexDiv)`
 const NodataDiv = styled.div`
     display: flex;
     flex-direction: column;
-    width: 100%;
+    width: 35%;
     height: 100%;
-    margin-top: 3em;
+    margin-top: 9em;
+    justify-content: center;
     align-items: center;
+    ${widthMedia.desktop} {
+        width: 40%;
+    }
+    ${widthMedia.mediumDesktop} {
+        width: 45%;
+    }
+    ${widthMedia.smallDesktop} {
+        width: 60%;
+    }
+    ${widthMedia.tablet} {
+        width: 70%;
+    }
+
+    ${widthMedia.tablet} {
+        width: 70%;
+    }
+
+    ${widthMedia.smallPhone} {
+        width: 80%;
+    }
 `;
 
 const NodataInner = styled.div`
     display: flex;
-    width: 100%;
+    width: 80%;
     margin-top: 1.5em;
     margin-bottom: 1.5em;
     align-items: center;
+    text-align: center;
+    justify-content: center;
+
+    h2 {
+        font-size: 1.3em;
+    }
 `;
 
 const SharedDiv = styled.div`

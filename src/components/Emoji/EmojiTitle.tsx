@@ -4,18 +4,19 @@ import styled from '@emotion/styled';
 interface IEmojiTitle extends React.HTMLAttributes<HTMLElement> {
     symbol: any;
     label: JSX.Element;
+    symbolPosition?: 'left' | 'right';
 }
 
-const EmojiTitle = ({ symbol, label, ...rest }: IEmojiTitle) => {
+const EmojiTitle = ({ symbol, label, symbolPosition = 'left', ...rest }: IEmojiTitle) => {
     return (
-        <Container {...rest}>
+        <Container {...rest} symbolPosition={symbolPosition}>
             <span>{symbol}</span>
             {label}
         </Container>
     );
 };
 
-const Container = styled.article`
+const Container = styled.article<Pick<IEmojiTitle, 'symbolPosition'>>`
     display: flex;
     align-items: center;
 
@@ -29,5 +30,14 @@ const Container = styled.article`
     & > strong {
         margin-left: 6px;
     }
+
+    ${props =>
+        props.symbolPosition === 'right' &&
+        `
+        flex-direction:row-reverse; 
+        span{ 
+            margin-left: 6px;
+        }
+    `}
 `;
 export default EmojiTitle;
