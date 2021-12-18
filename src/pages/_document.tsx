@@ -5,7 +5,7 @@ export default class CustomDocument extends Document {
         return (
             <Html>
                 <Head>
-                    <link rel="shortcut icon" href="/static/favicon.ico" />
+                    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
                 </Head>
                 <body>
                     <Main />
