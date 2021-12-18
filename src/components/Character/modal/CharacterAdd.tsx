@@ -54,6 +54,7 @@ const CharacterAdd = () => {
         const setCharacterInfo = {
             success: () => addCharacter(crollJob || '', crollLevel || ''),
             error: () => toast.error(validMsg || ''),
+            nodata: () => toast.error(validMsg || ''),
         };
 
         setCharacterInfo[status] && setCharacterInfo[status]();
