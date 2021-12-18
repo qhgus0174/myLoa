@@ -59,7 +59,7 @@ export const basic: Theme = {
         white: '#f6f8fd',
         gray: '#6d6d6d',
         navBorder: '#1b2736',
-        warn: '#ebae09',
+        warn: '#f6f8fd',
     },
 
     button: {
@@ -108,7 +108,7 @@ export const pink: Theme = {
         white: '#F6F6F6',
         gray: '#9f979a',
         navBorder: '#debfc4',
-        warn: '#ebae09',
+        warn: '#7a6864',
     },
 
     button: {
@@ -158,7 +158,7 @@ export const violet: Theme = {
         white: '#edeff6',
         gray: '#7b728c',
         navBorder: '#be9bcd',
-        warn: '#ebae09',
+        warn: '#514963',
     },
 
     button: {
@@ -207,7 +207,7 @@ export const green: Theme = {
         white: '#edeff6',
         gray: '#747b75',
         navBorder: '#6e9a79',
-        warn: '#ebae09',
+        warn: '#3a3834',
     },
 
     button: {
@@ -256,7 +256,7 @@ export const cold: Theme = {
         white: '#edeff6',
         gray: '#799d9f',
         navBorder: '#a2b9b5',
-        warn: '#ebae09',
+        warn: '#777172',
     },
 
     button: {
@@ -305,7 +305,7 @@ export const autumn: Theme = {
         white: '#edeff6',
         gray: '#485a50',
         navBorder: '#ce8e72',
-        warn: '#ebae09',
+        warn: '#ffffff',
     },
 
     button: {
@@ -354,7 +354,7 @@ export const violetBrown: Theme = {
         white: '#edeff6',
         gray: '#4f4647',
         navBorder: '#705b64',
-        warn: '#ebae09',
+        warn: '#f4ece7',
     },
 
     button: {
@@ -403,7 +403,7 @@ export const flower: Theme = {
         white: '#edeff6',
         gray: '#768378',
         navBorder: '#feb3c1',
-        warn: '#ebae09',
+        warn: '#a2455f',
     },
 
     button: {
@@ -452,7 +452,7 @@ export const pinkBeige: Theme = {
         white: '#fafaf9',
         gray: '#97979f',
         navBorder: '#d5c5c2',
-        warn: '#ebae09',
+        warn: '#5D534A',
     },
 
     button: {
@@ -501,7 +501,7 @@ export const darkBrown: Theme = {
         white: '#efebeb',
         gray: '#8a8583',
         navBorder: '#363535',
-        warn: '#ebae09',
+        warn: '#efebeb',
     },
 
     button: {
@@ -550,7 +550,7 @@ export const darkYellow: Theme = {
         white: '#EEEEEE',
         gray: '#8a8583',
         navBorder: '#272e39',
-        warn: '#ebae09',
+        warn: '#EEEEEE',
     },
 
     button: {
@@ -599,7 +599,7 @@ export const darkPink: Theme = {
         white: '#EEEEEE',
         gray: '#8a8583',
         navBorder: '#333456',
-        warn: '#ebae09',
+        warn: '#EEEEEE',
     },
 
     button: {
@@ -648,7 +648,7 @@ export const veryCold: Theme = {
         white: '#EEEEEE',
         gray: '#706e77',
         navBorder: '#897f9e',
-        warn: '#ebae09',
+        warn: '#EEEEEE',
     },
 
     button: {
@@ -697,7 +697,7 @@ export const darkCyan: Theme = {
         white: '#EEEEEE',
         gray: '#706e77',
         navBorder: '#252b36',
-        warn: '#ebae09',
+        warn: '#00ADB5',
     },
 
     button: {
@@ -746,7 +746,7 @@ export const lego: Theme = {
         white: '#EEEEEE',
         gray: '#4d4f50',
         navBorder: '#114a7c',
-        warn: '#ebae09',
+        warn: '#FFD717',
     },
 
     button: {
@@ -795,7 +795,7 @@ export const blue: Theme = {
         white: '#F6F5F5',
         gray: '#276678',
         navBorder: '#90a5ab',
-        warn: '#ebae09',
+        warn: '#194551',
     },
 
     button: {
