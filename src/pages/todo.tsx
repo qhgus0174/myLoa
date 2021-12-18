@@ -1,47 +1,31 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { DateTime } from 'luxon';
-import useWindowDimensions from '@hooks/useWindowDimensions';
-import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
-import { ModalActionContext } from '@context/ModalContext';
-import CharacterOrdChange from '@components/Character/modal/CharacterOrdChange';
-import { getResetCheckArr } from '@components/Todo/common/functions';
-import CharacterAdd from '@components/Character/modal/CharacterAdd';
-import { ITodo, ICharacterTodo } from '@common/types/localStorage/Todo';
-import Pagination from '@components/Pagination/Pagination';
-import TodoAdd from '@components/Todo/modal/TodoAdd';
-import DownArrow from '@components/Image/DownArrow';
-import PlusIcon from '@components/Image/PlusIcon';
-import LineAdd from '@components/Line/LineAdd';
-import UpArrow from '@components/Image/UpArrow';
-import Button from '@components/Button/Button';
-import Character from '@components/Character';
-import Todo from '@components/Todo';
-import { ScheduleContents } from '@common/types/types';
-import { IContextModal } from '@common/types/types';
-import { GA } from '@service/ga';
-import { NextSeo } from 'next-seo';
-import { useTheme } from '@emotion/react';
-import styled from '@emotion/styled';
-import { FlexDiv } from '@style/common';
-import { responsiveWidth, widthMedia } from '@style/device';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import { NextSeo } from 'next-seo';
+import { toast } from 'react-toastify';
+import { GA } from '@service/ga';
 import { getShareContents } from '@apis/contents/share';
+import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
 import { SpinnerContext } from '@context/SpinnerContext';
+import { initDayContents, initLedger } from '@hooks/useLocalStorage';
 import { usePromiseEffect } from '@hooks/usePromiseEffect';
-import IconLabel from '@components/Label/IconLabel';
-import TodoCheckbox from '@components/Input/TodoCheckbox';
+import { useInput } from '@hooks/useInput';
+import { allCharacter, getCrollCharacterInfo } from '@components/Character/common/croll';
+import { getResetCheckArr } from '@components/Todo/common/functions';
+import AllCustom from '@components/Todo/view/AllCustom';
+import Weekly from '@components/Todo/view/Weekly';
+import TextBox from '@components/Input/TextBox';
+import Button from '@components/Button/Button';
 import { IShareContents } from '@common/types/localStorage/ShareContents';
+import { ITodo, ICharacterTodo } from '@common/types/localStorage/Todo';
+import { ILedger, ILedgerOwn } from '@common/types/localStorage/Ledger';
 import { parseStorageItem, stringifyStorageItem } from '@common/utils';
 import { ICharacter } from '@common/types/localStorage/Character';
-import Nodata from '@components/article/Nodata';
-import { allCharacter, getCrollCharacterInfo } from '@components/Character/common/croll';
-import { toast } from 'react-toastify';
-import { ILedger, ILedgerOwn } from '@common/types/localStorage/Ledger';
-import { useInput } from '@hooks/useInput';
-import TextBox from '@components/Input/TextBox';
+import { ScheduleContents } from '@common/types/types';
 import { insertErrorDB } from '@common/error';
-import { PagingActionContext } from '@context/PagingContext';
-import { initDayContents, initLedger } from '@hooks/useLocalStorage';
+import { useTheme } from '@emotion/react';
+import styled from '@emotion/styled';
+import { widthMedia } from '@style/device';
 
 export interface IFileterRaidLevel {
     id: string;
@@ -49,37 +33,22 @@ export interface IFileterRaidLevel {
 }
 
 const Main = () => {
-    useEffect(() => GA.trackPageView({ path: window.location.pathname }), []);
+    const theme = useTheme();
 
-    const { setCurrentPage } = useContext(PagingActionContext);
     const { setSpinnerVisible } = useContext(SpinnerContext);
-    const { setModalProps } = useContext(ModalActionContext);
     const [activeTab, setActiveTab] = useState<number>(1);
 
-    const { storedTodo, storedCharacter, storedCharacterOrd, storedShareContents, storedDayContents } =
-        useContext(LocalStorageStateContext);
-    const {
-        setStoredTodo,
-        setStoredShareContents,
-        setStoredCharacter,
-        setStoredCharacterOrd,
-        setStoredDayContents,
-        setStoredLedger,
-    } = useContext(LocalStorageActionContext);
+    const { storedCharacter } = useContext(LocalStorageStateContext);
+    const { setStoredShareContents, setStoredCharacter, setStoredCharacterOrd, setStoredLedger } =
+        useContext(LocalStorageActionContext);
 
-    const [isCrollFinish, setIsCrollFinish] = useState<boolean>(true);
-    const [isFold, setIsFold] = useState<boolean>(false);
     const [repreCharacter, bindRepreCharacter] = useInput<string>('');
-    const { width: windowWidth } = useWindowDimensions();
-
-    const theme = useTheme();
-    useEffect(() => {
-        resetFold();
-    }, [windowWidth]);
 
     useEffect(() => {
         calcReset();
     }, []);
+
+    useEffect(() => GA.trackPageView({ path: window.location.pathname }), []);
 
     const resolePromise = usePromiseEffect(async () => {
         setSpinnerVisible(true);
@@ -136,37 +105,6 @@ const Main = () => {
         }
     };
 
-    const resetFold = () => {
-        responsiveWidth.smallPhone < windowWidth! && setIsFold(false);
-    };
-
-    const onContextMenuBasicModal = ({ e, modal, title, width, height }: IContextModal) => {
-        e && e.preventDefault();
-        setModalProps({
-            isOpen: true,
-            content: modal,
-            options: { width: width, height: height, headerTitle: title },
-        });
-    };
-
-    const setShareContents = ({ id }: { id: number }) => {
-        const shareContens: IShareContents[] = [...storedShareContents];
-
-        const index = storedShareContents.findIndex(({ id: storedId }) => id === storedId);
-        shareContens[index].check = 1 - shareContens[index].check;
-
-        setStoredShareContents(shareContens);
-    };
-
-    const setDayContents = ({ id }: { id: number }) => {
-        const dayContens: IShareContents[] = [...storedDayContents];
-
-        const index = storedDayContents.findIndex(({ id: storedId }) => id === storedId);
-        dayContens[index].check = 1 - dayContens[index].check;
-
-        setStoredDayContents(dayContens);
-    };
-
     const crollAllMyCharacter = async () => {
         if (!repreCharacter) {
             toast.error('캐릭터 명을 입력해주세요.');
@@ -174,7 +112,6 @@ const Main = () => {
         }
 
         setSpinnerVisible(true);
-        setIsCrollFinish(false);
 
         try {
             const { status, validMsg, data } = await allCharacter(repreCharacter);
@@ -452,144 +389,10 @@ const Main = () => {
                                 </Tab>
                             </TabList>
                             <TabPanel role="tabpanel">
-                                <WeeklyShare>
-                                    <SharedLeftDiv>
-                                        <SharedDiv>
-                                            <h3>일일</h3>
-                                            <SharedInner>
-                                                {storedDayContents.map(({ id, name, iconurl, check }, index) => {
-                                                    return (
-                                                        <ContentsDiv key={index}>
-                                                            <LabelDiv>
-                                                                <IconLabel label={name} iconUrl={iconurl} />
-                                                            </LabelDiv>
-                                                            <CheckboxDiv>
-                                                                <TodoCheckbox
-                                                                    onChange={() => setDayContents({ id: id })}
-                                                                    checked={check === 1}
-                                                                />
-                                                            </CheckboxDiv>
-                                                        </ContentsDiv>
-                                                    );
-                                                })}
-                                            </SharedInner>
-                                        </SharedDiv>
-                                    </SharedLeftDiv>
-                                    <SharedRightDiv>
-                                        <SharedDiv>
-                                            <h3>주간</h3>
-                                            <SharedInner>
-                                                {storedShareContents.map(({ id, name, iconurl, check }, index) => {
-                                                    return (
-                                                        <ContentsDiv key={index}>
-                                                            <LabelDiv>
-                                                                <IconLabel label={name} iconUrl={iconurl} />
-                                                            </LabelDiv>
-                                                            <CheckboxDiv>
-                                                                <TodoCheckbox
-                                                                    onChange={() => setShareContents({ id: id })}
-                                                                    checked={check === 1}
-                                                                />
-                                                            </CheckboxDiv>
-                                                        </ContentsDiv>
-                                                    );
-                                                })}
-                                            </SharedInner>
-                                        </SharedDiv>
-                                    </SharedRightDiv>
-                                </WeeklyShare>
+                                <Weekly />
                             </TabPanel>
                             <TabPanel>
-                                <section>
-                                    <HideButtonContainer isFold={isFold}>
-                                        <HideButtonSection onClick={() => setIsFold(!isFold)}>
-                                            버튼
-                                            {isFold ? (
-                                                <>
-                                                    <span>&nbsp;보이기</span>
-                                                    <DownArrow fill={theme.colors.text} width="25" height="25" />
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <span>&nbsp;숨기기</span>
-                                                    <UpArrow fill={theme.colors.text} width="25" height="25" />
-                                                </>
-                                            )}
-                                        </HideButtonSection>
-                                    </HideButtonContainer>
-                                    <TodoButtons isFold={isFold}>
-                                        <ButtonLeftDiv>
-                                            <AddButton
-                                                type="button"
-                                                icon={<PlusIcon fill={theme.button.color} width="15" height="15" />}
-                                                onClick={e =>
-                                                    onContextMenuBasicModal({
-                                                        e: e,
-                                                        modal: <TodoAdd />,
-                                                        title: '숙제 추가',
-                                                        width: '600',
-                                                        height: '850',
-                                                    })
-                                                }
-                                            >
-                                                숙제
-                                            </AddButton>
-                                            <AddButton
-                                                isRight={true}
-                                                type="button"
-                                                icon={<PlusIcon fill={theme.button.color} width="15" height="15" />}
-                                                onClick={e =>
-                                                    onContextMenuBasicModal({
-                                                        e: e,
-                                                        modal: <LineAdd />,
-                                                        title: '구분선 추가',
-                                                        width: '360',
-                                                        height: '290',
-                                                    })
-                                                }
-                                            >
-                                                구분선
-                                            </AddButton>
-                                        </ButtonLeftDiv>
-                                        <FlexDiv>
-                                            <AddButton
-                                                type="button"
-                                                onClick={e =>
-                                                    onContextMenuBasicModal({
-                                                        e: e,
-                                                        modal: <CharacterOrdChange />,
-                                                        title: '캐릭터 순서 변경',
-                                                        width: '300',
-                                                        height: storedCharacterOrd.length < 5 ? '450' : '600',
-                                                    })
-                                                }
-                                            >
-                                                캐릭터 순서 변경
-                                            </AddButton>
-                                            <AddButton
-                                                isRight={true}
-                                                type="button"
-                                                icon={<PlusIcon fill={theme.button.color} width="15" height="15" />}
-                                                onClick={e =>
-                                                    onContextMenuBasicModal({
-                                                        e: e,
-                                                        modal: <CharacterAdd />,
-                                                        title: '캐릭터 추가',
-                                                        width: '470',
-                                                        height: '420',
-                                                    })
-                                                }
-                                            >
-                                                캐릭터
-                                            </AddButton>
-                                        </FlexDiv>
-                                    </TodoButtons>
-                                    <TodoContentsSection>
-                                        {storedCharacter.length > 0 && <Pagination />}
-                                        <Character onContextMenuBasicModal={onContextMenuBasicModal} />
-                                        <Todo onContextMenuBasicModal={onContextMenuBasicModal} />
-                                    </TodoContentsSection>
-                                </section>
+                                <AllCustom />
                             </TabPanel>
                         </TabsContainer>
                     </MainContainer>
@@ -641,73 +444,6 @@ const MainContainer = styled.main`
     }
 `;
 
-const TodoContentsSection = styled.section`
-    background: ${props => props.theme.colors.mainInner};
-    padding: 0.3em 1.5em 1.5em 1.5em;
-    border-radius: 0 0 0.8em 0.8em;
-    box-sizing: border-box;
-    width: 100%;
-    ${widthMedia.smallPhone} {
-        padding-top: 1em;
-        border-radius: 0.8em;
-    }
-`;
-
-const HideButtonContainer = styled.header<{ isFold: boolean }>`
-    display: none;
-    ${widthMedia.smallPhone} {
-        width: 100%;
-        display: flex;
-        flex-direction: row-reverse;
-        justify-content: end;
-        align-items: center;
-        margin-bottom: 1.2em;
-        justify-content: space-between;
-    }
-`;
-const HideButtonSection = styled.section`
-    display: flex;
-    align-items: center;
-    padding-right: 0.5em;
-`;
-
-const TodoButtons = styled.header<{ isFold: boolean }>`
-    display: flex;
-    width: 100%;
-    height: 100%;
-    padding: 1.7em;
-    box-sizing: border-box;
-    justify-content: space-between;
-    padding-bottom: 0.7em;
-    border-radius: 0.8em 0.8em 0 0;
-    background: ${props => props.theme.colors.mainInner};
-
-    ${widthMedia.smallPhone} {
-        flex-direction: column;
-        padding-top: 0;
-        background: transparent;
-    }
-
-    ${props => props.isFold && 'display:none'};
-`;
-
-const AddButton = styled(Button)<{ isRight?: boolean }>`
-    ${props => props.isRight && `margin-left: 1em`};
-
-    ${widthMedia.smallPhone} {
-        width: 100%;
-        margin: 0;
-        justify-content: center;
-        margin-bottom: 0.5em;
-    }
-`;
-
-const ButtonLeftDiv = styled(FlexDiv)`
-    ${widthMedia.smallPhone} {
-        flex-direction: column;
-    }
-`;
-
 const NodataDiv = styled.div`
     display: flex;
     flex-direction: column;
@@ -752,75 +488,4 @@ const NodataInner = styled.div`
     }
 `;
 
-const SharedDiv = styled.div`
-    display: flex;
-    flex-direction: column;
-    border-collapse: collapse;
-    align-items: center;
-    background: ${props => props.theme.colors.mainInner};
-    padding: 1em 1.8em 1.5em 1.8em;
-    border-radius: 1em;
-    box-sizing: border-box;
-    width: 90%;
-    height: 400px;
-    justify-content: space-around;
-
-    h3 {
-        font-size: 1.15em;
-        text-decoration: underline;
-        text-underline-position: under;
-    }
-
-    ${widthMedia.tablet} {
-        margin-bottom: 1.1em;
-    }
-`;
-
-const WeeklyShare = styled.article`
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    height: 100%;
-    margin-top: 2em;
-
-    ${widthMedia.tablet} {
-        flex-direction: column;
-    }
-`;
-
-const SharedRightDiv = styled.div`
-    display: flex;
-    flex-basis: 35%;
-    justify-content: center;
-`;
-
-const SharedLeftDiv = styled.div`
-    display: flex;
-    flex-basis: 35%;
-    justify-content: center;
-`;
-
-const SharedInner = styled.div`
-    padding-bottom: 10px;
-    align-items: center;
-    width: 80%;
-    height: 300px;
-`;
-
-const LabelDiv = styled.div`
-    flex-basis: 80%;
-`;
-const CheckboxDiv = styled.div`
-    flex-basis: 20%;
-`;
-
-const ContentsDiv = styled.div`
-    display: flex;
-    padding-top: 1em;
-    padding-bottom: 1em;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    border-bottom: 1px dashed ${props => props.theme.colors.scroll};
-`;
 export default Main;
