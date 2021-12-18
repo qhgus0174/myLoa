@@ -13,7 +13,6 @@ import { IContextModalParam } from '@common/types/types';
 import styled from '@emotion/styled';
 import { FlexDiv, FlexLeftDiv, FlexHoverArticle, CharactersDiv } from '@style/common';
 import { ICharacter } from '@common/types/localStorage/Character';
-import Image from 'next/image';
 
 const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
     const { perPage, currentPage } = useContext(PagingStateContext);
@@ -54,7 +53,10 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
             return;
         }
 
-        characterSortOrd(Array.from<number>(storedCharacterOrd), source.index, destination.index);
+        const sourceIndex = currentPage > 1 ? perPage + source.index : source.index;
+        const destinationIndex = currentPage > 1 ? perPage + destination.index : destination.index;
+
+        characterSortOrd(Array.from<number>(storedCharacterOrd), sourceIndex, destinationIndex);
     };
 
     const characterSortOrd = (array: number[], start: number, destination: number) => {
@@ -75,8 +77,7 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
                                         width="100"
                                         border="none"
                                         onClick={onClickPrev}
-                                        //icon={<LeftArrow fill={theme.colors.white} width="23" height="23" />}
-                                        icon={<Image src="/static/img/icon/left.png" width="23" height="23" />}
+                                        icon={<LeftArrow fill={theme.colors.white} width="23" height="23" />}
                                         iconOnly={true}
                                     />
                                 </ArrowDiv>
