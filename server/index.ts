@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import next from 'next';
 import router from './routes';
+import bodyParser from 'body-parser';
 
 const dev = process.env.NODE_ENV !== 'production';
 const app = next({ dev });
@@ -11,6 +12,8 @@ const port = process.env.PORT || 9000;
     try {
         await app.prepare();
         const server = express();
+        server.use(bodyParser.urlencoded({ extended: true }));
+        server.use(bodyParser.json());
         server.use('/', router);
         server.use('/api', router);
 

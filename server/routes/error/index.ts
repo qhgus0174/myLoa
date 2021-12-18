@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post('/', async (req: Request, res: Response) => {
     try {
-        const { message, dataColumn1, dataColumn2, dataColumn3, errType } = req.params;
+        const { message, dataColumn1, dataColumn2, dataColumn3, errType } = req.body;
 
         await Error.insertError({
             message: message,

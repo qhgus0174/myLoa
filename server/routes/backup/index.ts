@@ -8,7 +8,7 @@ import { IError } from '../error/types';
 const router = express.Router();
 
 router.get('/:backupKey', async (req: Request, res: Response) => {
-    const { backupKey } = req.params as Pick<IBackup, 'backupKey'>;
+    const { backupKey } = req.body as Pick<IBackup, 'backupKey'>;
 
     try {
         const result = await Backup.getBackup({
@@ -27,12 +27,15 @@ router.get('/:backupKey', async (req: Request, res: Response) => {
 
 router.post('/', async (req: Request, res: Response) => {
     try {
-        const { todo, todoOrd, character, characterOrd } = req.params;
+        const { todo, todoOrd, character, characterOrd, ledger, share, shareDay } = req.body;
         const result = await Backup.createBackup({
             todo: todo,
             todoOrd: todoOrd,
             character: character,
             characterOrd: characterOrd,
+            ledger: ledger,
+            share: share,
+            shareDay: shareDay,
         });
         res.status(201).send({
             status: 'SUCCESS',
@@ -46,7 +49,7 @@ router.post('/', async (req: Request, res: Response) => {
 
 router.delete('/delete/:backupKey', async (req: Request, res: Response) => {
     try {
-        const { backupKey } = req.params as Pick<IBackup, 'backupKey'>;
+        const { backupKey } = req.body as Pick<IBackup, 'backupKey'>;
 
         const result = await Backup.deleteBackup({
             backupKey: backupKey,

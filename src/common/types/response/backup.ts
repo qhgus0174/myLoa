@@ -4,4 +4,7 @@ export interface IBackup {
     todoord: string;
     character: string;
     characterord: string;
+    ledger: string;
+    share: string;
+    shareDay: string;
 }

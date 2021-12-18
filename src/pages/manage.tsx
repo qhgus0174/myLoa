@@ -27,7 +27,11 @@ const Manage = () => {
                 todoOrd: JSON.stringify(JSON.parse(JSON.parse(localStorage.getItem('todoOrd') as string))),
                 character: JSON.stringify(JSON.parse(JSON.parse(localStorage.getItem('character') as string))),
                 characterOrd: JSON.stringify(JSON.parse(JSON.parse(localStorage.getItem('characterOrd') as string))),
+                ledger: JSON.stringify(JSON.parse(JSON.parse(localStorage.getItem('ledger') as string))),
+                share: JSON.stringify(JSON.parse(JSON.parse(localStorage.getItem('share') as string))),
+                shareDay: JSON.stringify(JSON.parse(JSON.parse(localStorage.getItem('shareDay') as string))),
             };
+
             const {
                 result: { backupkey },
             } = (await (
