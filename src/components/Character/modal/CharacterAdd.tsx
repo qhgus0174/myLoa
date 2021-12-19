@@ -14,10 +14,6 @@ import CharacterForm from '@components/Character/common/Form';
 import { ILedgerOwn } from '@common/types/localStorage/Ledger';
 import { useTheme } from '@emotion/react';
 import { Container } from '@style/common/modal';
-import { IRaid, IRaidCharacter } from '@common/types/localStorage/Raid';
-import { IFileterRaidLevel } from 'pages/todo';
-import { IRaidGold } from '@common/types/response/ledger/raid';
-import { getRaid } from '@apis/ledger/raid';
 
 const CharacterAdd = () => {
     const { storedTodo, storedCharacter, storedCharacterOrd, storedLedger } = useContext(LocalStorageStateContext);
