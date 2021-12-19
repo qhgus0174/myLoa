@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { NextSeo } from 'next-seo';
 import { DateTime } from 'luxon';
 import Link from 'next/link';
 import { XAxis, YAxis, CartesianGrid, Legend, LabelList, BarChart, Bar } from 'recharts';
@@ -21,6 +20,7 @@ import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { FlexDiv } from '@style/common';
 import { widthMedia } from '@style/device';
+import Head from 'next/head';
 
 const Statistics = () => {
     const weekKorArr = ['저번주', '2주전', '3주전', '4주전'];
@@ -273,25 +273,9 @@ const Statistics = () => {
 
     return (
         <StatisticsContainer>
-            <NextSeo
-                title="로요일좋아 - 골드 수입 통계"
-                description="로스트 아크 캐릭터의 골드 수입 통계를 한눈에 보세요!"
-                openGraph={{
-                    title: '로요일좋아 - 골드 수입 통계',
-                    description: '로스트 아크 캐릭터의 골드 수입 통계를 한눈에 보세요!',
-                    url: 'https://loa-day.com/statistics',
-                    locale: 'ko_KR',
-                    type: 'website',
-                    images: [
-                        {
-                            url: 'https://loa-day.com/static/img/logo/logo.png',
-                            width: 1200,
-                            height: 1200,
-                            type: 'image/png',
-                        },
-                    ],
-                }}
-            />
+            <Head>
+                <title>로요일좋아 - 골드 수입 통계</title>
+            </Head>
             <StatisticsSection>
                 {!hasData && (
                     <Nodata

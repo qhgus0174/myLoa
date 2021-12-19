@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { DateTime } from 'luxon';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import { NextSeo } from 'next-seo';
 import { toast } from 'react-toastify';
 import { GA } from '@service/ga';
 import { getShareContents } from '@apis/contents/share';
@@ -26,6 +25,7 @@ import { insertErrorDB } from '@common/error';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { widthMedia } from '@style/device';
+import Head from 'next/head';
 
 export interface IFileterRaidLevel {
     id: string;
@@ -422,25 +422,9 @@ const Main = () => {
 
     return (
         <>
-            <NextSeo
-                title="로요일좋아 - 로스트아크 숙제 관리"
-                description="로스트 아크 숙제 관리 페이지입니다. 일일, 주간 컨텐츠를 편하게 체크해보세요."
-                openGraph={{
-                    title: '로요일좋아 - 로스트아크 숙제 관리',
-                    description: '로스트 아크 숙제 관리 페이지입니다. 일일, 주간 컨텐츠를 편하게 체크해보세요.',
-                    url: 'https://loa-day.com/todo',
-                    locale: 'ko_KR',
-                    type: 'website',
-                    images: [
-                        {
-                            url: 'https://loa-day.com/static/img/logo/logo.png',
-                            width: 1200,
-                            height: 1200,
-                            type: 'image/png',
-                        },
-                    ],
-                }}
-            />
+            <Head>
+                <title>로요일좋아 - 로스트아크 숙제 관리</title>
+            </Head>
             {storedCharacter.length < 1 ? (
                 <NodataDiv>
                     <NodataInner>

@@ -15,6 +15,7 @@ import styled from '@emotion/styled';
 import { widthMedia } from '@style/device';
 import IconLabel from '@components/Label/IconLabel';
 import { GetStaticProps } from 'next';
+import Head from 'next/head';
 
 const Main = ({ abyss, guardian }: IWeeklyContents) => {
     const [fieldBoss, setFieldBoss] = useState<boolean>(false);
@@ -61,26 +62,9 @@ const Main = ({ abyss, guardian }: IWeeklyContents) => {
 
     return (
         <Container>
-            <NextSeo
-                title="로요일좋아"
-                description="로스트 아크 유틸 모음 페이지입니다! 내 캐릭터 골드 수입 확인도 하고 일일, 주간 숙제를 편하게 체크해보세요."
-                openGraph={{
-                    title: '로요일좋아',
-                    description:
-                        '로스트 아크 유틸 모음 페이지입니다! 내 캐릭터 골드 수입 확인도 하고 일일, 주간 숙제를 편하게 체크해보세요.',
-                    url: 'https://loa-day.com/todo',
-                    locale: 'ko_KR',
-                    type: 'website',
-                    images: [
-                        {
-                            url: 'https://loa-day.com/static/img/logo/logo.png',
-                            width: 1200,
-                            height: 1200,
-                            type: 'image/png',
-                        },
-                    ],
-                }}
-            />
+            <Head>
+                <title>로요일좋아 - 홈</title>
+            </Head>
             <TopArea>
                 <TextDiv>
                     <EmojiTitle
