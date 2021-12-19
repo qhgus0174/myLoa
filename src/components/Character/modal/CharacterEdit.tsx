@@ -59,6 +59,7 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
         const setCharacterInfo = {
             success: () => editCharacter(crollJob || '', crollLevel || '', type),
             error: () => toast.error(validMsg || ''),
+            nodata: () => toast.error(validMsg || ''),
         };
 
         setCharacterInfo[status] && setCharacterInfo[status]();
