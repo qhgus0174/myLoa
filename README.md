@@ -104,12 +104,13 @@ $ yarn install
 
 -   지난 5주간 얻은 수익에 대한 통계를 표시하는 페이지입니다.<br/>
 -   캐릭터 별 또는 공통으로 얻은 골드를 표시합니다.<br/><br/>
-    ![골드 통계](https://user-images.githubusercontent.com/74941162/146656619-68f790b4-b076-4b18-b546-57a31f191b4b.PNG)
+    ![통1](https://user-images.githubusercontent.com/74941162/146673120-2f4ea3fd-b2fb-4538-be2a-7dff7fb347ac.PNG)
 
 <br/>
 
 -   캐릭터 별 레이드, 재화 수익을 그래프로 표시합니다.<br/><br/>
-    ![개인 골드 수입](https://user-images.githubusercontent.com/74941162/146656639-645a3312-b9c9-41f7-b3c7-ddfa1a921806.PNG)
+    ![통3](https://user-images.githubusercontent.com/74941162/146673134-85de46cd-c2d6-44a7-bb85-30180a24cf9e.PNG)
+
 
 <br/>
 
