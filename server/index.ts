@@ -17,7 +17,7 @@ const port = process.env.PORT || 9000;
         server.use('/', router);
         server.use('/api', router);
 
-        server.get('/', (req, res) => {
+        server.get('/', (req: Request, res: Response) => {
             return app.render(req, res, '/');
         });
 
