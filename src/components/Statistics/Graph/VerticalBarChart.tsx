@@ -8,9 +8,10 @@ interface IVerticalBarChart {
     array: IStatisticsPersonalPrev[];
     width: number;
     height: number;
+    color: string;
 }
 
-const VerticalBarChart = ({ array, width, height }: IVerticalBarChart) => {
+const VerticalBarChart = ({ array, width, height, color }: IVerticalBarChart) => {
     const theme = useTheme();
 
     return (
@@ -36,7 +37,7 @@ const VerticalBarChart = ({ array, width, height }: IVerticalBarChart) => {
                     type="number"
                 />
                 <YAxis width={80} stroke={theme.colors.text} type="category" dataKey="name" />
-                <Bar dataKey="gold" fill={theme.graph.thirdly}>
+                <Bar dataKey="gold" fill={color}>
                     <LabelList
                         dataKey="gold"
                         position="inside"

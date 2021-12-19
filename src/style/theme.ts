@@ -88,7 +88,8 @@ export const basic: Theme = {
     graph: {
         primary: '#396EB0',
         secondary: '#F2789F',
-        thirdly: '#BEAEE2',
+        quaternary: '#9B72AA',
+        tertiary: '#BEAEE2',
     },
 };
 
@@ -138,7 +139,8 @@ export const pink: Theme = {
     graph: {
         primary: '#F8BD7F',
         secondary: '#82ca9d',
-        thirdly: '#47597E',
+        quaternary: '#396EB0',
+        tertiary: '#47597E',
     },
 };
 
@@ -187,7 +189,8 @@ export const violet: Theme = {
     graph: {
         primary: '#B4AEE8',
         secondary: '#4C3F91',
-        thirdly: '#F2789F',
+        quaternary: '#F9C5D5',
+        tertiary: '#F2789F',
     },
 };
 
@@ -236,7 +239,8 @@ export const green: Theme = {
     graph: {
         primary: '#3E8E7E',
         secondary: '#C7B198',
-        thirdly: '#406882',
+        quaternary: '#79B4B7',
+        tertiary: '#406882',
     },
 };
 
@@ -285,7 +289,8 @@ export const cold: Theme = {
     graph: {
         primary: '#7CD1B8',
         secondary: '#5584AC',
-        thirdly: '#4C3F91',
+        quaternary: '#907FA4',
+        tertiary: '#4C3F91',
     },
 };
 
@@ -334,7 +339,8 @@ export const autumn: Theme = {
     graph: {
         primary: '#DE834D',
         secondary: '#A3423C',
-        thirdly: '#FC997C',
+        quaternary: '#FF8882',
+        tertiary: '#FC997C',
     },
 };
 
@@ -383,7 +389,8 @@ export const violetBrown: Theme = {
     graph: {
         primary: '#D8B6A4',
         secondary: '#A2416B',
-        thirdly: '#6C4A4A',
+        quaternary: '#C26565',
+        tertiary: '#6C4A4A',
     },
 };
 
@@ -432,7 +439,8 @@ export const flower: Theme = {
     graph: {
         primary: '#B24080',
         secondary: '#664E88',
-        thirdly: '#F2789F',
+        quaternary: '#FE91CA',
+        tertiary: '#F2789F',
     },
 };
 
@@ -481,7 +489,8 @@ export const pinkBeige: Theme = {
     graph: {
         primary: '#8884d8',
         secondary: '#EB92BE',
-        thirdly: '#F2789F',
+        quaternary: '#F1C6E7',
+        tertiary: '#F2789F',
     },
 };
 
@@ -530,7 +539,8 @@ export const darkBrown: Theme = {
     graph: {
         primary: '#865439',
         secondary: '#C68B59',
-        thirdly: '#362222',
+        quaternary: '#EA9085',
+        tertiary: '#B84A39',
     },
 };
 
@@ -579,7 +589,8 @@ export const darkYellow: Theme = {
     graph: {
         primary: '#22577E',
         secondary: '#E2C275',
-        thirdly: '#96C7C1',
+        quaternary: '#808C6C',
+        tertiary: '#96C7C1',
     },
 };
 
@@ -628,7 +639,8 @@ export const darkPink: Theme = {
     graph: {
         primary: '#8884d8',
         secondary: '#82ca9d',
-        thirdly: '#FFA6D5',
+        quaternary: '#BBBBBB',
+        tertiary: '#FFA6D5',
     },
 };
 
@@ -677,7 +689,8 @@ export const veryCold: Theme = {
     graph: {
         primary: '#916BBF',
         secondary: '#EB92BE',
-        thirdly: '#79B4B7',
+        quaternary: '#93B5E1',
+        tertiary: '#848CCF',
     },
 };
 
@@ -726,7 +739,8 @@ export const darkCyan: Theme = {
     graph: {
         primary: '#22577A',
         secondary: '#87A8A4',
-        thirdly: '#BFA2DB',
+        quaternary: '#00416D',
+        tertiary: '#1B6CA8',
     },
 };
 
@@ -775,7 +789,8 @@ export const lego: Theme = {
     graph: {
         primary: '#FF7600',
         secondary: '#00C1D4',
-        thirdly: '#FFC947',
+        quaternary: '#3D84B8',
+        tertiary: '#FFC947',
     },
 };
 
@@ -824,6 +839,7 @@ export const blue: Theme = {
     graph: {
         primary: '#262A53',
         secondary: '#628395',
-        thirdly: '#ED8E7C',
+        quaternary: '#325288',
+        tertiary: '#02475E',
     },
 };

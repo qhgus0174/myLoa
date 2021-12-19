@@ -47,7 +47,8 @@ declare module '@emotion/react' {
         graph: {
             primary: string;
             secondary: string;
-            thirdly: string;
+            tertiary: string;
+            quaternary: string;
         };
     }
 }
