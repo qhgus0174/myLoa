@@ -141,8 +141,8 @@ const Ledger = () => {
 
         const now = DateTime.now();
 
-        const lastVisitTimeStamp = localStorage.getItem('datetime')
-            ? localStorage.getItem('datetime')
+        const lastVisitTimeStamp = localStorage.getItem('goldDatetime')
+            ? localStorage.getItem('goldDatetime')
             : now.toFormat('X');
         const lastVisitDate = DateTime.fromISO(DateTime.fromSeconds(Number(lastVisitTimeStamp)).toISO());
         const lastVisitDateHour = lastVisitDate.toFormat('HH');
@@ -171,6 +171,7 @@ const Ledger = () => {
         const resetWeekDateNow = nowWendsdaySixHour < now ? nowWendsdaySixHour.plus({ days: 7 }) : nowWendsdaySixHour;
 
         dayDiff && dayDiff > 0 && resetWeekDate < resetWeekDateNow && calcGold();
+        localStorage.setItem('goldDatetime', DateTime.now().toFormat('X'));
     };
 
     const calcGold = () => {
@@ -286,7 +287,7 @@ const Ledger = () => {
                                     <EmojiTitle label={<span>새로고침</span>} symbol={'🔃'} />
                                 </Button>
                             </SummaryHeaderTitle>
-                            <Link href="/statistics">통계 메뉴에서 더 자세히 보기 (클릭!😗)</Link>
+                            <h6>이 영역에 저번 주 데이터가 나온다면 새로고침을 눌러주세요!</h6>
                         </SummaryHeader>
                         <SummaryDiv>
                             <SummaryLeft>
@@ -327,6 +328,9 @@ const Ledger = () => {
                                 <DashDiv>
                                     <SummaryHeader>
                                         <EmojiTitle label={<h2>순위</h2>} symbol={'👑'} />
+                                        <DetailSta>
+                                            <Link href="/statistics">통계 메뉴에서 더 자세히 보기 (클릭!😗)</Link>
+                                        </DetailSta>
                                         <span
                                             onClick={() =>
                                                 openCharacterGoldGraph(
@@ -807,6 +811,16 @@ const SummaryHeaderTitle = styled.div`
     ${widthMedia.phone} {
         flex-basis: 100%;
         justify-content: space-between;
+    }
+`;
+
+const DetailSta = styled.div`
+    display: flex;
+    flex-direction: row-reverse;
+    cursor: pointer;
+
+    ${widthMedia.desktop} {
+        display: none;
     }
 `;
 

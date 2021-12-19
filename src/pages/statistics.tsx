@@ -1,36 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import {
-    LineChart,
-    Line,
-    XAxis,
-    YAxis,
-    CartesianGrid,
-    Tooltip,
-    Legend,
-    LabelList,
-    BarChart,
-    Bar,
-    ResponsiveContainer,
-} from 'recharts';
+import React, { useContext, useEffect, useState } from 'react';
+import { NextSeo } from 'next-seo';
+import { DateTime } from 'luxon';
+import Link from 'next/link';
+import { XAxis, YAxis, CartesianGrid, Legend, LabelList, BarChart, Bar } from 'recharts';
+import { LocalStorageActionContext } from '@context/LocalStorageContext';
+import { initCommonHistory } from '@hooks/useLocalStorage';
 import { IStatisticsCommon, IStatisticsPersonal, IStatisticsPersonalPrev } from '@components/Statistics/StatisticsType';
 import { ILedger, ILedgerCommon, ILedgerOwn } from '@common/types/localStorage/Ledger';
+import VerticalBarChart from '@components/Statistics/Graph/VerticalBarChart';
 import ResponsiveGraph from '@components/Statistics/Graph/ResponsiveGraph';
+import CustomLineChart from '@components/Statistics/Graph/LineChart';
 import { calcSum } from '@components/Ledger/common/functions';
 import BasicCheckbox from '@components/Input/BasicCheckbox';
+import EmojiTitle from '@components/Emoji/EmojiTitle';
 import Ranking from '@components/Statistics/Ranking';
 import WeekSum from '@components/Statistics/WeekSum';
+import Nodata from '@components/article/Nodata';
 import { getCharacterInfoById, parseStorageItem } from '@common/utils';
-import { css, useTheme } from '@emotion/react';
+import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { FlexDiv } from '@style/common';
 import { widthMedia } from '@style/device';
-import CustomLineChart from '@components/Statistics/Graph/LineChart';
-import VerticalBarChart from '@components/Statistics/Graph/VerticalBarChart';
-import GoldIcon from '@components/Image/Gold';
-import EmojiTitle from '@components/Emoji/EmojiTitle';
-import Link from 'next/link';
-import Nodata from '@components/article/Nodata';
-import { NextSeo } from 'next-seo';
 
 const Statistics = () => {
     const weekKorArr = ['저번주', '2주전', '3주전', '4주전'];
@@ -54,6 +44,7 @@ const Statistics = () => {
     const [isContainThisWeek, setIsContainThisWeek] = useState<boolean>(false);
 
     const [hasData, setHasData] = useState<boolean>(true);
+    const { setStoredLedger } = useContext(LocalStorageActionContext);
 
     useEffect(() => {
         if (!parseStorageItem(localStorage.getItem('ledger') as string)) return;
@@ -63,6 +54,8 @@ const Statistics = () => {
         own.length < 1
             ? setHasData(false)
             : localStorage.getItem('character') && localStorage.getItem('ledger') && calcStastistics();
+
+        localStorage.getItem('ledger') && calcWeekGold();
     }, []);
 
     const calcStastistics = () => {
@@ -205,6 +198,77 @@ const Statistics = () => {
         ];
 
         return <span style={{ color }}>{korName.find(({ key }) => key === value)?.name}</span>;
+    };
+
+    const calcWeekGold = () => {
+        const newLedger: ILedger = { ...parseStorageItem(localStorage.getItem('ledger') as string) },
+            { own } = newLedger;
+
+        if (own.length < 1) return;
+
+        const now = DateTime.now();
+
+        const lastVisitTimeStamp = localStorage.getItem('goldDatetime')
+            ? localStorage.getItem('goldDatetime')
+            : now.toFormat('X');
+        const lastVisitDate = DateTime.fromISO(DateTime.fromSeconds(Number(lastVisitTimeStamp)).toISO());
+        const lastVisitDateHour = lastVisitDate.toFormat('HH');
+
+        const resetDateTime =
+            Number(lastVisitDateHour) < 6
+                ? DateTime.fromISO(lastVisitDate.toFormat('yyyy-LL-dd')).plus({
+                      hours: 6,
+                  })
+                : DateTime.fromISO(lastVisitDate.toFormat('yyyy-LL-dd')).plus({
+                      days: 1,
+                      hours: 6,
+                  });
+
+        const { days: dayDiff } = now.diff(resetDateTime, 'days');
+
+        const lastVisitStartOfWeek = lastVisitDate.startOf('week');
+        const lastVisitWendsdaySixHour = lastVisitStartOfWeek.plus({ days: 2, hours: 6, minutes: 0 });
+        const resetWeekDate =
+            lastVisitWendsdaySixHour < lastVisitDate
+                ? lastVisitWendsdaySixHour.plus({ days: 7 })
+                : lastVisitWendsdaySixHour;
+
+        const nowStartOfWeek = now.startOf('week');
+        const nowWendsdaySixHour = nowStartOfWeek.plus({ days: 2, hours: 6, minutes: 0 });
+        const resetWeekDateNow = nowWendsdaySixHour < now ? nowWendsdaySixHour.plus({ days: 7 }) : nowWendsdaySixHour;
+
+        dayDiff && dayDiff > 0 && resetWeekDate < resetWeekDateNow && calcGold();
+        localStorage.setItem('goldDatetime', DateTime.now().toFormat('X'));
+    };
+
+    const calcGold = () => {
+        const newLedger: ILedger = { ...parseStorageItem(localStorage.getItem('ledger') as string) },
+            { common, own } = newLedger;
+
+        //지난주 계산
+        //공통 골드
+        common.prevWeekGold.pop();
+        common.prevWeekGold.unshift(calcSum(newLedger.common.histories));
+        common.histories = initCommonHistory;
+
+        //개인 골드
+        own.forEach(({ characterId }: ILedgerOwn, index) => {
+            const goodsIndex = newLedger.own.findIndex(
+                ({ characterId: goodsCharId }: ILedgerOwn) => goodsCharId == characterId,
+            );
+            const goodsTotalGold = newLedger.own[goodsIndex]
+                ? calcSum(newLedger.own[goodsIndex].histories.goods.data)
+                : 0;
+            const raidTotalGold = newLedger.own[goodsIndex]
+                ? calcSum(newLedger.own[goodsIndex].histories.raid.data)
+                : 0;
+            newLedger.own[goodsIndex].prevWeekGold.pop();
+            newLedger.own[goodsIndex].prevWeekGold.unshift(goodsTotalGold + raidTotalGold);
+
+            own[goodsIndex].histories = { goods: { fold: true, data: [] }, raid: { fold: true, data: [] } };
+        });
+
+        setStoredLedger(newLedger);
     };
 
     return (
@@ -390,18 +454,7 @@ const Statistics = () => {
                                 <VerticalBarChart
                                     width={500}
                                     height={300}
-                                    array={personalGoldPrev.sort(({ gold: beforGold }, { gold: afterGold }) => {
-                                        return afterGold - beforGold;
-                                    })}
-                                />
-                            </GraphDiv>
-                            <EmojiTitle label={<h3>이번 주</h3>} symbol={'📅'} />
-                        </PersonalInnerArticle>
-                        <PersonalInnerArticle>
-                            <GraphDiv>
-                                <VerticalBarChart
-                                    width={500}
-                                    height={300}
+                                    color={theme.graph.tertiary}
                                     array={personalGoldThisWeekArr
                                         .map(({ name, raid, goods }) => {
                                             return { name: name, gold: raid + goods };
@@ -411,7 +464,20 @@ const Statistics = () => {
                                         })}
                                 />
                             </GraphDiv>
-                            <EmojiTitle label={<h3>~4주 전</h3>} symbol={'📅'} />
+                            <EmojiTitle label={<h3>이번 주</h3>} symbol={'📅'} />
+                        </PersonalInnerArticle>
+                        <PersonalInnerArticle>
+                            <GraphDiv>
+                                <VerticalBarChart
+                                    width={500}
+                                    height={300}
+                                    color={theme.graph.quaternary}
+                                    array={personalGoldPrev.sort(({ gold: beforGold }, { gold: afterGold }) => {
+                                        return afterGold - beforGold;
+                                    })}
+                                />
+                            </GraphDiv>
+                            <EmojiTitle label={<h3>저번 주 ~ 4주 전</h3>} symbol={'📅'} />
                         </PersonalInnerArticle>
                     </PersonalBottom>
                 </PersonalArticle>
