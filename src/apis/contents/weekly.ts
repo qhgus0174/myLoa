@@ -6,5 +6,6 @@ export const getWeekContents = async (): Promise<IWeeklyContents> => {
     const { result } = (await (
         await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api/weeklyContents`)
     ).data) as IResponse<IWeeklyContents>;
+
     return result;
 };
