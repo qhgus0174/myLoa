@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import '@fonts/fonts.css';
 import { resetServerContext } from 'react-beautiful-dnd';
 import { AppProps } from 'next/dist/shared/lib/router/router';
 import { Flip, ToastContainer } from 'react-toastify';

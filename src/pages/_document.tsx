@@ -22,6 +22,12 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     />
                     <link rel="canonical" href="https://loa-day.com" />
                     <link rel="icon" href="/static/img/favicon.ico" />
+                    <link
+                        rel="stylesheet"
+                        type="text/css"
+                        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
+                    />
+
                     <meta
                         name="keywords"
                         content="로스트아크, 로스트아크 숙제, 로스트아크 유틸, 로스트아크 골드, 로스트아크 계산기, 로아 계산기, 로아 골드, 골드 수입, 골드 수급, 로아, 로요일좋아"
