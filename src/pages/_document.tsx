@@ -16,19 +16,22 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               `,
                         }}
                     />
-                    <title>로요일좋아</title>
+                    <title>로요일좋아 - 로스트아크 유틸 모음</title>
                     <meta
                         name="description"
-                        content="로스트 아크 유틸 모음 페이지입니다. 내 캐릭터 골드 수입 확인도 하고 숙제를 편하게 체크해보세요."
+                        content="로스트 아크 유틸 모음 페이지입니다. 내 캐릭터 골드 수입 체크와 숙제를 체크를 편하게 해보세요!"
                     />
                     <link rel="canonical" href="https://loa-day.com" />
                     <link rel="icon" href="/static/img/favicon.ico" />
-
+                    <meta
+                        name="keywords"
+                        content="로스트아크, 로스트아크 숙제, 로스트아크 유틸, 로스트아크 골드, 로스트아크 계산기, 로아 계산기, 로아 골드, 골드 수입, 골드 수급, 로아, 로요일좋아"
+                    />
                     <meta property="og:type" content="website" />
                     <meta property="og:title" content="로요일좋아" />
                     <meta
                         property="og:description"
-                        content="로스트 아크 유틸 모음 페이지입니다. 내 캐릭터 골드 수입 확인도 하고 숙제를 편하게 체크해보세요."
+                        content="로스트 아크 유틸 모음 페이지입니다. 내 캐릭터 골드 수입 체크와 숙제를 체크를 편하게 해보세요!"
                     />
                     <meta property="og:image" content="https://loa-day.com/static/img/logo/logo.png" />
                     <meta property="og:image:type" content="image/png" />
