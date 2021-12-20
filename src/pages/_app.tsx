@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import Head from 'next/head';
 import { resetServerContext } from 'react-beautiful-dnd';
 import { AppProps } from 'next/dist/shared/lib/router/router';
 import { Flip, ToastContainer } from 'react-toastify';
@@ -61,6 +62,9 @@ const App = ({ Component, pageProps }: AppProps) => {
                                     <Header />
                                     <Navbar isMobile={isNavMobile} />
                                 </MobileNavContext>
+                                <Head>
+                                    <title>로요일좋아 - 로스트아크 유틸 모음</title>
+                                </Head>
                                 <Component {...pageProps} />
                             </ModalContext>
                         </SpinnerContext>

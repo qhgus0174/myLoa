@@ -261,19 +261,6 @@ const Ledger = () => {
             <Head>
                 <title>로요일좋아 - 골드 수입</title>
                 <meta name="description" content="로스트아크의 내 캐릭터 골드 수입을 작성해 보세요!" />
-                <meta
-                    name="keywords"
-                    content="로스트아크, 로스트아크 숙제, 로스트아크 유틸, 로스트아크 골드, 로스트아크 계산기, 로아 계산기, 로아 골드, 골드 수입, 골드 수급, 로아, 로요일좋아"
-                />
-                <meta property="og:type" content="website" />
-                <meta property="og:title" content="로요일좋아" />
-                <meta property="og:description" content="로스트아크의 내 캐릭터 골드 수입을 작성해 보세요!" />
-                <meta property="og:image" content="https://loa-day.com/static/img/logo/logo.png" />
-                <meta property="og:image:type" content="image/png" />
-                <meta property="og:image:width" content="1200" />
-                <meta property="og:image:height" content="1200" />
-                <meta property="og:locale" content="ko_KR" />
-                <meta property="og:url" content="https://loa-day.com/ledger" />
             </Head>
             {status === 'fulfilled' && ledgerData && (
                 <Container>
