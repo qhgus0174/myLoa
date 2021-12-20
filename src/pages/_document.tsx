@@ -16,7 +16,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
               `,
                         }}
                     />
-                    <title>로요일좋아 - 로스트아크 유틸 모음</title>
                     <meta
                         name="description"
                         content="로스트 아크 유틸 모음 페이지입니다. 내 캐릭터 골드 수입 체크와 숙제를 체크를 편하게 해보세요!"
