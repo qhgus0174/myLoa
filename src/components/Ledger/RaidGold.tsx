@@ -217,7 +217,7 @@ const RaidGold = ({
 
                         return (
                             <div key={raidIndex}>
-                                {openlevel <= characterLevel && characterLevel <= closelevel && (
+                                {openlevel <= characterLevel && characterLevel < closelevel && (
                                     <Article>
                                         <Title>
                                             <Image src={imgurl} width="16" height="16" />
@@ -233,7 +233,7 @@ const RaidGold = ({
 
                                                     return (
                                                         startLevel <= characterLevel &&
-                                                        characterLevel <= endLevel && (
+                                                        characterLevel < endLevel && (
                                                             <div key={difficultyIndex}>
                                                                 <Contents>
                                                                     <h5>{difficultyName}</h5>
@@ -270,7 +270,7 @@ const RaidGold = ({
                                                                             return (
                                                                                 <div key={raidDetailIndex}>
                                                                                     {startlevel <= characterLevel &&
-                                                                                        characterLevel <= endlevel && (
+                                                                                        characterLevel < endlevel && (
                                                                                             <BasicCheckbox
                                                                                                 className="raidgold"
                                                                                                 value={id}
