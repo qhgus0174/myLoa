@@ -261,7 +261,6 @@ const Ledger = () => {
             <Head>
                 <title>로요일좋아 - 골드 수입</title>
                 <meta name="description" content="로스트아크의 내 캐릭터 골드 수입을 작성해 보세요!" />
-                <link rel="icon" href="/static/img/favicon.ico" />
                 <meta
                     name="keywords"
                     content="로스트아크, 로스트아크 숙제, 로스트아크 유틸, 로스트아크 골드, 로스트아크 계산기, 로아 계산기, 로아 골드, 골드 수입, 골드 수급, 로아, 로요일좋아"

@@ -68,7 +68,6 @@ const Main = ({ abyss, guardian }: IWeeklyContents) => {
                     name="description"
                     content="로스트 아크 유틸 모음 페이지입니다. 내 캐릭터 골드 수입 체크와 숙제를 체크를 편하게 해보세요!"
                 />
-                <link rel="canonical" href="https://loa-day.com" />
                 <link rel="icon" href="/static/img/favicon.ico" />
                 <meta
                     name="keywords"
