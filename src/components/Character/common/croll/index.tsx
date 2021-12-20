@@ -22,7 +22,7 @@ export const getCrollCharacterInfo = async (name: string): Promise<ICrollInfo> =
         );
         const $ = load(data);
 
-        if (data.includes('없습니다'))
+        if (data.includes('캐릭터 정보가 없습니다'))
             return { status: 'nodata', validMsg: '캐릭터 정보가 없습니다.', crollJob: '', crollLevel: '' };
 
         const crollJob: string | undefined =
@@ -53,8 +53,9 @@ export const allCharacter = async (name: string): Promise<ICrollInfoAll> => {
             `https://corsanywheremyloa.herokuapp.com/https://lostark.game.onstove.com/Profile/Character/${name}`,
         );
         const $ = load(data);
-
-        if (data.includes('없습니다')) return { status: 'nodata', validMsg: '캐릭터 정보가 없습니다.', data: [] };
+        console.log(data);
+        if (data.includes('캐릭터 정보가 없습니다'))
+            return { status: 'nodata', validMsg: '캐릭터 정보가 없습니다.', data: [] };
 
         const server =
             $('.profile-character-info__server').text() == ''
