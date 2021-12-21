@@ -46,6 +46,7 @@ const Main = () => {
         setStoredLedger,
         setStoredTodo,
         setStoredTodoOrd,
+        setStoredDayContents,
     } = useContext(LocalStorageActionContext);
 
     const [repreCharacter, bindRepreCharacter] = useInput<string>('');
@@ -184,6 +185,7 @@ const Main = () => {
 
         await initShareContents();
         setStoredCharacterOrd(levelSortArr);
+        setStoredLedger(ledger);
         localStorage.setItem('ledger', stringifyStorageItem(ledger));
         initTodo(chaosChar, guardianChar, eponaChar);
         setStoredTodoOrd([0, 1, 2]);
@@ -312,6 +314,7 @@ const Main = () => {
             return todo;
         });
 
+        setStoredTodo(calcResult);
         localStorage.setItem('todo', stringifyStorageItem(calcResult));
     };
 
@@ -331,6 +334,7 @@ const Main = () => {
             return todo;
         });
 
+        setStoredTodo(calcResult);
         localStorage.setItem('todo', stringifyStorageItem(calcResult));
     };
 
@@ -341,6 +345,7 @@ const Main = () => {
             return { ...shared, check: 0 };
         });
 
+        setStoredShareContents(calcResult);
         localStorage.setItem('share', stringifyStorageItem(calcResult));
     };
 
@@ -402,6 +407,7 @@ const Main = () => {
 
     const resetTodo = ({ dayDiff, lastVisitDate }: { dayDiff: number; lastVisitDate: DateTime }) => {
         resetDailyTodoRelax(Math.ceil(dayDiff));
+        setStoredDayContents(initDayContents());
         localStorage.setItem('shareDay', stringifyStorageItem(initDayContents()));
 
         const now = DateTime.now();

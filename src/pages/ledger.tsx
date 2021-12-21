@@ -75,6 +75,7 @@ const Ledger = () => {
         const common = await getCommon();
         const goods = await getGoods();
         const goodsImg = await getGoodsImg();
+
         localStorage.getItem('ledger') && calcWeekGold();
         localStorage.getItem('ledger') && calcStatistics();
         setSpinnerVisible(false);
@@ -247,7 +248,7 @@ const Ledger = () => {
     const calcStatistics = () => {
         if (parseStorageItem(localStorage.getItem('ledger') as string).length < 1) return;
         const { common: storageCommon, own }: ILedger = {
-            ...parseStorageItem(localStorage.getItem('ledger') as string),
+            ...storedLedger,
         };
         if (own.length < 1) return;
 
@@ -272,7 +273,15 @@ const Ledger = () => {
                                     <EmojiTitle label={<span>새로고침</span>} symbol={'🔃'} />
                                 </Button>
                             </SummaryHeaderTitle>
-                            <h6>이 영역에 저번 주 데이터가 나온다면 새로고침을 눌러주세요!</h6>
+
+                            <h6
+                                css={css`
+                                    cursor: pointer;
+                                `}
+                                onClick={calcStatistics}
+                            >
+                                🕕 저번 주 데이터가 나온다면 새로고침을 눌러주세요!
+                            </h6>
                         </SummaryHeader>
                         <SummaryDiv>
                             <SummaryLeft>
