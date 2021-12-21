@@ -32,21 +32,25 @@ const Weekly = () => {
                 <SharedDiv>
                     <h3>일일</h3>
                     <SharedInner>
-                        {storedDayContents.map(({ id, name, iconurl, check }, index) => {
-                            return (
-                                <ContentsDiv key={index}>
-                                    <LabelDiv>
-                                        <IconLabel label={name} iconUrl={iconurl} />
-                                    </LabelDiv>
-                                    <CheckboxDiv>
-                                        <TodoCheckbox
-                                            onChange={() => setDayContents({ id: id })}
-                                            checked={check === 1}
-                                        />
-                                    </CheckboxDiv>
-                                </ContentsDiv>
-                            );
-                        })}
+                        {storedDayContents.length < 1 ? (
+                            <ContentsDiv border={false}>일일 컨텐츠가 없습니다.</ContentsDiv>
+                        ) : (
+                            storedDayContents.map(({ id, name, iconurl, check }, index) => {
+                                return (
+                                    <ContentsDiv border={true} key={index}>
+                                        <LabelDiv>
+                                            <IconLabel label={name} iconUrl={iconurl} />
+                                        </LabelDiv>
+                                        <CheckboxDiv>
+                                            <TodoCheckbox
+                                                onChange={() => setDayContents({ id: id })}
+                                                checked={check === 1}
+                                            />
+                                        </CheckboxDiv>
+                                    </ContentsDiv>
+                                );
+                            })
+                        )}
                     </SharedInner>
                 </SharedDiv>
             </SharedLeftDiv>
@@ -56,7 +60,7 @@ const Weekly = () => {
                     <SharedInner>
                         {storedShareContents.map(({ id, name, iconurl, check }, index) => {
                             return (
-                                <ContentsDiv key={index}>
+                                <ContentsDiv border={true} key={index}>
                                     <LabelDiv>
                                         <IconLabel label={name} iconUrl={iconurl} />
                                     </LabelDiv>
@@ -86,13 +90,15 @@ const SharedDiv = styled.div`
     border-radius: 1em;
     box-sizing: border-box;
     width: 90%;
-    height: 400px;
+    height: 100%;
     justify-content: space-around;
 
     h3 {
         font-size: 1.15em;
         text-decoration: underline;
         text-underline-position: under;
+        margin-top: 1em;
+        margin-bottom: 2em;
     }
 
     ${widthMedia.tablet} {
@@ -128,6 +134,7 @@ const SharedInner = styled.div`
     align-items: center;
     width: 80%;
     height: 300px;
+    height: 100%;
 `;
 
 const LabelDiv = styled.div`
@@ -137,13 +144,13 @@ const CheckboxDiv = styled.div`
     flex-basis: 20%;
 `;
 
-const ContentsDiv = styled.div`
+const ContentsDiv = styled.div<{ border: boolean }>`
     display: flex;
     padding-top: 1em;
     padding-bottom: 1em;
     align-items: center;
     justify-content: center;
     width: 100%;
-    border-bottom: 1px dashed ${props => props.theme.colors.scroll};
+    ${props => props.border && `border-bottom: 1px dashed ${props.theme.colors.scroll}`};
 `;
 export default Weekly;
