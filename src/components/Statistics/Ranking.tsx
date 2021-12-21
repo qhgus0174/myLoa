@@ -1,12 +1,9 @@
 import React from 'react';
 import { IStatisticsPersonalPrev } from '@components/Statistics/StatisticsType';
 import TitleAndGold from '@components/Ledger/TitleAndGold';
-import styled from '@emotion/styled';
-import { FlexDiv } from '@style/common';
-import { widthMedia } from '@style/device';
 import EmojiTitle from '@components/Emoji/EmojiTitle';
-import { css } from '@emotion/react';
 import Nodata from '@components/article/Nodata';
+import { css } from '@emotion/react';
 
 interface IRanking {
     title: string;
