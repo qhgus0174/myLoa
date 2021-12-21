@@ -60,7 +60,7 @@ export const initDayContents = (): IShareContents[] => {
     fieldBoss[calcDayOfWeek] === 1 && resultArr.push(fieldBossData);
     ghost[calcDayOfWeek] === 1 && resultArr.push(ghostData);
     chaosGate[calcDayOfWeek] === 1 && resultArr.push(chaosGateData);
-    console.log(resultArr);
+
     return resultArr;
 };
 
@@ -136,7 +136,6 @@ export const useLocalStorage = () => {
     }, [storedShareContents]);
 
     useEffect(() => {
-        console.log(storedDayContents);
         storedDayContents && localStorage.setItem('shareDay', stringifyStorageItem(storedDayContents));
     }, [storedDayContents]);
 

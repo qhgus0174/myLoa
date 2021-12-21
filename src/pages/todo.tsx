@@ -137,7 +137,6 @@ const Main = () => {
 
             setCharacterInfo[status] && (await setCharacterInfo[status]());
         } catch (err: unknown) {
-            console.log(err);
             setSpinnerVisible(false);
             toast.error('캐릭터 정보를 불러올 수 없습니다. 로스트아크 점검시간이 아닌지 확인 해 주세요.');
             insertErrorDB({ catchErr: err, errType: 'croll' });

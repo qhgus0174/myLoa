@@ -53,7 +53,7 @@ export const allCharacter = async (name: string): Promise<ICrollInfoAll> => {
             `https://corsanywheremyloa.herokuapp.com/https://lostark.game.onstove.com/Profile/Character/${name}`,
         );
         const $ = load(data);
-        console.log(data);
+
         if (data.includes('캐릭터 정보가 없습니다'))
             return { status: 'nodata', validMsg: '캐릭터 정보가 없습니다.', data: [] };
 
