@@ -96,7 +96,7 @@ const Manage = () => {
             </Content>
             <Content direction="column">
                 <InnerContent>
-                    <span>📞 버그 제보, 기타 문의는 디스코드나 오픈 채팅방 또는 메일을 이용해주세요! </span>
+                    <span>📞 버그 제보, 기타 문의는 디스코드나 오픈 채팅방을 이용해주세요! </span>
                 </InnerContent>
                 <InnerContent>
                     <a className="discord" target="_blank" href="https://discord.gg/an2dykC9">
@@ -107,7 +107,12 @@ const Manage = () => {
                     </a>
                 </InnerContent>
                 <InnerContent>
-                    <div>shannon_@hotmail.co.kr</div>
+                    <a
+                        target="_blank"
+                        href="https://north-ravioli-1b6.notion.site/Release-Note-84ce9a86118340b2944b161948cbc7c5"
+                    >
+                        업데이트 노트 바로가기🧚
+                    </a>
                 </InnerContent>
             </Content>
         </Container>
