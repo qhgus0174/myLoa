@@ -38,7 +38,7 @@ const Main = () => {
     const { setSpinnerVisible } = useContext(SpinnerContext);
     const [activeTab, setActiveTab] = useState<number>(1);
 
-    const { storedCharacter } = useContext(LocalStorageStateContext);
+    const { storedCharacter, storedShareContents } = useContext(LocalStorageStateContext);
     const {
         setStoredShareContents,
         setStoredCharacter,
@@ -61,12 +61,35 @@ const Main = () => {
         setSpinnerVisible(true);
 
         !localStorage.getItem('shareDay') && localStorage.setItem('shareDay', stringifyStorageItem(initDayContents()));
-        (!localStorage.getItem('share') || parseStorageItem(localStorage.getItem('share') as string).length < 1) &&
-            (await initShareContents());
+        !localStorage.getItem('share') || parseStorageItem(localStorage.getItem('share') as string).length < 1
+            ? await initShareContents()
+            : refreshShareContents();
 
         !localStorage.getItem('ledger') && ledgerInit();
         setSpinnerVisible(false);
     }, []);
+
+    const refreshShareContents = () => {
+        const sharedContents: IShareContents[] = [...parseStorageItem(localStorage.getItem('share') as string)];
+
+        const findGuardian = sharedContents.findIndex(({ name }) => {
+            return name === '도전 가디언 토벌';
+        });
+
+        const newArr: IShareContents = {
+            id: 6,
+            name: '도전 가디언 토벌',
+            check: 0,
+            iconurl: '/static/img/lostark/contents/guardian.png',
+        };
+
+        if (findGuardian < 0) {
+            sharedContents.unshift(newArr);
+        }
+
+        setStoredShareContents(sharedContents);
+        localStorage.setItem('share', stringifyStorageItem(sharedContents));
+    };
 
     const ledgerInit = () => {
         if (
