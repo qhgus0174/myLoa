@@ -100,10 +100,10 @@ const Manage = () => {
                 </InnerContent>
                 <InnerContent>
                     <a className="discord" target="_blank" href="https://discord.gg/an2dykC9">
-                        <Image src="/static/img/icon/discord.png" width="45" height="45" />
+                        <Image alt="디스코드 아이콘" src="/static/img/icon/discord.png" width="45" height="45" />
                     </a>
                     <a className="kakao" target="_blank" href="https://open.kakao.com/o/g2kVnGPd">
-                        <Image src="/static/img/icon/kakao.png" width="45" height="45" />
+                        <Image alt="카카오 아이콘" src="/static/img/icon/kakao.png" width="45" height="45" />
                     </a>
                 </InnerContent>
                 <InnerContent>

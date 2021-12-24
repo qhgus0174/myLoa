@@ -35,6 +35,7 @@ const IconPalette = ({ imgId, imgPaletteArr, goodsId, onClick }: IIconPalette) =
                     height="27"
                 >
                     <Image
+                        alt="재화 아이콘"
                         src={`/static/img/lostark/${
                             imgPaletteArr[
                                 imgPaletteArr.findIndex(({ id }) => {
@@ -68,7 +69,12 @@ const IconPalette = ({ imgId, imgPaletteArr, goodsId, onClick }: IIconPalette) =
                                 setVisible(false);
                             }}
                         >
-                            <Image src={`/static/img/lostark/${folder}/${filename}`} width="25" height="25" />
+                            <Image
+                                alt="재화 아이콘"
+                                src={`/static/img/lostark/${folder}/${filename}`}
+                                width="25"
+                                height="25"
+                            />
                         </ImageBackground>
                     );
                 })}

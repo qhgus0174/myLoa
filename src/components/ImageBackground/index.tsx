@@ -60,7 +60,7 @@ const ImageBackground = ({ children, grade, pointer, active, hover, width, heigh
             {hover.message && <span>{hover.message}</span>}
             {active && (
                 <ActiveDiv grade={grade}>
-                    <Image src="/static/img/icon/check.png" width="25" height="25" />
+                    <Image alt="체크 배경" src="/static/img/icon/check.png" width="25" height="25" />
                 </ActiveDiv>
             )}
         </ImageContainer>

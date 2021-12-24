@@ -30,7 +30,7 @@ const TitleAndGold = ({
         <Container className={className} title={title} underline={underline} opacity={opacity} isPadding={isPadding}>
             <Title icon={icon} title={title}>
                 <span>{icon && icon}</span>
-                {iconUrl && <Image layout="fixed" src={iconUrl} width="21" height="19" />}
+                {iconUrl && <Image alt="타이틀 아이콘" layout="fixed" src={iconUrl} width="21" height="19" />}
                 <strong>{title}</strong>
             </Title>
             <Gold bracket={bracket}>

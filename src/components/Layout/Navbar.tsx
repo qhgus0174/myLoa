@@ -113,7 +113,12 @@ const Navbar = ({ isMobile }: INavbar) => {
                             {!isMobile && <li>|</li>}
                             <InnerLi border={false} isMobile={isMobile}>
                                 <a className="discord" target="_blank" href="https://discord.gg/an2dykC9">
-                                    <Image src="/static/img/icon/discord.png" width="26" height="26" />
+                                    <Image
+                                        alt="디스코드 아이콘"
+                                        src="/static/img/icon/discord.png"
+                                        width="26"
+                                        height="26"
+                                    />
                                 </a>
                             </InnerLi>
                         </InnerUl>

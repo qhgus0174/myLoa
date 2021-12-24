@@ -220,7 +220,7 @@ const RaidGold = ({
                                 {openlevel <= characterLevel && characterLevel < closelevel && (
                                     <Article>
                                         <Title>
-                                            <Image src={imgurl} width="16" height="16" />
+                                            <Image alt="레이드 아이콘" src={imgurl} width="16" height="16" />
                                             <h4>{raidName}</h4>
                                         </Title>
                                         <Content>

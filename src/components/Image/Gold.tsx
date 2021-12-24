@@ -9,6 +9,7 @@ interface IImage {
 
 const GoldIcon = ({ type, width, height }: IImage) => (
     <Image
+        alt="골드 아이콘"
         layout="fixed"
         src={`/static/img/lostark/gold/${type}.png`}
         width={width ? width : '19'}

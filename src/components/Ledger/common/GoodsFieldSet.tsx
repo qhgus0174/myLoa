@@ -36,7 +36,7 @@ const GoodsFieldSet = ({
                                 onClickPersonal && onClickPersonal({ id: id });
                             }}
                         >
-                            <Image src={defaultimgurl} width="40" height="40" />
+                            <Image alt="재화 아이콘" src={defaultimgurl} width="40" height="40" />
                         </ImageBackground>
                     );
                 })}

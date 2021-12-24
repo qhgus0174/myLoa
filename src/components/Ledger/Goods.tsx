@@ -40,7 +40,7 @@ const Goods = ({ categoryId, id, gold, name, imgId, imgPaletteArr, datetime, img
                         onClick={saveFn}
                     />
                 ) : (
-                    imgUrl && <Image src={imgUrl} width="27" height="27" />
+                    imgUrl && <Image alt="재화 아이콘" src={imgUrl} width="27" height="27" />
                 )}
             </Icon>
             <Titile>
@@ -73,6 +73,7 @@ const Goods = ({ categoryId, id, gold, name, imgId, imgPaletteArr, datetime, img
             </Gold>
             <Delete>
                 <Image
+                    alt="삭제 아이콘"
                     src="/static/img/icon/x-mark.png"
                     width="14"
                     height="14"

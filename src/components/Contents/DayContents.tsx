@@ -25,21 +25,31 @@ const DayContents = () => {
                 <span> {fieldBoss ? '⭕' : '❌'}</span>
                 <TextDiv active={fieldBoss}>
                     <span>필드 보스</span>
-                    <Image src="/static/img/lostark/contents/fieldboss.png" width="20" height="20" />
+                    <Image
+                        alt="필드 보스 아이콘"
+                        src="/static/img/lostark/contents/fieldboss.png"
+                        width="20"
+                        height="20"
+                    />
                 </TextDiv>
             </Article>
             <Article>
                 <span> {ghost ? '⭕' : '❌'}</span>
                 <TextDiv active={ghost}>
                     <span>유령선</span>
-                    <Image src="/static/img/lostark/contents/ghost.png" width="20" height="20" />
+                    <Image alt="유령선 아이콘" src="/static/img/lostark/contents/ghost.png" width="20" height="20" />
                 </TextDiv>
             </Article>
             <Article>
                 <span> {chaosGate ? '⭕' : '❌'}</span>
                 <TextDiv active={chaosGate}>
                     <span>카오스 게이트</span>
-                    <Image src="/static/img/lostark/contents/choasgate.png" width="20" height="20" />
+                    <Image
+                        alt="카오스 게이트 아이콘"
+                        src="/static/img/lostark/contents/choasgate.png"
+                        width="20"
+                        height="20"
+                    />
                 </TextDiv>
             </Article>
         </Container>

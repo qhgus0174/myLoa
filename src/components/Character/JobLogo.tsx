@@ -105,6 +105,7 @@ const JobLogo = ({ shape, width = 28, height = 27 }: IIcon) => {
 
         return (
             <Image
+                alt="직업 로고"
                 width={calcRatio().width}
                 height={calcRatio().height}
                 src={engName ? `/static/img/job/${engName}.png` : `/static/img/job/warning.svg`}

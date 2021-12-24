@@ -39,7 +39,12 @@ const WeeklyContents = () => {
                 {guardian.length > 0 && (
                     <Article>
                         <Title>
-                            <Image src="/static/img/lostark/contents/guardian.png" width="24" height="24" />
+                            <Image
+                                alt="도전 가디언 토벌 아이콘"
+                                src="/static/img/lostark/contents/guardian.png"
+                                width="24"
+                                height="24"
+                            />
                             <span>도전 가디언 토벌</span>
                         </Title>
                         <InnerContent>
@@ -52,7 +57,12 @@ const WeeklyContents = () => {
                 {abyss.length > 0 && (
                     <Article>
                         <Title>
-                            <Image src="/static/img/lostark/contents/abyss.png" width="24" height="24" />
+                            <Image
+                                alt="도전 어비스 던전 아이콘"
+                                src="/static/img/lostark/contents/abyss.png"
+                                width="24"
+                                height="24"
+                            />
                             <span>도전 어비스 던전</span>
                         </Title>
                         <InnerContent>
