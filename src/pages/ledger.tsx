@@ -248,7 +248,7 @@ const Ledger = () => {
     const calcStatistics = () => {
         if (parseStorageItem(localStorage.getItem('ledger') as string).length < 1) return;
         const { common: storageCommon, own }: ILedger = {
-            ...storedLedger,
+            ...parseStorageItem(localStorage.getItem('ledger') as string),
         };
         if (own.length < 1) return;
 
