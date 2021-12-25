@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import Head from 'next/head';
 import { DateTime } from 'luxon';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import { toast } from 'react-toastify';
@@ -25,7 +26,6 @@ import { insertErrorDB } from '@common/error';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { widthMedia } from '@style/device';
-import Head from 'next/head';
 
 export interface IFileterRaidLevel {
     id: string;

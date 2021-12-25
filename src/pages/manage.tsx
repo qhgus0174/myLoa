@@ -1,7 +1,8 @@
 import React, { useContext } from 'react';
 import axios from 'axios';
-import { toast } from 'react-toastify';
 import Image from 'next/image';
+import Head from 'next/head';
+import { toast } from 'react-toastify';
 import { ModalActionContext } from '@context/ModalContext';
 import { SpinnerContext } from '@context/SpinnerContext';
 import BackupCreate from '@components/Backup/BackupCreate';
@@ -14,7 +15,6 @@ import { insertErrorDB } from '@common/error';
 import styled from '@emotion/styled';
 import { FlexDiv } from '@style/common';
 import { widthMedia } from '@style/device';
-import Head from 'next/head';
 
 const Manage = () => {
     const { setSpinnerVisible } = useContext(SpinnerContext);

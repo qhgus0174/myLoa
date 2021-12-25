@@ -1,21 +1,18 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { NextSeo } from 'next-seo';
+import React, { useEffect, useState } from 'react';
+import { GetStaticProps } from 'next';
 import Link from 'next/link';
-import Image from 'next/image';
-import { SpinnerContext } from '@context/SpinnerContext';
+import Head from 'next/head';
 import { IStatisticsPersonal } from '@components/Statistics/StatisticsType';
 import { calcSum } from '@components/Ledger/common/functions';
-import Ranking from '@components/Statistics/Ranking';
 import EmojiTitle from '@components/Emoji/EmojiTitle';
+import Ranking from '@components/Statistics/Ranking';
+import IconLabel from '@components/Label/IconLabel';
 import Button from '@components/Button/Button';
 import { getDayContents, getWeeklyContents, IWeeklyContents } from '@common/getCommonData';
 import { ILedger } from '@common/types/localStorage/Ledger';
 import { getCharacterInfoById, parseStorageItem } from '@common/utils';
 import styled from '@emotion/styled';
 import { widthMedia } from '@style/device';
-import IconLabel from '@components/Label/IconLabel';
-import { GetStaticProps } from 'next';
-import Head from 'next/head';
 
 const Main = ({ abyss, guardian }: IWeeklyContents) => {
     const [fieldBoss, setFieldBoss] = useState<boolean>(false);
@@ -358,17 +355,6 @@ const WeekContents = styled.div`
     ${widthMedia.phone} {
         flex-direction: column;
         margin-top: 0em;
-    }
-`;
-
-const GoTodoButton = styled(Button)`
-    a {
-        text-decoration: none;
-    }
-    &:hover {
-        span > a {
-            color: ${props => props.theme.colors.main};
-        }
     }
 `;
 
