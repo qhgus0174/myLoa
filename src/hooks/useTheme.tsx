@@ -1,5 +1,5 @@
-import { IThemeStyle } from '@style/theme';
 import React, { useEffect, useState } from 'react';
+import { IThemeStyle } from '@style/theme';
 
 export const useTheme = () => {
     const [theme, setTheme] = useState<IThemeStyle>('none');
