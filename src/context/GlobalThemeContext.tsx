@@ -8,7 +8,7 @@ interface ITheme {
     setTheme: (e: IThemeStyle) => void;
 }
 
-export const GlobalThemeContext = createContext<ITheme>({ theme: 'none', setTheme: (e: IThemeStyle) => {} });
+export const GlobalThemeContext = createContext<ITheme>({ theme: 'basic', setTheme: (e: IThemeStyle) => {} });
 
 const GlobalThemeProvider = ({ children }: { children: React.ReactNode }) => {
     const { theme, setTheme } = useTheme();
