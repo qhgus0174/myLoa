@@ -23,6 +23,7 @@ export const GlobalStyle = () => {
                     color: ${theme.colors.text};
                     font-family: 'Pretendard', 'sans-serif';
                     font-size: 13.5px;
+                    visibility: ${theme.visible ? 'visible' : 'hidden'};
                 }
 
                 body {

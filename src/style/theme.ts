@@ -1,7 +1,7 @@
 import { Theme } from '@emotion/react';
 
 export type IThemeStyle =
-    | ''
+    | 'none'
     | 'basic'
     | 'pink'
     | 'violet'
@@ -43,7 +43,59 @@ export const mainColor: mainColor[] = [
     { name: 'blue', mainColor: '#c7d7e4' },
 ];
 
+export const none: Theme = {
+    visible: false,
+    colors: {
+        main: '#ffffff',
+        mainInner: '#1b2736',
+        relax: '#5de55d',
+        shadow: '#0d1721',
+        pureWhite: '#ffffff',
+        hover: '#333f50',
+        scroll: '#C9CCD5',
+        pin: '#ED3833',
+        text: '#f6f8fd',
+        compassActive: '#51C2D5',
+        black: '#000000',
+        white: '#f6f8fd',
+        gray: '#6d6d6d',
+        navBorder: '#1b2736',
+        warn: '#f6f8fd',
+    },
+
+    button: {
+        color: '#f7f6fd',
+        ok: '#8BC34A',
+        cancel: '#EC4646',
+        none: 'transparent',
+        hover: {
+            background: '#ffffff',
+            color: '#000000',
+        },
+        paging: {
+            background: '#ffffff',
+            color: '#000000',
+        },
+    },
+    check: {
+        background: '#f6f8fd',
+        basicMark: '#000000',
+        mark: '#fcc101',
+        border: '#f6f8fd',
+    },
+
+    logoColor: '#f6f8fd',
+
+    graph: {
+        primary: '#396EB0',
+        secondary: '#F2789F',
+        quaternary: '#9B72AA',
+        tertiary: '#BEAEE2',
+    },
+};
+
 export const basic: Theme = {
+    visible: true,
     colors: {
         main: mainColor[0].mainColor,
         mainInner: '#1b2736',
@@ -94,6 +146,7 @@ export const basic: Theme = {
 };
 
 export const pink: Theme = {
+    visible: true,
     colors: {
         main: mainColor[1].mainColor,
         mainInner: '#debfc4',
@@ -145,6 +198,7 @@ export const pink: Theme = {
 };
 
 export const violet: Theme = {
+    visible: true,
     colors: {
         main: mainColor[2].mainColor,
         mainInner: '#be9bcd',
@@ -195,6 +249,7 @@ export const violet: Theme = {
 };
 
 export const green: Theme = {
+    visible: true,
     colors: {
         main: mainColor[3].mainColor,
         mainInner: '#6e9a79',
@@ -245,6 +300,7 @@ export const green: Theme = {
 };
 
 export const cold: Theme = {
+    visible: true,
     colors: {
         main: mainColor[4].mainColor,
         mainInner: '#a2b9b5',
@@ -295,6 +351,7 @@ export const cold: Theme = {
 };
 
 export const autumn: Theme = {
+    visible: true,
     colors: {
         main: mainColor[5].mainColor,
         mainInner: '#ce8e72',
@@ -345,6 +402,7 @@ export const autumn: Theme = {
 };
 
 export const violetBrown: Theme = {
+    visible: true,
     colors: {
         main: mainColor[6].mainColor,
         mainInner: '#705b64',
@@ -395,6 +453,7 @@ export const violetBrown: Theme = {
 };
 
 export const flower: Theme = {
+    visible: true,
     colors: {
         main: mainColor[7].mainColor,
         mainInner: '#ffa9b9',
@@ -445,6 +504,7 @@ export const flower: Theme = {
 };
 
 export const pinkBeige: Theme = {
+    visible: true,
     colors: {
         main: mainColor[8].mainColor,
         mainInner: '#d5c5c2',
@@ -495,6 +555,7 @@ export const pinkBeige: Theme = {
 };
 
 export const darkBrown: Theme = {
+    visible: true,
     colors: {
         main: mainColor[9].mainColor,
         mainInner: '#363535',
@@ -545,6 +606,7 @@ export const darkBrown: Theme = {
 };
 
 export const darkYellow: Theme = {
+    visible: true,
     colors: {
         main: mainColor[10].mainColor,
         mainInner: '#272e39',
@@ -595,6 +657,7 @@ export const darkYellow: Theme = {
 };
 
 export const darkPink: Theme = {
+    visible: true,
     colors: {
         main: mainColor[11].mainColor,
         mainInner: '#333456',
@@ -645,6 +708,7 @@ export const darkPink: Theme = {
 };
 
 export const veryCold: Theme = {
+    visible: true,
     colors: {
         main: mainColor[12].mainColor,
         mainInner: '#5f5774',
@@ -695,6 +759,7 @@ export const veryCold: Theme = {
 };
 
 export const darkCyan: Theme = {
+    visible: true,
     colors: {
         main: mainColor[13].mainColor,
         mainInner: '#252b36',
@@ -745,6 +810,7 @@ export const darkCyan: Theme = {
 };
 
 export const lego: Theme = {
+    visible: true,
     colors: {
         main: mainColor[14].mainColor,
         mainInner: '#09355c',
@@ -795,6 +861,7 @@ export const lego: Theme = {
 };
 
 export const blue: Theme = {
+    visible: true,
     colors: {
         main: mainColor[15].mainColor,
         mainInner: '#148cad',
