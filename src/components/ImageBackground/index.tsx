@@ -1,7 +1,6 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import Image from 'next/image';
-import { css } from '@emotion/react';
 import { BackgroundGrade } from '@style/common/img';
 
 export interface IImageBackground extends React.HTMLAttributes<HTMLElement> {
