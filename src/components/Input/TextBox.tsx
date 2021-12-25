@@ -1,6 +1,5 @@
 import React from 'react';
 import styled from '@emotion/styled';
-import GoldIcon from '@components/Image/Gold';
 
 export interface ITextProps extends React.InputHTMLAttributes<HTMLInputElement> {
     width?: string;

@@ -9,10 +9,10 @@ import RightArrow from '@components/Image/RightArrow';
 import JobLogo from '@components/Character/JobLogo';
 import LeftArrow from '@components/Image/LeftArrow';
 import Button from '@components/Button/Button';
+import { ICharacter } from '@common/types/localStorage/Character';
 import { IContextModalParam } from '@common/types/types';
 import styled from '@emotion/styled';
 import { FlexDiv, FlexLeftDiv, FlexHoverArticle, CharactersDiv } from '@style/common';
-import { ICharacter } from '@common/types/localStorage/Character';
 
 const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
     const { perPage, currentPage } = useContext(PagingStateContext);
