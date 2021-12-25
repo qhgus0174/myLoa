@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { DateTime } from 'luxon';
+import Head from 'next/head';
 import Link from 'next/link';
 import { initCommonHistory, initLedger } from '@hooks/useLocalStorage';
 import { usePromiseEffect } from '@hooks/usePromiseEffect';
@@ -31,7 +32,6 @@ import { getCommon } from '@apis/ledger/common';
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { widthMedia } from '@style/device';
-import Head from 'next/head';
 
 interface ILedgerObjects {
     raid: IRaidGold[];

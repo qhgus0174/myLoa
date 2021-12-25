@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { DateTime } from 'luxon';
 import Link from 'next/link';
+import Head from 'next/head';
 import { XAxis, YAxis, CartesianGrid, Legend, LabelList, BarChart, Bar } from 'recharts';
 import { LocalStorageActionContext } from '@context/LocalStorageContext';
 import { initCommonHistory } from '@hooks/useLocalStorage';
@@ -20,7 +21,6 @@ import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { FlexDiv } from '@style/common';
 import { widthMedia } from '@style/device';
-import Head from 'next/head';
 
 const Statistics = () => {
     const weekKorArr = ['저번주', '2주전', '3주전', '4주전'];

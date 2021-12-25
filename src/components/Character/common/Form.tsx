@@ -1,8 +1,7 @@
 import React from 'react';
 import { CompactPicker, ColorResult } from 'react-color';
 import TextBox from '@components/Input/TextBox';
-import styled from '@emotion/styled';
-import { FlexDiv, RemarkDiv } from '@style/common';
+import { RemarkDiv } from '@style/common';
 import { ContentContainer, Title, Contents, ContentArticle } from '@style/common/modal';
 
 interface ICharacter {

@@ -7,7 +7,6 @@ import SelectTheme from '@components/Palette/SelectTheme';
 import Letter from '@components/Letter';
 import styled from '@emotion/styled';
 import { widthMedia } from '@style/device';
-import Logo from '@assets/img/logo/logo.png';
 
 const Header = () => {
     const { visible, setVisible } = useContext(MobileNavContext);
@@ -24,7 +23,7 @@ const Header = () => {
         <HeaderContainer>
             <HeaderInner>
                 <Link href="/">
-                    <LogoImg src={Logo} />
+                    <Image alt="로요일좋아 로고" src="/static/img/logo/logo.png" width="160" height="55" />
                 </Link>
             </HeaderInner>
             <RightHeader>
