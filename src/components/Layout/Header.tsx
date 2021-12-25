@@ -23,7 +23,9 @@ const Header = () => {
         <HeaderContainer>
             <HeaderInner>
                 <Link href="/">
-                    <Image alt="로요일좋아 로고" src="/static/img/logo/logo.png" width="160" height="55" />
+                    <a>
+                        <Image alt="로요일좋아 로고" src="/static/img/logo/logo.png" width="160" height="55" />
+                    </a>
                 </Link>
             </HeaderInner>
             <RightHeader>
