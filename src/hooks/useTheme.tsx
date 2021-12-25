@@ -7,7 +7,7 @@ export const useTheme = () => {
     useEffect(() => {
         const themeData = localStorage.getItem('theme') as IThemeStyle;
 
-        themeData ? setTheme(themeData) : setTheme('none');
+        themeData ? setTheme(themeData) : setTheme('basic');
     }, []);
 
     useEffect(() => {
