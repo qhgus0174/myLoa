@@ -238,7 +238,6 @@ const RaidGold = ({
                                                         startLevel <= characterLevel &&
                                                         characterLevel < endLevel && (
                                                             <div key={difficultyIndex}>
-                                                                {startLevel},{characterLevel}
                                                                 <Contents>
                                                                     <h5>{difficultyName}</h5>
                                                                     {grouppedDetailData[difficultyName].map(
