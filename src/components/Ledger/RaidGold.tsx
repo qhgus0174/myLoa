@@ -226,10 +226,13 @@ const RaidGold = ({
                                         <Content>
                                             {Object.keys(grouppedDetailData).map(
                                                 (difficultyName: string, difficultyIndex: number) => {
+                                                    const index =
+                                                        difficultyName == '[하드]'
+                                                            ? difficultyIndex - 1
+                                                            : difficultyIndex;
                                                     const startLevel =
-                                                        grouppedDetailData[difficultyName][difficultyIndex].startlevel;
-                                                    const endLevel =
-                                                        grouppedDetailData[difficultyName][difficultyIndex].endlevel;
+                                                        grouppedDetailData[difficultyName][index].startlevel;
+                                                    const endLevel = grouppedDetailData[difficultyName][index].endlevel;
 
                                                     return (
                                                         startLevel <= characterLevel &&
