@@ -113,8 +113,11 @@ const Navbar = ({ isMobile }: INavbar) => {
                             {!isMobile && <li>|</li>}
                             <InnerLi border={false} isMobile={isMobile}>
                                 <a
+                                    css={css`
+                                        text-decoration: none;
+                                    `}
                                     className="updateLog"
-                                    href="https://www.notion.so/Release-Note-84ce9a86118340b2944b161948cbc7c5"
+                                    href="https://north-ravioli-1b6.notion.site/Release-Note-84ce9a86118340b2944b161948cbc7c5"
                                     target="_blank"
                                 >
                                     업데이트 내역
