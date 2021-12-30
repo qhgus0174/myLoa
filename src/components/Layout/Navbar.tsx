@@ -112,13 +112,12 @@ const Navbar = ({ isMobile }: INavbar) => {
                             </InnerLi>
                             {!isMobile && <li>|</li>}
                             <InnerLi border={false} isMobile={isMobile}>
-                                <a className="discord" target="_blank" href="https://discord.gg/an2dykC9">
-                                    <Image
-                                        alt="디스코드 아이콘"
-                                        src="/static/img/icon/discord.png"
-                                        width="26"
-                                        height="26"
-                                    />
+                                <a
+                                    className="updateLog"
+                                    href="https://www.notion.so/Release-Note-84ce9a86118340b2944b161948cbc7c5"
+                                    target="_blank"
+                                >
+                                    업데이트 내역
                                 </a>
                             </InnerLi>
                         </InnerUl>
