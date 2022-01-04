@@ -4592,11 +4592,6 @@ luxon@^2.1.1:
   resolved "https://registry.yarnpkg.com/luxon/-/luxon-2.2.0.tgz#f5c4a234ba4016f792488b11aaed2d5bc14c888e"
   integrity sha512-LwmknessH4jVIseCsizUgveIHwlLv/RQZWC2uDSMfGJs7w8faPUi2JFxfyfMcTPrpNbChTem3Uz6IKRtn+LcIA==
 
-magic-snowflakes@^6.0.1:
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/magic-snowflakes/-/magic-snowflakes-6.0.1.tgz#2e17fd82e5dbbc3c293481abd49d34544848c212"
-  integrity sha512-D6asLHNwvrkDtHfYzX/XzKAavw8LW3GiQgVa38id2NsmqXVMMs2VAfzP0TJRDF34YgKDfwRhDsnDLeI4Qdyr1Q==
-
 make-dir@^3.0.0, make-dir@^3.0.2, make-dir@^3.1.0:
   version "3.1.0"
   resolved "https://registry.yarnpkg.com/make-dir/-/make-dir-3.1.0.tgz#415e967046b3a7f1d185277d84aa58203726a13f"

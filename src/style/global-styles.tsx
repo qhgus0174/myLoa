@@ -1,19 +1,7 @@
 import { css, Global, useTheme } from '@emotion/react';
-import Snowflakes from 'magic-snowflakes';
-import { useEffect } from 'react';
 
 export const GlobalStyle = () => {
     const theme = useTheme();
-
-    useEffect(() => {
-        new Snowflakes({
-            color: '#eaf3f5',
-            count: 20,
-            speed: 0.7,
-            minSize: 3,
-            maxSize: 15,
-        });
-    }, []);
 
     return (
         <Global
