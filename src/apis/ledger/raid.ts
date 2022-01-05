@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { IResponse } from '@common/types/response';
 import { IRaidGold, IRaidGoldDetail } from '@common/types/response/ledger/raid';
-import { groupBy } from '@common/utils';
 
 export const getRaid = async (): Promise<IRaidGold[]> => {
     const { result: raidGoldResult } = (await (await axios.get(`/api/ledger/raidGold`)).data) as IResponse<IRaidGold[]>;
