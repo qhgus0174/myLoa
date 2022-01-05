@@ -1,5 +1,6 @@
 import { ICharacter } from '@common/types/localStorage/Character';
 import { ITodo } from '@common/types/localStorage/Todo';
+import { DateTime } from 'luxon';
 
 export const getOwnIdByIndex = (dataArray: any[], ordArray: any[], index: number): number => {
     const id = ordArray[index];
@@ -27,4 +28,23 @@ export const parseStorageItem = (item: string) => {
 
 export const stringifyStorageItem = (item: any): string => {
     return JSON.stringify(JSON.stringify(item));
+};
+
+export const getThisWeek = (): string[] => {
+    const now = DateTime.now(); //
+
+    const startOfWeek = now.startOf('week').plus({ days: 2, hours: 6, minutes: 0 });
+
+    const startDay =
+        startOfWeek < now
+            ? startOfWeek
+            : now.minus({ days: 7, hours: 6, minutes: 0 }).startOf('week').plus({ days: 2, hours: 6, minutes: 0 });
+
+    const weekArr: string[] = [];
+
+    for (let i = 0; i < 7; i++) {
+        weekArr.push(startDay.plus({ days: i }).toFormat('yyyy/MM/dd'));
+    }
+
+    return weekArr;
 };
