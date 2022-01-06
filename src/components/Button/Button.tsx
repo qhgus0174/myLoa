@@ -42,7 +42,7 @@ const Button = ({
 };
 
 const BasicButton = styled.button<IButtonProps>`
-    padding: ${props => (props.iconOnly ? `0` : `0.6rem 1.1rem`)};
+    padding: ${props => (props.iconOnly ? `0` : `0.5em 1.1em`)};
     ${props => props.width && `width:${props.width}%`};
     box-sizing: border-box;
     outline: 0;
