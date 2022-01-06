@@ -42,3 +42,5 @@ export interface IDropdown {
     name: string;
     parentid?: string;
 }
+
+export type IncomeSpendingType = 'income' | 'spending';
