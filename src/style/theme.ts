@@ -92,6 +92,10 @@ export const none: Theme = {
         quaternary: '#9B72AA',
         tertiary: '#BEAEE2',
     },
+    ledger: {
+        income: '#4596e6',
+        spending: '#e38649',
+    },
 };
 
 export const basic: Theme = {
@@ -142,6 +146,11 @@ export const basic: Theme = {
         secondary: '#F2789F',
         quaternary: '#9B72AA',
         tertiary: '#BEAEE2',
+    },
+
+    ledger: {
+        income: '#4596e6',
+        spending: '#f77768',
     },
 };
 
@@ -195,6 +204,10 @@ export const pink: Theme = {
         quaternary: '#396EB0',
         tertiary: '#47597E',
     },
+    ledger: {
+        income: '#4596e6',
+        spending: '#f77768',
+    },
 };
 
 export const violet: Theme = {
@@ -245,6 +258,10 @@ export const violet: Theme = {
         secondary: '#4C3F91',
         quaternary: '#F9C5D5',
         tertiary: '#F2789F',
+    },
+    ledger: {
+        income: '#4596e6',
+        spending: '#e38649',
     },
 };
 
@@ -297,6 +314,10 @@ export const green: Theme = {
         quaternary: '#79B4B7',
         tertiary: '#406882',
     },
+    ledger: {
+        income: '#4596e6',
+        spending: '#e38649',
+    },
 };
 
 export const cold: Theme = {
@@ -347,6 +368,10 @@ export const cold: Theme = {
         secondary: '#5584AC',
         quaternary: '#907FA4',
         tertiary: '#4C3F91',
+    },
+    ledger: {
+        income: '#4596e6',
+        spending: '#e38649',
     },
 };
 
@@ -399,6 +424,10 @@ export const autumn: Theme = {
         quaternary: '#FF8882',
         tertiary: '#FC997C',
     },
+    ledger: {
+        income: '#4596e6',
+        spending: '#e38649',
+    },
 };
 
 export const violetBrown: Theme = {
@@ -449,6 +478,10 @@ export const violetBrown: Theme = {
         secondary: '#A2416B',
         quaternary: '#C26565',
         tertiary: '#6C4A4A',
+    },
+    ledger: {
+        income: '#4596e6',
+        spending: '#e38649',
     },
 };
 
@@ -501,6 +534,10 @@ export const flower: Theme = {
         quaternary: '#FE91CA',
         tertiary: '#F2789F',
     },
+    ledger: {
+        income: '#4596e6',
+        spending: '#e38649',
+    },
 };
 
 export const pinkBeige: Theme = {
@@ -551,6 +588,10 @@ export const pinkBeige: Theme = {
         secondary: '#EB92BE',
         quaternary: '#F1C6E7',
         tertiary: '#F2789F',
+    },
+    ledger: {
+        income: '#4596e6',
+        spending: '#e38649',
     },
 };
 
@@ -603,6 +644,10 @@ export const darkBrown: Theme = {
         quaternary: '#EA9085',
         tertiary: '#B84A39',
     },
+    ledger: {
+        income: '#4596e6',
+        spending: '#e38649',
+    },
 };
 
 export const darkYellow: Theme = {
@@ -653,6 +698,10 @@ export const darkYellow: Theme = {
         secondary: '#E2C275',
         quaternary: '#808C6C',
         tertiary: '#96C7C1',
+    },
+    ledger: {
+        income: '#4596e6',
+        spending: '#e38649',
     },
 };
 
@@ -705,6 +754,10 @@ export const darkPink: Theme = {
         quaternary: '#BBBBBB',
         tertiary: '#FFA6D5',
     },
+    ledger: {
+        income: '#4596e6',
+        spending: '#e38649',
+    },
 };
 
 export const veryCold: Theme = {
@@ -755,6 +808,10 @@ export const veryCold: Theme = {
         secondary: '#EB92BE',
         quaternary: '#93B5E1',
         tertiary: '#848CCF',
+    },
+    ledger: {
+        income: '#4596e6',
+        spending: '#e38649',
     },
 };
 
@@ -807,6 +864,10 @@ export const darkCyan: Theme = {
         quaternary: '#00416D',
         tertiary: '#1B6CA8',
     },
+    ledger: {
+        income: '#4596e6',
+        spending: '#e38649',
+    },
 };
 
 export const lego: Theme = {
@@ -858,6 +919,10 @@ export const lego: Theme = {
         quaternary: '#3D84B8',
         tertiary: '#FFC947',
     },
+    ledger: {
+        income: '#4596e6',
+        spending: '#e38649',
+    },
 };
 
 export const blue: Theme = {
@@ -908,5 +973,9 @@ export const blue: Theme = {
         secondary: '#628395',
         quaternary: '#325288',
         tertiary: '#02475E',
+    },
+    ledger: {
+        income: '#4596e6',
+        spending: '#e38649',
     },
 };

@@ -51,5 +51,10 @@ declare module '@emotion/react' {
             tertiary: string;
             quaternary: string;
         };
+
+        ledger: {
+            income: string;
+            spending: string;
+        };
     }
 }
