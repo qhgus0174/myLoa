@@ -1,3 +1,5 @@
+import { IncomeSpending } from '@components/Ledger/modal/common/IncomeSpending';
+
 export interface ILedger {
     common: ILedgerCommon;
     own: ILedgerOwn[];
@@ -15,6 +17,10 @@ export interface ILedgerOwn {
             fold: boolean;
             data: ILedgerHistoryRaid[];
         };
+        spending: {
+            fold: boolean;
+            data: ILedgerHistoryGoods[];
+        };
     };
 }
 
@@ -27,6 +33,7 @@ export interface ILedgerCommon {
 export interface ICommonHistory extends ILedgerHistoryRaid {
     name: string;
     imgUrl: string;
+    type: IncomeSpending;
 }
 
 export interface ILedgerHistoryRaid {
@@ -40,3 +47,5 @@ export interface ILedgerHistoryGoods extends ILedgerHistoryRaid {
     imgId: string;
     name: string;
 }
+
+export type GoldType = 'goods' | 'raid' | 'spending';
