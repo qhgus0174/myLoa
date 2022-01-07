@@ -12,7 +12,7 @@ const GoldIcon = ({ type, width, height }: IImage) => (
         alt="골드 아이콘"
         layout="fixed"
         src={`/static/img/lostark/gold/${type}.png`}
-        width={width ? width : '19'}
+        width={width ? width : '20'}
         height={height ? height : '15'}
     />
 );
