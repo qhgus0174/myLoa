@@ -5,6 +5,8 @@ import GoldIcon from '@components/Image/Gold';
 
 interface ITitleGold {
     gold: number;
+    negative?: boolean;
+    goldTextColor?: string;
     title?: string;
     icon?: any;
     iconUrl?: string;
@@ -22,6 +24,8 @@ const TitleAndGold = ({
     icon,
     opacity,
     className,
+    goldTextColor,
+    negative = false,
     isPadding = true,
     bracket = false,
     underline = true,
@@ -35,7 +39,10 @@ const TitleAndGold = ({
             </Title>
             <Gold bracket={bracket}>
                 <GoldIcon type="basic" />
-                <span>{gold.toLocaleString()}</span>
+                <GoldText color={goldTextColor}>
+                    {negative && gold > 0 && `- `}
+                    {gold.toLocaleString()}
+                </GoldText>
             </Gold>
         </Container>
     );
@@ -72,6 +79,10 @@ const Title = styled.div<{ icon: any }>`
                 margin-right: 10px;
             }
     `}
+
+    strong {
+        margin-left: 0.5em;
+    }
 `;
 const Gold = styled.div<{ bracket: boolean }>`
     display: flex;
@@ -85,6 +96,10 @@ const Gold = styled.div<{ bracket: boolean }>`
     &:after {
         content: ')';
     }`}
+`;
+
+const GoldText = styled.span<{ color?: string }>`
+    ${props => props.color && `color : ${props.color}`}
 `;
 
 export default TitleAndGold;
