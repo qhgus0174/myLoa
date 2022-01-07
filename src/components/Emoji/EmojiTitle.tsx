@@ -32,11 +32,16 @@ const Container = styled.article<Pick<IEmojiTitle, 'symbolPosition'>>`
     }
 
     ${props =>
-        props.symbolPosition === 'right' &&
-        `
+        props.symbolPosition === 'right'
+            ? `
         flex-direction:row-reverse; 
         span{ 
             margin-left: 6px;
+        }
+    `
+            : `
+    span:nth-of-type(1){ 
+            margin-right: 6px;
         }
     `}
 `;
