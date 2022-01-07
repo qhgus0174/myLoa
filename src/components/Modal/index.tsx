@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { IPortalOption, IPortalProperty } from '@common/types/types';
 import styled from '@emotion/styled';
 import { widthMedia } from '@style/device';
-import { FlexDiv } from '@style/common';
+import { FlexDiv } from '@style/common/layout/common';
 import Button from '@components/Button/Button';
 import { ModalActionContext } from '@context/ModalContext';
 

@@ -17,7 +17,7 @@ import { IContextModal } from '@common/types/types';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { responsiveWidth, widthMedia } from '@style/device';
-import { FlexDiv } from '@style/common';
+import { FlexDiv } from '@style/common/layout/common';
 
 const Weekly = () => {
     const { storedTodo, storedCharacter, storedCharacterOrd, storedShareContents, storedDayContents } =
@@ -68,7 +68,7 @@ const Weekly = () => {
                 <ButtonLeftDiv>
                     <AddButton
                         type="button"
-                        icon={<PlusIcon fill={theme.button.color} width="15" height="15" />}
+                        icon={<PlusIcon fill={theme.button.color} width="13" height="13" />}
                         onClick={e =>
                             onContextMenuBasicModal({
                                 e: e,
@@ -84,7 +84,7 @@ const Weekly = () => {
                     <AddButton
                         isRight={true}
                         type="button"
-                        icon={<PlusIcon fill={theme.button.color} width="15" height="15" />}
+                        icon={<PlusIcon fill={theme.button.color} width="13" height="13" />}
                         onClick={e =>
                             onContextMenuBasicModal({
                                 e: e,
@@ -116,7 +116,7 @@ const Weekly = () => {
                     <AddButton
                         isRight={true}
                         type="button"
-                        icon={<PlusIcon fill={theme.button.color} width="15" height="15" />}
+                        icon={<PlusIcon fill={theme.button.color} width="13" height="13" />}
                         onClick={e =>
                             onContextMenuBasicModal({
                                 e: e,

@@ -2,7 +2,7 @@ import React, { useContext } from 'react';
 import { ModalActionContext } from '@context/ModalContext';
 import Button from '@components/Button/Button';
 import { ButtonContainer } from '@style/common/modal';
-import { FlexDiv } from '@style/common';
+import { FlexDiv } from '@style/common/layout/common';
 import styled from '@emotion/styled';
 
 interface IEditButton {

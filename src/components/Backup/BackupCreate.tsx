@@ -5,7 +5,7 @@ import TextBox from '@components/Input/TextBox';
 import { ButtonContainer, Container, ContentContainer } from '@style/common/modal';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { toast } from 'react-toastify';
-import { FlexDiv } from '@style/common';
+import { FlexDiv } from '@style/common/layout/common';
 import styled from '@emotion/styled';
 
 const BackupCreate = ({ backupCode }: { backupCode: string }) => {

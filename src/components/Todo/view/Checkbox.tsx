@@ -7,7 +7,7 @@ import TodoCheck from '@components/Todo/modal/TodoCheck';
 import TextBox from '@components/Input/TextBox';
 import Guardian from '@components/Todo/view/Guardian';
 import { IContextModal, ScheduleContents, ScheduleType } from '@common/types/types';
-import { CharactersDiv, FlexDiv, FlexHoverArticle } from '@style/common';
+import { CharactersDiv, FlexDiv, FlexHoverArticle } from '@style/common/layout/common';
 import styled from '@emotion/styled';
 import { parseStorageItem } from '@common/utils';
 

@@ -10,7 +10,7 @@ import TextBox from '@components/Input/TextBox';
 import { ScheduleCheckType, ScheduleContents, ScheduleType } from '@common/types/types';
 import styled from '@emotion/styled';
 import { Contents, Title, InnerContent, ContentContainer, ContentArticle } from '@style/common/modal';
-import { FlexDiv } from '@style/common';
+import { FlexDiv } from '@style/common/layout/common';
 import IconLabel from '@components/Label/IconLabel';
 import EmojiTitle from '@components/Emoji/EmojiTitle';
 

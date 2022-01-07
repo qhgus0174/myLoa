@@ -1,7 +1,7 @@
 import React from 'react';
 import { CompactPicker, ColorResult } from 'react-color';
 import { ContentContainer, Title, Contents } from '@style/common/modal';
-import { FlexDiv } from '@style/common';
+import { FlexDiv } from '@style/common/layout/common';
 
 interface ICharacter {
     color: string;

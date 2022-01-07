@@ -3,7 +3,7 @@ import { LocalStorageStateContext, LocalStorageActionContext } from '@context/Lo
 import { ICharacterTodo, IGuardianInfo, ITodo } from '@common/types/localStorage/Todo';
 import { GuardianInfo, IGuardian } from '@common/data/guardian';
 import styled from '@emotion/styled';
-import { FlexDiv } from '@style/common';
+import { FlexDiv } from '@style/common/layout/common';
 import { ICharacter } from '@common/types/localStorage/Character';
 import { widthMedia } from '@style/device';
 

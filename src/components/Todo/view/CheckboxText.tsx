@@ -5,7 +5,7 @@ import { ITodo } from '@common/types/localStorage/Todo';
 import PinCheckbox from '@components/Input/PinCheckBox';
 import { IContextModal, ScheduleContents } from '@common/types/types';
 import styled from '@emotion/styled';
-import { FlexDiv, FlexLeftDiv } from '@style/common';
+import { FlexDiv, FlexLeftDiv } from '@style/common/layout/common';
 
 interface ICheckbox {
     todo: ITodo;

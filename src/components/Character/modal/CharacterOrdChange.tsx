@@ -7,7 +7,7 @@ import { ICharacter } from '@common/types/localStorage/Character';
 import Button from '@components/Button/Button';
 import { ButtonContainer, Container, ContentContainer } from '@style/common/modal';
 import styled from '@emotion/styled';
-import { FlexDiv } from '@style/common';
+import { FlexDiv } from '@style/common/layout/common';
 import { DropResult, DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { PagingStateContext } from '@context/PagingContext';
 

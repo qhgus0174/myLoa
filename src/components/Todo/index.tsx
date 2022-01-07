@@ -7,7 +7,7 @@ import Checkbox from '@components/Todo/view/Checkbox';
 import Line from '@components/Todo/view/Line';
 import { IContextModalParam, ScheduleContents } from '@common/types/types';
 import styled from '@emotion/styled';
-import { FlexDiv } from '@style/common';
+import { FlexDiv } from '@style/common/layout/common';
 import { heightMedia, widthMedia } from '@style/device';
 
 const Todo = ({ onContextMenuBasicModal }: IContextModalParam) => {

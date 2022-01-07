@@ -12,7 +12,7 @@ import Button from '@components/Button/Button';
 import { ICharacter } from '@common/types/localStorage/Character';
 import { IContextModalParam } from '@common/types/types';
 import styled from '@emotion/styled';
-import { FlexDiv, FlexLeftDiv, FlexHoverArticle, CharactersDiv } from '@style/common';
+import { FlexDiv, FlexLeftDiv, FlexHoverArticle, CharactersDiv } from '@style/common/layout/common';
 
 const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
     const { perPage, currentPage } = useContext(PagingStateContext);

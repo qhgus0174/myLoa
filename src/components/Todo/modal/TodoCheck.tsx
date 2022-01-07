@@ -11,8 +11,8 @@ import TextBox from '@components/Input/TextBox';
 import { ScheduleType } from '@common/types/types';
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { Contents, Title, InnerContent, Container, ContentContainer } from '@style/common/modal';
-import { FlexDiv, RemarkDiv } from '@style/common';
+import { Contents, Title, InnerContent, Container, ContentContainer, TopInfo, TopInfoTitle } from '@style/common/modal';
+import { FlexDiv, RemarkDiv } from '@style/common/layout/common';
 import { toast } from 'react-toastify';
 
 const TodoCheck = ({
@@ -98,14 +98,14 @@ const TodoCheck = ({
 
     return (
         <Container>
-            <TodoAndCharacter>
+            <TopInfo>
                 <div>
-                    숙제 :<SmallTitle>{todoName}</SmallTitle>
+                    숙제 :<TopInfoTitle>{todoName}</TopInfoTitle>
                 </div>
                 <div>
-                    캐릭터명 :<SmallTitle>{characterName}</SmallTitle>
+                    캐릭터명 :<TopInfoTitle>{characterName}</TopInfoTitle>
                 </div>
-            </TodoAndCharacter>
+            </TopInfo>
             {todoType === 'daily' && ['chaos', 'guardian'].includes(todoContents) && (
                 <RemarkDiv>* 휴식게이지 수동 입력 시 수행횟수는 초기화 됩니다.</RemarkDiv>
             )}
@@ -179,12 +179,6 @@ const Content = styled(FlexDiv)`
     margin-bottom: 2em;
 `;
 
-const TodoAndCharacter = styled(InnerContent)`
-    display: flex;
-    justify-content: space-around;
-    margin-bottom: 1em;
-`;
-
 const HideTitle = styled(Title)`
     margin-bottom: 0;
     flex-basis: 10%;
@@ -192,12 +186,6 @@ const HideTitle = styled(Title)`
 
 const HideContents = styled(Title)`
     flex-basis: 90%;
-`;
-
-const SmallTitle = styled.span`
-    font-weight: 500;
-    margin-left: 0.7em;
-    margin-right: 0.5em;
 `;
 
 export default TodoCheck;
