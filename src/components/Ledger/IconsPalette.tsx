@@ -1,23 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { useOnClickOutside } from '@hooks/useOnClickOutside';
-import { IGoodsImg } from '@common/types/response/ledger/goods';
 import ImageBackground from '@components/ImageBackground';
+import { IGoodsImg } from '@common/types/response/ledger/goods';
 import styled from '@emotion/styled';
 
 interface IIconPalette {
-    imgId?: string;
+    goodsIconId: string;
     imgPaletteArr: IGoodsImg[];
-    goodsId: string;
-    onClick: ({ imageId, goodsId }: { imageId: string; goodsId: string }) => void;
+    imgId?: string;
+    onClick: (e: string) => void;
 }
 
-const IconPalette = ({ imgId, imgPaletteArr, goodsId, onClick }: IIconPalette) => {
+const IconPalette = ({ imgId, imgPaletteArr, goodsIconId, onClick }: IIconPalette) => {
     const [visible, setVisible] = useState<boolean>(false);
     const ref = useRef<HTMLElement>(null);
 
     useOnClickOutside(ref, () => setVisible(false));
-
     return (
         <Container ref={ref}>
             <SelectedImg onClick={() => setVisible(!visible)}>
@@ -26,7 +25,7 @@ const IconPalette = ({ imgId, imgPaletteArr, goodsId, onClick }: IIconPalette) =
                     grade={
                         imgPaletteArr[
                             imgPaletteArr.findIndex(({ id }) => {
-                                return id == imgId;
+                                return id == goodsIconId;
                             })
                         ].background
                     }
@@ -39,13 +38,13 @@ const IconPalette = ({ imgId, imgPaletteArr, goodsId, onClick }: IIconPalette) =
                         src={`/static/img/lostark/${
                             imgPaletteArr[
                                 imgPaletteArr.findIndex(({ id }) => {
-                                    return id == imgId;
+                                    return id == goodsIconId;
                                 })
                             ].folder
                         }/${
                             imgPaletteArr[
                                 imgPaletteArr.findIndex(({ id }) => {
-                                    return id == imgId;
+                                    return id == goodsIconId;
                                 })
                             ].filename
                         }`}
@@ -65,7 +64,7 @@ const IconPalette = ({ imgId, imgPaletteArr, goodsId, onClick }: IIconPalette) =
                             width="30"
                             height="30"
                             onClick={() => {
-                                onClick({ imageId: id, goodsId: goodsId });
+                                onClick(id);
                                 setVisible(false);
                             }}
                         >
