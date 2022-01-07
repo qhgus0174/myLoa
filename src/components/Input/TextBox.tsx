@@ -6,14 +6,35 @@ export interface ITextProps extends React.InputHTMLAttributes<HTMLInputElement> 
     divWidth?: string;
     align?: 'left' | 'right' | 'center';
     underline?: boolean;
+    focusLine?: boolean;
     icon?: JSX.Element;
+    color?: string;
 }
 
-const TextBox = ({ width, divWidth = '100', type = 'text', align, underline = true, icon, ...rest }: ITextProps) => {
+const TextBox = ({
+    width,
+    divWidth = '100',
+    type = 'text',
+    align,
+    underline = true,
+    focusLine = true,
+    icon,
+    color,
+    ...rest
+}: ITextProps) => {
     return (
         <InputContainer divWidth={divWidth}>
             {icon && icon}
-            <CustomInput align={align} type={type} width={width} underline={underline} {...rest} autoComplete="false" />
+            <CustomInput
+                align={align}
+                type={type}
+                width={width}
+                underline={underline}
+                focusLine={focusLine}
+                color={color}
+                {...rest}
+                autoComplete="false"
+            />
             <Span></Span>
         </InputContainer>
     );
@@ -49,10 +70,12 @@ const CustomInput = styled.input<ITextProps>`
 
     border-bottom: ${props => props.underline && `1px solid ${props.theme.colors.text}`};
 
-    &:focus + ${Span} {
-        width: ${props => (props.width ? props.width : '100')}%;
-        background: ${props => props.theme.colors.text};
-    }
+    ${props =>
+        props.focusLine &&
+        `&:focus + ${Span} {
+            width: ${props.width ? props.width : '100'}%;
+            background: ${props.theme.colors.text};
+        }`}
 
     ::-webkit-inner-spin-button {
         -webkit-appearance: none;
@@ -62,6 +85,8 @@ const CustomInput = styled.input<ITextProps>`
         -webkit-appearance: none;
         margin: 0;
     }
+
+    ${props => props.color && `color : ${props.color}`};
 `;
 
 export default TextBox;
