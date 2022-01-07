@@ -4,13 +4,15 @@ import styled from '@emotion/styled';
 
 interface IIconLabel {
     iconUrl: any;
-    label: string;
+    label: string | JSX.Element;
+    width?: string;
+    height?: string;
 }
 
-const IconLabel = ({ iconUrl, label }: IIconLabel) => {
+const IconLabel = ({ iconUrl, label, width = '16', height = '16' }: IIconLabel) => {
     return (
         <Container>
-            <Image alt="라벨 아이콘" src={iconUrl} width="16" height="16" />
+            <Image alt="라벨 아이콘" src={iconUrl} width={width} height={width} />
             <Label>{label}</Label>
         </Container>
     );
