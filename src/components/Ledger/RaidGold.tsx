@@ -6,11 +6,10 @@ import { ILedger, ILedgerHistoryRaid, ILedgerOwn } from '@common/types/localStor
 import TitleAndGold from '@components/Ledger/TitleAndGold';
 import BasicCheckbox from '@components/Input/BasicCheckbox';
 import { IRaidGold, IRaidGoldDetail } from '@common/types/response/ledger/raid';
-import { getCharacterInfoById, groupBy, parseStorageItem } from '@common/utils';
+import { groupBy } from '@common/utils';
 import styled from '@emotion/styled';
-import { FlexDiv } from '@style/common';
+import { FlexDiv } from '@style/common/layout/common';
 import { widthMedia } from '@style/device';
-import { IRaid } from '@common/types/localStorage/Raid';
 
 const RaidGold = ({
     characterId,
