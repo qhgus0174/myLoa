@@ -25,7 +25,7 @@ export function useInput<T>(
             if (option?.numberOnly && !/[0-9]/.test(e.key)) e.preventDefault();
         },
         onChange: (e: React.ChangeEvent<any>) => {
-            setValue(e.target?.value);
+            setValue(e.target.value);
         },
         maxLength: option?.maxLength,
     };
