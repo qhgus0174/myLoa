@@ -55,6 +55,7 @@ declare module '@emotion/react' {
         ledger: {
             income: string;
             spending: string;
+            lastWeek: string;
         };
     }
 }
