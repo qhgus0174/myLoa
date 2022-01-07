@@ -1,4 +1,5 @@
 import React, { ReactElement } from 'react';
+import { GoldType } from '@common/types/localStorage/Ledger';
 
 export type ScheduleType = 'daily' | 'weekly' | 'other' | 'line';
 export type ScheduleContents = 'chaos' | 'guardian' | 'epona' | 'basic' | 'basicReset' | 'none';
@@ -44,3 +45,12 @@ export interface IDropdown {
 }
 
 export type IncomeSpendingType = 'income' | 'spending';
+
+export interface ILedgerSaveParam {
+    goodsId: string;
+    type: GoldType;
+    name?: string;
+    gold?: number;
+    imageId?: string;
+    imgUrl?: string;
+}
