@@ -44,7 +44,7 @@ export const ContentContainer = styled.article`
 export const ContentArticle = styled.article`
     display: flex;
     flex-direction: column;
-    margin-bottom: 1.5em;
+    margin-bottom: 1.8em;
 `;
 
 export const Title = styled.h2`
@@ -80,4 +80,16 @@ export const InnerContent = styled.article`
     background: ${props => props.theme.colors.mainInner};
     padding: 0.5em;
     border-radius: 1em;
+`;
+
+export const TopInfo = styled(InnerContent)`
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 1em;
+`;
+
+export const TopInfoTitle = styled.span`
+    font-weight: 500;
+    margin-left: 0.7em;
+    margin-right: 0.5em;
 `;
