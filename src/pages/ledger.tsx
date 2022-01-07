@@ -9,31 +9,31 @@ import { SpinnerContext } from '@context/SpinnerContext';
 import { ModalActionContext } from '@context/ModalContext';
 import { IStatisticsPersonal, IStatisticsPersonalPrev } from '@components/Statistics/StatisticsType';
 import CharacterGoldThisWeek from '@components/Statistics/Graph/CharacterGoldThisWeek';
-import { ILedger, ILedgerOwn } from '@common/types/localStorage/Ledger';
+import { ICommonHistory, ILedger, ILedgerOwn } from '@common/types/localStorage/Ledger';
+import CharacterListItem from '@components/Ledger/characterGold/ListItem';
+import CommonListItem from '@components/Ledger/commonGold/ListItem';
 import { calcSum } from '@components/Ledger/common/functions';
 import TitleAndGold from '@components/Ledger/TitleAndGold';
-import CommonGold from '@components/Ledger/CommonGold';
 import EmojiTitle from '@components/Emoji/EmojiTitle';
-import GoodsGold from '@components/Ledger/GoodsGold';
 import Ranking from '@components/Statistics/Ranking';
-import DownArrow from '@components/Image/DownArrow';
-import RaidGold from '@components/Ledger/RaidGold';
-import UpArrow from '@components/Image/UpArrow';
+import IconLabel from '@components/Label/IconLabel';
 import Nodata from '@components/article/Nodata';
 import Button from '@components/Button/Button';
-import { getCharacterInfoById, parseStorageItem } from '@common/utils';
 import { IRaidGold, IRaidGoldDetail } from '@common/types/response/ledger/raid';
 import { IGoods, IGoodsImg } from '@common/types/response/ledger/goods';
-import { ICommonGold } from '@common/types/response/ledger/common';
 import { ICharacter } from '@common/types/localStorage/Character';
+import { ICommonGold } from '@common/types/response/ledger/common';
+import { getCharacterInfoById, parseStorageItem } from '@common/utils';
 import { getRaidDetail, getRaid } from '@apis/ledger/raid';
 import { getGoods, getGoodsImg } from '@apis/ledger/goods';
 import { getCommon } from '@apis/ledger/common';
-import { css, useTheme } from '@emotion/react';
+import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
+import { InnerContents } from '@style/common/layout/table';
+import { Comment } from '@style/common/text';
 import { widthMedia } from '@style/device';
 
-interface ILedgerObjects {
+export interface ILedgerObjects {
     raid: IRaidGold[];
     raidDetail: IRaidGoldDetail[];
     common: ICommonGold[];
@@ -44,10 +44,7 @@ interface ILedgerObjects {
 interface IPersonalGold {
     raid: number;
     goods: number;
-}
-
-interface IFold {
-    fold: boolean;
+    spending: number;
 }
 
 const Ledger = () => {
@@ -59,6 +56,8 @@ const Ledger = () => {
     const { setStoredLedger } = useContext(LocalStorageActionContext);
 
     const { setModalProps } = useContext(ModalActionContext);
+
+    const [isSummaryVisible, setIsSummaryVisible] = useState<boolean>(false);
 
     const [commonGoldThisWeek, setCommonGoldThisWeek] = useState<number>(0);
     const [raidGoldThisWeek, setRaidGoldThisWeek] = useState<number>(0);
@@ -78,6 +77,7 @@ const Ledger = () => {
 
         localStorage.getItem('ledger') && calcWeekGold();
         localStorage.getItem('ledger') && calcStatistics();
+
         setSpinnerVisible(false);
 
         return { raid, raidDetail, common, goods, goodsImg };
@@ -97,7 +97,11 @@ const Ledger = () => {
                 const charactersLedger: ILedgerOwn = {
                     characterId: character.id,
                     prevWeekGold: [0, 0, 0, 0],
-                    histories: { raid: { fold: true, data: [] }, goods: { fold: true, data: [] } },
+                    histories: {
+                        raid: { fold: true, data: [] },
+                        goods: { fold: true, data: [] },
+                        spending: { fold: true, data: [] },
+                    },
                 };
                 return charactersLedger;
             },
@@ -181,8 +185,21 @@ const Ledger = () => {
 
         //지난주 계산
         //공통 골드
+
+        const calcCommGold =
+            calcSum(
+                newLedger.common.histories.filter(({ type }) => {
+                    return type === 'income';
+                }),
+            ) -
+            calcSum(
+                newLedger.common.histories.filter(({ type }) => {
+                    return type === 'spending';
+                }),
+            );
+
         common.prevWeekGold.pop();
-        common.prevWeekGold.unshift(calcSum(newLedger.common.histories));
+        common.prevWeekGold.unshift(calcCommGold);
         common.histories = initCommonHistory;
 
         //개인 골드
@@ -196,10 +213,19 @@ const Ledger = () => {
             const raidTotalGold = newLedger.own[goodsIndex]
                 ? calcSum(newLedger.own[goodsIndex].histories.raid.data)
                 : 0;
+            const spendTotalGold = newLedger.own[goodsIndex]
+                ? newLedger.own[goodsIndex].histories.spending
+                    ? calcSum(newLedger.own[goodsIndex].histories.spending.data)
+                    : 0
+                : 0;
             newLedger.own[goodsIndex].prevWeekGold.pop();
-            newLedger.own[goodsIndex].prevWeekGold.unshift(goodsTotalGold + raidTotalGold);
+            newLedger.own[goodsIndex].prevWeekGold.unshift(goodsTotalGold + raidTotalGold - spendTotalGold);
 
-            own[goodsIndex].histories = { goods: { fold: true, data: [] }, raid: { fold: true, data: [] } };
+            own[goodsIndex].histories = {
+                goods: { fold: true, data: [] },
+                raid: { fold: true, data: [] },
+                spending: { fold: true, data: [] },
+            };
         });
 
         setStoredLedger(newLedger);
@@ -210,6 +236,7 @@ const Ledger = () => {
             return {
                 raid: calcSum(histories.raid.data),
                 goods: calcSum(histories.goods.data),
+                spending: calcSum(histories.spending ? histories.spending.data : []),
             };
         });
 
@@ -227,7 +254,13 @@ const Ledger = () => {
             })
             .reduce((prev, next) => prev + next);
 
-        setGoodsGoldThisWeek(goodsSum);
+        const spendingSum: number = sumArray
+            .map(({ spending }) => {
+                return spending;
+            })
+            .reduce((prev, next) => prev + next);
+
+        setGoodsGoldThisWeek(goodsSum - spendingSum);
     };
 
     const calcPersonalGoldThisWeek = (own: ILedgerOwn[]) => {
@@ -247,14 +280,28 @@ const Ledger = () => {
 
     const calcStatistics = () => {
         if (parseStorageItem(localStorage.getItem('ledger') as string).length < 1) return;
-        const { common: storageCommon, own }: ILedger = {
+        const { common, own }: ILedger = {
             ...parseStorageItem(localStorage.getItem('ledger') as string),
         };
         if (own.length < 1) return;
 
-        setCommonGoldThisWeek(calcSum(storageCommon.histories));
+        calcCommonGoldThisWeek({ historyData: common.histories });
         calcPesonalGoldThisWeek(own);
         calcPersonalGoldThisWeek(own);
+    };
+
+    const calcCommonGoldThisWeek = ({ historyData }: { historyData: ICommonHistory[] }) => {
+        const incomeArr = historyData.filter(({ type }) => {
+            return type === 'income';
+        });
+
+        const spendingArr = historyData.filter(({ type }) => {
+            return type === 'spending';
+        });
+
+        const calcCommGold = calcSum(incomeArr) - calcSum(spendingArr);
+
+        setCommonGoldThisWeek(calcCommGold);
     };
 
     return (
@@ -269,62 +316,80 @@ const Ledger = () => {
                         <SummaryHeader>
                             <SummaryHeaderTitle>
                                 <h1>이번 주 요약</h1>
-                                <Button onClick={calcStatistics}>
-                                    <EmojiTitle label={<span>새로고침</span>} symbol={'🔃'} />
+                                <Button onClick={() => setIsSummaryVisible(!isSummaryVisible)}>
+                                    {isSummaryVisible ? (
+                                        <EmojiTitle label={<span>접어두기</span>} symbol={'📘'} />
+                                    ) : (
+                                        <EmojiTitle label={<span>펼치기</span>} symbol={'📖'} />
+                                    )}
                                 </Button>
                             </SummaryHeaderTitle>
-
-                            <h6
-                                css={css`
-                                    cursor: pointer;
-                                `}
-                                onClick={calcStatistics}
-                            >
-                                🕕 저번 주 데이터가 나온다면 새로고침을 눌러주세요!
-                            </h6>
+                            <SummaryRightTitle visible={isSummaryVisible}>
+                                <Button onClick={calcStatistics}>새로고침</Button>
+                            </SummaryRightTitle>
                         </SummaryHeader>
-                        <SummaryDiv>
+                        <SummaryDiv visible={isSummaryVisible}>
                             <SummaryLeft>
                                 <DashDiv>
                                     <SummaryHeader>
-                                        <EmojiTitle label={<h2>수입</h2>} symbol={'💰'} />
+                                        <IconLabel
+                                            label={<h2>수입</h2>}
+                                            iconUrl="/static/img/icon/mococo/shake_rabbit.gif"
+                                            width="24"
+                                            height="24"
+                                        />
                                     </SummaryHeader>
-                                    <GoldList>
-                                        <TitleAndGold
-                                            iconUrl="/static/img/lostark/contents/jwel.png"
-                                            title="공통"
-                                            gold={commonGoldThisWeek}
-                                        />
-                                        <TitleAndGold
-                                            iconUrl="/static/img/lostark/material/weapon_crystal.png"
-                                            title="재화"
-                                            gold={goodsGoldThisWeek}
-                                        />
-                                        <TitleAndGold
-                                            iconUrl="/static/img/lostark/contents/corpsDungeon.png"
-                                            title="레이드"
-                                            gold={raidGoldThisWeek}
-                                        />
-                                        <TitleAndGold
-                                            css={css`
-                                                strong {
-                                                    color: #e6674b;
+                                    <SummaryBody>
+                                        <GoldList>
+                                            <TitleAndGold
+                                                iconUrl="/static/img/lostark/contents/jwel.png"
+                                                title="공통"
+                                                gold={commonGoldThisWeek}
+                                                goldTextColor={
+                                                    commonGoldThisWeek >= 0
+                                                        ? theme.ledger.income
+                                                        : theme.ledger.spending
                                                 }
-                                            `}
-                                            title="총 계"
-                                            underline={false}
-                                            gold={commonGoldThisWeek + goodsGoldThisWeek + raidGoldThisWeek}
-                                        />
-                                    </GoldList>
+                                            />
+                                            <TitleAndGold
+                                                iconUrl="/static/img/lostark/material/weapon_crystal.png"
+                                                title="재화"
+                                                gold={goodsGoldThisWeek}
+                                                goldTextColor={
+                                                    goodsGoldThisWeek >= 0 ? theme.ledger.income : theme.ledger.spending
+                                                }
+                                            />
+                                            <TitleAndGold
+                                                iconUrl="/static/img/lostark/contents/corpsDungeon.png"
+                                                title="레이드"
+                                                gold={raidGoldThisWeek}
+                                                goldTextColor={
+                                                    raidGoldThisWeek >= 0 ? theme.ledger.income : theme.ledger.spending
+                                                }
+                                            />
+                                            <TitleAndGold
+                                                title="총 계"
+                                                underline={false}
+                                                gold={commonGoldThisWeek + goodsGoldThisWeek + raidGoldThisWeek}
+                                                goldTextColor={
+                                                    commonGoldThisWeek + goodsGoldThisWeek + raidGoldThisWeek >= 0
+                                                        ? theme.ledger.income
+                                                        : theme.ledger.spending
+                                                }
+                                            />
+                                        </GoldList>
+                                    </SummaryBody>
                                 </DashDiv>
                             </SummaryLeft>
                             <SummaryRight>
                                 <DashDiv>
                                     <SummaryHeader>
-                                        <EmojiTitle label={<h2>순위</h2>} symbol={'👑'} />
-                                        <DetailSta>
-                                            <Link href="/statistics">통계 메뉴에서 더 자세히 보기 (클릭!😗)</Link>
-                                        </DetailSta>
+                                        <IconLabel
+                                            label={<h2>수입 순위</h2>}
+                                            iconUrl="/static/img/icon/mococo/bling_rabbit.gif"
+                                            width="24"
+                                            height="24"
+                                        />
                                         <span
                                             onClick={() =>
                                                 openCharacterGoldGraph(
@@ -341,188 +406,88 @@ const Ledger = () => {
                                             🔍그래프로 보기
                                         </span>
                                     </SummaryHeader>
-                                    <RankContent>
-                                        <RankInner>
-                                            <RankContainer>
-                                                <Ranking
-                                                    title=""
-                                                    array={personalGoldThisWeekArr.map(({ name, raid, goods }) => {
-                                                        return { name: name, gold: raid + goods };
-                                                    })}
-                                                />
-                                            </RankContainer>
-                                        </RankInner>
-                                        <ChartInner>
-                                            <CharacterGoldThisWeek
-                                                array={personalGoldThisWeekArr
-                                                    .map(({ name, raid, goods }) => {
-                                                        return { name: name, gold: raid + goods };
-                                                    })
-                                                    .sort(({ gold: beforGold }, { gold: afterGold }) => {
-                                                        return afterGold - beforGold;
-                                                    })}
+                                    <SummaryBody>
+                                        <RankContainer>
+                                            <Ranking
+                                                title=""
+                                                array={personalGoldThisWeekArr.map(({ name, raid, goods }) => {
+                                                    return { name: name, gold: raid + goods };
+                                                })}
                                             />
-                                        </ChartInner>
-                                    </RankContent>
+                                        </RankContainer>
+                                    </SummaryBody>
+                                    <Comment>* 골드 수입만 계산 된 값 입니다.</Comment>
                                 </DashDiv>
                             </SummaryRight>
                         </SummaryDiv>
                     </Summary>
                     {storedLedger.own.length > 0 ? (
                         <GoldContents>
-                            <Article>
-                                <Header onClick={e => foldCommonDiv({ e: e, foldState: storedLedger.common.fold })}>
-                                    <h2
-                                        css={css`
-                                            display: flex;
-                                            align-items: center;
-                                        `}
-                                    >
-                                        공통
-                                        {storedLedger.common.fold ? (
-                                            <UpArrow fill={theme.colors.text} width="25" height="25" />
-                                        ) : (
-                                            <DownArrow fill={theme.colors.text} width="25" height="25" />
+                            <SummaryHeader>
+                                <h1>골드 수입 · 지출 내역</h1>
+                            </SummaryHeader>
+                            <Table>
+                                <TableHeader>
+                                    <InnerContents name={true}>닉네임(레벨)</InnerContents>
+                                    <InnerContents>수입</InnerContents>
+                                    <InnerContents>지출</InnerContents>
+                                    <InnerContents>합계</InnerContents>
+                                    <InnerContents>저번 주</InnerContents>
+                                </TableHeader>
+                                <TableBody>
+                                    <CommonListItem
+                                        commonData={ledgerData.common}
+                                        incomeGold={calcSum(
+                                            storedLedger.common.histories.filter(({ type }) => {
+                                                return type !== 'spending';
+                                            }),
                                         )}
-                                    </h2>
-                                    <GoldSum>
-                                        <TitleAndGold title="저번 주" gold={storedLedger.common.prevWeekGold[0]} />
-                                        <TitleAndGold title="이번 주" gold={calcSum(storedLedger.common.histories)} />
-                                    </GoldSum>
-                                </Header>
-                                <Contents fold={storedLedger.common.fold}>
-                                    <CommonGold commonData={ledgerData.common} />
-                                </Contents>
-                            </Article>
-                            {storedLedger.own
-                                .sort((a, b) => {
-                                    return (
-                                        (storedCharacterOrd as number[]).indexOf(Number(a.characterId)) -
-                                        (storedCharacterOrd as number[]).indexOf(Number(b.characterId))
-                                    );
-                                })
-                                .map(
-                                    (
-                                        {
-                                            characterId,
-                                            prevWeekGold,
-                                            histories: {
-                                                goods: { fold: goodsFold },
-                                                raid: { fold: raidFold },
-                                            },
-                                        }: ILedgerOwn,
-                                        ledgerIndex: number,
-                                    ) => {
-                                        const level = getCharacterInfoById({
-                                            dataArray: storedCharacter,
-                                            id: characterId,
-                                        }).level;
-                                        const goodsIndex = storedLedger.own.findIndex(
-                                            ({ characterId: goodsCharId }: ILedgerOwn) => goodsCharId === characterId,
-                                        );
+                                        spendingGold={calcSum(
+                                            storedLedger.common.histories.filter(({ type }) => {
+                                                return type === 'spending';
+                                            }),
+                                        )}
+                                        prevGold={storedLedger.common.prevWeekGold[0]}
+                                    />
+                                    {storedLedger.own
+                                        .sort((a, b) => {
+                                            return (
+                                                (storedCharacterOrd as number[]).indexOf(Number(a.characterId)) -
+                                                (storedCharacterOrd as number[]).indexOf(Number(b.characterId))
+                                            );
+                                        })
+                                        .map(({ characterId, prevWeekGold }: ILedgerOwn, ledgerIndex: number) => {
+                                            const goodsIndex = storedLedger.own.findIndex(
+                                                ({ characterId: goodsCharId }: ILedgerOwn) =>
+                                                    goodsCharId === characterId,
+                                            );
 
-                                        const goodsTotalGold = calcSum(
-                                            storedLedger.own[goodsIndex].histories.goods.data,
-                                        );
-                                        const raidTotalGold = calcSum(storedLedger.own[goodsIndex].histories.raid.data);
+                                            const goodsTotalGold = calcSum(
+                                                storedLedger.own[goodsIndex].histories.goods.data,
+                                            );
 
-                                        return (
-                                            <Article key={ledgerIndex}>
-                                                <Header>
-                                                    <Info>
-                                                        <h2>
-                                                            {
-                                                                getCharacterInfoById({
-                                                                    dataArray: storedCharacter,
-                                                                    id: characterId,
-                                                                }).name
-                                                            }
-                                                        </h2>
-                                                        <h4>
-                                                            {
-                                                                getCharacterInfoById({
-                                                                    dataArray: storedCharacter,
-                                                                    id: characterId,
-                                                                }).level
-                                                            }
-                                                        </h4>
-                                                    </Info>
-                                                    <GoldSum>
-                                                        <TitleAndGold
-                                                            opacity={0.8}
-                                                            title="저번 주"
-                                                            gold={prevWeekGold[0]}
-                                                        />
-                                                        <TitleAndGold
-                                                            title="이번 주"
-                                                            gold={goodsTotalGold + raidTotalGold}
-                                                        />
-                                                    </GoldSum>
-                                                </Header>
-                                                <PersonalHeader
-                                                    onClick={() =>
-                                                        foldGoodsDiv({
-                                                            characterIndex: goodsIndex,
-                                                            foldState: goodsFold,
-                                                        })
-                                                    }
-                                                >
-                                                    <PersonalInner>
-                                                        <h4>재화</h4>
-                                                        {goodsFold ? (
-                                                            <UpArrow fill={theme.colors.text} width="25" height="25" />
-                                                        ) : (
-                                                            <DownArrow
-                                                                fill={theme.colors.text}
-                                                                width="25"
-                                                                height="25"
-                                                            />
-                                                        )}
-                                                    </PersonalInner>
-                                                    <PersonalInner>
-                                                        <TitleAndGold underline={false} gold={goodsTotalGold} />
-                                                    </PersonalInner>
-                                                </PersonalHeader>
-                                                <Contents fold={goodsFold}>
-                                                    <GoodsGold
-                                                        characterId={characterId}
-                                                        goods={ledgerData.goods}
-                                                        imgPaletteArr={ledgerData.goodsImg}
-                                                    />
-                                                </Contents>
-                                                <PersonalHeader
-                                                    onClick={() =>
-                                                        foldRaidDiv({ characterIndex: goodsIndex, foldState: raidFold })
-                                                    }
-                                                >
-                                                    <PersonalInner>
-                                                        <h4>레이드</h4>
-                                                        {raidFold ? (
-                                                            <UpArrow fill={theme.colors.text} width="25" height="25" />
-                                                        ) : (
-                                                            <DownArrow
-                                                                fill={theme.colors.text}
-                                                                width="25"
-                                                                height="25"
-                                                            />
-                                                        )}
-                                                    </PersonalInner>
-                                                    <PersonalInner>
-                                                        <TitleAndGold underline={false} gold={raidTotalGold} />
-                                                    </PersonalInner>
-                                                </PersonalHeader>
-                                                <Contents fold={raidFold}>
-                                                    <RaidGold
-                                                        raidCategory={ledgerData.raid}
-                                                        raidDetailData={ledgerData.raidDetail}
-                                                        characterId={characterId}
-                                                        characterLevel={Number(level.replace(/\,/g, ''))}
-                                                    />
-                                                </Contents>
-                                            </Article>
-                                        );
-                                    },
-                                )}
+                                            const raidTotalGold = calcSum(
+                                                storedLedger.own[goodsIndex].histories.raid.data,
+                                            );
+
+                                            const spendingGold = storedLedger.own[goodsIndex].histories.spending
+                                                ? calcSum(storedLedger.own[goodsIndex].histories.spending.data)
+                                                : 0;
+
+                                            return (
+                                                <CharacterListItem
+                                                    key={ledgerIndex}
+                                                    characterId={characterId}
+                                                    goodsTotalGold={goodsTotalGold}
+                                                    raidTotalGold={raidTotalGold}
+                                                    ledgerData={ledgerData}
+                                                    spendingGold={spendingGold}
+                                                    prevWeekGold={prevWeekGold[0]}
+                                                />
+                                            );
+                                        })}
+                                </TableBody>
+                            </Table>
                         </GoldContents>
                     ) : (
                         <Nodata
@@ -544,12 +509,12 @@ const Ledger = () => {
 const Container = styled.section`
     display: flex;
     flex-wrap: wrap;
-    width: 80%;
+    width: 55%;
     margin-top: 3em;
     box-sizing: border-box;
     justify-content: center;
     h1 {
-        font-size: 1.6em;
+        font-size: 1.4em;
     }
 
     h2 {
@@ -571,22 +536,20 @@ const Container = styled.section`
     ${widthMedia.phone} {
         width: 90%;
     }
+
+    margin-bottom: 3em;
 `;
 
 const Summary = styled.article`
     display: flex;
     flex-direction: column;
     width: 100%;
-    border: 1px solid;
     margin-bottom: 1em;
-    padding-top: 1.5em;
-    padding-bottom: 2em;
-    padding-left: 2em;
-    padding-right: 2em;
+    padding-bottom: 3em;
 `;
 
-const SummaryDiv = styled.div`
-    display: flex;
+const SummaryDiv = styled.div<{ visible: boolean }>`
+    display: ${props => (props.visible ? `flex` : `none`)};
     width: 100%;
     flex-flow: wrap;
 
@@ -598,7 +561,8 @@ const SummaryDiv = styled.div`
 
 const SummaryLeft = styled.div`
     display: flex;
-    flex-basis: 30%;
+    width: 100%;
+    flex-basis: 50%;
     flex-direction: column;
 
     ${widthMedia.desktop} {
@@ -608,45 +572,12 @@ const SummaryLeft = styled.div`
 
 const SummaryRight = styled.div`
     display: flex;
-    flex-basis: 70%;
+    width: 100%;
+    flex-basis: 50%;
     flex-direction: column;
 
     ${widthMedia.desktop} {
         flex-basis: 50%;
-    }
-`;
-
-const Article = styled.article`
-    display: flex;
-    flex-direction: column;
-    border: 1px solid ${props => props.theme.colors.text};
-    padding: 2em;
-    margin-bottom: 1em;
-    box-sizing: border-box;
-    height: 100%;
-    flex-basis: 32%;
-
-    ${widthMedia.desktop} {
-        flex-basis: 48%;
-    }
-
-    ${widthMedia.tablet} {
-        flex-basis: 100%;
-    }
-`;
-
-const Header = styled.div`
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: pointer;
-
-    h2 {
-        flex-basis: 40%;
-    }
-
-    & > div {
-        flex-basis: 45%;
     }
 `;
 
@@ -678,28 +609,7 @@ const GoldList = styled.div`
     align-items: center;
     justify-content: center;
     height: 100%;
-
-    ${widthMedia.tablet} {
-        width: 80%;
-        align-self: center;
-    }
-`;
-
-const GoldSum = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-`;
-
-const Contents = styled.article<IFold>`
-    display: ${props => (props.fold ? `none` : 'flex')};
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    padding: 0.5em;
-    background: rgba(0, 0, 0, 0.1);
-    margin-top: 2em;
+    width: 80%;
 `;
 
 const GoldContents = styled.article`
@@ -710,25 +620,10 @@ const GoldContents = styled.article`
     justify-content: space-between;
 `;
 
-const PersonalHeader = styled.div`
-    display: flex;
-    cursor: pointer;
-    justify-content: space-between;
-    padding-top: 1em;
-    padding-bottom: 1em;
-    border-bottom: 1px dashed ${props => props.theme.colors.text};
-    margin-top: 2em;
-`;
-
-const PersonalInner = styled.div`
-    display: flex;
-    flex-basis: 30%;
-    align-items: center;
-`;
-
 const SummaryHeader = styled.div`
     display: flex;
     justify-content: space-between;
+    margin-bottom: 1em;
 
     ${widthMedia.desktop} {
         margin-bottom: 1.3em;
@@ -743,7 +638,6 @@ const SummaryHeader = styled.div`
     }
 
     & > span {
-        display: none;
         cursor: pointer;
 
         ${widthMedia.desktop} {
@@ -782,9 +676,11 @@ const RankContainer = styled.div`
 const SummaryHeaderTitle = styled.div`
     display: flex;
     align-items: center;
-    flex-basis: 20%;
     justify-content: space-around;
-    margin-bottom: 1em;
+
+    button {
+        margin-left: 1em;
+    }
 
     ${widthMedia.mediumDesktop} {
         flex-basis: 30%;
@@ -808,58 +704,35 @@ const SummaryHeaderTitle = styled.div`
     }
 `;
 
-const DetailSta = styled.div`
-    display: flex;
-    flex-direction: row-reverse;
-    cursor: pointer;
-
-    ${widthMedia.desktop} {
-        display: none;
-    }
+const SummaryRightTitle = styled.div<{ visible: boolean }>`
+    display: ${props => (props.visible ? `flex` : `none`)};
 `;
 
-const Info = styled.div`
-    display: flex;
-    flex-direction: column;
-
-    h4 {
-        margin-top: 10px;
-        &:before {
-            content: 'Lv. ';
-        }
-    }
-`;
-
-const RankContent = styled.div`
+const SummaryBody = styled.div`
     display: flex;
     width: 100%;
     height: 100%;
     align-items: center;
+    justify-content: center;
+    margin-top: 1em;
+    margin-bottom: 0.5em;
 `;
 
-const RankInner = styled.div`
-    display: flex;
-    flex-basis: 50%;
-    justify-content: center;
-
-    ${widthMedia.desktop} {
-        flex-basis: 100%;
-        flex-direction: column;
-
-        & > span {
-            margin-bottom: 10px;
-        }
-    }
+const Table = styled.div`
+    width: 100%;
 `;
 
-const ChartInner = styled.div`
+const TableHeader = styled.div`
     display: flex;
-    flex-basis: 50%;
-    justify-content: center;
+    border-top: 1px solid;
+    border-bottom: 1px solid;
+    padding-top: 0.6em;
+    padding-bottom: 0.6em;
+`;
 
-    ${widthMedia.desktop} {
-        display: none;
-    }
+const TableBody = styled.div`
+    display: flex;
+    flex-direction: column;
 `;
 
 export default Ledger;
