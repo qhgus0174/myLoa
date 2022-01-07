@@ -49,6 +49,22 @@ export const getThisWeek = (): string[] => {
     return weekArr;
 };
 
+export const stringToFormat = ({
+    date,
+    fromFormat,
+    toFormat,
+}: {
+    date: string;
+    fromFormat: string;
+    toFormat: string;
+}) => {
+    return DateTime.fromFormat(date, fromFormat).toFormat(toFormat);
+};
+
 export const dateToTime = ({ date, format }: { date: string; format: string }) => {
     return DateTime.fromFormat(date, format).toFormat('X');
+};
+
+export const timeToDate = ({ datetime, format }: { datetime: string; format: string }) => {
+    return DateTime.fromISO(DateTime.fromSeconds(Number(datetime)).toISO()).toFormat(format);
 };
