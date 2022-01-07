@@ -13,7 +13,7 @@ import { IBackup } from '@common/types/response/backup';
 import { IResponse } from '@common/types/response';
 import { insertErrorDB } from '@common/error';
 import styled from '@emotion/styled';
-import { FlexDiv } from '@style/common';
+import { FlexDiv } from '@style/common/layout/common';
 import { widthMedia } from '@style/device';
 
 const Manage = () => {
