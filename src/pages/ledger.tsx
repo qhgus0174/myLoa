@@ -307,7 +307,12 @@ const Ledger = () => {
                     <Summary>
                         <SummaryHeader>
                             <SummaryHeaderTitle>
-                                <h1>이번 주 요약</h1>
+                                <IconLabel
+                                    label={<h1>이번 주 요약</h1>}
+                                    iconUrl="/static/img/icon/mococo/yeah.png"
+                                    width="24"
+                                    height="24"
+                                />
                                 <Button onClick={() => setIsSummaryVisible(!isSummaryVisible)}>
                                     {isSummaryVisible ? (
                                         <EmojiTitle label={<span>접기</span>} symbol={'📘'} />
@@ -382,7 +387,7 @@ const Ledger = () => {
                                             width="24"
                                             height="24"
                                         />
-                                        <span
+                                        <ShowGraphButton
                                             onClick={() =>
                                                 openCharacterGoldGraph(
                                                     personalGoldThisWeekArr
@@ -396,7 +401,7 @@ const Ledger = () => {
                                             }
                                         >
                                             🔍그래프로 보기
-                                        </span>
+                                        </ShowGraphButton>
                                     </SummaryHeader>
                                     <SummaryBody>
                                         <RankContainer>
@@ -416,7 +421,12 @@ const Ledger = () => {
                     {storedLedger.own.length > 0 ? (
                         <GoldContents>
                             <SummaryHeader>
-                                <h1>골드 수입 · 지출 내역</h1>
+                                <IconLabel
+                                    label={<h1>골드 수입 · 지출 내역</h1>}
+                                    iconUrl="/static/img/icon/mococo/yeah.png"
+                                    width="24"
+                                    height="24"
+                                />
                             </SummaryHeader>
                             <Table>
                                 <TableHeader>
@@ -719,6 +729,10 @@ const TableBody = styled.div`
         width: 600px;
     }
     overflow-x: auto;
+`;
+
+const ShowGraphButton = styled.span`
+    cursor: pointer;
 `;
 
 export default Ledger;
