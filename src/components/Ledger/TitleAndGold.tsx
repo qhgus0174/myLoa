@@ -56,7 +56,9 @@ const Container = styled.article<Pick<ITitleGold, 'title' | 'underline' | 'opaci
     padding-right: 1em;
     justify-content: space-between;
 
-    ${props => (props.underline ? `border-bottom: 0.5px dashed ${props.theme.colors.text}; ` : ``)}
+    ${props => (props.underline ? `border-bottom: 0.5px dashed ${props.theme.colors.gray}; ` : ``)}
+    ${props => (props.underline ? `border-top: 0.5px dashed ${props.theme.colors.gray}; ` : ``)}
+    
     width: 100%;
     box-sizing: border-box;
 
