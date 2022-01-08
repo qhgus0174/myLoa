@@ -82,7 +82,11 @@ const CharacterAdd = () => {
         const charactersLedger: ILedgerOwn = {
             characterId: characterId,
             prevWeekGold: [0, 0, 0, 0],
-            histories: { raid: { fold: true, data: [] }, goods: { fold: true, data: [] } },
+            histories: {
+                raid: { fold: true, data: [] },
+                goods: { fold: true, data: [] },
+                spending: { fold: true, data: [] },
+            },
         };
 
         setStoredLedger(Object.assign({}, storedLedger, { ...storedLedger }.own.push(charactersLedger)));
