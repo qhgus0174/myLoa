@@ -4,7 +4,7 @@ import { useInput } from '@hooks/useInput';
 import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
 import { ModalActionContext } from '@context/ModalContext';
 import EditButtonContainer from '@components/Container/Button/Edit';
-import GoodsFieldSet from '@components/Ledger/modal/Form';
+import Form from '@components/Ledger/modal/Form';
 import { ILedger } from '@common/types/localStorage/Ledger';
 import { ICommonGold } from '@common/types/response/ledger/common';
 import { dateToTime } from '@common/utils';
@@ -77,7 +77,7 @@ const EditIncomeSpending = ({ goods, type, oriDay, oriName, oriImgUrl, oriGold, 
                 </TopInfo>
             </CharacterInfo>
             <LedgerInfo>
-                <GoodsFieldSet
+                <Form
                     getGoods={getGoods}
                     day={day}
                     setGetGoods={setGetGoods}

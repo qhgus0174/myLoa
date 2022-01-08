@@ -4,7 +4,7 @@ import { useInput } from '@hooks/useInput';
 import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
 import { ModalActionContext } from '@context/ModalContext';
 import AddButtonContainer from '@components/Container/Button/Add';
-import GoodsFieldSet from '@components/Ledger/modal/Form';
+import Form from '@components/Ledger/modal/Form';
 import { ICommonHistory, ILedger } from '@common/types/localStorage/Ledger';
 import { ICommonGold } from '@common/types/response/ledger/common';
 import styled from '@emotion/styled';
@@ -106,7 +106,7 @@ const IncomeSpending = ({ goods, type }: IIncome) => {
                 </TopInfo>
             </CharacterInfo>
             <LedgerInfo>
-                <GoodsFieldSet
+                <Form
                     getGoods={getGoods}
                     day={day}
                     setGetGoods={setGetGoods}
