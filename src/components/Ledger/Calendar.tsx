@@ -3,6 +3,7 @@ import { DateTime } from 'luxon';
 import { stringToFormat } from '@common/utils';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
+import { widthMedia } from '@style/device';
 
 interface IWeekGold {
     datetime: string;
@@ -43,6 +44,7 @@ const Calendar = ({ array }: { array: IWeekGold[] }) => {
 
 const Container = styled.div`
     display: flex;
+    flex-wrap: wrap;
 `;
 
 const WeekItem = styled.div`
@@ -52,6 +54,10 @@ const WeekItem = styled.div`
     width: calc(100% / 7);
     box-sizing: border-box;
     border: 1px solid ${props => props.theme.colors.gray};
+
+    ${widthMedia.smallPhone} {
+        width: calc(100% / 4);
+    }
 `;
 
 const Day = styled.div`
@@ -59,8 +65,17 @@ const Day = styled.div`
     border-bottom: 1px solid ${props => props.theme.colors.gray};
     padding-top: 0.7em;
     padding-bottom: 0.5em;
-    width: 60%;
+    width: 70%;
+    text-align: center;
     justify-content: center;
+
+    ${widthMedia.desktop} {
+        width: 80%;
+    }
+
+    ${widthMedia.tablet} {
+        width: 90%;
+    }
 `;
 
 const Contents = styled.div`
@@ -70,7 +85,15 @@ const Contents = styled.div`
     max-height: 70px;
     padding-top: 0.5em;
     align-items: flex-end;
-    width: 50%;
+    width: 70%;
+
+    ${widthMedia.desktop} {
+        width: 80%;
+    }
+
+    ${widthMedia.tablet} {
+        width: 90%;
+    }
 `;
 
 const Gold = styled.span<{ color: string }>`
@@ -78,7 +101,7 @@ const Gold = styled.span<{ color: string }>`
     width: 100%;
     flex-direction: row-reverse;
     color: ${props => props.color};
-    padding-bottom: 0.1em;
+    padding-bottom: 0.2em;
 `;
 
 const Sum = styled.span`
