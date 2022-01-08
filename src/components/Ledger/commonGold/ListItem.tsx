@@ -53,21 +53,32 @@ const CommonListItem = ({
             >
                 <InnerContents name={true}>공통</InnerContents>
                 <InnerContents>
-                    <TitleAndGold underline={false} gold={incomeGold} goldTextColor={theme.ledger.income} />
+                    <TitleAndGold
+                        isPadding={false}
+                        underline={false}
+                        gold={incomeGold}
+                        goldTextColor={theme.ledger.income}
+                    />
                 </InnerContents>
                 <InnerContents>
                     <TitleAndGold
                         underline={false}
                         gold={spendingGold}
                         negative={true}
+                        isPadding={false}
                         goldTextColor={theme.ledger.spending}
                     />
                 </InnerContents>
                 <InnerContents>
-                    <TitleAndGold underline={false} gold={incomeGold - spendingGold} />
+                    <TitleAndGold isPadding={false} underline={false} gold={incomeGold - spendingGold} />
                 </InnerContents>
                 <InnerContents>
-                    <TitleAndGold underline={false} gold={prevGold} goldTextColor={theme.ledger.lastWeek} />
+                    <TitleAndGold
+                        isPadding={false}
+                        underline={false}
+                        gold={prevGold}
+                        goldTextColor={theme.colors.gray}
+                    />
                 </InnerContents>
             </ListItem>
             <Histories
