@@ -45,7 +45,7 @@ const IncomeSpendItem = ({ id, gold, name, datetime, imgUrl, removeFn, type, com
                     oriGold={gold}
                 />
             ),
-            options: { width: '500', height: '540', headerTitle: '재화 수입' },
+            options: { width: '500', height: '560', headerTitle: '재화 수입' },
         });
     };
 
@@ -62,6 +62,7 @@ const IncomeSpendItem = ({ id, gold, name, datetime, imgUrl, removeFn, type, com
                         gold={gold}
                         underline={false}
                         goldTextColor={type === 'income' ? theme.ledger.income : theme.ledger.spending}
+                        negative={type === 'income' ? false : true}
                     />
                 </GoodsGoldIcon>
             </Gold>

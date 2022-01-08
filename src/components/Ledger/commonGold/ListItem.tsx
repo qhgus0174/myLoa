@@ -31,7 +31,7 @@ const CommonListItem = ({
         setModalProps({
             isOpen: true,
             content: <IncomeSpending goods={commonData} type="income" />,
-            options: { width: '500', height: '540', headerTitle: '재화 수입' },
+            options: { width: '500', height: '560', headerTitle: '재화 수입' },
         });
     };
 
@@ -39,7 +39,7 @@ const CommonListItem = ({
         setModalProps({
             isOpen: true,
             content: <IncomeSpending type="spending" goods={commonData} />,
-            options: { width: '500', height: '540', headerTitle: '재화 지출' },
+            options: { width: '500', height: '560', headerTitle: '재화 지출' },
         });
     };
 

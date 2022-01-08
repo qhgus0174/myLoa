@@ -53,7 +53,7 @@ const CharacterListItem = ({
                     type="income"
                 />
             ),
-            options: { width: '500', height: '540', headerTitle: '재화 수입' },
+            options: { width: '500', height: '560', headerTitle: '재화 수입' },
         });
     };
 
@@ -73,7 +73,7 @@ const CharacterListItem = ({
                     )}
                 />
             ),
-            options: { width: '800', height: '540', headerTitle: '레이드 수입' },
+            options: { width: '800', height: '600', headerTitle: '레이드 수입', isHeaderClose: true },
         });
     };
 
@@ -88,7 +88,7 @@ const CharacterListItem = ({
                     imgPaletteArr={ledgerData.goodsImg}
                 />
             ),
-            options: { width: '500', height: '540', headerTitle: '재화 지출' },
+            options: { width: '500', height: '560', headerTitle: '재화 지출' },
         });
     };
 

@@ -134,7 +134,7 @@ const Ledger = () => {
         setModalProps({
             isOpen: true,
             content: <CharacterGoldThisWeek array={array} />,
-            options: { width: '400', height: '300', headerTitle: '캐릭터 별 골드 수입', isHeaderClose: true },
+            options: { width: '410', height: '320', headerTitle: '캐릭터 별 골드 수입', isHeaderClose: true },
         });
     };
 
@@ -714,6 +714,7 @@ const TableHeader = styled.div`
     padding-top: 0.6em;
     padding-bottom: 0.6em;
     width: 100%;
+    font-weight: 600;
 
     ${widthMedia.phone} {
         width: 600px;
