@@ -1,8 +1,8 @@
 import React from 'react';
-import { getThisWeek } from '@common/utils';
-import styled from '@emotion/styled';
-import RadioButton from '@components/Input/Radio';
 import { DateTime } from 'luxon';
+import RadioButton from '@components/Input/Radio';
+import { getThisWeek, stringToFormat } from '@common/utils';
+import styled from '@emotion/styled';
 
 interface IWeekDayPicker {
     day: string;
@@ -12,17 +12,22 @@ interface IWeekDayPicker {
 const WeekDayPicker = ({ day, setDay }: IWeekDayPicker) => {
     return (
         <Containter>
-            {getThisWeek().map((goldDay: string, index) => {
+            {getThisWeek().map((goldDay: string, index, weekArr: string[]) => {
                 return (
                     <RadioButton
                         key={index}
-                        text={DateTime.fromFormat(goldDay, 'yyyy/MM/dd').toFormat('MM/dd')}
+                        text={stringToFormat({ date: goldDay, fromFormat: 'yyyy/MM/dd', toFormat: 'MM/dd' })}
                         name="contents"
                         value={goldDay}
                         onChange={e => {
                             setDay(e.target.value);
                         }}
-                        checked={day === goldDay}
+                        checked={
+                            weekArr[6] ===
+                            DateTime.fromFormat(day, 'yyyy/MM/dd').minus({ days: 1 }).toFormat('yyyy/MM/dd')
+                                ? weekArr[6] === goldDay
+                                : day === goldDay
+                        }
                     />
                 );
             })}
