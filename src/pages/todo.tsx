@@ -105,7 +105,11 @@ const Main = () => {
                 const charactersLedger: ILedgerOwn = {
                     characterId: character.id,
                     prevWeekGold: [0, 0, 0, 0],
-                    histories: { raid: { fold: true, data: [] }, goods: { fold: true, data: [] } },
+                    histories: {
+                        raid: { fold: true, data: [] },
+                        goods: { fold: true, data: [] },
+                        spending: { fold: true, data: [] },
+                    },
                 };
                 return charactersLedger;
             },
@@ -297,7 +301,11 @@ const Main = () => {
         const charactersLedger: ILedgerOwn = {
             characterId: characterId,
             prevWeekGold: [0, 0, 0, 0],
-            histories: { raid: { fold: true, data: [] }, goods: { fold: true, data: [] } },
+            histories: {
+                raid: { fold: true, data: [] },
+                goods: { fold: true, data: [] },
+                spending: { fold: true, data: [] },
+            },
         };
         return charactersLedger;
     };
