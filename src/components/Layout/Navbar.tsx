@@ -5,11 +5,11 @@ import { ModalActionContext } from '@context/ModalContext';
 import { MobileNavContext } from '@context/MobileNavContext';
 import WeeklyContents from '@components/Contents/WeeklyContents';
 import DayContents from '@components/Contents/DayContents';
+import IconLabel from '@components/Label/IconLabel';
 import Guide from '@components/Guide';
 import styled from '@emotion/styled';
 import { css } from '@emotion/react';
 import { Dimmer } from '@style/common/modal';
-import Image from 'next/image';
 
 interface INavbar {
     isMobile: boolean;
@@ -76,12 +76,12 @@ const Navbar = ({ isMobile }: INavbar) => {
                             </InnerLinkLi>
                             <InnerLinkLi isMobile={isMobile} isActive={router.pathname === '/ledger'}>
                                 <Link href="/ledger">
-                                    <LinkText>골드 수입</LinkText>
+                                    <LinkText>가계부</LinkText>
                                 </Link>
                             </InnerLinkLi>
                             <InnerLinkLi isMobile={isMobile} isActive={router.pathname === '/statistics'}>
                                 <Link href="/statistics">
-                                    <LinkText>수입 통계</LinkText>
+                                    <LinkText>가계부 통계</LinkText>
                                 </Link>
                             </InnerLinkLi>
                             <InnerLinkLi isMobile={isMobile} isActive={router.pathname === '/manage'}>
@@ -93,22 +93,36 @@ const Navbar = ({ isMobile }: INavbar) => {
                     </Li>
                     <Li isMobile={isMobile} direction="right">
                         <InnerUl isMobile={isMobile}>
-                            <InnerLi isMobile={isMobile} isActive={router.pathname === '/'}>
-                                <span className="selectDayContents" onClick={openDayContents}>
-                                    🔎 일일 컨텐츠
-                                </span>
+                            <InnerLi
+                                className="selectDayContents"
+                                onClick={openDayContents}
+                                isMobile={isMobile}
+                                isActive={router.pathname === '/'}
+                            >
+                                일일
                             </InnerLi>
                             {!isMobile && <li>|</li>}
-                            <InnerLi isMobile={isMobile} isActive={router.pathname === '/'}>
-                                <span className="selectWeeklyContents" onClick={openWeeklyContents}>
-                                    🔎 주간 컨텐츠
-                                </span>
+                            <InnerLi
+                                className="selectWeeklyContents"
+                                onClick={openWeeklyContents}
+                                isMobile={isMobile}
+                                isActive={router.pathname === '/'}
+                            >
+                                주간
                             </InnerLi>
                             {!isMobile && <li>|</li>}
-                            <InnerLi isMobile={isMobile} isActive={router.pathname === '/'}>
-                                <span className="guide" onClick={showGuide}>
-                                    가이드
-                                </span>
+                            <InnerLi
+                                className="guide"
+                                onClick={showGuide}
+                                isMobile={isMobile}
+                                isActive={router.pathname === '/'}
+                            >
+                                <IconLabel
+                                    label={<h4>가이드</h4>}
+                                    iconUrl="/static/img/icon/mococo/what_rabbit.png"
+                                    width="20"
+                                    height="20"
+                                />
                             </InnerLi>
                             {!isMobile && <li>|</li>}
                             <InnerLi border={false} isMobile={isMobile}>
@@ -120,7 +134,12 @@ const Navbar = ({ isMobile }: INavbar) => {
                                     href="https://north-ravioli-1b6.notion.site/Release-Note-84ce9a86118340b2944b161948cbc7c5"
                                     target="_blank"
                                 >
-                                    업데이트 내역
+                                    <IconLabel
+                                        label={<h4>NEW!</h4>}
+                                        iconUrl="/static/img/icon/mococo/heart.png"
+                                        width="18"
+                                        height="18"
+                                    />
                                 </a>
                             </InnerLi>
                         </InnerUl>
