@@ -12,7 +12,7 @@ interface IIconLabel {
 const IconLabel = ({ iconUrl, label, width = '16', height = '16' }: IIconLabel) => {
     return (
         <Container>
-            <Image alt="라벨 아이콘" src={iconUrl} width={width} height={width} />
+            <Image alt="라벨 아이콘" src={iconUrl} width={width} height={height} />
             <Label>{label}</Label>
         </Container>
     );
