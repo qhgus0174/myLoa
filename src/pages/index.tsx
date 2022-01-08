@@ -7,6 +7,7 @@ import IconLabel from '@components/Label/IconLabel';
 import { getWeeklyContents, IWeeklyContents } from '@common/getCommonData';
 import styled from '@emotion/styled';
 import { widthMedia } from '@style/device';
+import { Comment } from '@style/common/text';
 
 const Main = ({ abyss, guardian }: IWeeklyContents) => {
     return (
@@ -20,7 +21,7 @@ const Main = ({ abyss, guardian }: IWeeklyContents) => {
             </Head>
             <TopArea>
                 <TextDiv>
-                    <Image alt="로요일좋아 로고" src="/static/img/logo/logo.png" width="350" height="140" />
+                    <Image alt="로요일좋아 로고" src="/static/img/logo/logo.png" width="350" height="130" />
                     <br />
                     <ExplainText>로요일을 기다리면서 숙제 체크와 골드 가계부를 작성해보세요!</ExplainText>
                     <br />
@@ -46,6 +47,14 @@ const Main = ({ abyss, guardian }: IWeeklyContents) => {
                             </GoTodo>
                         </Link>
                     </GoTodoButtons>
+                    <br />
+                    <br />
+                    <Comment>
+                        모코코콘 출처 :
+                        <a href="https://blog.daum.net/coconut-emoji/" target="_blank">
+                            https://blog.daum.net/coconut-emoji/
+                        </a>
+                    </Comment>
                 </TextDiv>
             </TopArea>
         </Container>
