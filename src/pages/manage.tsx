@@ -15,6 +15,7 @@ import { insertErrorDB } from '@common/error';
 import styled from '@emotion/styled';
 import { FlexDiv } from '@style/common/layout/common';
 import { widthMedia } from '@style/device';
+import IconLabel from '@components/Label/IconLabel';
 
 const Manage = () => {
     const { setSpinnerVisible } = useContext(SpinnerContext);
@@ -76,14 +77,24 @@ const Manage = () => {
                 <title>로요일좋아 - 관리</title>
             </Head>
             <Content>
-                <span>💥 데이터를 초기화 합니다. </span>
+                <IconLabel
+                    label={<h4>데이터를 초기화 합니다.</h4>}
+                    iconUrl="/static/img/icon/mococo/reset.png"
+                    width="35"
+                    height="35"
+                />
                 <CustomButton className="resetData" onClick={() => clearData()}>
                     초기화 실행
                 </CustomButton>
             </Content>
             <Content direction="column">
                 <InnerContent>
-                    <span>⭐ 데이터를 백업하여 다른 브라우저에서 열람 가능합니다. (일회용) </span>
+                    <IconLabel
+                        label={<h4>데이터를 백업하여 다른 브라우저에서 열람 가능합니다. (일회용)</h4>}
+                        iconUrl="/static/img/icon/mococo/kick.png"
+                        width="35"
+                        height="35"
+                    />
                 </InnerContent>
                 <InnerContent>
                     <CustomButton className="createBackupCode" onClick={() => backupData()}>
