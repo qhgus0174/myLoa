@@ -4,12 +4,19 @@ import { DateTime } from 'luxon';
 import { ModalActionContext } from '@context/ModalContext';
 import EditIncomeSpending from '@components/Ledger/modal/common/EditIncomeSpending';
 import TitleAndGold from '@components/Ledger/TitleAndGold';
+import { ILedgerSaveParam, IncomeSpendingType } from '@common/types/types';
 import { ILedgerHistoryRaid } from '@common/types/localStorage/Ledger';
 import { ICommonGold } from '@common/types/response/ledger/common';
-import { ILedgerSaveParam, IncomeSpendingType } from '@common/types/types';
 import { useTheme } from '@emotion/react';
-import { widthMedia } from '@style/device';
-import styled from '@emotion/styled';
+import {
+    Gold,
+    GoodsGoldIcon,
+    IconAndText,
+    IconText,
+    ItemContainer,
+    UpdateButton,
+    Date,
+} from '@style/common/layout/table';
 
 interface IIncomeSpendItem extends ILedgerHistoryRaid {
     imgUrl: string;
@@ -41,8 +48,9 @@ const IncomeSpendItem = ({ id, gold, name, datetime, imgUrl, removeFn, type, com
             options: { width: '500', height: '540', headerTitle: '재화 수입' },
         });
     };
+
     return (
-        <Container>
+        <ItemContainer>
             <Date>{DateTime.fromISO(DateTime.fromSeconds(Number(datetime)).toISO()).toFormat('MM/dd')}</Date>
             <IconAndText>
                 <Image src={imgUrl} width="25" height="25" />
@@ -75,60 +83,8 @@ const IncomeSpendItem = ({ id, gold, name, datetime, imgUrl, removeFn, type, com
                     onClick={() => removeFn({ goodsId: id })}
                 />
             </UpdateButton>
-        </Container>
+        </ItemContainer>
     );
 };
 
-const Container = styled.li`
-    display: flex;
-    width: 100%;
-    padding-top: 0.8em;
-    padding-bottom: 0.8em;
-    border-top: 0.5px dashed ${props => props.theme.colors.white};
-    border-bottom: 0.5px dashed ${props => props.theme.colors.white};
-    box-sizing: border-box;
-    align-items: center;
-    justify-content: space-between;
-`;
-
-const GoodsGoldIcon = styled.div`
-    display: flex;
-    flex-basis: 30%;
-    align-items: center;
-    input {
-        padding-left: 5px;
-    }
-`;
-
-const IconAndText = styled.div`
-    display: flex;
-    flex-basis: 40%;
-    justify-content: center;
-    align-items: center;
-`;
-
-const IconText = styled.div`
-    padding-left: 1em;
-`;
-
-const Date = styled.div`
-    display: flex;
-    flex-basis: 15%;
-    justify-content: center;
-`;
-
-const Gold = styled.div`
-    display: flex;
-    flex-basis: 25%;
-    justify-content: center;
-`;
-
-const UpdateButton = styled.div`
-    display: flex;
-    flex-basis: 9%;
-    justify-content: center;
-    cursor: pointer;
-    width: 100%;
-    height: 100%;
-`;
 export default IncomeSpendItem;
