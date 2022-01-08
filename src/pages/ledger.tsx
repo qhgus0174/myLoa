@@ -264,11 +264,11 @@ const Ledger = () => {
 
     const calcCommonGoldThisWeek = ({ historyData }: { historyData: ICommonHistory[] }) => {
         const incomeArr = historyData.filter(({ type }) => {
-            return type === 'income';
+            return type != 'spending';
         });
 
         const spendingArr = historyData.filter(({ type }) => {
-            return type === 'spending';
+            return type == 'spending';
         });
 
         const calcCommGold = calcSum(incomeArr) - calcSum(spendingArr);

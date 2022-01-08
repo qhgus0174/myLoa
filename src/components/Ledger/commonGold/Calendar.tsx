@@ -5,7 +5,6 @@ import { calcSum } from '@components/Ledger/common/functions';
 import Calendar from '@components/Ledger/Calendar';
 import { ICommonHistory } from '@common/types/localStorage/Ledger';
 import { getThisWeek, groupBy, timeToDate } from '@common/utils';
-import styled from '@emotion/styled';
 
 interface ICalendar {
     totalGold: number;
@@ -42,29 +41,33 @@ const CommonCalendar = ({ totalGold }: ICalendar) => {
 
         const sumByDate: IWeekGold[] = Object.values(groupBy(commonGoldArr, obj => obj.datetime)).map((arr, index) => {
             const incomeArr = arr.filter(obj => {
-                return obj.type === 'income';
+                return obj.type != 'spending';
             });
 
             const spendingArr = arr.filter(obj => {
-                return obj.type === 'spending';
+                return obj.type == 'spending';
             });
             return { datetime: arr[0].datetime, income: calcSum(incomeArr), spending: calcSum(spendingArr) };
         });
 
         const weeksArr = getThisWeek().map(datetime => ({ datetime }));
 
-        const weekGoldByDate = weeksArr.map((item, i) => {
-            const { datetime } = sumByDate[i] ? sumByDate[i] : weeksArr[i];
-            const { income, spending } = sumByDate[i] ? sumByDate[i] : { income: 0, spending: 0 };
+        const weekGoldByDate = weeksArr.map(({ datetime: weekDatetime }, i) => {
+            const goldDataIndex = sumByDate.findIndex(({ datetime }) => {
+                return weekDatetime == datetime;
+            });
+
+            const income = goldDataIndex > -1 ? sumByDate[goldDataIndex].income : 0;
+            const spending = goldDataIndex > -1 ? sumByDate[goldDataIndex].spending : 0;
 
             const newSumByDate = {
-                datetime: datetime,
+                datetime: weekDatetime,
                 income: income,
                 spending: spending,
             };
-
-            return Object.assign({}, newSumByDate, item);
+            return newSumByDate;
         });
+
         setCalendarGold(weekGoldByDate);
     };
 
