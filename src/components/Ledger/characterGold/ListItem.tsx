@@ -100,7 +100,7 @@ const CharacterListItem = ({
                     toggleList(characterId);
                 }}
             >
-                <InnerContents name={true}>
+                <InnerContents isName={true}>
                     {
                         getCharacterInfoById({
                             dataArray: storedCharacter,

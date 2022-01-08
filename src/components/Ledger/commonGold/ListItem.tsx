@@ -51,7 +51,7 @@ const CommonListItem = ({
                     setIsShow(!isShow);
                 }}
             >
-                <InnerContents name={true}>공통</InnerContents>
+                <InnerContents isName={true}>공통</InnerContents>
                 <InnerContents>
                     <TitleAndGold
                         isPadding={false}

@@ -410,7 +410,7 @@ const Ledger = () => {
                             </SummaryHeader>
                             <Table>
                                 <TableHeader>
-                                    <InnerContents name={true}>닉네임(레벨)</InnerContents>
+                                    <InnerContents isName={true}>닉네임(레벨)</InnerContents>
                                     <InnerContents>수입</InnerContents>
                                     <InnerContents>지출</InnerContents>
                                     <InnerContents>합계</InnerContents>

@@ -9,8 +9,8 @@ export const Contents = styled.div`
     border-bottom: 1px solid ${props => props.theme.colors.gray};
 `;
 
-export const InnerContents = styled.div<{ name?: boolean }>`
-    width: ${props => (props.name ? `30%` : `calc(70% / 4);`)};
+export const InnerContents = styled.div<{ isName?: boolean }>`
+    width: ${props => (props.isName ? `30%` : `calc(70% / 4);`)};
     text-align: center;
     box-sizing: border-box;
 
