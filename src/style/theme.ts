@@ -37,7 +37,7 @@ export const mainColor: mainColor[] = [
     { name: 'darkBrown', mainColor: '#423F3E' },
     { name: 'darkYellow', mainColor: '#393E46' },
     { name: 'darkPink', mainColor: '#595B83' },
-    { name: 'veryCold', mainColor: '#c7c3d4' },
+    { name: 'veryCold', mainColor: '#9890b0' },
     { name: 'darkCyan', mainColor: '#363a43' },
     { name: 'lego', mainColor: '#0f609d' },
     { name: 'blue', mainColor: '#c7d7e4' },
@@ -90,7 +90,7 @@ export const none: Theme = {
         primary: '#396EB0',
         secondary: '#F2789F',
         quaternary: '#9B72AA',
-        tertiary: '#BEAEE2',
+        tertiary: '#e38649',
     },
     ledger: {
         income: '#4596e6',
@@ -145,7 +145,7 @@ export const basic: Theme = {
         primary: '#396EB0',
         secondary: '#F2789F',
         quaternary: '#9B72AA',
-        tertiary: '#BEAEE2',
+        tertiary: '#f77768',
     },
 
     ledger: {
@@ -202,11 +202,11 @@ export const pink: Theme = {
         primary: '#F8BD7F',
         secondary: '#82ca9d',
         quaternary: '#396EB0',
-        tertiary: '#47597E',
+        tertiary: '#EC4646',
     },
     ledger: {
-        income: '#4596e6',
-        spending: '#f77768',
+        income: '#2D46B9',
+        spending: '#EC4646',
     },
 };
 
@@ -217,7 +217,7 @@ export const violet: Theme = {
         mainInner: '#be9bcd',
         relax: '#5de55d',
         shadow: '#7D5A5A',
-        hover: '#b58fc6',
+        hover: '#b088c3',
         scroll: '#514963',
         pin: '#ea1f5f',
         text: '#514963',
@@ -257,11 +257,11 @@ export const violet: Theme = {
         primary: '#B4AEE8',
         secondary: '#4C3F91',
         quaternary: '#F9C5D5',
-        tertiary: '#F2789F',
+        tertiary: '#DE4463',
     },
     ledger: {
-        income: '#4596e6',
-        spending: '#e38649',
+        income: '#1F3C88',
+        spending: '#DE4463',
     },
 };
 
@@ -312,11 +312,11 @@ export const green: Theme = {
         primary: '#3E8E7E',
         secondary: '#C7B198',
         quaternary: '#79B4B7',
-        tertiary: '#406882',
+        tertiary: '#EE6F57',
     },
     ledger: {
-        income: '#4596e6',
-        spending: '#e38649',
+        income: '#1F3C88',
+        spending: '#EE6F57',
     },
 };
 
@@ -367,11 +367,11 @@ export const cold: Theme = {
         primary: '#7CD1B8',
         secondary: '#5584AC',
         quaternary: '#907FA4',
-        tertiary: '#4C3F91',
+        tertiary: '#EC4646',
     },
     ledger: {
-        income: '#4596e6',
-        spending: '#e38649',
+        income: '#1F3C88',
+        spending: '#EC4646',
     },
 };
 
@@ -422,11 +422,11 @@ export const autumn: Theme = {
         primary: '#DE834D',
         secondary: '#A3423C',
         quaternary: '#FF8882',
-        tertiary: '#FC997C',
+        tertiary: '#A91D1D',
     },
     ledger: {
-        income: '#4596e6',
-        spending: '#e38649',
+        income: '#2F24C1',
+        spending: '#A91D1D',
     },
 };
 
@@ -477,11 +477,11 @@ export const violetBrown: Theme = {
         primary: '#D8B6A4',
         secondary: '#A2416B',
         quaternary: '#C26565',
-        tertiary: '#6C4A4A',
+        tertiary: '#F999B7',
     },
     ledger: {
-        income: '#4596e6',
-        spending: '#e38649',
+        income: '#DBE6FD',
+        spending: '#F999B7',
     },
 };
 
@@ -532,11 +532,11 @@ export const flower: Theme = {
         primary: '#B24080',
         secondary: '#664E88',
         quaternary: '#FE91CA',
-        tertiary: '#F2789F',
+        tertiary: '#E4406F',
     },
     ledger: {
-        income: '#4596e6',
-        spending: '#e38649',
+        income: '#0033C7',
+        spending: '#E4406F',
     },
 };
 
@@ -587,10 +587,10 @@ export const pinkBeige: Theme = {
         primary: '#8884d8',
         secondary: '#EB92BE',
         quaternary: '#F1C6E7',
-        tertiary: '#F2789F',
+        tertiary: '#e38649',
     },
     ledger: {
-        income: '#4596e6',
+        income: '#1F3C88',
         spending: '#e38649',
     },
 };
@@ -642,10 +642,10 @@ export const darkBrown: Theme = {
         primary: '#865439',
         secondary: '#C68B59',
         quaternary: '#EA9085',
-        tertiary: '#B84A39',
+        tertiary: '#e38649',
     },
     ledger: {
-        income: '#4596e6',
+        income: '#78C4D4',
         spending: '#e38649',
     },
 };
@@ -697,7 +697,7 @@ export const darkYellow: Theme = {
         primary: '#22577E',
         secondary: '#E2C275',
         quaternary: '#808C6C',
-        tertiary: '#96C7C1',
+        tertiary: '#e38649',
     },
     ledger: {
         income: '#4596e6',
@@ -752,11 +752,11 @@ export const darkPink: Theme = {
         primary: '#8884d8',
         secondary: '#82ca9d',
         quaternary: '#BBBBBB',
-        tertiary: '#FFA6D5',
+        tertiary: '#FFA3AC',
     },
     ledger: {
-        income: '#4596e6',
-        spending: '#e38649',
+        income: '#81CBC8',
+        spending: '#FFA3AC',
     },
 };
 
@@ -807,11 +807,11 @@ export const veryCold: Theme = {
         primary: '#916BBF',
         secondary: '#EB92BE',
         quaternary: '#93B5E1',
-        tertiary: '#848CCF',
+        tertiary: '#B72A67',
     },
     ledger: {
-        income: '#4596e6',
-        spending: '#e38649',
+        income: '#BBF1FA',
+        spending: '#FBACCC',
     },
 };
 
@@ -862,10 +862,10 @@ export const darkCyan: Theme = {
         primary: '#22577A',
         secondary: '#87A8A4',
         quaternary: '#00416D',
-        tertiary: '#1B6CA8',
+        tertiary: '#e38649',
     },
     ledger: {
-        income: '#4596e6',
+        income: '#7971EA',
         spending: '#e38649',
     },
 };
@@ -917,11 +917,11 @@ export const lego: Theme = {
         primary: '#FF7600',
         secondary: '#00C1D4',
         quaternary: '#3D84B8',
-        tertiary: '#FFC947',
+        tertiary: '#F67280',
     },
     ledger: {
-        income: '#4596e6',
-        spending: '#e38649',
+        income: '#24BDDF',
+        spending: '#F67280',
     },
 };
 
@@ -972,10 +972,10 @@ export const blue: Theme = {
         primary: '#262A53',
         secondary: '#628395',
         quaternary: '#325288',
-        tertiary: '#02475E',
+        tertiary: '#e38649',
     },
     ledger: {
-        income: '#4596e6',
-        spending: '#e38649',
+        income: '#2D46B9',
+        spending: '#F999B7',
     },
 };
