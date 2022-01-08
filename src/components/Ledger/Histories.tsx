@@ -5,6 +5,7 @@ import styled from '@emotion/styled';
 import IconLabel from '@components/Label/IconLabel';
 import PlusIcon from '@components/Image/PlusIcon';
 import { useTheme } from '@emotion/react';
+import { widthMedia } from '@style/device';
 
 interface IHistories {
     visible: boolean;
@@ -87,10 +88,15 @@ const Histories = ({
 const Container = styled.div<{ visible: boolean }>`
     display: ${props => (props.visible ? 'flex; flex-direction:column;' : 'none;')};
     background: ${props => props.theme.colors.mainInner};
-    padding-top: 2em;
-    padding-bottom: 2em;
-    padding-left: 3em;
-    padding-right: 3em;
+    padding-top: 3em;
+    padding-bottom: 3em;
+    padding-left: 5em;
+    padding-right: 5em;
+
+    ${widthMedia.smallPhone} {
+        padding-left: 1em;
+        padding-right: 1em;
+    }
 `;
 
 const ListTitle = styled.div`

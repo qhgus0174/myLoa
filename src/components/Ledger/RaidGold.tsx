@@ -215,7 +215,7 @@ const RaidGold = ({
                         );
 
                         return (
-                            <div key={raidIndex}>
+                            <RaidDiv key={raidIndex}>
                                 {openlevel <= characterLevel && characterLevel < closelevel && (
                                     <Article>
                                         <Title>
@@ -341,7 +341,7 @@ const RaidGold = ({
                                         </Content>
                                     </Article>
                                 )}
-                            </div>
+                            </RaidDiv>
                         );
                     },
                 )}
@@ -351,15 +351,31 @@ const RaidGold = ({
 
 const Container = styled.section`
     display: flex;
-    flex-direction: column;
     width: 100%;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    padding-bottom: 2em;
+    box-sizing: border-box;
+`;
+
+const RaidDiv = styled.div`
+    display: flex;
+    flex-basis: 47%;
+    width: 100%;
+
+    ${widthMedia.smallDesktop} {
+        flex-basis: 100%;
+    }
 `;
 
 const Article = styled.article`
     display: flex;
     flex-direction: column;
-    width: 100%;
     margin-top: 1em;
+    border: 1px solid;
+    box-sizing: border-box;
+    padding: 3em;
+    width: 100%;
 `;
 
 const Title = styled.div`
@@ -369,25 +385,20 @@ const Title = styled.div`
     }
 
     margin-bottom: 0.8em;
+    width: 100%;
 `;
 
 const Content = styled.div`
     display: flex;
-    width: 100%;
-    border-bottom: 1px dashed ${props => props.theme.colors.white};
-    padding-bottom: 1em;
     justify-content: space-around;
     margin-left: 0;
-
-    ${widthMedia.smallDesktop} {
-        flex-direction: column;
-        border-bottom: none;
-        margin-left: 1.5em;
-    }
+    width: 100%;
+    box-sizing: border-box;
 
     ${widthMedia.tablet} {
+        flex-direction: column;
         flex-direction: row;
-        border-bottom: 1px dashed ${props => props.theme.colors.white};
+        align-items: center;
         margin-left: 0;
     }
 
@@ -407,10 +418,6 @@ const Contents = styled.div`
 
     h5 {
         margin-bottom: 0.5em;
-    }
-
-    ${widthMedia.phone} {
-        padding-left: 1em;
     }
 `;
 

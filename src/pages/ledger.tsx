@@ -12,7 +12,7 @@ import CharacterGoldThisWeek from '@components/Statistics/Graph/CharacterGoldThi
 import { ICommonHistory, ILedger, ILedgerOwn } from '@common/types/localStorage/Ledger';
 import CharacterListItem from '@components/Ledger/characterGold/ListItem';
 import CommonListItem from '@components/Ledger/commonGold/ListItem';
-import { calcSum } from '@components/Ledger/common/functions';
+import { calcCommonIncomeGold, calcCommonSpendingGold, calcSum } from '@components/Ledger/common/functions';
 import TitleAndGold from '@components/Ledger/TitleAndGold';
 import EmojiTitle from '@components/Emoji/EmojiTitle';
 import Ranking from '@components/Statistics/Ranking';
@@ -57,7 +57,7 @@ const Ledger = () => {
 
     const { setModalProps } = useContext(ModalActionContext);
 
-    const [isSummaryVisible, setIsSummaryVisible] = useState<boolean>(false);
+    const [isSummaryVisible, setIsSummaryVisible] = useState<boolean>(true);
 
     const [commonGoldThisWeek, setCommonGoldThisWeek] = useState<number>(0);
     const [raidGoldThisWeek, setRaidGoldThisWeek] = useState<number>(0);
@@ -187,16 +187,8 @@ const Ledger = () => {
         //공통 골드
 
         const calcCommGold =
-            calcSum(
-                newLedger.common.histories.filter(({ type }) => {
-                    return type === 'income';
-                }),
-            ) -
-            calcSum(
-                newLedger.common.histories.filter(({ type }) => {
-                    return type === 'spending';
-                }),
-            );
+            calcSum(calcCommonIncomeGold({ history: newLedger.common.histories })) -
+            calcSum(calcCommonSpendingGold({ history: newLedger.common.histories }));
 
         common.prevWeekGold.pop();
         common.prevWeekGold.unshift(calcCommGold);
@@ -318,7 +310,7 @@ const Ledger = () => {
                                 <h1>이번 주 요약</h1>
                                 <Button onClick={() => setIsSummaryVisible(!isSummaryVisible)}>
                                     {isSummaryVisible ? (
-                                        <EmojiTitle label={<span>접어두기</span>} symbol={'📘'} />
+                                        <EmojiTitle label={<span>접기</span>} symbol={'📘'} />
                                     ) : (
                                         <EmojiTitle label={<span>펼치기</span>} symbol={'📖'} />
                                     )}
@@ -438,14 +430,10 @@ const Ledger = () => {
                                     <CommonListItem
                                         commonData={ledgerData.common}
                                         incomeGold={calcSum(
-                                            storedLedger.common.histories.filter(({ type }) => {
-                                                return type !== 'spending';
-                                            }),
+                                            calcCommonIncomeGold({ history: storedLedger.common.histories }),
                                         )}
                                         spendingGold={calcSum(
-                                            storedLedger.common.histories.filter(({ type }) => {
-                                                return type === 'spending';
-                                            }),
+                                            calcCommonSpendingGold({ history: storedLedger.common.histories }),
                                         )}
                                         prevGold={storedLedger.common.prevWeekGold[0]}
                                     />
@@ -533,6 +521,14 @@ const Container = styled.section`
         font-size: 12px;
     }
 
+    ${widthMedia.desktop} {
+        width: 70%;
+    }
+
+    ${widthMedia.smallDesktop} {
+        width: 80%;
+    }
+
     ${widthMedia.phone} {
         width: 90%;
     }
@@ -586,8 +582,8 @@ const DashDiv = styled.div`
     flex-direction: column;
     border: 1px dashed ${props => props.theme.colors.text};
     padding: 1.5em;
-    margin-left: 2em;
-    margin-right: 2em;
+    margin-left: 1.5em;
+    margin-right: 1.5em;
     box-sizing: border-box;
     height: 100%;
 
@@ -624,30 +620,6 @@ const SummaryHeader = styled.div`
     display: flex;
     justify-content: space-between;
     margin-bottom: 1em;
-
-    ${widthMedia.desktop} {
-        margin-bottom: 1.3em;
-    }
-
-    ${widthMedia.phone} {
-        flex-direction: column;
-        & > a {
-            margin-bottom: 10px;
-            text-align: right;
-        }
-    }
-
-    & > span {
-        cursor: pointer;
-
-        ${widthMedia.desktop} {
-            display: flex;
-        }
-
-        ${widthMedia.phone} {
-            justify-content: flex-end;
-        }
-    }
 `;
 
 const RankContainer = styled.div`
@@ -706,6 +678,8 @@ const SummaryHeaderTitle = styled.div`
 
 const SummaryRightTitle = styled.div<{ visible: boolean }>`
     display: ${props => (props.visible ? `flex` : `none`)};
+    justify-content: flex-end;
+    width: 120px;
 `;
 
 const SummaryBody = styled.div`
@@ -720,6 +694,7 @@ const SummaryBody = styled.div`
 
 const Table = styled.div`
     width: 100%;
+    overflow-x: auto;
 `;
 
 const TableHeader = styled.div`
@@ -728,11 +703,22 @@ const TableHeader = styled.div`
     border-bottom: 1px solid;
     padding-top: 0.6em;
     padding-bottom: 0.6em;
+    width: 100%;
+
+    ${widthMedia.phone} {
+        width: 600px;
+    }
 `;
 
 const TableBody = styled.div`
     display: flex;
     flex-direction: column;
+
+    width: 100%;
+    ${widthMedia.phone} {
+        width: 600px;
+    }
+    overflow-x: auto;
 `;
 
 export default Ledger;

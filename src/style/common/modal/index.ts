@@ -59,6 +59,10 @@ export const Title = styled.h2`
 export const Contents = styled.article`
     display: flex;
     align-items: center;
+
+    & > article {
+        margin-left: 0.5em;
+    }
 `;
 
 export const ButtonContainer = styled.article`
@@ -80,6 +84,7 @@ export const InnerContent = styled.article`
     background: ${props => props.theme.colors.mainInner};
     padding: 0.5em;
     border-radius: 1em;
+    box-sizing: border-box;
 `;
 
 export const TopInfo = styled(InnerContent)`

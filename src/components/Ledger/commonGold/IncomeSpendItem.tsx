@@ -57,7 +57,7 @@ const IncomeSpendItem = ({ id, gold, name, datetime, imgUrl, removeFn, type, com
                     />
                 </GoodsGoldIcon>
             </Gold>
-            <Update>
+            <UpdateButton>
                 <Image
                     alt="수정 아이콘"
                     src="/static/img/icon/edit.png"
@@ -65,8 +65,8 @@ const IncomeSpendItem = ({ id, gold, name, datetime, imgUrl, removeFn, type, com
                     height="14"
                     onClick={() => openWriteIncomeGoods()}
                 />
-            </Update>
-            <Delete>
+            </UpdateButton>
+            <UpdateButton>
                 <Image
                     alt="삭제 아이콘"
                     src="/static/img/icon/x-mark.png"
@@ -74,7 +74,7 @@ const IncomeSpendItem = ({ id, gold, name, datetime, imgUrl, removeFn, type, com
                     height="14"
                     onClick={() => removeFn({ goodsId: id })}
                 />
-            </Delete>
+            </UpdateButton>
         </Container>
     );
 };
@@ -93,6 +93,7 @@ const Container = styled.li`
 
 const GoodsGoldIcon = styled.div`
     display: flex;
+    flex-basis: 30%;
     align-items: center;
     input {
         padding-left: 5px;
@@ -120,23 +121,14 @@ const Gold = styled.div`
     display: flex;
     flex-basis: 25%;
     justify-content: center;
-
-    ${widthMedia.phone} {
-        flex-basis: 40%;
-    }
 `;
 
-const Update = styled.div`
+const UpdateButton = styled.div`
     display: flex;
-    flex-basis: 5%;
+    flex-basis: 9%;
     justify-content: center;
     cursor: pointer;
-`;
-
-const Delete = styled.div`
-    display: flex;
-    flex-basis: 5%;
-    justify-content: center;
-    cursor: pointer;
+    width: 100%;
+    height: 100%;
 `;
 export default IncomeSpendItem;

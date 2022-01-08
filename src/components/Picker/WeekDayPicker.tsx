@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { getThisWeek } from '@common/utils';
 import styled from '@emotion/styled';
 import RadioButton from '@components/Input/Radio';
@@ -32,6 +32,7 @@ const WeekDayPicker = ({ day, setDay }: IWeekDayPicker) => {
 
 const Containter = styled.section`
     display: flex;
+    box-sizing: border-box;
 `;
 
 export default WeekDayPicker;

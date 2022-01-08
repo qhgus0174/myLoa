@@ -73,7 +73,7 @@ const CharacterListItem = ({
                     )}
                 />
             ),
-            options: { width: '500', height: '540', headerTitle: '레이드 수입' },
+            options: { width: '800', height: '540', headerTitle: '레이드 수입' },
         });
     };
 
@@ -101,26 +101,25 @@ const CharacterListItem = ({
                 }}
             >
                 <InnerContents name={true}>
-                    <strong>
-                        {
-                            getCharacterInfoById({
-                                dataArray: storedCharacter,
-                                id: characterId,
-                            }).name
-                        }
-                        (Lv.
-                        {
-                            getCharacterInfoById({
-                                dataArray: storedCharacter,
-                                id: characterId,
-                            }).level
-                        }
-                        )
-                    </strong>
+                    {
+                        getCharacterInfoById({
+                            dataArray: storedCharacter,
+                            id: characterId,
+                        }).name
+                    }
+                    (Lv.
+                    {
+                        getCharacterInfoById({
+                            dataArray: storedCharacter,
+                            id: characterId,
+                        }).level
+                    }
+                    )
                 </InnerContents>
                 <InnerContents>
                     <TitleAndGold
                         underline={false}
+                        isPadding={false}
                         gold={goodsTotalGold + raidTotalGold}
                         goldTextColor={theme.ledger.income}
                     />
@@ -128,16 +127,26 @@ const CharacterListItem = ({
                 <InnerContents>
                     <TitleAndGold
                         underline={false}
+                        isPadding={false}
                         gold={spendingGold}
                         negative={true}
                         goldTextColor={theme.ledger.spending}
                     />
                 </InnerContents>
                 <InnerContents>
-                    <TitleAndGold underline={false} gold={goodsTotalGold + raidTotalGold - spendingGold} />
+                    <TitleAndGold
+                        isPadding={false}
+                        underline={false}
+                        gold={goodsTotalGold + raidTotalGold - spendingGold}
+                    />
                 </InnerContents>
                 <InnerContents>
-                    <TitleAndGold underline={false} goldTextColor={theme.ledger.lastWeek} gold={prevWeekGold} />
+                    <TitleAndGold
+                        isPadding={false}
+                        underline={false}
+                        goldTextColor={theme.colors.gray}
+                        gold={prevWeekGold}
+                    />
                 </InnerContents>
             </ListItem>
             <Histories

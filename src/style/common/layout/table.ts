@@ -2,18 +2,27 @@ import styled from '@emotion/styled';
 
 export const Contents = styled.div`
     display: flex;
+    width: 100%;
     flex-direction: column;
+
     border-bottom: 1px solid ${props => props.theme.colors.gray};
 `;
 
 export const InnerContents = styled.div<{ name?: boolean }>`
-    width: ${props => (props.name ? `30%` : `calc(100% / 5)`)};
+    width: ${props => (props.name ? `30%` : `calc(70% / 4);`)};
     text-align: center;
-    padding: 0.5em 0.5em;
+    box-sizing: border-box;
+
+    padding-left: 0.5em;
+    padding-right: 0.5em;
 `;
+
 export const ListItem = styled.div<{ selected: boolean }>`
     display: flex;
     align-items: center;
+    width: 100%;
+    padding-top: 0.9em;
+    padding-bottom: 0.9em;
 
     cursor: pointer;
 
