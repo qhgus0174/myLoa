@@ -11,7 +11,7 @@ import TextBox from '@components/Input/TextBox';
 import { ScheduleType } from '@common/types/types';
 import { css, useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { Contents, Title, InnerContent, Container, ContentContainer, TopInfo, TopInfoTitle } from '@style/common/modal';
+import { Contents, Title, Container, ContentContainer, TopInfo, TopInfoTitle } from '@style/common/modal';
 import { FlexDiv, RemarkDiv } from '@style/common/layout/common';
 import { toast } from 'react-toastify';
 
