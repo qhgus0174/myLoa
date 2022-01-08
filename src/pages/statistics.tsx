@@ -2,30 +2,35 @@ import React, { useContext, useEffect, useState } from 'react';
 import { DateTime } from 'luxon';
 import Link from 'next/link';
 import Head from 'next/head';
-import { XAxis, YAxis, CartesianGrid, Legend, LabelList, BarChart, Bar } from 'recharts';
 import { LocalStorageActionContext } from '@context/LocalStorageContext';
+import { ModalActionContext } from '@context/ModalContext';
 import { initCommonHistory } from '@hooks/useLocalStorage';
 import { IStatisticsCommon, IStatisticsPersonal, IStatisticsPersonalPrev } from '@components/Statistics/StatisticsType';
-import { ILedger, ILedgerCommon, ILedgerOwn } from '@common/types/localStorage/Ledger';
 import VerticalBarChart from '@components/Statistics/Graph/VerticalBarChart';
-import ResponsiveGraph from '@components/Statistics/Graph/ResponsiveGraph';
 import CustomLineChart from '@components/Statistics/Graph/LineChart';
-import { calcSum } from '@components/Ledger/common/functions';
-import BasicCheckbox from '@components/Input/BasicCheckbox';
+import { calcCommonIncomeGold, calcCommonSpendingGold, calcSum } from '@components/Ledger/common/functions';
+import CharacterGoldDetailChart from '@components/Statistics/Graph/CharacterGoldDetailChart';
+import PrevWeekSum, { IPrevWeekSum } from '@components/Ledger/modal/PrevWeekSum';
+import TitleAndGold from '@components/Ledger/TitleAndGold';
 import EmojiTitle from '@components/Emoji/EmojiTitle';
 import Ranking from '@components/Statistics/Ranking';
 import WeekSum from '@components/Statistics/WeekSum';
+import IconLabel from '@components/Label/IconLabel';
 import Nodata from '@components/article/Nodata';
+import Button from '@components/Button/Button';
+import { ILedger, ILedgerCommon, ILedgerOwn } from '@common/types/localStorage/Ledger';
 import { getCharacterInfoById, parseStorageItem } from '@common/utils';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { FlexDiv } from '@style/common';
+import { FlexDiv } from '@style/common/layout/common';
+import { Comment } from '@style/common/text';
 import { widthMedia } from '@style/device';
 
 const Statistics = () => {
     const weekKorArr = ['저번주', '2주전', '3주전', '4주전'];
 
     const theme = useTheme();
+    const { setModalProps } = useContext(ModalActionContext);
 
     const [totalGoldByWeekArr, setTotalGoldByWeekArr] = useState<IStatisticsCommon[]>([]);
     const [commonGoldByWeekArr, setCommonGoldByWeekArr] = useState<IStatisticsCommon[]>([]);
@@ -36,12 +41,13 @@ const Statistics = () => {
     const [commonGoldThisWeek, setCommonGoldThisWeek] = useState<number>(0);
     const [personalGoldThisWeek, setPersonalGoldThisWeek] = useState<number>(0);
 
+    const [commonSpendThisWeek, setCommonSpendThisWeek] = useState<number>(0);
+    const [personalSpendThisWeek, setPersonalSpendThisWeek] = useState<number>(0);
+
     const [commonAllGoldPrev, setCommonAllGoldPrev] = useState<number>(0);
     const [personalAllGoldPrev, setPersonalAllGoldPrev] = useState<number>(0);
 
     const [personalGoldPrev, setPersonalGoldPrev] = useState<IStatisticsPersonalPrev[]>([]);
-
-    const [isContainThisWeek, setIsContainThisWeek] = useState<boolean>(false);
 
     const [hasData, setHasData] = useState<boolean>(true);
     const { setStoredLedger } = useContext(LocalStorageActionContext);
@@ -51,11 +57,10 @@ const Statistics = () => {
 
         const { common, own }: ILedger = { ...parseStorageItem(localStorage.getItem('ledger') as string) };
 
+        localStorage.getItem('ledger') && calcWeekGold();
         own.length < 1
             ? setHasData(false)
             : localStorage.getItem('character') && localStorage.getItem('ledger') && calcStastistics();
-
-        localStorage.getItem('ledger') && calcWeekGold();
     }, []);
 
     const calcStastistics = () => {
@@ -70,7 +75,10 @@ const Statistics = () => {
         calcPersonalGoldThisWeek(own);
         setPersonalGoldPrev(calcPersonalGoldPrev(own));
         setCommonAllGoldPrev(calcCommonAllGoldPrev(common));
-        setCommonGoldThisWeek(calcSum(common.histories));
+        setCommonGoldThisWeek(calcSum(calcCommonIncomeGold({ history: common.histories })));
+        setCommonSpendThisWeek(calcSum(calcCommonSpendingGold({ history: common.histories })));
+        setPersonalGoldThisWeek(getCharacterAllGoldThisWeek(own));
+        setPersonalSpendThisWeek(getCharacterAllSpendThisWeek(own));
 
         setCharacterAllGoldPrevWeek(own);
     };
@@ -115,13 +123,36 @@ const Statistics = () => {
         });
 
         const personalThisWeek = personalSumArr.reduce((prev, next) => prev + next);
-        setPersonalGoldThisWeek(personalThisWeek);
+
+        return personalThisWeek;
+    };
+
+    const getCharacterAllCalcThisWeek = (own: ILedgerOwn[]): number => {
+        const personalSumArr = own.map(({ histories }) => {
+            return (
+                calcSum(histories.raid.data) +
+                calcSum(histories.goods.data) -
+                (histories.spending ? calcSum(histories.spending.data) : 0)
+            );
+        });
+
+        const personalThisWeek = personalSumArr.reduce((prev, next) => prev + next);
+
+        return personalThisWeek;
+    };
+
+    const getCharacterAllSpendThisWeek = (own: ILedgerOwn[]): number => {
+        const personalSumArr = own.map(({ histories }) => {
+            return histories.spending ? calcSum(histories.spending.data) : 0;
+        });
+
+        const personalThisWeek = personalSumArr.reduce((prev, next) => prev + next);
 
         return personalThisWeek;
     };
 
     const getCharacterGoldByWeek = (own: ILedgerOwn[]): IStatisticsCommon[] => {
-        const personalGoldThisWeek = getCharacterAllGoldThisWeek(own);
+        const personalGoldThisWeek = getCharacterAllCalcThisWeek(own);
 
         let lastWeek = 0;
         let lastBeforeWeek = 0;
@@ -151,7 +182,7 @@ const Statistics = () => {
 
         const commonGoldByWeek: IStatisticsCommon[] = getCommonGoldByWeek(common);
         const personalGoldByWeek: IStatisticsCommon[] = getCharacterGoldByWeek(own);
-
+        console.log(commonGoldByWeek, personalGoldByWeek);
         const weekKorMap = new Map<string, number>();
 
         for (const { weekKor, gold } of [...personalGoldByWeek, ...commonGoldByWeek])
@@ -169,7 +200,11 @@ const Statistics = () => {
             return { weekKor: weekKorArr[index], gold: gold };
         });
 
-        result.unshift({ weekKor: '이번주', gold: calcSum(histories) });
+        const incomeGold = calcCommonIncomeGold({ history: histories });
+
+        const spendingGold = calcCommonSpendingGold({ history: histories });
+
+        result.unshift({ weekKor: '이번주', gold: calcSum(incomeGold) - calcSum(spendingGold) });
 
         return result.reverse();
     };
@@ -183,21 +218,11 @@ const Statistics = () => {
                 }).name,
                 raid: calcSum(histories.raid.data),
                 goods: calcSum(histories.goods.data),
+                spending: histories.spending ? calcSum(histories.spending.data) : 0,
             };
         });
 
         setPersonalGoldThisWeekArr(result);
-    };
-
-    const ColorfulLegendText = (value: string, entry: any) => {
-        const { color } = entry;
-
-        const korName = [
-            { key: 'goods', name: '재화' },
-            { key: 'raid', name: '레이드' },
-        ];
-
-        return <span style={{ color }}>{korName.find(({ key }) => key === value)?.name}</span>;
     };
 
     const calcWeekGold = () => {
@@ -247,8 +272,13 @@ const Statistics = () => {
 
         //지난주 계산
         //공통 골드
+
+        const calcCommGold =
+            calcSum(calcCommonIncomeGold({ history: newLedger.common.histories })) -
+            calcSum(calcCommonSpendingGold({ history: newLedger.common.histories }));
+
         common.prevWeekGold.pop();
-        common.prevWeekGold.unshift(calcSum(newLedger.common.histories));
+        common.prevWeekGold.unshift(calcCommGold);
         common.histories = initCommonHistory;
 
         //개인 골드
@@ -262,13 +292,96 @@ const Statistics = () => {
             const raidTotalGold = newLedger.own[goodsIndex]
                 ? calcSum(newLedger.own[goodsIndex].histories.raid.data)
                 : 0;
+            const spendTotalGold = newLedger.own[goodsIndex]
+                ? newLedger.own[goodsIndex].histories.spending
+                    ? calcSum(newLedger.own[goodsIndex].histories.spending.data)
+                    : 0
+                : 0;
             newLedger.own[goodsIndex].prevWeekGold.pop();
-            newLedger.own[goodsIndex].prevWeekGold.unshift(goodsTotalGold + raidTotalGold);
+            newLedger.own[goodsIndex].prevWeekGold.unshift(goodsTotalGold + raidTotalGold - spendTotalGold);
 
-            own[goodsIndex].histories = { goods: { fold: true, data: [] }, raid: { fold: true, data: [] } };
+            own[goodsIndex].histories = {
+                goods: { fold: true, data: [] },
+                raid: { fold: true, data: [] },
+                spending: { fold: true, data: [] },
+            };
         });
-
+        console.log(newLedger);
         setStoredLedger(newLedger);
+    };
+
+    const openPrevWeekSum = ({
+        commonAllGoldPrev,
+        commonGoldThisWeek,
+        personalAllGoldPrev,
+        personalGoldThisWeek,
+    }: IPrevWeekSum) => {
+        setModalProps({
+            isOpen: true,
+            content: (
+                <PrevWeekSum
+                    commonAllGoldPrev={commonAllGoldPrev}
+                    commonGoldThisWeek={commonGoldThisWeek}
+                    personalAllGoldPrev={personalAllGoldPrev}
+                    personalGoldThisWeek={personalGoldThisWeek}
+                />
+            ),
+            options: { width: '330', height: '280', headerTitle: '지난 주 데이터' },
+        });
+    };
+
+    const getResult = () => {
+        const gold = commonGoldThisWeek + personalGoldThisWeek - (commonSpendThisWeek + personalSpendThisWeek);
+
+        const commonGold = commonGoldThisWeek - commonSpendThisWeek;
+        const personalGold = personalGoldThisWeek - personalSpendThisWeek;
+
+        return (
+            <>
+                <ResultInner>
+                    <span>공통 합계는 </span>
+                    <TotalGoldDiv>
+                        <TitleAndGold
+                            goldTextColor={commonGold > 0 ? theme.ledger.income : theme.ledger.spending}
+                            isPadding={false}
+                            underline={false}
+                            gold={commonGold}
+                        />
+                    </TotalGoldDiv>
+                    <span>, 캐릭터 별 합계는 </span>
+                    <TotalGoldDiv>
+                        <TitleAndGold
+                            goldTextColor={personalGold > 0 ? theme.ledger.income : theme.ledger.spending}
+                            isPadding={false}
+                            underline={false}
+                            gold={personalGold}
+                        />
+                    </TotalGoldDiv>
+                </ResultInner>
+                <ResultInner>
+                    <span>이번 주는 총 </span>
+                    <TotalGoldDiv>
+                        <TitleAndGold isPadding={false} underline={false} gold={gold} />
+                    </TotalGoldDiv>
+                    <span>&nbsp;만큼&nbsp;</span>
+                    {gold >= 0 ? (
+                        <IconLabel
+                            label={<h4>이득입니다!!</h4>}
+                            iconUrl="/static/img/icon/mococo/nice_rabbit.png"
+                            width="24"
+                            height="24"
+                        />
+                    ) : (
+                        <IconLabel
+                            label={<h4>지출이 있었습니다!</h4>}
+                            iconUrl="/static/img/icon/mococo/sad_rabbit.png"
+                            width="24"
+                            height="24"
+                        />
+                    )}
+                </ResultInner>
+            </>
+        );
     };
 
     return (
@@ -293,42 +406,67 @@ const Statistics = () => {
                     <OverAllLeftArticle>
                         <InnerDiv>
                             <HeaderTitle>
-                                <EmojiTitle label={<h2>골드 총 합</h2>} symbol={'💰'} />
+                                <IconLabel
+                                    label={<h2>이번 주 골드 총 합</h2>}
+                                    iconUrl="/static/img/icon/mococo/shake_rabbit.gif"
+                                    width="24"
+                                    height="24"
+                                />
+                                <Button
+                                    onClick={() =>
+                                        openPrevWeekSum({
+                                            commonAllGoldPrev: commonAllGoldPrev,
+                                            commonGoldThisWeek: commonGoldThisWeek,
+                                            personalAllGoldPrev: personalAllGoldPrev,
+                                            personalGoldThisWeek: personalGoldThisWeek,
+                                        })
+                                    }
+                                >
+                                    <EmojiTitle label={<span>지난 주 데이터</span>} symbol={'🔍'} />
+                                </Button>
                             </HeaderTitle>
                             <OverAllDiv>
                                 <WeekSumDiv>
                                     <Title>
-                                        <EmojiTitle label={<h4>이번 주</h4>} symbol={'📅'} />
-                                    </Title>
-                                    <WeekSum common={commonGoldThisWeek} personal={personalGoldThisWeek} />
-                                </WeekSumDiv>
-                                <WeekSumDiv>
-                                    <Title>
-                                        <EmojiTitle label={<h4>~ 4주전</h4>} symbol={'📅'} />
-                                        <BasicCheckbox
-                                            checked={isContainThisWeek}
-                                            onChange={e => setIsContainThisWeek(!isContainThisWeek)}
-                                            label={<span>이번 주 포함</span>}
+                                        <IconLabel
+                                            label={<h4>수입</h4>}
+                                            iconUrl="/static/img/icon/mococo/rabbit.png"
+                                            width="24"
+                                            height="24"
                                         />
                                     </Title>
                                     <WeekSum
-                                        common={
-                                            isContainThisWeek
-                                                ? commonAllGoldPrev + commonGoldThisWeek
-                                                : commonAllGoldPrev
-                                        }
-                                        personal={
-                                            isContainThisWeek
-                                                ? personalAllGoldPrev + personalGoldThisWeek
-                                                : personalAllGoldPrev
-                                        }
+                                        common={commonGoldThisWeek}
+                                        personal={personalGoldThisWeek}
+                                        type="income"
+                                    />
+                                </WeekSumDiv>
+                                <WeekSumDiv>
+                                    <Title>
+                                        <IconLabel
+                                            label={<h4>지출</h4>}
+                                            iconUrl="/static/img/icon/mococo/rabbit.png"
+                                            width="24"
+                                            height="24"
+                                        />
+                                    </Title>
+                                    <WeekSum
+                                        common={commonSpendThisWeek}
+                                        personal={personalSpendThisWeek}
+                                        type="spending"
                                     />
                                 </WeekSumDiv>
                             </OverAllDiv>
+                            <ResultDiv>{getResult()}</ResultDiv>
                         </InnerDiv>
                         <InnerDiv>
                             <HeaderTitle>
-                                <EmojiTitle label={<h2>순위</h2>} symbol={'👑'} />
+                                <IconLabel
+                                    label={<h2>수입 순위</h2>}
+                                    iconUrl="/static/img/icon/mococo/bling_rabbit.gif"
+                                    width="24"
+                                    height="24"
+                                />
                             </HeaderTitle>
                             <RankDiv>
                                 <WeekRank>
@@ -347,109 +485,63 @@ const Statistics = () => {
                                     </RankContainer>
                                 </WeekRank>
                             </RankDiv>
+                            <Comment>* 골드 수입만 계산 된 값 입니다.</Comment>
                         </InnerDiv>
                     </OverAllLeftArticle>
                     <OverAllRightArticle>
-                        <EmojiTitle label={<h2>지난 4주</h2>} symbol={'📅'} />
+                        <IconLabel
+                            label={<h2>지난 4주</h2>}
+                            iconUrl="/static/img/icon/mococo/lastweek.png"
+                            width="27"
+                            height="27"
+                        />
+                        <Comment>* 1월 8일 업데이트 이후의 주는 지출이 포함된 값입니다.</Comment>
                         <OverAllInnerArticle>
                             <CustomLineChart width={500} height={200} array={totalGoldByWeekArr} />
-                            <EmojiTitle label={<h3>총 합</h3>} symbol={'💰'} />
+                            <IconLabel
+                                label={<h4>총 합</h4>}
+                                iconUrl="/static/img/icon/mococo/rabbit.png"
+                                width="24"
+                                height="24"
+                            />
                         </OverAllInnerArticle>
                         <OverAllBottom>
                             <OverAllInnerArticle>
                                 <CustomLineChart width={250} height={200} array={commonGoldByWeekArr} />
-                                <EmojiTitle label={<h3>공통</h3>} symbol={'⭐'} />
+                                <IconLabel
+                                    label={<h4>공통</h4>}
+                                    iconUrl="/static/img/icon/mococo/rabbit.png"
+                                    width="24"
+                                    height="24"
+                                />
                             </OverAllInnerArticle>
                             <OverAllInnerArticle>
                                 <CustomLineChart width={250} height={200} array={characterGoldByWeekArr} />
-                                <EmojiTitle label={<h3>캐릭터 별</h3>} symbol={'🎅🏻'} />
+                                <IconLabel
+                                    label={<h4>캐릭터 별</h4>}
+                                    iconUrl="/static/img/icon/mococo/rabbit.png"
+                                    width="24"
+                                    height="24"
+                                />
                             </OverAllInnerArticle>
                         </OverAllBottom>
                     </OverAllRightArticle>
                 </OverAllArticle>
             </StatisticsSection>
             <StatisticsSection>
-                <h1>개인 골드 수입</h1>
+                <h1>캐릭터 별 통계</h1>
                 <PersonalArticle>
-                    <PersonalInnerArticle>
-                        <GraphDiv>
-                            <ResponsiveGraph>
-                                <BarChart
-                                    width={600}
-                                    height={400}
-                                    layout="vertical"
-                                    data={personalGoldThisWeekArr}
-                                    margin={{
-                                        top: 20,
-                                        right: 30,
-                                        left: 20,
-                                        bottom: 10,
-                                    }}
-                                >
-                                    <CartesianGrid strokeDasharray="3 3" />
-                                    <XAxis
-                                        tickFormatter={tick => {
-                                            return tick.toLocaleString();
-                                        }}
-                                        stroke={theme.colors.text}
-                                        type="number"
-                                    />
-                                    <YAxis width={80} stroke={theme.colors.text} type="category" dataKey="name" />
-                                    <Legend
-                                        wrapperStyle={{ top: 0 }}
-                                        layout="vertical"
-                                        verticalAlign="top"
-                                        align="center"
-                                        formatter={ColorfulLegendText}
-                                    />
-                                    <Bar
-                                        isAnimationActive={false}
-                                        dataKey="goods"
-                                        stackId="personal"
-                                        fill={theme.graph.primary}
-                                    >
-                                        <LabelList
-                                            dataKey="goods"
-                                            position="inside"
-                                            fill="#ffffff"
-                                            formatter={(value: number) => value.toLocaleString()}
-                                        />
-                                    </Bar>
-                                    <Bar
-                                        isAnimationActive={false}
-                                        dataKey="raid"
-                                        stackId="personal"
-                                        fill={theme.graph.secondary}
-                                    >
-                                        <LabelList
-                                            dataKey="raid"
-                                            position="inside"
-                                            fill="#ffffff"
-                                            formatter={(value: number) => value.toLocaleString()}
-                                        />
-                                    </Bar>
-                                </BarChart>
-                            </ResponsiveGraph>
-                        </GraphDiv>
-                        <EmojiTitle label={<h3>이번 주 상세</h3>} symbol={'📅'} />
-                    </PersonalInnerArticle>
                     <PersonalBottom>
                         <PersonalInnerArticle>
                             <GraphDiv>
-                                <VerticalBarChart
-                                    width={500}
-                                    height={300}
-                                    color={theme.graph.tertiary}
-                                    array={personalGoldThisWeekArr
-                                        .map(({ name, raid, goods }) => {
-                                            return { name: name, gold: raid + goods };
-                                        })
-                                        .sort(({ gold: beforeGold }, { gold: afterGold }) => {
-                                            return afterGold - beforeGold;
-                                        })}
-                                />
+                                <CharacterGoldDetailChart array={personalGoldThisWeekArr} />
                             </GraphDiv>
-                            <EmojiTitle label={<h3>이번 주</h3>} symbol={'📅'} />
+                            <IconLabel
+                                label={<h4>이번 주 수입</h4>}
+                                iconUrl="/static/img/icon/mococo/rabbit.png"
+                                width="24"
+                                height="24"
+                            />
                         </PersonalInnerArticle>
                         <PersonalInnerArticle>
                             <GraphDiv>
@@ -462,7 +554,12 @@ const Statistics = () => {
                                     })}
                                 />
                             </GraphDiv>
-                            <EmojiTitle label={<h3>저번 주 ~ 4주 전</h3>} symbol={'📅'} />
+                            <IconLabel
+                                label={<h4>저번 주 ~ 4주 전 수입 + 지출</h4>}
+                                iconUrl="/static/img/icon/mococo/rabbit.png"
+                                width="24"
+                                height="24"
+                            />
                         </PersonalInnerArticle>
                     </PersonalBottom>
                 </PersonalArticle>
@@ -565,6 +662,7 @@ const OverAllInnerArticle = styled.article`
     flex-direction: column;
     align-items: center;
     flex-basis: 48%;
+    margin-bottom: 1em;
 
     ${widthMedia.tablet} {
         margin-bottom: 1em;
@@ -683,6 +781,27 @@ const PersonalBottom = styled.div`
 
 const HeaderTitle = styled.div`
     margin-bottom: 1em;
+    display: flex;
+    justify-content: space-between;
+`;
+
+const ResultDiv = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    width: 100%;
+    margin-top: 1.2em;
+    align-items: center;
+`;
+
+const TotalGoldDiv = styled.div``;
+
+const ResultInner = styled.div`
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 100%;
+    margin-top: 0.32em;
 `;
 
 export default Statistics;
