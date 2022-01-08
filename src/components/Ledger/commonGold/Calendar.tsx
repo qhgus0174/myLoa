@@ -51,8 +51,6 @@ const CommonCalendar = ({ totalGold }: ICalendar) => {
             return { datetime: arr[0].datetime, income: calcSum(incomeArr), spending: calcSum(spendingArr) };
         });
 
-        console.log(sumByDate);
-
         const weeksArr = getThisWeek().map(datetime => ({ datetime }));
 
         const weekGoldByDate = weeksArr.map((item, i) => {
