@@ -598,19 +598,6 @@ const StatisticsContainer = styled.section`
     }
 `;
 
-const GoldList = styled.div`
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-
-    ${widthMedia.tablet} {
-        width: 80%;
-        align-self: center;
-    }
-`;
-
 const StatisticsSection = styled.article`
     display: flex;
     flex-direction: column;
