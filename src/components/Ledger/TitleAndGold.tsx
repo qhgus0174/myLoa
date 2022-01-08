@@ -101,7 +101,8 @@ const Gold = styled.div<{ bracket: boolean }>`
 `;
 
 const GoldText = styled.span<{ color?: string }>`
-    ${props => props.color && `color : ${props.color}`}
+    ${props => props.color && `color : ${props.color}`};
+    font-weight: 600;
 `;
 
 export default TitleAndGold;

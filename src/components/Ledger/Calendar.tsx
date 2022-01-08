@@ -67,6 +67,7 @@ const Day = styled.div`
     padding-bottom: 0.5em;
     width: 70%;
     text-align: center;
+    font-weight: 600;
     justify-content: center;
 
     ${widthMedia.desktop} {
@@ -101,6 +102,7 @@ const Gold = styled.span<{ color: string }>`
     width: 100%;
     flex-direction: row-reverse;
     color: ${props => props.color};
+    font-weight: 500;
     padding-bottom: 0.2em;
 `;
 
@@ -110,6 +112,7 @@ const Sum = styled.span`
     width: 100%;
     margin-top: 0.3em;
     padding-top: 0.3em;
+    font-weight: 600;
     border-top: 1px solid ${props => props.theme.colors.gray};
 `;
 

@@ -24,7 +24,7 @@ export const ListItem = styled.div<{ selected: boolean }>`
     width: 100%;
     padding-top: 0.9em;
     padding-bottom: 0.9em;
-
+    font-weight: 500;
     cursor: pointer;
 
     ${props => props.selected && `background : ${props.theme.colors.hover}`};
@@ -45,6 +45,7 @@ export const ItemContainer = styled.li`
     box-sizing: border-box;
     align-items: center;
     justify-content: space-between;
+    font-weight: 500;
 `;
 
 export const GoodsGoldIcon = styled.div`
