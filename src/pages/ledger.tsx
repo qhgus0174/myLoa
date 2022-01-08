@@ -2,6 +2,7 @@ import React, { useContext, useState } from 'react';
 import { DateTime } from 'luxon';
 import Head from 'next/head';
 import Link from 'next/link';
+import Image from 'next/image';
 import { initCommonHistory, initLedger } from '@hooks/useLocalStorage';
 import { usePromiseEffect } from '@hooks/usePromiseEffect';
 import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
@@ -300,7 +301,7 @@ const Ledger = () => {
         <>
             <Head>
                 <title>로요일좋아 - 골드 수입</title>
-                <meta name="description" content="로스트아크의 내 캐릭터 골드 수입을 작성해 보세요!" />
+                <meta name="description" content="로스트아크의 내 캐릭터 골드 가계부를 작성해 보세요!" />
             </Head>
             {status === 'fulfilled' && ledgerData && (
                 <Container>
@@ -490,11 +491,15 @@ const Ledger = () => {
                     ) : (
                         <Nodata
                             text={
-                                <strong>
-                                    캐릭터 정보가 없네요.😢 <br />
-                                    <Link href="/todo">숙제 페이지</Link>에서 캐릭터를 등록하면 골드 수입을 작성하실 수
-                                    있습니다.
-                                </strong>
+                                <>
+                                    <Image src="/static/img/icon/mococo/tear.png" width="100" height="100" />
+                                    <br />
+                                    <strong>
+                                        캐릭터 정보가 없네요. <br />
+                                        <Link href="/todo">숙제 페이지</Link>에서 캐릭터를 등록하면 골드 수입을 작성하실
+                                        수 있습니다.
+                                    </strong>
+                                </>
                             }
                         />
                     )}
