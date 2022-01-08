@@ -11,6 +11,7 @@ import CustomLineChart from '@components/Statistics/Graph/LineChart';
 import { calcCommonIncomeGold, calcCommonSpendingGold, calcSum } from '@components/Ledger/common/functions';
 import CharacterGoldDetailChart from '@components/Statistics/Graph/CharacterGoldDetailChart';
 import PrevWeekSum, { IPrevWeekSum } from '@components/Ledger/modal/PrevWeekSum';
+import WeekGoldExplain from '@components/Statistics/WeekGoldExplain';
 import TitleAndGold from '@components/Ledger/TitleAndGold';
 import EmojiTitle from '@components/Emoji/EmojiTitle';
 import Ranking from '@components/Statistics/Ranking';
@@ -33,6 +34,7 @@ const Statistics = () => {
     const { setModalProps } = useContext(ModalActionContext);
 
     const [totalGoldByWeekArr, setTotalGoldByWeekArr] = useState<IStatisticsCommon[]>([]);
+    const [diffPrevWeek, setDiffPrevWeek] = useState<number>(0);
     const [commonGoldByWeekArr, setCommonGoldByWeekArr] = useState<IStatisticsCommon[]>([]);
     const [characterGoldByWeekArr, setCharacterGoldByWeekArr] = useState<IStatisticsCommon[]>([]);
 
@@ -182,7 +184,7 @@ const Statistics = () => {
 
         const commonGoldByWeek: IStatisticsCommon[] = getCommonGoldByWeek(common);
         const personalGoldByWeek: IStatisticsCommon[] = getCharacterGoldByWeek(own);
-        console.log(commonGoldByWeek, personalGoldByWeek);
+
         const weekKorMap = new Map<string, number>();
 
         for (const { weekKor, gold } of [...personalGoldByWeek, ...commonGoldByWeek])
@@ -190,6 +192,9 @@ const Statistics = () => {
 
         const totalGoldByWeekArr = Array.from(weekKorMap, ([weekKor, gold]) => ({ weekKor, gold }));
 
+        const prevWeekDiff = totalGoldByWeekArr[4].gold - totalGoldByWeekArr[3].gold;
+
+        setDiffPrevWeek(prevWeekDiff);
         setTotalGoldByWeekArr(totalGoldByWeekArr);
     };
 
@@ -342,7 +347,7 @@ const Statistics = () => {
                     <span>공통 합계는 </span>
                     <TotalGoldDiv>
                         <TitleAndGold
-                            goldTextColor={commonGold > 0 ? theme.ledger.income : theme.ledger.spending}
+                            goldTextColor={commonGold >= 0 ? theme.ledger.income : theme.ledger.spending}
                             isPadding={false}
                             underline={false}
                             gold={commonGold}
@@ -351,35 +356,16 @@ const Statistics = () => {
                     <span>, 캐릭터 별 합계는 </span>
                     <TotalGoldDiv>
                         <TitleAndGold
-                            goldTextColor={personalGold > 0 ? theme.ledger.income : theme.ledger.spending}
+                            goldTextColor={personalGold >= 0 ? theme.ledger.income : theme.ledger.spending}
                             isPadding={false}
                             underline={false}
                             gold={personalGold}
                         />
                     </TotalGoldDiv>
                 </ResultInner>
-                <ResultInner>
-                    <span>이번 주는 총 </span>
-                    <TotalGoldDiv>
-                        <TitleAndGold isPadding={false} underline={false} gold={gold} />
-                    </TotalGoldDiv>
-                    <span>&nbsp;만큼&nbsp;</span>
-                    {gold >= 0 ? (
-                        <IconLabel
-                            label={<h4>이득입니다!!</h4>}
-                            iconUrl="/static/img/icon/mococo/nice_rabbit.png"
-                            width="24"
-                            height="24"
-                        />
-                    ) : (
-                        <IconLabel
-                            label={<h4>지출이 있었습니다!</h4>}
-                            iconUrl="/static/img/icon/mococo/sad_rabbit.png"
-                            width="24"
-                            height="24"
-                        />
-                    )}
-                </ResultInner>
+                <br />
+                <WeekGoldExplain time="this" gold={gold} />
+                <WeekGoldExplain time="prev" gold={diffPrevWeek} />
             </>
         );
     };
@@ -388,7 +374,10 @@ const Statistics = () => {
         <StatisticsContainer>
             <Head>
                 <title>로요일좋아 - 골드 수입 통계</title>
-                <meta name="description" content="로스트아크의 내 캐릭터 골드 수입을 작성하고, 통계를 확인해보세요!" />
+                <meta
+                    name="description"
+                    content="로스트아크의 내 캐릭터 골드 가계부를 작성하고, 통계를 확인해보세요!"
+                />
             </Head>
             <StatisticsSection>
                 {!hasData && (
