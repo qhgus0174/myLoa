@@ -95,7 +95,6 @@ export const none: Theme = {
     ledger: {
         income: '#4596e6',
         spending: '#e38649',
-        lastWeek: '#D8D8D8',
     },
 };
 
@@ -152,7 +151,6 @@ export const basic: Theme = {
     ledger: {
         income: '#4596e6',
         spending: '#f77768',
-        lastWeek: '#D8D8D8',
     },
 };
 
@@ -209,7 +207,6 @@ export const pink: Theme = {
     ledger: {
         income: '#4596e6',
         spending: '#f77768',
-        lastWeek: '#D8D8D8',
     },
 };
 
@@ -265,7 +262,6 @@ export const violet: Theme = {
     ledger: {
         income: '#4596e6',
         spending: '#e38649',
-        lastWeek: '#D8D8D8',
     },
 };
 
@@ -321,7 +317,6 @@ export const green: Theme = {
     ledger: {
         income: '#4596e6',
         spending: '#e38649',
-        lastWeek: '#D8D8D8',
     },
 };
 
@@ -377,7 +372,6 @@ export const cold: Theme = {
     ledger: {
         income: '#4596e6',
         spending: '#e38649',
-        lastWeek: '#D8D8D8',
     },
 };
 
@@ -433,7 +427,6 @@ export const autumn: Theme = {
     ledger: {
         income: '#4596e6',
         spending: '#e38649',
-        lastWeek: '#D8D8D8',
     },
 };
 
@@ -489,7 +482,6 @@ export const violetBrown: Theme = {
     ledger: {
         income: '#4596e6',
         spending: '#e38649',
-        lastWeek: '#D8D8D8',
     },
 };
 
@@ -545,7 +537,6 @@ export const flower: Theme = {
     ledger: {
         income: '#4596e6',
         spending: '#e38649',
-        lastWeek: '#D8D8D8',
     },
 };
 
@@ -601,7 +592,6 @@ export const pinkBeige: Theme = {
     ledger: {
         income: '#4596e6',
         spending: '#e38649',
-        lastWeek: '#D8D8D8',
     },
 };
 
@@ -657,7 +647,6 @@ export const darkBrown: Theme = {
     ledger: {
         income: '#4596e6',
         spending: '#e38649',
-        lastWeek: '#D8D8D8',
     },
 };
 
@@ -713,7 +702,6 @@ export const darkYellow: Theme = {
     ledger: {
         income: '#4596e6',
         spending: '#e38649',
-        lastWeek: '#D8D8D8',
     },
 };
 
@@ -769,7 +757,6 @@ export const darkPink: Theme = {
     ledger: {
         income: '#4596e6',
         spending: '#e38649',
-        lastWeek: '#D8D8D8',
     },
 };
 
@@ -825,7 +812,6 @@ export const veryCold: Theme = {
     ledger: {
         income: '#4596e6',
         spending: '#e38649',
-        lastWeek: '#D8D8D8',
     },
 };
 
@@ -881,7 +867,6 @@ export const darkCyan: Theme = {
     ledger: {
         income: '#4596e6',
         spending: '#e38649',
-        lastWeek: '#D8D8D8',
     },
 };
 
@@ -937,7 +922,6 @@ export const lego: Theme = {
     ledger: {
         income: '#4596e6',
         spending: '#e38649',
-        lastWeek: '#D8D8D8',
     },
 };
 
@@ -993,6 +977,5 @@ export const blue: Theme = {
     ledger: {
         income: '#4596e6',
         spending: '#e38649',
-        lastWeek: '#D8D8D8',
     },
 };
