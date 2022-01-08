@@ -103,12 +103,15 @@ const Form = ({
             <ContentArticle>
                 <Title>금액</Title>
                 <Contents>
-                    <GoldIcon type="basic" width="17" />
+                    <GoldIcon type="basic" width="15" />
                     <TextBox
                         onFocus={(e: React.FocusEvent<HTMLInputElement, Element>) => e.target.select()}
                         value={gold.toLocaleString()}
                         onChange={({ target: { value: goldValue } }) => {
                             setGold(Number(goldValue.replaceAll(',', '')));
+                        }}
+                        onKeyPress={e => {
+                            if (!/[0-9]/.test(e.key)) e.preventDefault();
                         }}
                         width="100"
                         placeholder="골드 수입"
