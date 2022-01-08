@@ -37,7 +37,7 @@ const Line = ({
 };
 
 const Container = styled.article`
-    height: 1.5em;
+    height: 1em;
     background: ${props => props.color};
 `;
 
