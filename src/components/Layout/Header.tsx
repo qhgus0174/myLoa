@@ -4,7 +4,6 @@ import Image from 'next/image';
 import { MobileNavContext } from '@context/MobileNavContext';
 import { ModalActionContext } from '@context/ModalContext';
 import SelectTheme from '@components/Palette/SelectTheme';
-import Letter from '@components/Letter';
 import styled from '@emotion/styled';
 import { widthMedia } from '@style/device';
 
@@ -12,13 +11,6 @@ const Header = () => {
     const { visible, setVisible } = useContext(MobileNavContext);
     const { setModalProps } = useContext(ModalActionContext);
 
-    const openLetter = () => {
-        setModalProps({
-            isOpen: true,
-            content: <Letter />,
-            options: { width: '500', height: '480', headerTitle: '안내' },
-        });
-    };
     return (
         <HeaderContainer>
             <HeaderInner>
@@ -30,9 +22,6 @@ const Header = () => {
             </HeaderInner>
             <RightHeader>
                 <SelectTheme />
-                <LetterArea className="letter" onClick={() => openLetter()}>
-                    💌
-                </LetterArea>
                 <ResponsiveMenu>
                     <ResponsiveLi>
                         <SidebarImg
@@ -49,11 +38,6 @@ const Header = () => {
 };
 
 const SidebarImg = styled(Image)`
-    cursor: pointer;
-`;
-
-const LetterArea = styled.div`
-    margin-left: 2em;
     cursor: pointer;
 `;
 
