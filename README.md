@@ -49,6 +49,40 @@ $ yarn install
 
 ## ❔ Description
 
+### **1. 데이터 저장소 : LocalStorage + Context API 이용**
+
+- **캐릭터**
+    - 첫 접속 시 캐릭터 명을 입력하면 로스트아크 전투 정보실에서 캐릭터 정보를 크롤링 해 옵니다. 캐릭터 정보를 가져와서 골드 수익과 숙제를 작성 할 수 있습니다.
+    - 캐릭터를 불러오고 나면 숙제 컨텐츠들이 **localStorage**에 자동 세팅됩니다.
+    - 모든 컴포넌트에서 쉽게 사용할 수 있도록 **localStorage와** Context API를 함께 이용하여 데이터를 관리하였습니다.
+        
+        <img src="https://user-images.githubusercontent.com/74941162/148644394-a6c3732f-8347-4bef-abdb-0114520a0513.PNG" width="700" height="400"/>
+     
+        - 캐릭터 불러오기 전
+       
+       <img src="https://user-images.githubusercontent.com/74941162/148644401-1d798cee-dc5f-4a50-aceb-07ad8cfdb258.PNG" width="900" height="400"/>
+        
+        - 캐릭터 불러온 후
+        
+
+### 2. React Modal 직접 구현, Portal 이용
+
+- Modal을 직접 구현하여 사용하였으며, 관심사를 분리하기 위해 Portal을 이용하였습니다.
+    <img src="https://user-images.githubusercontent.com/74941162/148644457-bf35946a-6915-415c-8e69-760c9f9433bd.PNG" width="500" height="370"/>
+
+
+### 3. Flex-Box를 이용하여 반응형 CSS 구현
+
+- flex-box를 이용하여 모든 반응형 레이아웃을 구현하였습니다.
+![1](https://user-images.githubusercontent.com/74941162/148644549-5bdee2c9-24ed-4437-8116-4ae3a197f86d.PNG)
+  <img src="https://user-images.githubusercontent.com/74941162/148644566-087e9574-7aa1-48cc-88fa-e2957624f7c0.PNG" width="350" height="480"/>
+  <img src="https://user-images.githubusercontent.com/74941162/148644572-695bb6c7-ccd6-43f3-acb3-f1651b1512d2.PNG" width="350" height="480"/>
+
+
+
+
+## ❔ How To Use
+
 **1. 숙제 관리**
 
 -   캐릭터
