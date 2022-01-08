@@ -100,6 +100,17 @@ const GoTodoButtons = styled.article`
     span:nth-of-type(1) {
         margin-right: 1em;
     }
+
+    ${widthMedia.phone} {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        align-self: center;
+        span:nth-of-type(1) {
+            margin-right: 0;
+            margin-bottom: 1em;
+        }
+    }
 `;
 
 const ExplainText = styled.span`
