@@ -15,6 +15,7 @@ export const initCommonHistory: ICommonHistory[] = [
         datetime: DateTime.now().toFormat('X'),
         name: '에포나 증표 교환',
         imgUrl: '/static/img/lostark/common/eponagold.png',
+        type: 'income',
     },
 ];
 
@@ -158,7 +159,11 @@ export const useLocalStorage = () => {
             const charactersLedger: ILedgerOwn = {
                 characterId: character.id,
                 prevWeekGold: [0, 0, 0, 0],
-                histories: { raid: { fold: true, data: [] }, goods: { fold: true, data: [] } },
+                histories: {
+                    raid: { fold: true, data: [] },
+                    goods: { fold: true, data: [] },
+                    spending: { fold: true, data: [] },
+                },
             };
             return charactersLedger;
         });
