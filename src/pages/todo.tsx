@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
+import Image from 'next/image';
 import Head from 'next/head';
 import { DateTime } from 'luxon';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -464,6 +465,7 @@ const Main = () => {
             </Head>
             {storedCharacter.length < 1 ? (
                 <NodataDiv>
+                    <Image src="/static/img/icon/mococo/tear.png" width="150" height="150" />
                     <NodataInner>
                         <h2>
                             데이터가 존재하지 않습니다.
@@ -484,7 +486,7 @@ const Main = () => {
                             }}
                         />
                         <Button width="45" className="crollAllCharacter" onClick={() => crollAllMyCharacter()}>
-                            모든 캐릭터 가져오기😎
+                            모든 캐릭터 가져오기
                         </Button>
                     </NodataInner>
                 </NodataDiv>
@@ -559,9 +561,9 @@ const MainContainer = styled.main`
 const NodataDiv = styled.div`
     display: flex;
     flex-direction: column;
-    width: 40%;
+    width: 50%;
     height: 100%;
-    margin-top: 9em;
+    margin-top: 5em;
     justify-content: center;
     align-items: center;
     ${widthMedia.desktop} {
