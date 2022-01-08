@@ -2,7 +2,8 @@
 
 ## 🤍 Introduction
 
-![메인](https://user-images.githubusercontent.com/74941162/146655879-b1365033-0355-4049-ae5b-ff64cbd52647.PNG)
+![메인](https://user-images.githubusercontent.com/74941162/148641836-42d3acdb-d7fa-47ef-8fca-796a8ec8fae0.PNG)
+
 
 **LOST ARK 게임의 일일/주간 컨텐츠 관리를 편하게 해주는 웹사이트입니다.**
 
@@ -81,35 +82,37 @@ $ yarn install
 
 <br /><br/>
 
-**2. 골드 수입**
+**2. 골드 가계부**
 <br /><br/>
 
--   이번 주 골드 수입 통계, 골드 수입 랭킹<br /><br/>
-    ![골드 수입](https://user-images.githubusercontent.com/74941162/146656444-28ad24d0-f9f7-4ce9-92d7-318f396c01cf.PNG)
+- 리스트를 클릭하여 공통 또는 캐릭터 별 골드 수입 및 지출을 작성합니다.
+    ![골드 수입 지출 내역](https://user-images.githubusercontent.com/74941162/148641864-70a40434-4925-4abb-807c-37d79491a070.PNG)
 
-<br/><br/>
 
--   공통 골드 수입, 캐릭터 별 골드 수입 작성<br /><br/>
-    ![골드 수입2](https://user-images.githubusercontent.com/74941162/146656473-50454f44-7cbe-4d6b-9d80-6c7f960a81a1.PNG)
+- 캐릭터 수입 작성 모달입니다. 공통 골드 입력 화면도 동일합니다. 요일 별로 요약하여 보여줍니다.
+    <img src="https://user-images.githubusercontent.com/74941162/148641876-dc223593-fba0-41a1-a20d-7235fcb82213.PNG" width="550" height="500"/>
+    
+    
+- 수입 및 지출을 작성하여 상단에서 요약 데이터 정보를 확인 할 수 있습니다. 
+    ![이번주요약](https://user-images.githubusercontent.com/74941162/148641943-362b6243-8355-48f9-87ad-dc6fd2f32935.PNG)
 
-<br/><br/>
-
--   개인별 골드 수입 상세 화면(레이드, 재화) <br/>
-    -   레이드는 캐릭터 레벨에 따라 자동 세팅 됩니다. <br/><br/>
-        <img src="https://user-images.githubusercontent.com/74941162/146656478-57a175d8-fc20-4139-8011-6ae2387870f2.PNG" width="340" height="480"/> <img src="https://user-images.githubusercontent.com/74941162/146656481-cc5712ca-ed65-459d-b0fb-e16cf8794a9b.PNG" width="340" height="480"/>
 
 <br/>
 
-**3. 골드 수입 통계**
+**3. 가계부 통계**
 
--   지난 5주간 얻은 수익에 대한 통계를 표시하는 페이지입니다.<br/>
--   캐릭터 별 또는 공통으로 얻은 골드를 표시합니다.<br/><br/>
-    ![통1](https://user-images.githubusercontent.com/74941162/146673120-2f4ea3fd-b2fb-4538-be2a-7dff7fb347ac.PNG)
+- 지난 5주간 얻은 수익에 대한 통계를 표시하는 페이지입니다.<br/>
+- 이번 주 골드 총 합 및 순위 : 이번 주의 수입 또는 지출을 요약하여 보여줍니다.
+    <img src="https://user-images.githubusercontent.com/74941162/148641982-a4d8f2af-a160-4d9b-873c-c8e7d2a53bdd.PNG" width="550" height="320"/>
+    <img src="https://user-images.githubusercontent.com/74941162/148641993-e00f3550-cd43-406b-a88a-62fc68989243.PNG" width="550" height="320"/>
+
+
 
 <br/>
 
--   캐릭터 별 레이드, 재화 수익을 그래프로 표시합니다.<br/><br/>
-    ![통3](https://user-images.githubusercontent.com/74941162/146673134-85de46cd-c2d6-44a7-bb85-30180a24cf9e.PNG)
+-   각 종 수입, 지출 데이터 통계를 그래프로 표시합니다.
+    ![캐릭별 통계](https://user-images.githubusercontent.com/74941162/148642018-43c20815-dea5-4622-84b2-1a3fdd87bf2d.PNG)
+    <img src="https://user-images.githubusercontent.com/74941162/148642242-19797ff4-2cb6-4c5b-9c5c-ac8430c8c138.PNG" width="550" height="500"/>
 
 
 <br/>
