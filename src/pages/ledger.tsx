@@ -110,27 +110,6 @@ const Ledger = () => {
         setStoredLedger(Object.assign({}, { common: commonLedger }, { own: goodsLedger }));
     };
 
-    const foldCommonDiv = ({ e, foldState }: { e: React.MouseEvent<HTMLElement, MouseEvent>; foldState: boolean }) => {
-        const ledgerArr: ILedger = Object.assign({}, storedLedger);
-
-        ledgerArr.common.fold = !foldState;
-        setStoredLedger(ledgerArr);
-    };
-
-    const foldGoodsDiv = ({ characterIndex, foldState }: { characterIndex: number; foldState: boolean }) => {
-        const ledgerArr: ILedger = Object.assign({}, storedLedger);
-
-        ledgerArr.own[characterIndex].histories.goods.fold = !foldState;
-        setStoredLedger(ledgerArr);
-    };
-
-    const foldRaidDiv = ({ characterIndex, foldState }: { characterIndex: number; foldState: boolean }) => {
-        const ledgerArr: ILedger = Object.assign({}, storedLedger);
-
-        ledgerArr.own[characterIndex].histories.raid.fold = !foldState;
-        setStoredLedger(ledgerArr);
-    };
-
     const openCharacterGoldGraph = (array: IStatisticsPersonalPrev[]) => {
         setModalProps({
             isOpen: true,
