@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { DateTime } from 'luxon';
 import Link from 'next/link';
 import Head from 'next/head';
+import Image from 'next/image';
 import { LocalStorageActionContext } from '@context/LocalStorageContext';
 import { ModalActionContext } from '@context/ModalContext';
 import { initCommonHistory } from '@hooks/useLocalStorage';
@@ -379,17 +380,21 @@ const Statistics = () => {
                     content="로스트아크의 내 캐릭터 골드 가계부를 작성하고, 통계를 확인해보세요!"
                 />
             </Head>
-            <StatisticsSection>
-                {!hasData && (
-                    <Nodata
-                        text={
+            {!hasData && (
+                <Nodata
+                    text={
+                        <>
+                            <Image src="/static/img/icon/mococo/tear.png" width="100" height="100" />
+                            <br />
                             <strong>
-                                골드 수입 데이터가 존재하지 않네요.😐
-                                <br /> <Link href="/ledger">골드 수입 작성</Link> 후 통계 표시됩니다!
+                                골드 수입 데이터가 존재하지 않네요.
+                                <br /> <Link href="/ledger">골드 수입 작성</Link> 후 아래와 같이 통계가 표시됩니다!
                             </strong>
-                        }
-                    />
-                )}
+                        </>
+                    }
+                />
+            )}
+            <StatisticsSection>
                 <h1>종합</h1>
                 <OverAllArticle>
                     <OverAllLeftArticle>
@@ -522,7 +527,7 @@ const Statistics = () => {
                 <PersonalArticle>
                     <PersonalBottom>
                         <PersonalInnerArticle>
-                            <GraphDiv>
+                            <GraphDiv length={personalGoldThisWeekArr.length}>
                                 <CharacterGoldDetailChart array={personalGoldThisWeekArr} />
                             </GraphDiv>
                             <IconLabel
@@ -533,7 +538,7 @@ const Statistics = () => {
                             />
                         </PersonalInnerArticle>
                         <PersonalInnerArticle>
-                            <GraphDiv>
+                            <GraphDiv length={personalGoldThisWeekArr.length}>
                                 <VerticalBarChart
                                     width={500}
                                     height={300}
@@ -665,17 +670,19 @@ const PersonalInnerArticle = styled.article`
     align-items: center;
     margin-top: 2em;
     margin-bottom: 2em;
+    height: 100%;
 
     h3 {
         margin-left: 15px;
     }
 `;
 
-const GraphDiv = styled(FlexDiv)`
+const GraphDiv = styled(FlexDiv)<{ length: number }>`
     justify-content: center;
     font-size: 0.8em;
     width: 100%;
-    height: 100%;
+    height: ${props => props.length > 0 && props.length * 60}px;
+    min-height: 300px;
 `;
 
 const OverAllDiv = styled.div`
