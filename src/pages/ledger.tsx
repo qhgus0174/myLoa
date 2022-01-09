@@ -283,7 +283,7 @@ const Ledger = () => {
     return (
         <>
             <Head>
-                <title>로요일좋아 - 골드 수입</title>
+                <title>로요일좋아 - 골드 가계부</title>
                 <meta name="description" content="로스트아크의 내 캐릭터 골드 가계부를 작성해 보세요!" />
             </Head>
             {status === 'fulfilled' && ledgerData && (
