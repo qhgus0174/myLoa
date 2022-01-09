@@ -2,11 +2,13 @@ import React from 'react';
 import Image from 'next/image';
 import styled from '@emotion/styled';
 import GoldIcon from '@components/Image/Gold';
+import { useTheme } from '@emotion/react';
 
 interface ITitleGold {
     gold: number;
     negative?: boolean;
-    goldTextColor?: string;
+    goldTextColor?: boolean;
+    goldTextColorStr?: string;
     title?: string;
     icon?: any;
     iconUrl?: string;
@@ -24,12 +26,14 @@ const TitleAndGold = ({
     icon,
     opacity,
     className,
-    goldTextColor,
+    goldTextColorStr,
+    goldTextColor = false,
     negative = false,
     isPadding = true,
     bracket = false,
     underline = true,
 }: ITitleGold) => {
+    const theme = useTheme();
     return (
         <Container className={className} title={title} underline={underline} opacity={opacity} isPadding={isPadding}>
             <Title icon={icon} title={title}>
@@ -39,7 +43,17 @@ const TitleAndGold = ({
             </Title>
             <Gold bracket={bracket}>
                 <GoldIcon type="basic" />
-                <GoldText color={goldTextColor}>
+                <GoldText
+                    textColor={
+                        goldTextColorStr
+                            ? goldTextColorStr
+                            : goldTextColor
+                            ? gold >= 0
+                                ? theme.ledger.income
+                                : theme.ledger.spending
+                            : theme.colors.text
+                    }
+                >
                     {negative && gold > 0 && `- `}
                     {gold.toLocaleString()}
                 </GoldText>
@@ -100,8 +114,8 @@ const Gold = styled.div<{ bracket: boolean }>`
     }`}
 `;
 
-const GoldText = styled.span<{ color?: string }>`
-    ${props => props.color && `color : ${props.color}`};
+const GoldText = styled.span<{ textColor: string }>`
+    ${props => props.textColor && `color : ${props.textColor}`};
     font-weight: 600;
 `;
 
