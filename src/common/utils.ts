@@ -38,14 +38,16 @@ export const getThisWeek = (): string[] => {
     const startDay =
         startOfWeek < now
             ? startOfWeek
-            : now.minus({ days: 7, hours: 6, minutes: 0 }).startOf('week').plus({ days: 2, hours: 6, minutes: 0 });
+            : startOfWeek
+                  .minus({ days: 7, hours: 6, minutes: 0 })
+                  .startOf('week')
+                  .plus({ days: 2, hours: 6, minutes: 0 });
 
     const weekArr: string[] = [];
 
     for (let i = 0; i < 7; i++) {
         weekArr.push(startDay.plus({ days: i }).toFormat('yyyy/MM/dd'));
     }
-
     return weekArr;
 };
 
