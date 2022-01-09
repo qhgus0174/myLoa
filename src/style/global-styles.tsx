@@ -52,6 +52,26 @@ export const GlobalStyle = () => {
                 ::-webkit-scrollbar-thumb {
                     background-color: ${theme.colors.scroll};
                 }
+
+                h1 {
+                    font-size: 1.5em;
+                }
+
+                h2 {
+                    font-size: 1.25em;
+                }
+
+                h3 {
+                    font-size: 1.15em;
+                }
+
+                h4 {
+                    font-size: 1.05em;
+                }
+
+                tspan {
+                    font-size: 12px;
+                }
             `}
         />
     );
