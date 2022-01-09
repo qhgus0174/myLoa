@@ -57,7 +57,7 @@ const CommonListItem = ({
                         isPadding={false}
                         underline={false}
                         gold={incomeGold}
-                        goldTextColor={theme.ledger.income}
+                        goldTextColorStr={theme.ledger.income}
                     />
                 </InnerContents>
                 <InnerContents>
@@ -66,7 +66,7 @@ const CommonListItem = ({
                         gold={spendingGold}
                         negative={true}
                         isPadding={false}
-                        goldTextColor={theme.ledger.spending}
+                        goldTextColorStr={theme.ledger.spending}
                     />
                 </InnerContents>
                 <InnerContents>
@@ -77,7 +77,7 @@ const CommonListItem = ({
                         isPadding={false}
                         underline={false}
                         gold={prevGold}
-                        goldTextColor={theme.colors.gray}
+                        goldTextColorStr={theme.colors.gray}
                     />
                 </InnerContents>
             </ListItem>

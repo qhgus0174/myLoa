@@ -121,7 +121,7 @@ const CharacterListItem = ({
                         underline={false}
                         isPadding={false}
                         gold={goodsTotalGold + raidTotalGold}
-                        goldTextColor={theme.ledger.income}
+                        goldTextColorStr={theme.ledger.income}
                     />
                 </InnerContents>
                 <InnerContents>
@@ -130,7 +130,7 @@ const CharacterListItem = ({
                         isPadding={false}
                         gold={spendingGold}
                         negative={true}
-                        goldTextColor={theme.ledger.spending}
+                        goldTextColorStr={theme.ledger.spending}
                     />
                 </InnerContents>
                 <InnerContents>
@@ -144,7 +144,7 @@ const CharacterListItem = ({
                     <TitleAndGold
                         isPadding={false}
                         underline={false}
-                        goldTextColor={theme.colors.gray}
+                        goldTextColorStr={theme.colors.gray}
                         gold={prevWeekGold}
                     />
                 </InnerContents>

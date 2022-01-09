@@ -123,7 +123,9 @@ const IncomeSpendItem = ({
                     <TitleAndGold
                         gold={gold}
                         underline={false}
-                        goldTextColor={['goods', 'raid'].includes(type) ? theme.ledger.income : theme.ledger.spending}
+                        goldTextColorStr={
+                            ['goods', 'raid'].includes(type) ? theme.ledger.income : theme.ledger.spending
+                        }
                         negative={['goods', 'raid'].includes(type) ? false : true}
                     />
                 </GoodsGoldIcon>

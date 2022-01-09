@@ -8,16 +8,17 @@ import { usePromiseEffect } from '@hooks/usePromiseEffect';
 import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
 import { SpinnerContext } from '@context/SpinnerContext';
 import { ModalActionContext } from '@context/ModalContext';
-import { IStatisticsPersonal, IStatisticsPersonalPrev } from '@components/Statistics/StatisticsType';
+import { IStatisticsPersonal } from '@components/Statistics/StatisticsType';
 import CharacterGoldThisWeek from '@components/Statistics/Graph/CharacterGoldThisWeek';
 import { ICommonHistory, ILedger, ILedgerOwn } from '@common/types/localStorage/Ledger';
+import { calcCommonIncomeGold, calcCommonSpendingGold, calcSum } from '@components/Ledger/common/functions';
 import CharacterListItem from '@components/Ledger/characterGold/ListItem';
 import CommonListItem from '@components/Ledger/commonGold/ListItem';
-import { calcCommonIncomeGold, calcCommonSpendingGold, calcSum } from '@components/Ledger/common/functions';
+import SummaryHeader from '@components/Ledger/Summary/Header';
 import TitleAndGold from '@components/Ledger/TitleAndGold';
 import EmojiTitle from '@components/Emoji/EmojiTitle';
+import Block from '@components/Ledger/Summary/Block';
 import Ranking from '@components/Statistics/Ranking';
-import IconLabel from '@components/Label/IconLabel';
 import Nodata from '@components/article/Nodata';
 import Button from '@components/Button/Button';
 import { IRaidGold, IRaidGoldDetail } from '@common/types/response/ledger/raid';
@@ -28,10 +29,8 @@ import { getCharacterInfoById, parseStorageItem } from '@common/utils';
 import { getRaidDetail, getRaid } from '@apis/ledger/raid';
 import { getGoods, getGoodsImg } from '@apis/ledger/goods';
 import { getCommon } from '@apis/ledger/common';
-import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
 import { InnerContents } from '@style/common/layout/table';
-import { Comment } from '@style/common/text';
 import { widthMedia } from '@style/device';
 
 export interface ILedgerObjects {
@@ -49,8 +48,6 @@ interface IPersonalGold {
 }
 
 const Ledger = () => {
-    const theme = useTheme();
-
     const { setSpinnerVisible } = useContext(SpinnerContext);
 
     const { storedCharacter, storedLedger, storedCharacterOrd } = useContext(LocalStorageStateContext);
@@ -110,10 +107,18 @@ const Ledger = () => {
         setStoredLedger(Object.assign({}, { common: commonLedger }, { own: goodsLedger }));
     };
 
-    const openCharacterGoldGraph = (array: IStatisticsPersonalPrev[]) => {
+    const openCharacterGoldGraph = ({ array }: { array: IStatisticsPersonal[] }) => {
+        const characterGoldArr = array
+            .map(({ name, raid, goods }) => {
+                return { name: name, gold: raid + goods };
+            })
+            .sort(({ gold: beforGold }, { gold: afterGold }) => {
+                return afterGold - beforGold;
+            });
+
         setModalProps({
             isOpen: true,
-            content: <CharacterGoldThisWeek array={array} />,
+            content: <CharacterGoldThisWeek array={characterGoldArr} />,
             options: { width: '410', height: '320', headerTitle: '캐릭터 별 골드 수입', isHeaderClose: true },
         });
     };
@@ -165,7 +170,6 @@ const Ledger = () => {
 
         //지난주 계산
         //공통 골드
-
         const calcCommGold =
             calcSum(calcCommonIncomeGold({ history: newLedger.common.histories })) -
             calcSum(calcCommonSpendingGold({ history: newLedger.common.histories }));
@@ -284,130 +288,90 @@ const Ledger = () => {
             </Head>
             {status === 'fulfilled' && ledgerData && (
                 <Container>
-                    <Summary>
-                        <SummaryHeader>
-                            <SummaryHeaderTitle>
-                                <IconLabel
-                                    label={<h1>이번 주 요약</h1>}
-                                    iconUrl="/static/img/icon/mococo/yeah.png"
-                                    width="24"
-                                    height="24"
-                                />
-                                <Button onClick={() => setIsSummaryVisible(!isSummaryVisible)}>
-                                    {isSummaryVisible ? (
-                                        <EmojiTitle label={<span>접기</span>} symbol={'📘'} />
-                                    ) : (
-                                        <EmojiTitle label={<span>펼치기</span>} symbol={'📖'} />
-                                    )}
-                                </Button>
-                            </SummaryHeaderTitle>
-                            <SummaryRightTitle visible={isSummaryVisible}>
-                                <Button onClick={calcStatistics}>새로고침</Button>
-                            </SummaryRightTitle>
-                        </SummaryHeader>
-                        <SummaryDiv visible={isSummaryVisible}>
-                            <SummaryLeft>
-                                <DashDiv>
-                                    <SummaryHeader>
-                                        <IconLabel
-                                            label={<h2>수입</h2>}
-                                            iconUrl="/static/img/icon/mococo/shake_rabbit.gif"
-                                            width="24"
-                                            height="24"
+                    <SummaryHeader
+                        title="이번 주 요약"
+                        rightButton={
+                            <Button onClick={() => setIsSummaryVisible(!isSummaryVisible)}>
+                                {isSummaryVisible ? (
+                                    <EmojiTitle label={<span>접기</span>} symbol={'📘'} />
+                                ) : (
+                                    <EmojiTitle label={<span>펼치기</span>} symbol={'📖'} />
+                                )}
+                            </Button>
+                        }
+                        rightDynamic={{
+                            button: <Button onClick={calcStatistics}>새로고침</Button>,
+                            visible: isSummaryVisible,
+                            onclick: calcStatistics,
+                        }}
+                    />
+                    <SummaryContainer visible={isSummaryVisible}>
+                        <SummaryInner>
+                            <Block
+                                title="수입"
+                                iconUrl="/static/img/icon/mococo/shake_rabbit.gif"
+                                body={
+                                    <GoldList>
+                                        <TitleAndGold
+                                            iconUrl="/static/img/lostark/contents/jwel.png"
+                                            title="공통"
+                                            gold={commonGoldThisWeek}
+                                            goldTextColor={true}
                                         />
-                                    </SummaryHeader>
-                                    <SummaryBody>
-                                        <GoldList>
-                                            <TitleAndGold
-                                                iconUrl="/static/img/lostark/contents/jwel.png"
-                                                title="공통"
-                                                gold={commonGoldThisWeek}
-                                                goldTextColor={
-                                                    commonGoldThisWeek >= 0
-                                                        ? theme.ledger.income
-                                                        : theme.ledger.spending
-                                                }
-                                            />
-                                            <TitleAndGold
-                                                iconUrl="/static/img/lostark/material/weapon_crystal.png"
-                                                title="재화"
-                                                gold={goodsGoldThisWeek}
-                                                goldTextColor={
-                                                    goodsGoldThisWeek >= 0 ? theme.ledger.income : theme.ledger.spending
-                                                }
-                                            />
-                                            <TitleAndGold
-                                                iconUrl="/static/img/lostark/contents/corpsDungeon.png"
-                                                title="레이드"
-                                                gold={raidGoldThisWeek}
-                                                goldTextColor={
-                                                    raidGoldThisWeek >= 0 ? theme.ledger.income : theme.ledger.spending
-                                                }
-                                            />
-                                            <TitleAndGold
-                                                title="총 계"
-                                                underline={false}
-                                                gold={commonGoldThisWeek + goodsGoldThisWeek + raidGoldThisWeek}
-                                                goldTextColor={
-                                                    commonGoldThisWeek + goodsGoldThisWeek + raidGoldThisWeek >= 0
-                                                        ? theme.ledger.income
-                                                        : theme.ledger.spending
-                                                }
-                                            />
-                                        </GoldList>
-                                    </SummaryBody>
-                                </DashDiv>
-                            </SummaryLeft>
-                            <SummaryRight>
-                                <DashDiv>
-                                    <SummaryHeader>
-                                        <IconLabel
-                                            label={<h2>수입 순위</h2>}
-                                            iconUrl="/static/img/icon/mococo/bling_rabbit.gif"
-                                            width="24"
-                                            height="24"
+                                        <TitleAndGold
+                                            iconUrl="/static/img/lostark/material/weapon_crystal.png"
+                                            title="재화"
+                                            gold={goodsGoldThisWeek}
+                                            goldTextColor={true}
                                         />
-                                        <ShowGraphButton
-                                            onClick={() =>
-                                                openCharacterGoldGraph(
-                                                    personalGoldThisWeekArr
-                                                        .map(({ name, raid, goods }) => {
-                                                            return { name: name, gold: raid + goods };
-                                                        })
-                                                        .sort(({ gold: beforGold }, { gold: afterGold }) => {
-                                                            return afterGold - beforGold;
-                                                        }),
-                                                )
-                                            }
-                                        >
-                                            🔍그래프로 보기
-                                        </ShowGraphButton>
-                                    </SummaryHeader>
-                                    <SummaryBody>
-                                        <RankContainer>
-                                            <Ranking
-                                                title=""
-                                                array={personalGoldThisWeekArr.map(({ name, raid, goods }) => {
-                                                    return { name: name, gold: raid + goods };
-                                                })}
-                                            />
-                                        </RankContainer>
-                                    </SummaryBody>
-                                    <Comment>* 골드 수입만 계산 된 값 입니다.</Comment>
-                                </DashDiv>
-                            </SummaryRight>
-                        </SummaryDiv>
-                    </Summary>
+                                        <TitleAndGold
+                                            iconUrl="/static/img/lostark/contents/corpsDungeon.png"
+                                            title="레이드"
+                                            gold={raidGoldThisWeek}
+                                            goldTextColor={true}
+                                        />
+                                        <TitleAndGold
+                                            title="총 계"
+                                            underline={false}
+                                            gold={commonGoldThisWeek + goodsGoldThisWeek + raidGoldThisWeek}
+                                            goldTextColor={true}
+                                        />
+                                    </GoldList>
+                                }
+                            />
+                        </SummaryInner>
+                        <SummaryInner>
+                            <Block
+                                title="수입 순위"
+                                iconUrl="/static/img/icon/mococo/bling_rabbit.gif"
+                                rightButton={
+                                    <ShowGraphButton
+                                        onClick={() =>
+                                            openCharacterGoldGraph({
+                                                array: personalGoldThisWeekArr,
+                                            })
+                                        }
+                                    >
+                                        🔍그래프로 보기
+                                    </ShowGraphButton>
+                                }
+                                body={
+                                    <RankContainer>
+                                        <Ranking
+                                            title=""
+                                            array={personalGoldThisWeekArr.map(({ name, raid, goods }) => {
+                                                return { name: name, gold: raid + goods };
+                                            })}
+                                        />
+                                    </RankContainer>
+                                }
+                                comment="* 골드 수입만 계산 된 값 입니다."
+                            />
+                        </SummaryInner>
+                    </SummaryContainer>
                     {storedLedger.own.length > 0 ? (
-                        <GoldContents>
-                            <SummaryHeader>
-                                <IconLabel
-                                    label={<h1>골드 수입 · 지출 내역</h1>}
-                                    iconUrl="/static/img/icon/mococo/yeah.png"
-                                    width="24"
-                                    height="24"
-                                />
-                            </SummaryHeader>
+                        <GoldContainer>
+                            <SummaryHeader title="골드 수입 · 지출 내역" />
                             <Table>
                                 <TableHeader>
                                     <InnerContents isName={true}>닉네임(레벨)</InnerContents>
@@ -466,7 +430,7 @@ const Ledger = () => {
                                         })}
                                 </TableBody>
                             </Table>
-                        </GoldContents>
+                        </GoldContainer>
                     ) : (
                         <Nodata
                             text={
@@ -495,25 +459,6 @@ const Container = styled.section`
     margin-top: 3em;
     box-sizing: border-box;
     justify-content: center;
-    h1 {
-        font-size: 1.4em;
-    }
-
-    h2 {
-        font-size: 1.25em;
-    }
-
-    h3 {
-        font-size: 1.15em;
-    }
-
-    h4 {
-        font-size: 1.05em;
-    }
-
-    tspan {
-        font-size: 12px;
-    }
 
     ${widthMedia.desktop} {
         width: 70%;
@@ -530,15 +475,7 @@ const Container = styled.section`
     margin-bottom: 3em;
 `;
 
-const Summary = styled.article`
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    margin-bottom: 1em;
-    padding-bottom: 3em;
-`;
-
-const SummaryDiv = styled.div<{ visible: boolean }>`
+const SummaryContainer = styled.div<{ visible: boolean }>`
     display: ${props => (props.visible ? `flex` : `none`)};
     width: 100%;
     flex-flow: wrap;
@@ -549,7 +486,7 @@ const SummaryDiv = styled.div<{ visible: boolean }>`
     }
 `;
 
-const SummaryLeft = styled.div`
+const SummaryInner = styled.div`
     display: flex;
     width: 100%;
     flex-basis: 50%;
@@ -557,39 +494,6 @@ const SummaryLeft = styled.div`
 
     ${widthMedia.desktop} {
         flex-basis: 50%;
-    }
-`;
-
-const SummaryRight = styled.div`
-    display: flex;
-    width: 100%;
-    flex-basis: 50%;
-    flex-direction: column;
-
-    ${widthMedia.desktop} {
-        flex-basis: 50%;
-    }
-`;
-
-const DashDiv = styled.div`
-    display: flex;
-    flex-direction: column;
-    border: 1px dashed ${props => props.theme.colors.text};
-    padding: 1.5em;
-    margin-left: 1.5em;
-    margin-right: 1.5em;
-    box-sizing: border-box;
-    height: 100%;
-
-    ${widthMedia.tablet} {
-        margin-bottom: 2em;
-        padding-bottom: 2em;
-    }
-
-    ${widthMedia.phone} {
-        margin: 0;
-        padding: 1em;
-        margin-bottom: 10px;
     }
 `;
 
@@ -602,18 +506,13 @@ const GoldList = styled.div`
     width: 80%;
 `;
 
-const GoldContents = styled.article`
+const GoldContainer = styled.article`
     display: flex;
     width: 100%;
     height: 100%;
     flex-flow: wrap;
     justify-content: space-between;
-`;
-
-const SummaryHeader = styled.div`
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 1em;
+    margin-top: 4em;
 `;
 
 const RankContainer = styled.div`
@@ -637,53 +536,6 @@ const RankContainer = styled.div`
         width: 100%;
         padding: 0;
     }
-`;
-
-const SummaryHeaderTitle = styled.div`
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-
-    button {
-        margin-left: 1em;
-    }
-
-    ${widthMedia.mediumDesktop} {
-        flex-basis: 30%;
-    }
-
-    ${widthMedia.desktop} {
-        flex-basis: 30%;
-    }
-
-    ${widthMedia.smallDesktop} {
-        flex-basis: 35%;
-    }
-
-    ${widthMedia.tablet} {
-        flex-basis: 45%;
-    }
-
-    ${widthMedia.phone} {
-        flex-basis: 100%;
-        justify-content: space-between;
-    }
-`;
-
-const SummaryRightTitle = styled.div<{ visible: boolean }>`
-    display: ${props => (props.visible ? `flex` : `none`)};
-    justify-content: flex-end;
-    width: 120px;
-`;
-
-const SummaryBody = styled.div`
-    display: flex;
-    width: 100%;
-    height: 100%;
-    align-items: center;
-    justify-content: center;
-    margin-top: 1em;
-    margin-bottom: 0.5em;
 `;
 
 const Table = styled.div`
