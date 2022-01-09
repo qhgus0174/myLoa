@@ -73,7 +73,7 @@ const CharacterListItem = ({
                     )}
                 />
             ),
-            options: { width: '800', height: '600', headerTitle: '레이드 수입', isHeaderClose: true },
+            options: { width: '800', height: '570', headerTitle: '레이드 수입', isHeaderClose: true },
         });
     };
 
