@@ -5,14 +5,16 @@ import TitleAndGold from '@components/Ledger/TitleAndGold';
 import { widthMedia } from '@style/device';
 import { useTheme } from '@emotion/react';
 import { IncomeSpendingType } from '@common/types/types';
+import IconLabel from '@components/Label/IconLabel';
 
 interface IWeekSum {
     common: number;
     personal: number;
+    title: string;
     type: IncomeSpendingType | 'all';
 }
 
-const WeekSum = ({ common, personal, type }: IWeekSum) => {
+const WeekSum = ({ common, personal, type, title }: IWeekSum) => {
     const theme = useTheme();
 
     const textColor =
@@ -25,16 +27,47 @@ const WeekSum = ({ common, personal, type }: IWeekSum) => {
 
     return (
         <Container direction="column">
+            <Title>
+                <IconLabel
+                    label={<h4>{title}</h4>}
+                    iconUrl="/static/img/icon/mococo/rabbit.png"
+                    width="24"
+                    height="24"
+                />
+            </Title>
             <GoldList>
-                <TitleAndGold goldTextColor={textColor} title={titleCommon} gold={common} negative={isNagative} />
-                <TitleAndGold goldTextColor={textColor} title={titlePersonal} gold={personal} negative={isNagative} />
-                <TitleAndGold goldTextColor={textColor} title="총 계" gold={common + personal} negative={isNagative} />
+                <TitleAndGold goldTextColorStr={textColor} title={titleCommon} gold={common} negative={isNagative} />
+                <TitleAndGold
+                    goldTextColorStr={textColor}
+                    title={titlePersonal}
+                    gold={personal}
+                    negative={isNagative}
+                />
+                <TitleAndGold
+                    goldTextColorStr={textColor}
+                    title="총 계"
+                    gold={common + personal}
+                    negative={isNagative}
+                />
             </GoldList>
         </Container>
     );
 };
 
 const Container = styled(FlexDiv)``;
+
+const Title = styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 30px;
+    align-items: center;
+
+    & > h3,
+    & > label {
+        flex-basis: 50%;
+    }
+`;
 
 const GoldList = styled.div`
     display: flex;

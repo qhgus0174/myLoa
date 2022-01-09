@@ -25,7 +25,7 @@ const WeekGoldExplain = ({ time, gold }: IWeekGoldExplain) => {
                     underline={false}
                     gold={gold}
                     negative={gold < 0}
-                    goldTextColor={gold < 0 ? theme.ledger.spending : theme.ledger.income}
+                    goldTextColor={true}
                 />
             </TotalGoldDiv>
             <span>&nbsp;만큼&nbsp;</span>

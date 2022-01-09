@@ -18,13 +18,13 @@ import EmojiTitle from '@components/Emoji/EmojiTitle';
 import Ranking from '@components/Statistics/Ranking';
 import WeekSum from '@components/Statistics/WeekSum';
 import IconLabel from '@components/Label/IconLabel';
+import Block from '@components/Statistics/Block';
 import Nodata from '@components/article/Nodata';
 import Button from '@components/Button/Button';
 import { ILedger, ILedgerCommon, ILedgerOwn } from '@common/types/localStorage/Ledger';
 import { getCharacterInfoById, parseStorageItem } from '@common/utils';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
-import { FlexDiv } from '@style/common/layout/common';
 import { Comment } from '@style/common/text';
 import { widthMedia } from '@style/device';
 
@@ -347,21 +347,11 @@ const Statistics = () => {
                 <ResultInner>
                     <span>공통 합계는 </span>
                     <TotalGoldDiv>
-                        <TitleAndGold
-                            goldTextColor={commonGold >= 0 ? theme.ledger.income : theme.ledger.spending}
-                            isPadding={false}
-                            underline={false}
-                            gold={commonGold}
-                        />
+                        <TitleAndGold goldTextColor={true} isPadding={false} underline={false} gold={commonGold} />
                     </TotalGoldDiv>
                     <span>, 캐릭터 별 합계는 </span>
                     <TotalGoldDiv>
-                        <TitleAndGold
-                            goldTextColor={personalGold >= 0 ? theme.ledger.income : theme.ledger.spending}
-                            isPadding={false}
-                            underline={false}
-                            gold={personalGold}
-                        />
+                        <TitleAndGold goldTextColor={true} isPadding={false} underline={false} gold={personalGold} />
                     </TotalGoldDiv>
                 </ResultInner>
                 <br />
@@ -398,14 +388,10 @@ const Statistics = () => {
                 <h1>종합</h1>
                 <OverAllArticle>
                     <OverAllLeftArticle>
-                        <InnerDiv>
-                            <HeaderTitle>
-                                <IconLabel
-                                    label={<h2>이번 주 골드 총 합</h2>}
-                                    iconUrl="/static/img/icon/mococo/shake_rabbit.gif"
-                                    width="24"
-                                    height="24"
-                                />
+                        <Block
+                            title="이번 주 골드 총 합"
+                            iconUrl="/static/img/icon/mococo/shake_rabbit.gif"
+                            rightButton={
                                 <Button
                                     onClick={() =>
                                         openPrevWeekSum({
@@ -418,41 +404,32 @@ const Statistics = () => {
                                 >
                                     <EmojiTitle label={<span>지난 주 데이터</span>} symbol={'🔍'} />
                                 </Button>
-                            </HeaderTitle>
-                            <OverAllDiv>
-                                <WeekSumDiv>
-                                    <Title>
-                                        <IconLabel
-                                            label={<h4>수입</h4>}
-                                            iconUrl="/static/img/icon/mococo/rabbit.png"
-                                            width="24"
-                                            height="24"
-                                        />
-                                    </Title>
-                                    <WeekSum
-                                        common={commonGoldThisWeek}
-                                        personal={personalGoldThisWeek}
-                                        type="income"
-                                    />
-                                </WeekSumDiv>
-                                <WeekSumDiv>
-                                    <Title>
-                                        <IconLabel
-                                            label={<h4>지출</h4>}
-                                            iconUrl="/static/img/icon/mococo/rabbit.png"
-                                            width="24"
-                                            height="24"
-                                        />
-                                    </Title>
-                                    <WeekSum
-                                        common={commonSpendThisWeek}
-                                        personal={personalSpendThisWeek}
-                                        type="spending"
-                                    />
-                                </WeekSumDiv>
-                            </OverAllDiv>
-                            <ResultDiv>{getResult()}</ResultDiv>
-                        </InnerDiv>
+                            }
+                            body={
+                                <>
+                                    <OverAllDiv>
+                                        <WeekSumDiv>
+                                            <WeekSum
+                                                title="수입"
+                                                common={commonGoldThisWeek}
+                                                personal={personalGoldThisWeek}
+                                                type="income"
+                                            />
+                                        </WeekSumDiv>
+                                        <WeekSumDiv>
+                                            <WeekSum
+                                                title="지출"
+                                                common={commonSpendThisWeek}
+                                                personal={personalSpendThisWeek}
+                                                type="spending"
+                                            />
+                                        </WeekSumDiv>
+                                    </OverAllDiv>
+                                    <ResultDiv>{getResult()}</ResultDiv>
+                                </>
+                            }
+                        />
+
                         <InnerDiv>
                             <HeaderTitle>
                                 <IconLabel
@@ -491,31 +468,18 @@ const Statistics = () => {
                         />
                         <Comment>* 1월 8일 업데이트 이후의 주는 지출이 포함된 값입니다.</Comment>
                         <OverAllInnerArticle>
-                            <CustomLineChart width={500} height={200} array={totalGoldByWeekArr} />
-                            <IconLabel
-                                label={<h4>총 합</h4>}
-                                iconUrl="/static/img/icon/mococo/rabbit.png"
-                                width="24"
-                                height="24"
-                            />
+                            <CustomLineChart title="총 합" width={500} height={200} array={totalGoldByWeekArr} />
                         </OverAllInnerArticle>
                         <OverAllBottom>
                             <OverAllInnerArticle>
-                                <CustomLineChart width={250} height={200} array={commonGoldByWeekArr} />
-                                <IconLabel
-                                    label={<h4>공통</h4>}
-                                    iconUrl="/static/img/icon/mococo/rabbit.png"
-                                    width="24"
-                                    height="24"
-                                />
+                                <CustomLineChart title="공통" width={250} height={200} array={commonGoldByWeekArr} />
                             </OverAllInnerArticle>
                             <OverAllInnerArticle>
-                                <CustomLineChart width={250} height={200} array={characterGoldByWeekArr} />
-                                <IconLabel
-                                    label={<h4>캐릭터 별</h4>}
-                                    iconUrl="/static/img/icon/mococo/rabbit.png"
-                                    width="24"
-                                    height="24"
+                                <CustomLineChart
+                                    title="캐릭터 별"
+                                    width={250}
+                                    height={200}
+                                    array={characterGoldByWeekArr}
                                 />
                             </OverAllInnerArticle>
                         </OverAllBottom>
@@ -526,35 +490,16 @@ const Statistics = () => {
                 <h1>캐릭터 별 통계</h1>
                 <PersonalArticle>
                     <PersonalBottom>
-                        <PersonalInnerArticle>
-                            <GraphDiv length={personalGoldThisWeekArr.length}>
-                                <CharacterGoldDetailChart array={personalGoldThisWeekArr} />
-                            </GraphDiv>
-                            <IconLabel
-                                label={<h4>이번 주 수입</h4>}
-                                iconUrl="/static/img/icon/mococo/rabbit.png"
-                                width="24"
-                                height="24"
-                            />
-                        </PersonalInnerArticle>
-                        <PersonalInnerArticle>
-                            <GraphDiv length={personalGoldThisWeekArr.length}>
-                                <VerticalBarChart
-                                    width={500}
-                                    height={300}
-                                    color={theme.graph.quaternary}
-                                    array={personalGoldPrev.sort(({ gold: beforGold }, { gold: afterGold }) => {
-                                        return afterGold - beforGold;
-                                    })}
-                                />
-                            </GraphDiv>
-                            <IconLabel
-                                label={<h4>저번 주 ~ 4주 전 수입 + 지출</h4>}
-                                iconUrl="/static/img/icon/mococo/rabbit.png"
-                                width="24"
-                                height="24"
-                            />
-                        </PersonalInnerArticle>
+                        <CharacterGoldDetailChart title="이번 주 수입" array={personalGoldThisWeekArr} />
+                        <VerticalBarChart
+                            title="저번 주 ~ 4주 전 수입 + 지출"
+                            width={500}
+                            height={300}
+                            color={theme.graph.quaternary}
+                            array={personalGoldPrev.sort(({ gold: beforGold }, { gold: afterGold }) => {
+                                return afterGold - beforGold;
+                            })}
+                        />
                     </PersonalBottom>
                 </PersonalArticle>
             </StatisticsSection>
@@ -567,25 +512,6 @@ const StatisticsContainer = styled.section`
     flex-direction: column;
     width: 80%;
     margin-top: 4em;
-
-    h1 {
-        font-size: 1.6em;
-    }
-
-    h2 {
-        font-size: 1.25em;
-    }
-
-    h3 {
-        font-size: 1.15em;
-    }
-
-    h4 {
-        font-size: 1.05em;
-    }
-    tspan {
-        font-size: 12px;
-    }
 
     ${widthMedia.phone} {
         width: 90%;
@@ -663,28 +589,6 @@ const PersonalArticle = styled.article`
     flex-direction: column;
 `;
 
-const PersonalInnerArticle = styled.article`
-    display: flex;
-    flex-direction: column;
-    flex-basis: 45%;
-    align-items: center;
-    margin-top: 2em;
-    margin-bottom: 2em;
-    height: 100%;
-
-    h3 {
-        margin-left: 15px;
-    }
-`;
-
-const GraphDiv = styled(FlexDiv)<{ length: number }>`
-    justify-content: center;
-    font-size: 0.8em;
-    width: 100%;
-    height: ${props => props.length > 0 && props.length * 60}px;
-    min-height: 300px;
-`;
-
 const OverAllDiv = styled.div`
     display: flex;
     justify-content: space-around;
@@ -703,19 +607,6 @@ const WeekSumDiv = styled.div`
     ${widthMedia.phone} {
         margin-top: 1em;
         margin-bottom: 1em;
-    }
-`;
-
-const Title = styled.div`
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    height: 30px;
-    align-items: center;
-
-    & > h3,
-    & > label {
-        flex-basis: 50%;
     }
 `;
 

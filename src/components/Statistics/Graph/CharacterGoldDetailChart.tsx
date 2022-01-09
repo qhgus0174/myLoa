@@ -3,15 +3,18 @@ import { Bar, BarChart, CartesianGrid, LabelList, Legend, Tooltip, TooltipProps,
 import { ValueType, NameType } from 'recharts/types/component/DefaultTooltipContent';
 import { IStatisticsPersonal } from '@components/Statistics/StatisticsType';
 import ResponsiveGraph from '@components/Statistics/Graph/ResponsiveGraph';
+import IconLabel from '@components/Label/IconLabel';
 import GoldIcon from '@components/Image/Gold';
 import { useTheme } from '@emotion/react';
 import styled from '@emotion/styled';
+import { Container, GraphDiv } from '@style/common/graph';
 
 interface ICharacterGoldDetailChart {
     array: IStatisticsPersonal[];
+    title: string;
 }
 
-const CharacterGoldDetailChart = ({ array }: ICharacterGoldDetailChart) => {
+const CharacterGoldDetailChart = ({ array, title }: ICharacterGoldDetailChart) => {
     const theme = useTheme();
 
     const ColorfulLegendText = (value: string, entry: any) => {
@@ -51,62 +54,72 @@ const CharacterGoldDetailChart = ({ array }: ICharacterGoldDetailChart) => {
     };
 
     return (
-        <ResponsiveGraph>
-            <BarChart
-                width={600}
-                layout="vertical"
-                data={array}
-                margin={{
-                    top: 20,
-                    right: 30,
-                    left: 20,
-                    bottom: 20,
-                }}
-                barGap={2}
-            >
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis
-                    tickFormatter={tick => {
-                        return tick.toLocaleString();
-                    }}
-                    stroke={theme.colors.text}
-                    type="number"
-                />
-                <YAxis width={80} stroke={theme.colors.text} type="category" dataKey="name" />
-                <Legend
-                    wrapperStyle={{ top: 0 }}
-                    layout="vertical"
-                    verticalAlign="top"
-                    align="center"
-                    formatter={ColorfulLegendText}
-                />
-                <Tooltip cursor={{ fill: theme.colors.mainInner }} content={<CustomTooltip />} />
-                <Bar isAnimationActive={false} dataKey="goods" stackId="personal" fill={theme.graph.primary}>
-                    <LabelList
-                        dataKey="goods"
-                        position="inside"
-                        fill="#ffffff"
-                        formatter={(value: number) => value.toLocaleString()}
-                    />
-                </Bar>
-                <Bar isAnimationActive={false} dataKey="raid" stackId="personal" fill={theme.graph.secondary}>
-                    <LabelList
-                        dataKey="raid"
-                        position="inside"
-                        fill="#ffffff"
-                        formatter={(value: number) => value.toLocaleString()}
-                    />
-                </Bar>
-                <Bar isAnimationActive={false} dataKey="spending" stackId="personal" fill={theme.graph.tertiary}>
-                    <LabelList
-                        dataKey="spending"
-                        position="inside"
-                        fill="#ffffff"
-                        formatter={(value: number) => value.toLocaleString()}
-                    />
-                </Bar>
-            </BarChart>
-        </ResponsiveGraph>
+        <Container>
+            <GraphDiv length={array.length}>
+                <ResponsiveGraph>
+                    <BarChart
+                        width={600}
+                        layout="vertical"
+                        data={array}
+                        margin={{
+                            top: 20,
+                            right: 30,
+                            left: 20,
+                            bottom: 20,
+                        }}
+                        barGap={2}
+                    >
+                        <CartesianGrid strokeDasharray="3 3" />
+                        <XAxis
+                            tickFormatter={tick => {
+                                return tick.toLocaleString();
+                            }}
+                            stroke={theme.colors.text}
+                            type="number"
+                        />
+                        <YAxis width={80} stroke={theme.colors.text} type="category" dataKey="name" />
+                        <Legend
+                            wrapperStyle={{ top: 0 }}
+                            layout="vertical"
+                            verticalAlign="top"
+                            align="center"
+                            formatter={ColorfulLegendText}
+                        />
+                        <Tooltip cursor={{ fill: theme.colors.mainInner }} content={<CustomTooltip />} />
+                        <Bar isAnimationActive={false} dataKey="goods" stackId="personal" fill={theme.graph.primary}>
+                            <LabelList
+                                dataKey="goods"
+                                position="inside"
+                                fill="#ffffff"
+                                formatter={(value: number) => value.toLocaleString()}
+                            />
+                        </Bar>
+                        <Bar isAnimationActive={false} dataKey="raid" stackId="personal" fill={theme.graph.secondary}>
+                            <LabelList
+                                dataKey="raid"
+                                position="inside"
+                                fill="#ffffff"
+                                formatter={(value: number) => value.toLocaleString()}
+                            />
+                        </Bar>
+                        <Bar
+                            isAnimationActive={false}
+                            dataKey="spending"
+                            stackId="personal"
+                            fill={theme.graph.tertiary}
+                        >
+                            <LabelList
+                                dataKey="spending"
+                                position="inside"
+                                fill="#ffffff"
+                                formatter={(value: number) => value.toLocaleString()}
+                            />
+                        </Bar>
+                    </BarChart>
+                </ResponsiveGraph>
+            </GraphDiv>
+            <IconLabel label={<h4>{title}</h4>} iconUrl="/static/img/icon/mococo/rabbit.png" width="24" height="24" />
+        </Container>
     );
 };
 
