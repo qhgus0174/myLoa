@@ -12,9 +12,10 @@ interface IWeekSum {
     personal: number;
     title: string;
     type: IncomeSpendingType | 'all';
+    rightOption?: JSX.Element;
 }
 
-const WeekSum = ({ common, personal, type, title }: IWeekSum) => {
+const WeekSum = ({ common, personal, type, title, rightOption }: IWeekSum) => {
     const theme = useTheme();
 
     const textColor =
@@ -34,6 +35,7 @@ const WeekSum = ({ common, personal, type, title }: IWeekSum) => {
                     width="24"
                     height="24"
                 />
+                {rightOption && rightOption}
             </Title>
             <GoldList>
                 <TitleAndGold goldTextColorStr={textColor} title={titleCommon} gold={common} negative={isNagative} />

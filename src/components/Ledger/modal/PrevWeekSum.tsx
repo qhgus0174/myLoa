@@ -22,15 +22,15 @@ const PrevWeekSum = ({
 
     return (
         <WeekSumDiv>
-            <Title>
-                <EmojiTitle label={<h4>~4주전</h4>} symbol={'📅'} />
-                <BasicCheckbox
-                    checked={isContainThisWeek}
-                    onChange={e => setIsContainThisWeek(!isContainThisWeek)}
-                    label={<span>이번 주 포함</span>}
-                />
-            </Title>
             <WeekSum
+                title="~4주전"
+                rightOption={
+                    <BasicCheckbox
+                        checked={isContainThisWeek}
+                        onChange={e => setIsContainThisWeek(!isContainThisWeek)}
+                        label={<span>이번 주 포함</span>}
+                    />
+                }
                 type="all"
                 common={isContainThisWeek ? commonAllGoldPrev + commonGoldThisWeek : commonAllGoldPrev}
                 personal={isContainThisWeek ? personalAllGoldPrev + personalGoldThisWeek : personalAllGoldPrev}
@@ -47,23 +47,6 @@ const WeekSumDiv = styled.div`
     flex-basis: 40%;
     width: 100%;
     justify-content: space-around;
-`;
-
-const Title = styled.div`
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    height: 30px;
-    align-items: center;
-
-    & > label:nth-of-type(1) {
-        flex-basis: 50%;
-    }
-
-    & > h3,
-    & > label {
-        justify-content: flex-end;
-    }
 `;
 
 export default PrevWeekSum;
