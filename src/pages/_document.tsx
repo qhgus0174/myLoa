@@ -22,11 +22,6 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
                     />
                     <link rel="canonical" href="https://loa-day.com" />
                     <link rel="icon" href="/static/img/favicon.ico" />
-                    <link
-                        rel="stylesheet"
-                        type="text/css"
-                        href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard-dynamic-subset.css"
-                    />
 
                     <meta
                         name="keywords"
