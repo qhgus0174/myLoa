@@ -54,15 +54,15 @@ const CharacterGoldDetailChart = ({ array }: ICharacterGoldDetailChart) => {
         <ResponsiveGraph>
             <BarChart
                 width={600}
-                height={400}
                 layout="vertical"
                 data={array}
                 margin={{
                     top: 20,
                     right: 30,
                     left: 20,
-                    bottom: 10,
+                    bottom: 20,
                 }}
+                barGap={2}
             >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis
