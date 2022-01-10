@@ -318,7 +318,7 @@ const RaidGold = ({
                                                                 <ContentsContainer key={difficultyIndex}>
                                                                     <ContentsTitle>
                                                                         <h5>{difficultyName} </h5>
-                                                                        <h4>합계 : {raidSum}</h4>
+                                                                        <h4>합계 : {raidSum.toLocaleString()}</h4>
                                                                     </ContentsTitle>
                                                                     {grouppedDetailData[difficultyName].map(
                                                                         (
