@@ -300,9 +300,9 @@ const Ledger = () => {
                             </Button>
                         }
                         rightDynamic={{
-                            button: <Button onClick={calcStatistics}>새로고침</Button>,
+                            button: <Button>새로고침</Button>,
                             visible: isSummaryVisible,
-                            onclick: calcStatistics,
+                            onclick: () => calcStatistics(),
                         }}
                     />
                     <SummaryContainer visible={isSummaryVisible}>

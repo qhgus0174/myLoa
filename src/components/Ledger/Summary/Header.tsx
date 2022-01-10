@@ -29,7 +29,7 @@ const SummaryHeader = ({ title, rightButton, rightDynamic }: ISummary) => {
                 </Title>
                 {rightDynamic && (
                     <RightTitle visible={rightDynamic.visible!}>
-                        <Button onClick={() => rightDynamic.onclick}>새로고침</Button>
+                        <Button onClick={rightDynamic.onclick}>새로고침</Button>
                     </RightTitle>
                 )}
             </Header>
