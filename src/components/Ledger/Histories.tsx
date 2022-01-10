@@ -59,12 +59,14 @@ const Histories = ({
                 />
                 <Buttons count={hasRaid ? 3 : 2}>
                     <Button
+                        className="addIncome"
                         onClick={onClickIncome}
                         icon={<PlusIcon fill={theme.button.color} width="13" height="13" />}
                     >
                         수입
                     </Button>
                     <Button
+                        className="addSpending"
                         onClick={onClickSpending}
                         icon={<PlusIcon fill={theme.button.color} width="13" height="13" />}
                     >
@@ -72,6 +74,7 @@ const Histories = ({
                     </Button>
                     {hasRaid && (
                         <Button
+                            className="addRaidGold"
                             onClick={onClickRaid}
                             icon={<PlusIcon fill={theme.button.color} width="13" height="13" />}
                         >
