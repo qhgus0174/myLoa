@@ -536,7 +536,7 @@ const Container = styled.section`
 
 const RaidDiv = styled.div<{ isShow: boolean }>`
     display: ${props => (props.isShow ? `flex` : `none`)};
-    width: ${props => (props.isShow ? `100%` : `100%`)};
+    width: 100%;
 
     ${widthMedia.smallDesktop} {
         flex-basis: 100%;
@@ -570,9 +570,8 @@ const Content = styled.div`
     width: 100%;
     box-sizing: border-box;
 
-    ${widthMedia.tablet} {
+    ${widthMedia.smallDesktop} {
         flex-direction: column;
-        flex-direction: row;
         align-items: center;
         margin-left: 0;
     }
@@ -589,6 +588,16 @@ const ContentsContainer = styled.div`
     justify-content: center;
     h5 {
         margin-bottom: 0.5em;
+    }
+
+    ${widthMedia.smallDesktop} {
+        width: 70%;
+        margin-bottom: 2em;
+    }
+
+    ${widthMedia.phone} {
+        width: 90%;
+        margin-bottom: 2em;
     }
 `;
 
@@ -607,6 +616,16 @@ const RaidGoldContainer = styled.div<{ ord: number }>`
     padding-top: 0.5em;
     padding-bottom: 0.5em;
     padding-left: 1em;
+
+    ${widthMedia.smallDesktop} {
+        & > label {
+            justify-content: center;
+        }
+    }
+
+    ${widthMedia.phone} {
+        flex-direction: column;
+    }
 `;
 
 const GateWayAndGold = styled.div`
