@@ -23,14 +23,12 @@ const IncomeSpendList = ({
     imgPaletteArr,
     raidCategory,
     raidDetailData,
-    totalGold,
 }: {
     characterId: number;
     goods: IGoods[];
     imgPaletteArr: IGoodsImg[];
     raidCategory: IRaidGold[];
     raidDetailData: IRaidGoldDetail[];
-    totalGold: number;
 }) => {
     const { storedLedger } = useContext(LocalStorageStateContext);
     const { setStoredLedger } = useContext(LocalStorageActionContext);

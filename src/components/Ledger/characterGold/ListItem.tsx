@@ -158,7 +158,6 @@ const CharacterListItem = ({
                         imgPaletteArr={ledgerData.goodsImg}
                         raidCategory={ledgerData.raid}
                         raidDetailData={ledgerData.raidDetail}
-                        totalGold={goodsTotalGold + raidTotalGold - spendingGold}
                     />
                 }
                 calendar={<CharacterCalender characterId={characterId} />}

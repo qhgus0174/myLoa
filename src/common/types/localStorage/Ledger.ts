@@ -40,6 +40,7 @@ export interface ILedgerHistoryRaid {
     id: string;
     gold: number;
     datetime: string;
+    more?: boolean;
 }
 
 export interface ILedgerHistoryGoods extends ILedgerHistoryRaid {

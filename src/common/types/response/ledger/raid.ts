@@ -14,4 +14,5 @@ export interface IRaidGoldDetail {
     difficulty: string;
     gateway: string;
     gold: number;
+    more?: number;
 }
