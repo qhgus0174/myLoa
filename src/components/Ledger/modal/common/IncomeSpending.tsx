@@ -7,6 +7,7 @@ import AddButtonContainer from '@components/Container/Button/Add';
 import Form from '@components/Ledger/modal/Form';
 import { ICommonHistory, ILedger } from '@common/types/localStorage/Ledger';
 import { ICommonGold } from '@common/types/response/ledger/common';
+import { dateToTime, getThisWeek } from '@common/utils';
 import styled from '@emotion/styled';
 import { TopInfo, TopInfoTitle } from '@style/common/modal';
 
@@ -56,7 +57,7 @@ const IncomeSpending = ({ goods, type }: IIncome) => {
         const history: ICommonHistory = {
             id: String(maxGoodsId + 1),
             gold: gold,
-            datetime: DateTime.now().toFormat('X'),
+            datetime: getDate(),
             imgUrl: defaultImgUrl,
             type: type,
             name: name ? name : goodsDefaultName,
@@ -84,7 +85,7 @@ const IncomeSpending = ({ goods, type }: IIncome) => {
         const history: ICommonHistory = {
             id: String(maxGoodsId + 1),
             gold: gold,
-            datetime: DateTime.now().toFormat('X'),
+            datetime: getDate(),
             imgUrl: defaultImgUrl,
             type: type,
             name: name ? name : goodsDefaultName,
@@ -96,6 +97,27 @@ const IncomeSpending = ({ goods, type }: IIncome) => {
         };
 
         return ledgerArr;
+    };
+
+    const getDate = (): string => {
+        const lastDayOfWeek = getThisWeek()[6];
+        const yesterday = DateTime.now().minus({ days: 1 });
+        const isLastDay = yesterday.toFormat('yyyy/MM/dd') === lastDayOfWeek;
+
+        const now = dateToTime({
+            date: day + ' ' + DateTime.now().toFormat('HH:mm:ss'),
+            format: 'yyyy/MM/dd HH:mm:ss',
+        });
+
+        const lastDayOfDawnDate =
+            Number(yesterday.toFormat('HH')) < 6
+                ? dateToTime({
+                      date: yesterday.toFormat('yyyy/MM/dd') + ' ' + DateTime.now().toFormat('HH:mm:ss'),
+                      format: 'yyyy/MM/dd HH:mm:ss',
+                  })
+                : now;
+
+        return isLastDay ? lastDayOfDawnDate : now;
     };
 
     return (

@@ -7,7 +7,7 @@ import AddButtonContainer from '@components/Container/Button/Add';
 import Form from '@components/Ledger/modal/Form';
 import { ILedger, ILedgerHistoryGoods, ILedgerOwn } from '@common/types/localStorage/Ledger';
 import { IGoods, IGoodsImg } from '@common/types/response/ledger/goods';
-import { dateToTime, getCharacterInfoById } from '@common/utils';
+import { dateToTime, getCharacterInfoById, getThisWeek } from '@common/utils';
 import styled from '@emotion/styled';
 import { TopInfo, TopInfoTitle } from '@style/common/modal';
 
@@ -30,6 +30,7 @@ const IncomeSpending = ({ characterId, goods, imgPaletteArr, type }: IIncome) =>
     const [getGoods, setGetGoods] = useState<string>('1');
     const [goodsIconId, setGoodsIconId] = useState<string>('1');
     const [day, setDay] = useState<string>(DateTime.now().toFormat('yyyy/MM/dd'));
+
     const [name, bindName] = useInput<string>('');
     const [gold, setGold] = useState<number>(0);
 
@@ -68,12 +69,10 @@ const IncomeSpending = ({ characterId, goods, imgPaletteArr, type }: IIncome) =>
             categoryId: String(getGoods),
             gold: Number(gold),
             imgId: goodsIconId,
-            datetime: dateToTime({
-                date: day + ' ' + DateTime.now().toFormat('HH:mm:ss'),
-                format: 'yyyy/MM/dd HH:mm:ss',
-            }),
+            datetime: getDate(),
             name: name ? name : goodsDefaultName,
         };
+
         newLedger.own[charLedgerIndex] = {
             ...ownLedger,
             histories: {
@@ -137,7 +136,7 @@ const IncomeSpending = ({ characterId, goods, imgPaletteArr, type }: IIncome) =>
             categoryId: String(getGoods),
             gold: Number(gold),
             imgId: goodsIconId,
-            datetime: DateTime.fromFormat(day, 'yyyy/MM/dd').toFormat('X'),
+            datetime: getDate(),
             name: name ? name : goodsDefaultName,
         };
 
@@ -153,6 +152,27 @@ const IncomeSpending = ({ characterId, goods, imgPaletteArr, type }: IIncome) =>
         };
 
         return newLedger;
+    };
+
+    const getDate = (): string => {
+        const lastDayOfWeek = getThisWeek()[6];
+        const yesterday = DateTime.now().minus({ days: 1 });
+        const isLastDay = yesterday.toFormat('yyyy/MM/dd') === lastDayOfWeek;
+
+        const now = dateToTime({
+            date: day + ' ' + DateTime.now().toFormat('HH:mm:ss'),
+            format: 'yyyy/MM/dd HH:mm:ss',
+        });
+
+        const lastDayOfDawnDate =
+            Number(yesterday.toFormat('HH')) < 6
+                ? dateToTime({
+                      date: yesterday.toFormat('yyyy/MM/dd') + ' ' + DateTime.now().toFormat('HH:mm:ss'),
+                      format: 'yyyy/MM/dd HH:mm:ss',
+                  })
+                : now;
+
+        return isLastDay ? lastDayOfDawnDate : now;
     };
 
     return (
