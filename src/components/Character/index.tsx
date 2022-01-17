@@ -115,13 +115,18 @@ const Character = ({ onContextMenuBasicModal }: IContextModalParam) => {
                                                                 openCharacterEditModal({ e: e, char: char });
                                                             }}
                                                         >
-                                                            <FlexDiv>
+                                                            <Logo>
                                                                 <JobLogo shape={char.job} />
-                                                            </FlexDiv>
-                                                            <InfoDiv direction="column">
+                                                            </Logo>
+                                                            <Info
+                                                                length={
+                                                                    storedCharacterOrd.length -
+                                                                    (currentPage - 1) * perPage
+                                                                }
+                                                            >
                                                                 <FlexDiv>{char.name}</FlexDiv>
                                                                 <FlexDiv>{`Lv. ${char.level}`}</FlexDiv>
-                                                            </InfoDiv>
+                                                            </Info>
                                                         </Article>
                                                     )}
                                                 </Draggable>
@@ -157,15 +162,26 @@ const DropCharacterHeader = styled.header<{ characterLength: number; todoLength:
 
 const Article = styled(FlexHoverArticle)`
     font-weight: 600;
+    box-sizing: border-box;
     width: 100%;
     div {
         color: ${props => props.color};
     }
 `;
 
-const InfoDiv = styled(FlexDiv)`
-    margin-left: 0.25em;
+const Logo = styled.div`
+    display: flex;
+    padding-left: 0.5em;
+    justify-content: center;
     box-sizing: border-box;
+`;
+
+const Info = styled.div<{ length: number }>`
+    display: flex;
+    flex-direction: column;
+    padding-left: 1em;
+    box-sizing: border-box;
+    ${props => props.length > 6 && `width: 75%;`}
 `;
 
 const ArrowDiv = styled.div<{ perPage: number; characterOrd: number[] }>`

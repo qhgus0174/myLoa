@@ -46,10 +46,14 @@ export const FlexHoverArticle = styled.article`
     height: 100%;
     align-items: center;
 
-    flex-basis: 11.8%;
+    flex-basis: 12.5%;
+
+    ${widthMedia.bigDesktop} {
+        flex-basis: 18%;
+    }
 
     ${widthMedia.desktop} {
-        flex-basis: 19%;
+        flex-basis: 23%;
     }
 
     ${widthMedia.tablet} {
@@ -73,7 +77,7 @@ export const FlexHoverArticle = styled.article`
 `;
 
 export const CharactersDiv = styled(FlexRightDiv)<{ length: number; contents?: ScheduleContents }>`
-    height: ${props => (props.contents === 'guardian' ? '7.75em' : '4.55em')};
+    height: ${props => (props.contents === 'guardian' ? '8.45em' : '4.6em')};
 
     ${props => {
         if (props.length > 4) {

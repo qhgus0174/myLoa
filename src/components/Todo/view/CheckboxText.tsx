@@ -72,7 +72,7 @@ const RealText = styled(FlexDiv)`
 
 const Container = styled(FlexLeftDiv)<{ contents: ScheduleContents }>`
     width: 100%;
-    height: ${props => (props.contents === 'guardian' ? '7.75em' : '4.55em')};
+    height: ${props => (props.contents === 'guardian' ? '8.55em' : '4.6em')};
     align-items: center;
     font-weight: 600;
     cursor: pointer;

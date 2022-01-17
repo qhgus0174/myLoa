@@ -122,7 +122,7 @@ const TodoContainer = styled.section`
 const CheckList = styled.section<{ contents: ScheduleContents }>`
     display: flex;
     align-items: center;
-    height: ${props => (props.contents === 'guardian' ? '7.3em' : '4em')};
+    height: ${props => (props.contents === 'guardian' ? '8em' : '4.2em')};
     margin-top: 0.3em;
     margin-bottom: 0.2em;
     box-sizing: border-box;

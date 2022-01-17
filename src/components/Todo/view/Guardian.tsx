@@ -116,8 +116,8 @@ const Guardian = ({
 
 const Container = styled(FlexDiv)`
     align-items: center;
-    margin-top: 0.3em;
     box-sizing: border-box;
+    height: 50%;
 `;
 
 const SelectBox = styled.select`
