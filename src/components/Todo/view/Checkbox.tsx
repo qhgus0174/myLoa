@@ -7,7 +7,7 @@ import TodoCheck from '@components/Todo/modal/TodoCheck';
 import TextBox from '@components/Input/TextBox';
 import Guardian from '@components/Todo/view/Guardian';
 import { IContextModal, ScheduleContents, ScheduleType } from '@common/types/types';
-import { CharactersDiv, FlexDiv, FlexHoverArticle } from '@style/common/layout/common';
+import { CharactersDiv, FlexHoverArticle } from '@style/common/layout/common';
 import styled from '@emotion/styled';
 import { parseStorageItem } from '@common/utils';
 
@@ -50,7 +50,7 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
             ),
             title: '숙제 수정(개별)',
             width: '400',
-            height: ['chaos', 'epona', 'guardian'].includes(pTodo.contents) ? '500' : '450',
+            height: ['chaos', 'guardian'].includes(pTodo.contents) ? '500' : '550',
         });
     };
 
@@ -200,6 +200,19 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
         setStoredTodo(todoArr);
     };
 
+    const calcRelaxGuage = ({ relaxGuage }: { relaxGuage: number }): number[] => {
+        const arraySize = relaxGuage;
+        return new Array(arraySize).fill(100);
+    };
+
+    const calcRelaxGuageHasRemain = ({ relaxGuage }: { relaxGuage: number }): number[] => {
+        const arraySize = relaxGuage - 0.5;
+        const guageArr = new Array(arraySize).fill(100);
+        guageArr.push(50);
+
+        return guageArr;
+    };
+
     return (
         <>
             <WhiteSpace></WhiteSpace>
@@ -213,6 +226,15 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                         currentPage === 1 ? perPage : (currentPage - 1) * perPage + perPage,
                     )
                     .map((charTodo: ICharacterTodo, characterIndex: number) => {
+                        const relaxGuage = charTodo.relaxGauge / 20;
+                        const hasRemain = charTodo.relaxGauge % 20;
+
+                        const calacRelaxGuageArr = hasRemain
+                            ? calcRelaxGuageHasRemain({ relaxGuage: relaxGuage })
+                            : calcRelaxGuage({ relaxGuage: relaxGuage });
+
+                        const relaxGuageArr = Object.assign([], new Array(5).fill(0), calacRelaxGuageArr);
+
                         return (
                             <FlexHoverArticle
                                 key={`drag_char_${characterIndex}`}
@@ -230,8 +252,10 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                             >
                                 {pTodo.checkType === 'check' ? (
                                     pTodo.showCharacter.includes(charTodo.id) && (
-                                        <FlexDiv direction="column" width="100">
+                                        <TodoContainer>
                                             <EContainer
+                                                length={storedCharacter.length - (currentPage - 1) * perPage}
+                                                isGuardian={pTodo.contents === 'guardian'}
                                                 onTouchEnd={(e: React.TouchEvent<HTMLElement>) =>
                                                     onTouchEnd({
                                                         e: e,
@@ -264,25 +288,24 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                                                         );
                                                     })}
                                                 </Article>
-                                                {pTodo.type === 'daily' &&
-                                                    ['chaos', 'guardian'].includes(pTodo.contents) && (
-                                                        <Text>
-                                                            <RelaxGauge
-                                                                onTouchEnd={(e: React.TouchEvent<HTMLElement>) =>
-                                                                    onTouchEnd({
-                                                                        e: e,
-                                                                        charTodo: charTodo,
-                                                                        characterIndex: characterIndex,
-                                                                    })
-                                                                }
-                                                                onClick={(e: React.MouseEvent<HTMLElement>) =>
-                                                                    onClickCheckTodoHoverArea(e, charTodo.id)
-                                                                }
-                                                            >
-                                                                {charTodo.relaxGauge}
-                                                            </RelaxGauge>
-                                                        </Text>
-                                                    )}
+                                                {pTodo.type === 'daily' && (
+                                                    <RelaxGauge
+                                                        onTouchEnd={(e: React.TouchEvent<HTMLElement>) =>
+                                                            onTouchEnd({
+                                                                e: e,
+                                                                charTodo: charTodo,
+                                                                characterIndex: characterIndex,
+                                                            })
+                                                        }
+                                                        onClick={(e: React.MouseEvent<HTMLElement>) =>
+                                                            onClickCheckTodoHoverArea(e, charTodo.id)
+                                                        }
+                                                    >
+                                                        {relaxGuageArr.map((guage, index) => {
+                                                            return <GuageBar key={index} guage={guage} />;
+                                                        })}
+                                                    </RelaxGauge>
+                                                )}
                                             </EContainer>
                                             {pTodo.type === 'daily' && pTodo.contents === 'guardian' && (
                                                 <Guardian
@@ -300,7 +323,7 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                                                     setGuardianStep={setGuardianStep}
                                                 />
                                             )}
-                                        </FlexDiv>
+                                        </TodoContainer>
                                     )
                                 ) : (
                                     <TextBox
@@ -325,16 +348,18 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
 const Article = styled.article<{ todoType: ScheduleType; contents: ScheduleContents }>`
     display: flex;
     justify-content: space-evenly;
+    align-items: center;
     width: 100%;
 
     ${props => (props.contents === 'epona' ? `flex-basis:100%;` : `flex-basis: 75%;`)}
 `;
 
-const RelaxGauge = styled.article`
-    justify-content: center;
-    text-align: center;
-    color: ${props => props.theme.colors.relax};
-    font-weight: 600;
+const TodoContainer = styled.div`
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
 `;
 
 const WhiteSpace = styled.div`
@@ -362,18 +387,40 @@ const EponaText = styled.article`
     box-sizing: border-box;
 `;
 
-const EContainer = styled(FlexDiv)`
-    height: 100%;
-    flex-basis: 50%;
-    justify-content: center;
-    width: 100%;
-`;
-
-const Text = styled.article`
+const EContainer = styled.div<{ isGuardian: boolean; length: number }>`
     display: flex;
     flex-direction: column;
-    flex-basis: 20%;
     justify-content: center;
+    align-items: center;
+    width: ${props => (props.length < 7 ? `60` : `75`)}%;
+    height: ${props => (props.isGuardian ? `50` : `100`)}%;
+`;
+
+const RelaxGauge = styled.article`
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    box-sizing: border-box;
+    padding-top: 3px;
+    width: 80%;
+    height: 25%;
+`;
+
+const GuageBar = styled.div<{ guage: number }>`
+    width: 50%;
+    height: 2px;
+    margin-left: 2px;
+    margin-right: 2px;
+    box-sizing: border-box;
+
+    background: ${props => props.theme.colors.gray};
+    &:after {
+        content: '';
+        display: block;
+        background: ${props => props.theme.colors.relax};
+        width: ${props => props.guage}%;
+        height: 2px;
+    }
 `;
 
 export default Checkbox;
