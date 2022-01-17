@@ -9,7 +9,6 @@ import { widthMedia } from '@style/device';
 
 const Header = () => {
     const { visible, setVisible } = useContext(MobileNavContext);
-    const { setModalProps } = useContext(ModalActionContext);
 
     return (
         <HeaderContainer>
@@ -65,16 +64,6 @@ const HeaderContainer = styled.header`
 const HeaderInner = styled.article`
     display: flex;
     flex-basis: 42%;
-`;
-
-const LogoImg = styled.img`
-    width: 160px;
-    height: 100%;
-    cursor: pointer;
-
-    ${widthMedia.smallPhone} {
-        width: 130px;
-    }
 `;
 
 const RightHeader = styled.nav`
