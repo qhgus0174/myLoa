@@ -334,7 +334,7 @@ const Main = () => {
                     chaos: () => calcRelaxGauge(todo, character, diffDays),
                     guardian: () => calcRelaxGauge(todo, character, diffDays),
                     basicReset: () => resetCheck(todo.contents, character),
-                    epona: () => resetCheck(todo.contents, character),
+                    epona: () => calcRelaxGauge(todo, character, diffDays),
                     basic: () => character,
                     none: () => character,
                 };
@@ -390,10 +390,10 @@ const Main = () => {
     };
 
     const calcRelaxGauge = (todo: ITodo, character: ICharacterTodo, diffDays: number): ICharacterTodo => {
-        const maxCheckCount = ['chaos', 'guardian'].includes(todo.contents) ? 2 : 1;
+        const maxCheckCount = ['chaos', 'guardian'].includes(todo.contents) ? 2 : 3;
 
         const addGauge = (maxCheckCount * diffDays - getCheckCounts(character.check)) * 10;
-
+        console.log(todo.contents, getCheckCounts(character.check));
         const relaxGauge = Number(character.relaxGauge) + addGauge;
 
         const resetTodoData: ICharacterTodo = {
