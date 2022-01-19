@@ -230,7 +230,7 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                     .map((charTodo: ICharacterTodo, characterIndex: number) => {
                         const relaxGuage = charTodo.relaxGauge / 20;
                         const hasRemain = charTodo.relaxGauge % 20;
-                        console.log(charTodo.relaxGauge, relaxGuage);
+
                         const calacRelaxGuageArr = hasRemain
                             ? calcRelaxGuageHasRemain({ relaxGuage: relaxGuage })
                             : calcRelaxGuage({ relaxGuage: relaxGuage });
