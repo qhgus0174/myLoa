@@ -207,7 +207,9 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
 
     const calcRelaxGuageHasRemain = ({ relaxGuage }: { relaxGuage: number }): number[] => {
         const arraySize = relaxGuage - 0.5;
-        const guageArr = new Array(arraySize).fill(100);
+        const calcArraySize = arraySize > 0 ? arraySize : 0;
+
+        const guageArr = new Array(calcArraySize).fill(100);
         guageArr.push(50);
 
         return guageArr;
@@ -228,7 +230,7 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                     .map((charTodo: ICharacterTodo, characterIndex: number) => {
                         const relaxGuage = charTodo.relaxGauge / 20;
                         const hasRemain = charTodo.relaxGauge % 20;
-
+                        console.log(charTodo.relaxGauge, relaxGuage);
                         const calacRelaxGuageArr = hasRemain
                             ? calcRelaxGuageHasRemain({ relaxGuage: relaxGuage })
                             : calcRelaxGuage({ relaxGuage: relaxGuage });
@@ -288,24 +290,25 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                                                         );
                                                     })}
                                                 </Article>
-                                                {pTodo.type === 'daily' && (
-                                                    <RelaxGauge
-                                                        onTouchEnd={(e: React.TouchEvent<HTMLElement>) =>
-                                                            onTouchEnd({
-                                                                e: e,
-                                                                charTodo: charTodo,
-                                                                characterIndex: characterIndex,
-                                                            })
-                                                        }
-                                                        onClick={(e: React.MouseEvent<HTMLElement>) =>
-                                                            onClickCheckTodoHoverArea(e, charTodo.id)
-                                                        }
-                                                    >
-                                                        {relaxGuageArr.map((guage, index) => {
-                                                            return <GuageBar key={index} guage={guage} />;
-                                                        })}
-                                                    </RelaxGauge>
-                                                )}
+                                                {pTodo.type === 'daily' &&
+                                                    ['chaos', 'guardian'].includes(pTodo.contents) && (
+                                                        <RelaxGauge
+                                                            onTouchEnd={(e: React.TouchEvent<HTMLElement>) =>
+                                                                onTouchEnd({
+                                                                    e: e,
+                                                                    charTodo: charTodo,
+                                                                    characterIndex: characterIndex,
+                                                                })
+                                                            }
+                                                            onClick={(e: React.MouseEvent<HTMLElement>) =>
+                                                                onClickCheckTodoHoverArea(e, charTodo.id)
+                                                            }
+                                                        >
+                                                            {relaxGuageArr.map((guage, index) => {
+                                                                return <GuageBar key={index} guage={guage} />;
+                                                            })}
+                                                        </RelaxGauge>
+                                                    )}
                                             </EContainer>
                                             {pTodo.type === 'daily' && pTodo.contents === 'guardian' && (
                                                 <Guardian

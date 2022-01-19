@@ -106,7 +106,9 @@ const TodoCheck = ({
                     캐릭터명 :<TopInfoTitle>{characterName}</TopInfoTitle>
                 </div>
             </TopInfo>
-            <RemarkDiv>* 휴식게이지 수동 입력 시 수행횟수는 초기화 됩니다.</RemarkDiv>
+            {todoType === 'daily' && ['chaos', 'guardian', 'epona'].includes(todoContents) && (
+                <RemarkDiv>* 휴식게이지 수동 입력 시 수행횟수는 초기화 됩니다.</RemarkDiv>
+            )}
             <ContentContainer>
                 {checkType === 'text' ? (
                     <Content direction="column">
@@ -116,7 +118,8 @@ const TodoCheck = ({
                         </Contents>
                     </Content>
                 ) : (
-                    todoType === 'daily' && (
+                    todoType === 'daily' &&
+                    ['chaos', 'guardian', 'epona'].includes(todoContents) && (
                         <Content direction="column">
                             <Title
                                 css={css`
