@@ -60,10 +60,13 @@ const Statistics = () => {
 
         const { common, own }: ILedger = { ...parseStorageItem(localStorage.getItem('ledger') as string) };
 
-        localStorage.getItem('ledger') && calcWeekGold();
         own.length < 1
             ? setHasData(false)
             : localStorage.getItem('character') && localStorage.getItem('ledger') && calcStastistics();
+
+        setTimeout(() => {
+            localStorage.getItem('ledger') && calcWeekGold();
+        }, 2000);
     }, []);
 
     const calcStastistics = () => {
@@ -312,7 +315,7 @@ const Statistics = () => {
                 spending: { fold: true, data: [] },
             };
         });
-        console.log(newLedger);
+
         setStoredLedger(newLedger);
     };
 
