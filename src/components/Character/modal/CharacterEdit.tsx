@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import _ from 'lodash';
+import reject from 'lodash-es/reject';
 import { toast } from 'react-toastify';
 import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
 import { PagingActionContext, PagingStateContext } from '@context/PagingContext';
@@ -145,7 +145,7 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
 
     const deleteCharacter = (): ICharacter[] => {
         const characterArr: ICharacter[] = [...storedCharacter];
-        const resultArray = _.reject(characterArr, ({ id }: ICharacter) => {
+        const resultArray = reject(characterArr, ({ id }: ICharacter) => {
             return id === oriId;
         });
         setStoredCharacter(resultArray);
@@ -155,7 +155,7 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
 
     const deleteCharacterOrd = () => {
         const characterOrdArr: number[] = [...storedCharacterOrd];
-        const resultOrd = _.reject(characterOrdArr, (ord: number) => {
+        const resultOrd = reject(characterOrdArr, (ord: number) => {
             return ord === oriId;
         });
         setStoredCharacterOrd(resultOrd);
@@ -165,7 +165,7 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
         const todoArr: ITodo[] = [...storedTodo];
 
         const deleteResult = todoArr.map((todoObj: ITodo) => {
-            todoObj.character = _.reject(todoObj.character, (character: ICharacterTodo) => {
+            todoObj.character = reject(todoObj.character, (character: ICharacterTodo) => {
                 return character.id === oriId;
             });
 
@@ -187,7 +187,7 @@ const CharacterEdit = ({ id: oriId, name: newName, color: oriColor }: ICharacter
     const deleteLedger = () => {
         const ledger = { ...storedLedger };
 
-        const rejectedLedger = _.reject(ledger.own, ({ characterId }: ILedgerOwn) => {
+        const rejectedLedger = reject(ledger.own, ({ characterId }: ILedgerOwn) => {
             return characterId === oriId;
         });
 

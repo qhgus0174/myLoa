@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import _ from 'lodash';
+import reject from 'lodash-es/reject';
 import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
 import IncomeSpendItem from '@components/Ledger/characterGold/IncomeSpendItem';
 import RadioButton from '@components/Input/Radio';
@@ -141,7 +141,7 @@ const IncomeSpendList = ({
                 },
             } = ownLedger;
 
-        const resultHistory = _.reject(ownData, ({ id }) => {
+        const resultHistory = reject(ownData, ({ id }) => {
             return id === goodsId;
         });
 
@@ -166,7 +166,7 @@ const IncomeSpendList = ({
                 },
             } = ownLedger;
 
-        const resultHistory = _.reject(ownData, ({ id }) => {
+        const resultHistory = reject(ownData, ({ id }) => {
             return id === goodsId;
         });
 

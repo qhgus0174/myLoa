@@ -1,5 +1,5 @@
 import { ScheduleContents } from '@common/types/types';
-import _ from 'lodash';
+import reject from 'lodash-es/reject';
 
 const isMultipleArr = (contents: ScheduleContents): boolean => {
     return ['chaos', 'guardian', 'epona'].includes(contents);
@@ -26,7 +26,7 @@ export const getShowCheckTodo = (
 };
 
 const rejectArr = (arr: any[], id: number) => {
-    const resultArr = _.reject(arr, (ord: number) => {
+    const resultArr = reject(arr, (ord: number) => {
         return ord === id;
     });
     return resultArr;

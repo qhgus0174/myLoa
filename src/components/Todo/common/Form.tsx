@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import _ from 'lodash';
 import { ColorResult, CompactPicker } from 'react-color';
 import { LocalStorageStateContext } from '@context/LocalStorageContext';
 import { getShowCheckTodo } from '@components/Todo/common/functions';

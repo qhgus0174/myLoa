@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import _ from 'lodash';
+import reject from 'lodash-es/reject';
 import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
 import { ModalActionContext } from '@context/ModalContext';
 import { useInput } from '@hooks/useInput';
@@ -81,7 +81,7 @@ const TodoEdit = ({
 
     const deleteTodo = () => {
         const todoArr: ITodo[] = [...storedTodo];
-        const resultArray = _.reject(todoArr, (todo: ITodo) => {
+        const resultArray = reject(todoArr, (todo: ITodo) => {
             return todo.id === oriId;
         });
         setStoredTodo(resultArray);
@@ -89,7 +89,7 @@ const TodoEdit = ({
 
     const deleteTodoOrd = () => {
         const todoArrOrd: number[] = [...storedTodoOrd];
-        const resultOrd = _.reject(todoArrOrd, (ord: number) => {
+        const resultOrd = reject(todoArrOrd, (ord: number) => {
             return ord === oriId;
         });
         setStoredTodoOrd(resultOrd);

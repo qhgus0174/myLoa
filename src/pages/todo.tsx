@@ -393,7 +393,7 @@ const Main = () => {
         const maxCheckCount = ['chaos', 'guardian'].includes(todo.contents) ? 2 : 3;
 
         const addGauge = (maxCheckCount * diffDays - getCheckCounts(character.check)) * 10;
-        console.log(todo.contents, getCheckCounts(character.check));
+
         const relaxGauge = Number(character.relaxGauge) + addGauge;
 
         const resetTodoData: ICharacterTodo = {

@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import _ from 'lodash';
+import reject from 'lodash-es/reject';
 import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
 import IncomeSpendItem from '@components/Ledger/commonGold/IncomeSpendItem';
 import Nodata from '@components/article/Nodata';
@@ -18,7 +18,7 @@ const IncomeSpendList = ({ commonData }: { commonData: ICommonGold[] }) => {
                 common: { histories },
             } = newLedger;
 
-        const resultHistory = _.reject(histories, ({ id }) => {
+        const resultHistory = reject(histories, ({ id }) => {
             return id === goodsId;
         });
 

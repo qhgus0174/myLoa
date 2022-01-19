@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import _ from 'lodash';
+import reject from 'lodash-es/reject';
 import { LocalStorageActionContext, LocalStorageStateContext } from '@context/LocalStorageContext';
 import { ModalActionContext } from '@context/ModalContext';
 import EditButtonContainer from '@components/Container/Button/DelEdit';
@@ -39,7 +39,7 @@ const LineEdit = ({ id: oriId, color: newColor }: Pick<ITodo, 'id' | 'color'>) =
 
     const deleteTodoInfo = () => {
         const todoArr: ITodo[] = [...storedTodo];
-        const resultArray = _.reject(todoArr, (todo: ITodo) => {
+        const resultArray = reject(todoArr, (todo: ITodo) => {
             return todo.id === oriId;
         });
         setStoredTodo(resultArray);
@@ -47,7 +47,7 @@ const LineEdit = ({ id: oriId, color: newColor }: Pick<ITodo, 'id' | 'color'>) =
 
     const deleteTodoOrd = () => {
         const todoArrOrd: number[] = [...storedTodoOrd];
-        const resultOrd = _.reject(todoArrOrd, (ord: number) => {
+        const resultOrd = reject(todoArrOrd, (ord: number) => {
             return ord === oriId;
         });
         setStoredTodoOrd(resultOrd);
