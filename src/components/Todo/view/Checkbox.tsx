@@ -291,7 +291,7 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                                                     })}
                                                 </Article>
                                                 {pTodo.type === 'daily' &&
-                                                    ['chaos', 'guardian'].includes(pTodo.contents) && (
+                                                    ['chaos', 'guardian', 'epona'].includes(pTodo.contents) && (
                                                         <RelaxGauge
                                                             onTouchEnd={(e: React.TouchEvent<HTMLElement>) =>
                                                                 onTouchEnd({
