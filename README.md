@@ -60,8 +60,8 @@ $ yarn install
      
         - 캐릭터 불러오기 전
        
-       <img src="https://user-images.githubusercontent.com/74941162/148644401-1d798cee-dc5f-4a50-aceb-07ad8cfdb258.PNG" width="900" height="400"/>
-        
+       <img src="https://user-images.githubusercontent.com/74941162/150309444-7c70cd4e-4ff8-44f2-8b0f-d14f6ee4d745.PNG" width="900" height="400"/>
+
         - 캐릭터 불러온 후
         
 
