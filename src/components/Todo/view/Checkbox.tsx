@@ -436,6 +436,8 @@ const Text = styled.div`
     flex-basis: 30%;
     align-items: center;
     justify-content: center;
+    font-weight: 600;
+    font-size: 0.92em;
     color: ${props => props.theme.colors.relax};
 `;
 
