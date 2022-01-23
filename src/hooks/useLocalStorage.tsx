@@ -65,7 +65,7 @@ export const initDayContents = (): IShareContents[] => {
     return resultArr;
 };
 
-export const initSettings: ISettings = { todo: { relaxType: 'bar' } };
+export const initSettings: ISettings = { todo: { isShowRelaxBar: true } };
 
 export const useLocalStorage = () => {
     const [storedTodo, setStoredTodo] = useState<ITodo[]>([]);
