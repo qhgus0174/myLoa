@@ -23,7 +23,8 @@ type IIconType =
     | 'Sorceress'
     | 'Demonic'
     | 'Blade'
-    | 'Reaper';
+    | 'Reaper'
+    | 'Artist';
 
 interface IIcon {
     shape: string;
@@ -98,6 +99,9 @@ const JobLogo = ({ shape, width = 28, height = 27 }: IIcon) => {
                 break;
             case '리퍼':
                 engName = 'Reaper';
+                break;
+            case '도화가':
+                engName = 'Artist';
                 break;
             default:
                 break;
