@@ -1,10 +1,10 @@
 import { ILedger } from '@common/types/localStorage/Ledger';
 import { ICharacter } from '@common/types/localStorage/Character';
 import { ITodo } from '@common/types/localStorage/Todo';
-import { initLedger, useLocalStorage } from '@hooks/useLocalStorage';
+import { initLedger, initSettings, useLocalStorage } from '@hooks/useLocalStorage';
 import React, { createContext, useState } from 'react';
 import { IShareContents } from '@common/types/localStorage/ShareContents';
-import { IRaid } from '@common/types/localStorage/Raid';
+import { ISettings } from '@common/types/localStorage/Settings';
 
 interface ILocalStorageState {
     storedTodo: ITodo[];
@@ -14,6 +14,7 @@ interface ILocalStorageState {
     storedLedger: ILedger;
     storedShareContents: IShareContents[];
     storedDayContents: IShareContents[];
+    storedSettings: ISettings;
 }
 
 interface ILocalStorageAction {
@@ -24,6 +25,7 @@ interface ILocalStorageAction {
     setStoredLedger: (e: ILedger) => void;
     setStoredShareContents: (e: IShareContents[]) => void;
     setStoredDayContents: (e: IShareContents[]) => void;
+    setStoredSettings: (e: ISettings) => void;
 }
 
 export const LocalStorageStateContext = createContext<ILocalStorageState>({
@@ -34,6 +36,7 @@ export const LocalStorageStateContext = createContext<ILocalStorageState>({
     storedLedger: initLedger,
     storedShareContents: [],
     storedDayContents: [],
+    storedSettings: initSettings,
 });
 
 export const LocalStorageActionContext = createContext<ILocalStorageAction>({
@@ -44,6 +47,7 @@ export const LocalStorageActionContext = createContext<ILocalStorageAction>({
     setStoredLedger: (e: ILedger) => {},
     setStoredShareContents: (e: IShareContents[]) => {},
     setStoredDayContents: (e: IShareContents[]) => {},
+    setStoredSettings: (e: ISettings) => {},
 });
 
 const LocalStorageProvider = ({ children }: { children: React.ReactNode }) => {
@@ -55,6 +59,7 @@ const LocalStorageProvider = ({ children }: { children: React.ReactNode }) => {
         storedLedger,
         storedShareContents,
         storedDayContents,
+        storedSettings,
         setStoredTodo,
         setStoredTodoOrd,
         setStoredCharacter,
@@ -62,6 +67,7 @@ const LocalStorageProvider = ({ children }: { children: React.ReactNode }) => {
         setStoredLedger,
         setStoredShareContents,
         setStoredDayContents,
+        setStoredSettings,
     } = useLocalStorage();
 
     return (
@@ -74,6 +80,7 @@ const LocalStorageProvider = ({ children }: { children: React.ReactNode }) => {
                 setStoredLedger,
                 setStoredShareContents,
                 setStoredDayContents,
+                setStoredSettings,
             }}
         >
             <LocalStorageStateContext.Provider
@@ -85,6 +92,7 @@ const LocalStorageProvider = ({ children }: { children: React.ReactNode }) => {
                     storedLedger,
                     storedShareContents,
                     storedDayContents,
+                    storedSettings,
                 }}
             >
                 {children}

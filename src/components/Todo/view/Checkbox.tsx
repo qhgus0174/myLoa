@@ -18,7 +18,7 @@ interface ICheckbox {
 }
 
 const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckbox) => {
-    const { storedCharacter, storedCharacterOrd } = useContext(LocalStorageStateContext);
+    const { storedCharacter, storedCharacterOrd, storedSettings } = useContext(LocalStorageStateContext);
     const { setStoredTodo } = useContext(LocalStorageActionContext);
     const { perPage, currentPage } = useContext(PagingStateContext);
 
@@ -256,6 +256,7 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                                     pTodo.showCharacter.includes(charTodo.id) && (
                                         <TodoContainer>
                                             <EContainer
+                                                horizon={storedSettings.todo.isShowRelaxBar}
                                                 length={storedCharacter.length - (currentPage - 1) * perPage}
                                                 isGuardian={pTodo.contents === 'guardian'}
                                                 onTouchEnd={(e: React.TouchEvent<HTMLElement>) =>
@@ -291,7 +292,10 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                                                     })}
                                                 </Article>
                                                 {pTodo.type === 'daily' &&
-                                                    ['chaos', 'guardian', 'epona'].includes(pTodo.contents) && (
+                                                    ['chaos', 'guardian', 'epona'].includes(pTodo.contents) &&
+                                                    (storedSettings.todo.isShowRelaxBar ? (
+                                                        <Text>{charTodo.relaxGauge}</Text>
+                                                    ) : (
                                                         <RelaxGauge
                                                             onTouchEnd={(e: React.TouchEvent<HTMLElement>) =>
                                                                 onTouchEnd({
@@ -308,7 +312,7 @@ const Checkbox = ({ todo: pTodo, todoIndex: pTodoIndex, onContextMenu }: ICheckb
                                                                 return <GuageBar key={index} guage={guage} />;
                                                             })}
                                                         </RelaxGauge>
-                                                    )}
+                                                    ))}
                                             </EContainer>
                                             {pTodo.type === 'daily' && pTodo.contents === 'guardian' && (
                                                 <Guardian
@@ -390,9 +394,9 @@ const EponaText = styled.article`
     box-sizing: border-box;
 `;
 
-const EContainer = styled.div<{ isGuardian: boolean; length: number }>`
+const EContainer = styled.div<{ isGuardian: boolean; length: number; horizon: boolean }>`
     display: flex;
-    flex-direction: column;
+    flex-direction: ${props => (props.horizon ? `row` : `column`)};
     justify-content: center;
     align-items: center;
     width: ${props => (props.length < 7 ? `60` : `75`)}%;
@@ -411,7 +415,7 @@ const RelaxGauge = styled.article`
 
 const GuageBar = styled.div<{ guage: number }>`
     width: 50%;
-    height: 2px;
+    height: 2.5px;
     margin-left: 2px;
     margin-right: 2px;
     box-sizing: border-box;
@@ -422,8 +426,17 @@ const GuageBar = styled.div<{ guage: number }>`
         display: block;
         background: ${props => props.theme.colors.relax};
         width: ${props => props.guage}%;
-        height: 2px;
+        height: 2.5px;
     }
+`;
+
+const Text = styled.div`
+    display: flex;
+    flex-direction: column;
+    flex-basis: 30%;
+    align-items: center;
+    justify-content: center;
+    color: ${props => props.theme.colors.relax};
 `;
 
 export default Checkbox;

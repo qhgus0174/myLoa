@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import styled from '@emotion/styled';
 import { LocalStorageStateContext } from '@context/LocalStorageContext';
 import { PagingActionContext, PagingStateContext } from '@context/PagingContext';
-import { responsiveWidth } from '@style/device';
+import { responsiveWidth, widthMedia } from '@style/device';
 
 const Pagination = () => {
     const [pageNumbers, setPageNumbers] = useState<number[]>([]);
@@ -15,7 +15,7 @@ const Pagination = () => {
     }, [storedCharacter.length, perPage]);
 
     return (
-        <>
+        <Container>
             <PagingUl>
                 <PagingLi
                     onClick={() => {
@@ -63,9 +63,17 @@ const Pagination = () => {
                     <span>&gt;&gt;</span>
                 </PagingLi>
             </PagingUl>
-        </>
+        </Container>
     );
 };
+
+const Container = styled.div`
+    width: 70%;
+
+    ${widthMedia.tablet} {
+        width: 100%;
+    }
+`;
 
 const PagingUl = styled.ul`
     display: flex;

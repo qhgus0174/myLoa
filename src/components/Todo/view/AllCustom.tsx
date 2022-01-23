@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import useWindowDimensions from '@hooks/useWindowDimensions';
-import { LocalStorageStateContext } from '@context/LocalStorageContext';
+import { LocalStorageStateContext, LocalStorageActionContext } from '@context/LocalStorageContext';
 import { ModalActionContext } from '@context/ModalContext';
 import CharacterOrdChange from '@components/Character/modal/CharacterOrdChange';
 import CharacterAdd from '@components/Character/modal/CharacterAdd';
+import BasicCheckbox from '@components/Input/BasicCheckbox';
 import Pagination from '@components/Pagination/Pagination';
 import TodoAdd from '@components/Todo/modal/TodoAdd';
 import DownArrow from '@components/Image/DownArrow';
@@ -20,8 +21,10 @@ import { responsiveWidth, widthMedia } from '@style/device';
 import { FlexDiv } from '@style/common/layout/common';
 
 const Weekly = () => {
-    const { storedTodo, storedCharacter, storedCharacterOrd, storedShareContents, storedDayContents } =
+    const { storedTodo, storedCharacter, storedCharacterOrd, storedShareContents, storedDayContents, storedSettings } =
         useContext(LocalStorageStateContext);
+
+    const { setStoredSettings } = useContext(LocalStorageActionContext);
 
     const { setModalProps } = useContext(ModalActionContext);
     const [isFold, setIsFold] = useState<boolean>(false);
@@ -44,6 +47,21 @@ const Weekly = () => {
             content: modal,
             options: { width: width, height: height, headerTitle: title },
         });
+    };
+
+    const onClickShowRelax = () => {
+        const copySettings = { ...storedSettings },
+            {
+                todo: { isShowRelaxBar },
+            } = copySettings;
+
+        const result = {
+            todo: {
+                isShowRelaxBar: !isShowRelaxBar,
+            },
+        };
+
+        setStoredSettings(result);
     };
 
     return (
@@ -132,7 +150,16 @@ const Weekly = () => {
                 </FlexDiv>
             </TodoButtons>
             <TodoContentsSection>
-                {storedCharacter.length > 0 && <Pagination />}
+                <SettingDiv>
+                    <ShowRealxDiv>
+                        <BasicCheckbox
+                            onChange={() => onClickShowRelax()}
+                            checked={storedSettings.todo.isShowRelaxBar}
+                            label={<span>휴식게이지 숫자로 보기</span>}
+                        />
+                    </ShowRealxDiv>
+                    {storedCharacter.length > 0 && <Pagination />}
+                </SettingDiv>
                 <Character onContextMenuBasicModal={onContextMenuBasicModal} />
                 <Todo onContextMenuBasicModal={onContextMenuBasicModal} />
             </TodoContentsSection>
@@ -205,6 +232,22 @@ const ButtonLeftDiv = styled.div`
     display: flex;
     ${widthMedia.smallPhone} {
         flex-direction: column;
+    }
+`;
+
+const SettingDiv = styled.div`
+    display: flex;
+
+    ${widthMedia.tablet} {
+        flex-direction: column;
+    }
+`;
+
+const ShowRealxDiv = styled.div`
+    width: 30%;
+
+    ${widthMedia.tablet} {
+        width: 100%;
     }
 `;
 

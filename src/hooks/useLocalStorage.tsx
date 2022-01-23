@@ -5,7 +5,7 @@ import { ICommonHistory, ILedger, ILedgerOwn } from '@common/types/localStorage/
 import { DateTime } from 'luxon';
 import { parseStorageItem, stringifyStorageItem } from '@common/utils';
 import { IShareContents } from '@common/types/localStorage/ShareContents';
-import { IRaid } from '@common/types/localStorage/Raid';
+import { ISettings } from '@common/types/localStorage/Settings';
 import { CompassInfo } from '@common/data/compass';
 
 export const initCommonHistory: ICommonHistory[] = [
@@ -65,6 +65,8 @@ export const initDayContents = (): IShareContents[] => {
     return resultArr;
 };
 
+export const initSettings: ISettings = { todo: { relaxType: 'bar' } };
+
 export const useLocalStorage = () => {
     const [storedTodo, setStoredTodo] = useState<ITodo[]>([]);
     const [storedTodoOrd, setStoredTodoOrd] = useState<number[]>([]);
@@ -73,6 +75,7 @@ export const useLocalStorage = () => {
     const [storedShareContents, setStoredShareContents] = useState<IShareContents[]>([]);
     const [storedDayContents, setStoredDayContents] = useState<IShareContents[]>([]);
     const [storedLedger, setStoredLedger] = useState<ILedger>(initLedger);
+    const [storedSettings, setStoredSettings] = useState<ISettings>(initSettings);
 
     useEffect(() => {
         const todoData: ITodo[] = parseStorageItem(localStorage.getItem('todo') as string);
@@ -117,6 +120,11 @@ export const useLocalStorage = () => {
     }, []);
 
     useEffect(() => {
+        const settingsData: ISettings = parseStorageItem(localStorage.getItem('settings') as string);
+        settingsData ? setStoredSettings(settingsData) : setStoredSettings(initSettings);
+    }, []);
+
+    useEffect(() => {
         storedTodo && localStorage.setItem('todo', stringifyStorageItem(storedTodo));
     }, [storedTodo]);
 
@@ -145,6 +153,12 @@ export const useLocalStorage = () => {
             initLedger != storedLedger &&
             localStorage.setItem('ledger', stringifyStorageItem(storedLedger));
     }, [storedLedger]);
+
+    useEffect(() => {
+        storedSettings &&
+            initSettings != storedSettings &&
+            localStorage.setItem('settings', stringifyStorageItem(storedSettings));
+    }, [storedSettings]);
 
     const ledgerInit = (characters: ICharacter[]) => {
         if (
@@ -178,6 +192,7 @@ export const useLocalStorage = () => {
         storedLedger,
         storedShareContents,
         storedDayContents,
+        storedSettings,
         setStoredTodo,
         setStoredTodoOrd,
         setStoredCharacter,
@@ -185,5 +200,6 @@ export const useLocalStorage = () => {
         setStoredLedger,
         setStoredShareContents,
         setStoredDayContents,
+        setStoredSettings,
     };
 };
