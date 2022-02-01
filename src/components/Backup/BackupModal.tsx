@@ -31,6 +31,7 @@ const BackupModal = () => {
         setSpinnerVisible(true);
         try {
             await setBackupData();
+            await deleteBackupData();
 
             toast.success('데이터를 성공적으로 불러왔습니다. 숙제 관리 화면으로 이동합니다.');
             Router.push('/todo');
