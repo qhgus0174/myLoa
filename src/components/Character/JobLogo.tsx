@@ -24,7 +24,8 @@ type IIconType =
     | 'Demonic'
     | 'Blade'
     | 'Reaper'
-    | 'Artist';
+    | 'Artist'
+    | 'Weather';
 
 interface IIcon {
     shape: string;
@@ -102,6 +103,9 @@ const JobLogo = ({ shape, width = 28, height = 27 }: IIcon) => {
                 break;
             case '도화가':
                 engName = 'Artist';
+                break;
+            case '기상술사':
+                engName = 'Weather';
                 break;
             default:
                 break;
